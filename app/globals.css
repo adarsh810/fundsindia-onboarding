@@ -1,26 +1,37 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans:  'DM Sans', system-ui, sans-serif;
+
+  --color-canvas:   #FAF8F5;
+  --color-surface:  #FFFFFF;
+  --color-border:   #E8E4DE;
+  --color-border-2: #D5CFC8;
+  --color-ink:      #1C1C1A;
+  --color-dim:      #4A4540;
+  --color-muted:    #6B6560;
+  --color-faint:    #9B9590;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+* { box-sizing: border-box; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #FAF8F5;
+  color: #1C1C1A;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
 }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D5CFC8; border-radius: 99px; }
+
+.prose-chat p { margin: 0 0 0.6rem; }
+.prose-chat p:last-child { margin-bottom: 0; }
+.prose-chat ul, .prose-chat ol { margin: 0 0 0.6rem; padding-left: 1.3rem; }
+.prose-chat li { margin-bottom: 0.2rem; }
+.prose-chat strong { font-weight: 600; }
+.prose-chat code { font-family: monospace; font-size: 0.8em; background: #F0EDE8; padding: 1px 5px; border-radius: 4px; }
+.prose-chat h3 { font-size: 0.95rem; font-weight: 600; margin: 0.75rem 0 0.35rem; }
