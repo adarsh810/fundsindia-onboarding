@@ -80,8 +80,8 @@ export default function PlanView({ initialProgress }: { initialProgress: Progres
         })}
       </div>
 
-      {/* L1 accordion list */}
-      <div className="space-y-2.5">
+      {/* L1 accordion grid — 2×2 on desktop */}
+      <div className={`grid gap-2.5 items-start ${visible.length >= 2 ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
         {visible.map(l1 => {
           const allTopics = l1.categories.flatMap(c => c.topics);
           const doneCount = allTopics.filter(t => progress[t.id] === 'done').length;
