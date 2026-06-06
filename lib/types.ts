@@ -1,5 +1,10 @@
 export type Status = 'not_started' | 'in_progress' | 'done';
 
+export interface Resource {
+  label: string;
+  url?: string;
+}
+
 export interface Topic {
   id: string;
   title: string;
@@ -7,7 +12,7 @@ export interface Topic {
   hours: number;
   week: string;
   done: string;
-  resources: string[];
+  resources: Resource[];
   artifact: string;
 }
 
@@ -33,3 +38,15 @@ export interface Week {
 }
 
 export type ProgressMap = Record<string, Status>;
+
+export interface GeneratedResource {
+  label: string;
+  url: string;
+  type: 'video' | 'article' | 'doc' | 'book' | 'tool';
+}
+
+export interface ResourceBatch {
+  id: string;
+  resources: GeneratedResource[];
+  generated_at: string;
+}

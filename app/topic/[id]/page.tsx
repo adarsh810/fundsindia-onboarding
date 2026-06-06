@@ -4,6 +4,7 @@ import AppNav from '@/components/AppNav';
 import StatusToggle from '@/components/StatusToggle';
 import TopicChat from '@/components/TopicChat';
 import ArtifactReviewer from '@/components/ArtifactReviewer';
+import GeneratedResources from '@/components/GeneratedResources';
 import { getAllProgress } from '@/lib/supabase';
 import { findTopicById, findTrackForTopic, ALL_TOPICS } from '@/lib/data';
 import type { Status } from '@/lib/types';
@@ -73,11 +74,26 @@ export default async function TopicPage({ params }: Props) {
             {topic.resources.map((r, i) => (
               <div key={i} className="flex items-start gap-2.5 py-2.5 first:pt-0 last:pb-0">
                 <span className="shrink-0 mt-0.5 text-[11px] font-bold" style={{ color: track.color }}>→</span>
-                <span className="text-[12px] text-[#4A4540] leading-snug">{r}</span>
+                {r.url ? (
+                  <a
+                    href={r.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[12px] leading-snug hover:underline underline-offset-2 transition-colors"
+                    style={{ color: track.color }}
+                  >
+                    {r.label}
+                  </a>
+                ) : (
+                  <span className="text-[12px] text-[#4A4540] leading-snug">{r.label}</span>
+                )}
               </div>
             ))}
           </div>
         </div>
+
+        {/* Claude-generated resources */}
+        <GeneratedResources topicId={topic.id} trackColor={track.color} />
 
         {/* Artifact */}
         <div className="bg-white border border-[#E8E4DE] rounded-2xl p-5 mb-4">
