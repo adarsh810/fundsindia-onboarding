@@ -188,6 +188,9 @@ export default function ScheduleView({ progress }: { progress: ProgressMap }) {
         const { weekdayIds, weekendIds } = getTopicsForWeek(weekNum);
         const allIds = [...weekdayIds, ...weekendIds];
         const doneCount = allIds.filter(id => progress[id] === 'done').length;
+        const weekdayHours = weekdayIds.reduce((s, id) => s + weeklyHours(id), 0);
+        const weekendHours = weekendIds.reduce((s, id) => s + weeklyHours(id), 0);
+        const totalHours = weekdayHours + weekendHours;
 
         return (
           <div key={w.week} className="bg-white rounded-xl overflow-hidden transition-all"
@@ -207,6 +210,7 @@ export default function ScheduleView({ progress }: { progress: ProgressMap }) {
                   </span>
                 )}
                 <span className="text-[11px] text-[#9B9590] shrink-0">{doneCount}/{allIds.length} done</span>
+                <span className="text-[11px] font-semibold text-[#4A4540] shrink-0">{totalHours}h</span>
               </div>
               <svg className={`w-4 h-4 text-[#9B9590] shrink-0 ml-2 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -234,6 +238,23 @@ export default function ScheduleView({ progress }: { progress: ProgressMap }) {
 
             {isOpen && (
               <div className="border-t border-[#EEE9E2] px-5 pb-5 pt-4 space-y-5">
+                {/* Week hours summary */}
+                <div className="flex items-center gap-3 bg-[#FAF8F5] rounded-xl px-4 py-3">
+                  <div className="flex-1 text-center">
+                    <p className="text-[18px] font-bold text-[#1C1C1A]">{totalHours}h</p>
+                    <p className="text-[10px] text-[#9B9590] uppercase tracking-[0.08em]">this week</p>
+                  </div>
+                  <div className="w-px h-8 bg-[#E8E4DE]" />
+                  <div className="flex-1 text-center">
+                    <p className="text-[15px] font-semibold text-[#4A4540]">{weekdayHours}h</p>
+                    <p className="text-[10px] text-[#9B9590]">Mon–Fri</p>
+                  </div>
+                  <div className="w-px h-8 bg-[#E8E4DE]" />
+                  <div className="flex-1 text-center">
+                    <p className="text-[15px] font-semibold text-[#4A4540]">{weekendHours}h</p>
+                    <p className="text-[10px] text-[#9B9590]">Sat–Sun</p>
+                  </div>
+                </div>
                 <DaySection emoji="⏱" dayLabels={['Mon', 'Tue', 'Wed', 'Thu', 'Fri']}
                   hoursPerDay={2} topicIds={weekdayIds} progress={progress} />
                 <DaySection emoji="🌿" dayLabels={['Sat', 'Sun']}
