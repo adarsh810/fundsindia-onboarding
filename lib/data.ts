@@ -2,7 +2,7 @@ import type { L1Track, Week } from './types';
 
 export const TOPICS: L1Track[] = [
   {
-    id: 'l1', label: 'AI Native PM', hours: 35, color: '#2D6A4F', accent: '#B7E4C7',
+    id: 'l1', label: 'AI Native PM', hours: 38, color: '#2D6A4F', accent: '#B7E4C7',
     categories: [
       {
         name: 'AI Tech', topics: [
@@ -18,7 +18,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'One-pager: How LLMs work — explainer for a non-engineer',
           },
           {
-            id: '1.2', title: 'Transformers 101', desc: 'Vectors, embeddings, attention mechanism, FFNN', hours: 5, week: 'W1–2',
+            id: '1.2', title: 'Transformers 101', desc: 'Vectors, embeddings, attention mechanism, FFNN', hours: 6, week: 'W1–2',
             done: 'Draw the transformer architecture from memory and explain each component',
             resources: [
               { label: 'Jay Alammar — The Illustrated Transformer (deep read)', url: 'https://jalammar.github.io/illustrated-transformer/' },
@@ -54,7 +54,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'RAG architecture diagram for FI RM briefing',
           },
           {
-            id: '1.5', title: 'Agents', desc: 'Tool use, MCP, memory, multi-step planning, evaluation', hours: 5, week: 'W3–4',
+            id: '1.5', title: 'Agents', desc: 'Tool use, MCP, memory, multi-step planning, evaluation', hours: 6, week: 'W3–4',
             done: 'Build a working agent and explain when agents are overkill vs useful',
             resources: [
               { label: 'Anthropic — Tool use docs', url: 'https://docs.anthropic.com/en/docs/build-with-claude/tool-use' },
@@ -66,7 +66,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Decision framework: when to use agents vs RAG vs simple prompt',
           },
           {
-            id: '1.8', title: 'Hands-on Build', desc: 'Portfolio goal monitor agent — Claude API + Supabase + Vercel', hours: 5, week: 'W7–8',
+            id: '1.8', title: 'Hands-on Build', desc: 'Portfolio goal monitor agent — Claude API + Supabase + Vercel', hours: 6, week: 'W7–8',
             done: 'Deployed working app that monitors a portfolio goal and surfaces alerts',
             resources: [
               { label: 'Anthropic API docs — messages, tool use, streaming', url: 'https://docs.anthropic.com/en/api/getting-started' },
@@ -107,12 +107,12 @@ export const TOPICS: L1Track[] = [
     ],
   },
   {
-    id: 'l2', label: 'Finance 101–103', hours: 41, color: '#1B4F72', accent: '#AED6F1',
+    id: 'l2', label: 'Finance 101–103', hours: 44, color: '#1B4F72', accent: '#AED6F1',
     categories: [
       {
         name: 'Domain', topics: [
           {
-            id: '2.1', title: 'Finance Fundamentals', desc: 'TVM, compounding, risk-return, diversification, asset classes', hours: 5, week: 'W1–2',
+            id: '2.1', title: 'Finance Fundamentals', desc: 'TVM, compounding, risk-return, diversification, asset classes', hours: 6, week: 'W1–2',
             done: 'Hold a conversation with an RM about investment basics without faking it',
             resources: [
               { label: 'Khan Academy — Finance & Capital Markets', url: 'https://www.khanacademy.org/economics-finance-domain/core-finance' },
@@ -136,7 +136,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'MF product cheat sheet: every SEBI category with example, use case, tax, risk',
           },
           {
-            id: '2.5', title: 'Wealth Products', desc: 'PMS, AIF (Cat I/II/III), structured products, bonds, G-Secs, NPS', hours: 5, week: 'W4–5',
+            id: '2.5', title: 'Wealth Products', desc: 'PMS, AIF (Cat I/II/III), structured products, bonds, G-Secs, NPS', hours: 6, week: 'W4–5',
             done: 'Know which products are Tier 1/2/3 in the blueprint and why',
             resources: [
               { label: 'Zerodha Varsity — Bonds module', url: 'https://zerodha.com/varsity/module/markets-and-taxation/' },
@@ -174,7 +174,7 @@ export const TOPICS: L1Track[] = [
       {
         name: 'Tech', topics: [
           {
-            id: '2.2', title: 'Indian Financial Markets', desc: 'SEBI structure, BSE/NSE, CDSL/NSDL, clearing corporations', hours: 5, week: 'W1–2',
+            id: '2.2', title: 'Indian Financial Markets', desc: 'SEBI structure, BSE/NSE, CDSL/NSDL, clearing corporations', hours: 6, week: 'W1–2',
             done: 'Draw the money flow diagram from investor to market and back',
             resources: [
               { label: 'Zerodha Varsity — Module 1 + Module 7 (Markets + Clearing)', url: 'https://zerodha.com/varsity/module/introduction-to-stock-markets/' },
@@ -213,7 +213,7 @@ export const TOPICS: L1Track[] = [
     ],
   },
   {
-    id: 'l3', label: 'FundsIndia 101', hours: 29, color: '#6B3FA0', accent: '#D7BDE2',
+    id: 'l3', label: 'FundsIndia 101', hours: 30, color: '#6B3FA0', accent: '#D7BDE2',
     categories: [
       {
         name: 'Domain', topics: [
@@ -280,7 +280,7 @@ export const TOPICS: L1Track[] = [
       {
         name: 'Product Sense', topics: [
           {
-            id: '3.4', title: 'Blueprint Deep Read', desc: '3 passes: strategy → architecture → 20 Day-1 questions for Avijit', hours: 5, week: 'W1,3,7',
+            id: '3.4', title: 'Blueprint Deep Read', desc: '3 passes: strategy → architecture → 20 Day-1 questions for Avijit', hours: 6, week: 'W1,3,7',
             done: '20 Day-1 questions for Avijit, entity model redrawn in your own words',
             resources: [
               { label: 'Blueprint original + revised (internal)' },
@@ -316,12 +316,12 @@ export const TOPICS: L1Track[] = [
     ],
   },
   {
-    id: 'l4', label: 'AI SDLC 101–201', hours: 39, color: '#B7410E', accent: '#FAD7A0',
+    id: 'l4', label: 'AI SDLC 101–201', hours: 43, color: '#B7410E', accent: '#FAD7A0',
     categories: [
       {
         name: 'CS & Architecture', topics: [
           {
-            id: '4.1', title: 'CS Primitives', desc: 'APIs, databases, data structures, how a web app works end to end', hours: 5, week: 'W1–2',
+            id: '4.1', title: 'CS Primitives', desc: 'APIs, databases, data structures, how a web app works end to end', hours: 6, week: 'W1–2',
             done: 'Not afraid when engineers say REST API, Postgres, Redis, queue',
             resources: [
               { label: 'freeCodeCamp — APIs for Beginners (YouTube, 2hrs)', url: 'https://www.youtube.com/watch?v=GZvSYJDk-us' },
@@ -344,7 +344,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'FI architecture diagram: bounded contexts, how they communicate, where ACL sits',
           },
           {
-            id: '4.3', title: 'Event Sourcing & Streaming', desc: 'Kafka, event stores, bitemporality, CQRS', hours: 5, week: 'W3–4',
+            id: '4.3', title: 'Event Sourcing & Streaming', desc: 'Kafka, event stores, bitemporality, CQRS', hours: 6, week: 'W3–4',
             done: 'Understand why FI chose this pattern and what tradeoffs it creates',
             resources: [
               { label: 'Martin Fowler — Event Sourcing', url: 'https://martinfowler.com/eaaDev/EventSourcing.html' },
@@ -386,7 +386,7 @@ export const TOPICS: L1Track[] = [
       {
         name: 'Data & Infrastructure', topics: [
           {
-            id: '4.6', title: 'Data Infrastructure', desc: 'Data lakes, lakehouses, ETL/ELT, dbt, data lineage, observability', hours: 5, week: 'W5–6',
+            id: '4.6', title: 'Data Infrastructure', desc: 'Data lakes, lakehouses, ETL/ELT, dbt, data lineage, observability', hours: 6, week: 'W5–6',
             done: 'Understand FI\'s data foundation section in the blueprint',
             resources: [
               { label: 'Databricks — What is a Lakehouse?', url: 'https://www.databricks.com/glossary/data-lakehouse' },
@@ -407,7 +407,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Security checklist for any new FI feature: auth, PII, audit trail, DPDP',
           },
           {
-            id: '4.8', title: 'LLM Deployment & Ops', desc: 'Hosting, inference costs, latency, guardrails, eval pipelines, A/B testing AI', hours: 5, week: 'W7–8',
+            id: '4.8', title: 'LLM Deployment & Ops', desc: 'Hosting, inference costs, latency, guardrails, eval pipelines, A/B testing AI', hours: 6, week: 'W7–8',
             done: 'Bridge the gap between AI prototype and production AI',
             resources: [
               { label: 'Anthropic — API reference (rate limits, pricing)', url: 'https://docs.anthropic.com/en/api/getting-started' },
