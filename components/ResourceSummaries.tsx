@@ -73,8 +73,6 @@ export default function ResourceSummaries({
   if (loading) return null;
 
   const summarisable = resources.filter(r => canSummarise(r).ok);
-  if (summarisable.length === 0) return null;
-
   const doneCount = summarisable.filter(r => summaries[r.url!]).length;
 
   return (
@@ -82,7 +80,7 @@ export default function ResourceSummaries({
       <div className="flex items-center justify-between mb-4">
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#9B9590]">
-            📋 Resource notes
+            📚 Resources ({resources.length})
           </p>
           {doneCount > 0 && (
             <p className="text-[11px] text-[#9B9590] mt-0.5">{doneCount}/{summarisable.length} summarised</p>
