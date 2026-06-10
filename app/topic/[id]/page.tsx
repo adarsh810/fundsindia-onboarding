@@ -4,8 +4,7 @@ import AppNav from '@/components/AppNav';
 import StatusToggle from '@/components/StatusToggle';
 import TopicChat from '@/components/TopicChat';
 import ArtifactReviewer from '@/components/ArtifactReviewer';
-import GeneratedResources from '@/components/GeneratedResources';
-import ResourceSummaries from '@/components/ResourceSummaries';
+import ResourcesPanel from '@/components/ResourcesPanel';
 import { getAllProgress } from '@/lib/supabase';
 import { findTopicById, findTrackForTopic, ALL_TOPICS } from '@/lib/data';
 import type { Status } from '@/lib/types';
@@ -68,11 +67,8 @@ export default async function TopicPage({ params }: Props) {
           <p className="text-sm text-[#3A3530] leading-relaxed border-l-2 pl-4" style={{ borderColor: track.color }}>{topic.done}</p>
         </div>
 
-        {/* Resources + notes (merged) */}
-        <ResourceSummaries topicId={topic.id} resources={topic.resources} trackColor={track.color} />
-
-        {/* Claude-generated resources */}
-        <GeneratedResources topicId={topic.id} trackColor={track.color} />
+        {/* Resources panel — primary + additional, drag-and-drop */}
+        <ResourcesPanel topicId={topic.id} defaultResources={topic.resources} trackColor={track.color} currentStatus={status} />
 
         {/* Artifact */}
         <div className="bg-white border border-[#E8E4DE] rounded-2xl p-5 mb-4">

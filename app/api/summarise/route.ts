@@ -26,9 +26,26 @@ async function fetchContent(url: string): Promise<{ content: string; type: 'yout
   const videoId = extractVideoId(url);
 
   if (videoId) {
-    const segments = await YoutubeTranscript.fetchTranscript(videoId, { lang: 'en' });
-    const text = segments.map(s => s.text).join(' ').replace(/\s+/g, ' ').slice(0, CONTENT_LIMIT);
-    if (!text.trim()) throw new Error('No transcript available for this video');
+    try {
+      let segments;
+      try {
+        segments = await YoutubeTranscript.fetchTranscript(videoId);
+      } catch {
+        segments = await YoutubeTranscript.fetchTranscript(videoId, { lang: 'en' });
+      }
+      const text = segments.map(s => s.text).join(' ').replace(/\s+/g, ' ').slice(0, CONTENT_LIMIT);
+      if (text.trim()) return { content: text, type: 'youtube' };
+    } catch {
+      // fall through to Jina
+    }
+    // Jina can extract YouTube transcript/description when the package fails
+    const res = await fetch(`https://r.jina.ai/${url}`, {
+      headers: { Accept: 'text/plain', 'X-No-Cache': 'true' },
+      signal: AbortSignal.timeout(20_000),
+    });
+    if (!res.ok) throw new Error('Could not fetch transcript or page content');
+    const text = (await res.text()).slice(0, CONTENT_LIMIT);
+    if (!text.trim()) throw new Error('No content available for this video');
     return { content: text, type: 'youtube' };
   }
 
@@ -84,7 +101,7 @@ export async function POST(req: NextRequest) {
 Resource: "${resourceLabel}"
 Source type: ${sourceType === 'youtube' ? 'YouTube video transcript' : 'article/documentation'}
 
-Generate 5–10 concise bullet points capturing the key concepts a PM should take away.
+Generate exactly 4–5 concise bullet points capturing the key concepts a PM should take away.
 Each bullet: 1–2 sentences, plain language, no markdown formatting inside bullets.
 Return a JSON array of strings only — no other text.
 
@@ -113,5 +130,23 @@ ${content}`,
     .single();
 
   if (error || !data) return NextResponse.json({ error: 'Failed to save summary' }, { status: 500 });
+  return NextResponse.json({ summary: data });
+}
+
+export async function PATCH(req: NextRequest) {
+  const { topicId, resourceUrl, bullets } = await req.json();
+  if (!topicId || !resourceUrl || !Array.isArray(bullets))
+    return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+
+  const { data, error } = await supabase
+    .from('fi_resource_summaries')
+    .update({ bullets })
+    .eq('user_id', USER_ID)
+    .eq('topic_id', topicId)
+    .eq('resource_url', resourceUrl)
+    .select('resource_url, resource_label, bullets, generated_at')
+    .single();
+
+  if (error || !data) return NextResponse.json({ error: 'Failed to update' }, { status: 500 });
   return NextResponse.json({ summary: data });
 }

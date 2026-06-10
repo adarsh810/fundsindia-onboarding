@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import type { Status } from '@/lib/types';
 
 const OPTIONS: { value: Status; label: string }[] = [
@@ -18,6 +18,15 @@ interface Props {
 export default function StatusToggle({ topicId, initial, color }: Props) {
   const [status, setStatus] = useState<Status>(initial);
   const [pending, startTransition] = useTransition();
+
+  useEffect(() => {
+    function onStatusChanged(e: Event) {
+      const detail = (e as CustomEvent<{ topicId: string; status: Status }>).detail;
+      if (detail.topicId === topicId) setStatus(detail.status);
+    }
+    window.addEventListener('topic-status-changed', onStatusChanged);
+    return () => window.removeEventListener('topic-status-changed', onStatusChanged);
+  }, [topicId]);
 
   async function update(s: Status) {
     setStatus(s);
