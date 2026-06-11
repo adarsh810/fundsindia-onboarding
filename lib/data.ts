@@ -2,7 +2,7 @@ import type { L1Track, Week } from './types';
 
 export const TOPICS: L1Track[] = [
   {
-    id: 'l1', label: 'AI Native PM', hours: 38, color: '#2D6A4F', accent: '#B7E4C7',
+    id: 'l1', label: 'AI Native PM', hours: 50, color: '#2D6A4F', accent: '#B7E4C7',
     categories: [
       {
         name: 'AI Tech', topics: [
@@ -66,6 +66,18 @@ export const TOPICS: L1Track[] = [
             artifact: 'Decision framework: when to use agents vs RAG vs simple prompt',
           },
           {
+            id: '1.9', title: 'Multimodal & Document AI', desc: 'Vision models, document intelligence, OCR, layout extraction — beyond text LLMs', hours: 4, week: 'W3',
+            done: 'Spec a KYC document extraction pipeline and identify the right model for each document type (PAN, Aadhaar, bank statement, ITR, CAS)',
+            resources: [
+              { label: 'Anthropic — Claude Vision (docs)', url: 'https://docs.anthropic.com/en/docs/build-with-claude/vision' },
+              { label: 'Google Cloud — Document AI overview', url: 'https://cloud.google.com/document-ai/docs/overview' },
+              { label: 'OpenAI — Vision guide', url: 'https://platform.openai.com/docs/guides/vision' },
+              { label: 'Nanonets — Document AI in practice', url: 'https://nanonets.com/blog/document-ai/' },
+              { label: 'Microsoft — LayoutLM: document understanding at scale (GitHub)', url: 'https://github.com/microsoft/unilm/tree/master/layoutlm' },
+            ],
+            artifact: 'Document AI use case map for FundsIndia: 5 documents (KYC/PAN/bank statement/ITR/CAS) — what to extract, which model, expected accuracy, key failure modes',
+          },
+          {
             id: '1.8', title: 'Hands-on Build', desc: 'Portfolio goal monitor agent — Claude API + Supabase + Vercel', hours: 6, week: 'W7–8',
             done: 'Deployed working app that monitors a portfolio goal and surfaces alerts',
             resources: [
@@ -101,6 +113,30 @@ export const TOPICS: L1Track[] = [
               { label: 'Klarna AI support case study', url: 'https://www.klarna.com/international/press/klarna-ai-assistant-handles-two-thirds-of-customer-service-chats-in-its-first-month/' },
             ],
             artifact: 'FI internal AI opportunity map: 5 use cases with effort/impact matrix',
+          },
+          {
+            id: '1.10', title: 'Responsible AI in Regulated Products', desc: 'Explainability, hallucination risk in financial advice, AI liability, DPDP, guardrails as product features', hours: 4, week: 'W5',
+            done: 'Identify every liability and compliance risk in a proposed AI feature before engineering writes a line of code',
+            resources: [
+              { label: 'Google PAIR — People + AI Guidebook', url: 'https://pair.withgoogle.com/guidebook/' },
+              { label: 'NIST — AI Risk Management Framework', url: 'https://airc.nist.gov/RMF_Overview' },
+              { label: 'EU AI Act — official summary', url: 'https://artificialintelligenceact.eu/' },
+              { label: 'Anthropic — Responsible Scaling Policy', url: 'https://www.anthropic.com/news/anthropics-responsible-scaling-policy' },
+              { label: 'MeitY — DPDP Act 2023 (AI + data privacy)', url: 'https://www.meity.gov.in/content/digital-personal-data-protection-act-2023' },
+            ],
+            artifact: 'Responsible AI checklist for FI: for any AI feature — liability owner, explainability approach, consent mechanism, audit trail, SEBI compliance touchpoints, DPDP obligations',
+          },
+          {
+            id: '1.11', title: 'AI Product Metrics & Feedback Loops', desc: 'Acceptance rate, override rate, trust calibration, AI A/B testing pitfalls, data flywheel, drift monitoring', hours: 4, week: 'W6',
+            done: 'Define what "working" means for an AI feature before it ships — metrics, thresholds, monitoring plan, and how you will iterate',
+            resources: [
+              { label: 'Chip Huyen — Designing Machine Learning Systems (book)', url: 'https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/' },
+              { label: 'Google — Rules of ML (43 rules for production ML products)', url: 'https://developers.google.com/machine-learning/guides/rules-of-ml' },
+              { label: 'Andrej Karpathy — Software 2.0', url: 'https://karpathy.medium.com/software-2-0-a64152b37c35' },
+              { label: 'Evidently AI — ML monitoring guide', url: 'https://www.evidentlyai.com/ml-monitoring' },
+              { label: 'Shreya Shankar — Data Distribution Shifts and Monitoring', url: 'https://www.shreya-shankar.com/data-distribution-shifts/' },
+            ],
+            artifact: 'AI metrics spec for one FI feature: success definition, acceptance/override rate targets, A/B test design, monitoring alerts, drift detection approach',
           },
         ],
       },
@@ -427,10 +463,10 @@ export const TOPICS: L1Track[] = [
 export const WEEKS: Week[] = [
   { week: 'W1', weekday: 'AI Fundamentals (1.1) + Transformers start (1.2) + Blueprint Pass 1 (3.4)', weekend: 'Finance Fundamentals (2.1) + Indian Markets (2.2) + CS Primitives (4.1)', artifacts: 'LLM one-pager, Blueprint strategy summary' },
   { week: 'W2', weekday: 'Transformers complete (1.2) + Prompt Engineering (1.3)', weekend: 'MF Deep Dive (2.3) + CS Primitives contd (4.1)', artifacts: 'Transformer diagram, Prompt library, CS glossary' },
-  { week: 'W3', weekday: 'RAG Deep Dive (1.4) + Agents start (1.5) + Blueprint Pass 2 (3.4)', weekend: 'Distribution Economics (2.4) + Architecture Patterns (4.2) + Event Sourcing (4.3)', artifacts: 'RAG architecture diagram, FI entity model, Revenue model diagram' },
+  { week: 'W3', weekday: 'RAG Deep Dive (1.4) + Agents start (1.5) + Multimodal & Doc AI (1.9) + Blueprint Pass 2 (3.4)', weekend: 'Distribution Economics (2.4) + Architecture Patterns (4.2) + Event Sourcing (4.3)', artifacts: 'RAG architecture diagram, Document AI use case map, FI entity model, Revenue model diagram' },
   { week: 'W4', weekday: 'Agents complete (1.5) + AI Product Sense (1.6)', weekend: 'SDLC Fundamentals (4.4) + FI Business Model (3.1) + Competitive Landscape (3.2)', artifacts: 'Agent decision framework, Eval framework, FI business model one-pager' },
-  { week: 'W5', weekday: 'AI in Business Ops (1.7) + AI SDLC Tools (4.5) + WestBridge Thesis (3.3)', weekend: 'Wealth Products (2.5) + Insurance & Tax (2.6) + FI Tech Stack (3.5)', artifacts: 'AI ops map, Product comparison matrix, Build vs buy map' },
-  { week: 'W6', weekday: 'Data Infra (4.6) + Security (4.7) + Transaction Lifecycle (3.8)', weekend: 'Financial Planning (2.7) + Regulatory Landscape (2.8) + Wealth-Tech Product Sense (3.6)', artifacts: 'Transaction lifecycle diagram, Regulatory constraint map, Security checklist' },
+  { week: 'W5', weekday: 'AI in Business Ops (1.7) + Responsible AI (1.10) + AI SDLC Tools (4.5) + WestBridge Thesis (3.3)', weekend: 'Wealth Products (2.5) + Insurance & Tax (2.6) + FI Tech Stack (3.5)', artifacts: 'AI ops map, Responsible AI checklist, Product comparison matrix, Build vs buy map' },
+  { week: 'W6', weekday: 'AI Product Metrics (1.11) + Data Infra (4.6) + Security (4.7) + Transaction Lifecycle (3.8)', weekend: 'Financial Planning (2.7) + Regulatory Landscape (2.8) + Wealth-Tech Product Sense (3.6)', artifacts: 'AI metrics spec, Transaction lifecycle diagram, Regulatory constraint map, Security checklist' },
   { week: 'W7', weekday: 'LLM Deployment (4.8) + User Personas (3.7) + Blueprint Pass 3 (3.4)', weekend: 'Hands-on Build start (1.8)', artifacts: '20 Day-1 questions, Persona cards, Production AI checklist' },
   { week: 'W8', weekday: 'Hands-on Build complete (1.8)', weekend: 'Final review + gap assessment + all artifacts compiled', artifacts: 'Deployed portfolio goal monitor, Master artifact folder' },
 ];
