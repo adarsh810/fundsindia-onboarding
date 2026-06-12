@@ -66,7 +66,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Decision framework: when to use agents vs RAG vs simple prompt',
           },
           {
-            id: '1.9', title: 'Multimodal & Document AI', desc: 'Vision models, document intelligence, OCR, layout extraction — beyond text LLMs', hours: 4, week: 'W3',
+            id: '1.9', title: 'Multimodal & Document AI', desc: 'Vision models, document intelligence, OCR, layout extraction — beyond text LLMs', hours: 4, week: 'W5',
             done: 'Spec a KYC document extraction pipeline and identify the right model for each document type (PAN, Aadhaar, bank statement, ITR, CAS)',
             resources: [
               { label: 'Anthropic — Claude Vision (docs)', url: 'https://docs.anthropic.com/en/docs/build-with-claude/vision' },
@@ -78,7 +78,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Document AI use case map for FundsIndia: 5 documents (KYC/PAN/bank statement/ITR/CAS) — what to extract, which model, expected accuracy, key failure modes',
           },
           {
-            id: '1.8', title: 'Hands-on Build', desc: 'Portfolio goal monitor agent — Claude API + Supabase + Vercel', hours: 6, week: 'W7–8',
+            id: '1.8', title: 'Hands-on Build', desc: 'Portfolio goal monitor agent — Claude API + Supabase + Vercel', hours: 6, week: 'W8',
             done: 'Deployed working app that monitors a portfolio goal and surfaces alerts',
             resources: [
               { label: 'Anthropic API docs — messages, tool use, streaming', url: 'https://docs.anthropic.com/en/api/getting-started' },
@@ -104,7 +104,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Evaluation framework for one FI AI feature: metrics, test cases, failure modes',
           },
           {
-            id: '1.7', title: 'AI in Business Ops', desc: 'AI for internal tools, support, operations, analytics', hours: 3, week: 'W5',
+            id: '1.7', title: 'AI in Business Ops', desc: 'AI for internal tools, support, operations, analytics', hours: 3, week: 'W6',
             done: 'Identify 5 AI opportunities in FI operations beyond product features',
             resources: [
               { label: 'McKinsey — The State of AI 2025', url: 'https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai' },
@@ -115,7 +115,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'FI internal AI opportunity map: 5 use cases with effort/impact matrix',
           },
           {
-            id: '1.10', title: 'Responsible AI in Regulated Products', desc: 'Explainability, hallucination risk in financial advice, AI liability, DPDP, guardrails as product features', hours: 4, week: 'W5',
+            id: '1.10', title: 'Responsible AI in Regulated Products', desc: 'Explainability, hallucination risk in financial advice, AI liability, DPDP, guardrails as product features', hours: 4, week: 'W7',
             done: 'Identify every liability and compliance risk in a proposed AI feature before engineering writes a line of code',
             resources: [
               { label: 'Google PAIR — People + AI Guidebook', url: 'https://pair.withgoogle.com/guidebook/' },
@@ -127,7 +127,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Responsible AI checklist for FI: for any AI feature — liability owner, explainability approach, consent mechanism, audit trail, SEBI compliance touchpoints, DPDP obligations',
           },
           {
-            id: '1.11', title: 'AI Product Metrics & Feedback Loops', desc: 'Acceptance rate, override rate, trust calibration, AI A/B testing pitfalls, data flywheel, drift monitoring', hours: 4, week: 'W6',
+            id: '1.11', title: 'AI Product Metrics & Feedback Loops', desc: 'Acceptance rate, override rate, trust calibration, AI A/B testing pitfalls, data flywheel, drift monitoring', hours: 4, week: 'W7',
             done: 'Define what "working" means for an AI feature before it ships — metrics, thresholds, monitoring plan, and how you will iterate',
             resources: [
               { label: 'Chip Huyen — Designing Machine Learning Systems (book)', url: 'https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/' },
@@ -159,7 +159,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Cheat sheet: key finance concepts with formulas and real Indian examples',
           },
           {
-            id: '2.3', title: 'Mutual Funds Deep Dive', desc: 'SEBI categories, NAV, expense ratio, direct vs regular, SIP/SWP/STP, taxation', hours: 6, week: 'W2–3',
+            id: '2.3', title: 'Mutual Funds Deep Dive', desc: 'SEBI categories, NAV, expense ratio, direct vs regular, SIP/SWP/STP, taxation', hours: 6, week: 'W3',
             done: 'Explain any MF scheme to a client the way an IFA would',
             resources: [
               { label: 'Zerodha Varsity — Module 12: Mutual Funds', url: 'https://zerodha.com/varsity/module/personalfinance/' },
@@ -172,7 +172,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'MF product cheat sheet: every SEBI category with example, use case, tax, risk',
           },
           {
-            id: '2.5', title: 'Wealth Products', desc: 'PMS, AIF (Cat I/II/III), structured products, bonds, G-Secs, NPS', hours: 6, week: 'W4–5',
+            id: '2.5', title: 'Wealth Products', desc: 'PMS, AIF (Cat I/II/III), structured products, bonds, G-Secs, NPS', hours: 6, week: 'W5',
             done: 'Know which products are Tier 1/2/3 in the blueprint and why',
             resources: [
               { label: 'Zerodha Varsity — Bonds module', url: 'https://zerodha.com/varsity/module/markets-and-taxation/' },
@@ -184,7 +184,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Product comparison matrix: MF vs PMS vs AIF — fees, liquidity, target investor',
           },
           {
-            id: '2.6', title: 'Insurance & Tax Planning', desc: 'Term life, health, 80C/80D, new vs old regime, capital gains', hours: 4, week: 'W5',
+            id: '2.6', title: 'Insurance & Tax Planning', desc: 'Term life, health, 80C/80D, new vs old regime, capital gains', hours: 4, week: 'W6',
             done: 'Understand cross-sell opportunities in wealth-tech',
             resources: [
               { label: 'Zerodha Varsity — Personal Finance module', url: 'https://zerodha.com/varsity/module/personalfinance/' },
@@ -195,7 +195,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Tax-optimised investment flowchart for a salaried ₹80L CTC employee',
           },
           {
-            id: '2.7', title: 'Goal-Based Financial Planning', desc: 'Risk profiling, rebalancing, how RMs/IFAs think about client portfolios', hours: 5, week: 'W6',
+            id: '2.7', title: 'Goal-Based Financial Planning', desc: 'Risk profiling, rebalancing, how RMs/IFAs think about client portfolios', hours: 5, week: 'W7',
             done: 'Think like the user (investor + RM) not just the builder',
             resources: [
               { label: 'CFA Institute — Fundamentals of Financial Planning', url: 'https://www.cfainstitute.org/en/programs/investment-foundations/overview' },
@@ -221,7 +221,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'End-to-end diagram: investor → broker → exchange → clearing → depository → settlement',
           },
           {
-            id: '2.4', title: 'Distribution Economics', desc: 'Trail commission, ARN, distributor vs RIA, how distributors make money', hours: 6, week: 'W3–4',
+            id: '2.4', title: 'Distribution Economics', desc: 'Trail commission, ARN, distributor vs RIA, how distributors make money', hours: 6, week: 'W4',
             done: 'Understand FundsIndia\'s revenue model from first principles',
             resources: [
               { label: 'AMFI — Distributor registration + commission norms', url: 'https://www.amfiindia.com/distributor-corner' },
@@ -233,7 +233,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'FI revenue model diagram: AMC trail → FI → across B2C/B2B/Wealth tiers',
           },
           {
-            id: '2.8', title: 'Regulatory Landscape', desc: 'SEBI circulars, KYC norms, AMFI guidelines, RIA vs MFD, DPDP', hours: 5, week: 'W6',
+            id: '2.8', title: 'Regulatory Landscape', desc: 'SEBI circulars, KYC norms, AMFI guidelines, RIA vs MFD, DPDP', hours: 5, week: 'W8',
             done: 'Understand compliance as a design constraint not a blocker',
             resources: [
               { label: 'SEBI — Circulars (MF distribution, KYC)', url: 'https://www.sebi.gov.in/legal/circulars.html' },
@@ -369,7 +369,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Glossary card: 30 CS terms with one-line definitions and PM-relevant context',
           },
           {
-            id: '4.2', title: 'Architecture Patterns', desc: 'Microservices, event-driven, DDD, bounded contexts, anti-corruption layers', hours: 5, week: 'W3',
+            id: '4.2', title: 'Architecture Patterns', desc: 'Microservices, event-driven, DDD, bounded contexts, anti-corruption layers', hours: 5, week: 'W3–4',
             done: 'Read FI blueprint architecture sections and actually understand them',
             resources: [
               { label: 'Martin Fowler — Microservices (original article)', url: 'https://martinfowler.com/articles/microservices.html' },
@@ -380,7 +380,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'FI architecture diagram: bounded contexts, how they communicate, where ACL sits',
           },
           {
-            id: '4.9', title: 'API Design & Contracts', desc: 'REST vs GraphQL vs gRPC, versioning, backward compatibility, OpenAPI, rate limiting, vendor SLA contracts', hours: 4, week: 'W4',
+            id: '4.9', title: 'API Design & Contracts', desc: 'REST vs GraphQL vs gRPC, versioning, backward compatibility, OpenAPI, rate limiting, vendor SLA contracts', hours: 4, week: 'W5',
             done: 'Design a vendor API integration spec and identify breaking vs non-breaking changes without asking engineering',
             resources: [
               { label: 'Stripe — API design best practices (docs)', url: 'https://stripe.com/docs/api' },
@@ -392,7 +392,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'API integration spec for one FI vendor (BSE StAR or FTP): endpoints, versioning strategy, error handling, rate limits, SLA contract',
           },
           {
-            id: '4.3', title: 'Event Sourcing & Streaming', desc: 'Kafka, event stores, bitemporality, CQRS', hours: 6, week: 'W3–4',
+            id: '4.3', title: 'Event Sourcing & Streaming', desc: 'Kafka, event stores, bitemporality, CQRS', hours: 6, week: 'W4–5',
             done: 'Understand why FI chose this pattern and what tradeoffs it creates',
             resources: [
               { label: 'Martin Fowler — Event Sourcing', url: 'https://martinfowler.com/eaaDev/EventSourcing.html' },
@@ -407,7 +407,7 @@ export const TOPICS: L1Track[] = [
       {
         name: 'SDLC Practice', topics: [
           {
-            id: '4.4', title: 'SDLC Fundamentals', desc: 'Git, PRs, CI/CD, testing (unit/integration/e2e), deployment, monitoring', hours: 5, week: 'W4',
+            id: '4.4', title: 'SDLC Fundamentals', desc: 'Git, PRs, CI/CD, testing (unit/integration/e2e), deployment, monitoring', hours: 5, week: 'W5',
             done: 'Follow an engineer\'s workflow from ticket to production',
             resources: [
               { label: 'GitHub — Git Handbook', url: 'https://docs.github.com/en/get-started/using-git/about-git' },
@@ -419,7 +419,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'SDLC lifecycle diagram: ticket → branch → PR → CI → staging → deploy → monitor',
           },
           {
-            id: '4.5', title: 'AI-Augmented SDLC', desc: 'Claude Code, Cursor, Copilot, AI code review, AI testing', hours: 5, week: 'W5',
+            id: '4.5', title: 'AI-Augmented SDLC', desc: 'Claude Code, Cursor, Copilot, AI code review, AI testing', hours: 5, week: 'W6',
             done: 'Use AI dev tools daily and understand how they change engineering velocity',
             resources: [
               { label: 'Anthropic — Claude Code docs', url: 'https://docs.anthropic.com/en/docs/claude-code' },
@@ -430,7 +430,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'AI dev tools comparison: Claude Code vs Cursor vs Copilot — when to use which',
           },
           {
-            id: '4.12', title: 'Feature Flags & Gradual Rollouts', desc: 'Feature flags, canary releases, dark launches, A/B testing infra, gradual rollout strategies for AI features', hours: 3, week: 'W7',
+            id: '4.12', title: 'Feature Flags & Gradual Rollouts', desc: 'Feature flags, canary releases, dark launches, A/B testing infra, gradual rollout strategies for AI features', hours: 3, week: 'W8',
             done: 'Design a rollout strategy for any AI feature that is safe, reversible, and measurable — before engineering asks',
             resources: [
               { label: 'Martin Fowler — Feature Toggles (Feature Flags)', url: 'https://martinfowler.com/articles/feature-toggles.html' },
@@ -445,7 +445,7 @@ export const TOPICS: L1Track[] = [
       {
         name: 'Data & Infrastructure', topics: [
           {
-            id: '4.10', title: 'Cloud & Infrastructure Basics', desc: 'AWS/GCP/Azure, containers (Docker), orchestration (K8s basics), serverless vs containers, IaaS/PaaS/SaaS', hours: 4, week: 'W5',
+            id: '4.10', title: 'Cloud & Infrastructure Basics', desc: 'AWS/GCP/Azure, containers (Docker), orchestration (K8s basics), serverless vs containers, IaaS/PaaS/SaaS', hours: 4, week: 'W6',
             done: 'Reason about FI\'s infrastructure choices and cost/reliability/scalability tradeoffs without relying on engineering to explain everything',
             resources: [
               { label: 'AWS — Well-Architected Framework (white paper)', url: 'https://aws.amazon.com/architecture/well-architected/' },
@@ -457,7 +457,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'FI infrastructure map: what FI likely runs on, cost/reliability/scalability implication for each major component',
           },
           {
-            id: '4.6', title: 'Data Infrastructure', desc: 'Data lakes, lakehouses, ETL/ELT, dbt, data lineage, observability', hours: 6, week: 'W5–6',
+            id: '4.6', title: 'Data Infrastructure', desc: 'Data lakes, lakehouses, ETL/ELT, dbt, data lineage, observability', hours: 6, week: 'W7',
             done: 'Understand FI\'s data foundation section in the blueprint',
             resources: [
               { label: 'Databricks — What is a Lakehouse?', url: 'https://www.databricks.com/glossary/data-lakehouse' },
@@ -478,7 +478,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Security checklist for any new FI feature: auth, PII, audit trail, DPDP',
           },
           {
-            id: '4.11', title: 'Observability & SRE', desc: 'SLOs/SLIs/error budgets, three pillars (logs/metrics/traces), alerting, on-call, incident response', hours: 4, week: 'W6–7',
+            id: '4.11', title: 'Observability & SRE', desc: 'SLOs/SLIs/error budgets, three pillars (logs/metrics/traces), alerting, on-call, incident response', hours: 4, week: 'W8',
             done: 'Define SLOs for any FI feature and write an alerting strategy before the engineering team asks you what success looks like',
             resources: [
               { label: 'Google SRE Book — Ch 4–5: SLOs and Error Budgets (free online)', url: 'https://sre.google/sre-book/service-level-objectives/' },
@@ -490,7 +490,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'SLO spec for one FI feature: SLI definition, error budget, alert thresholds, on-call runbook outline',
           },
           {
-            id: '4.8', title: 'LLM Deployment & Ops', desc: 'Hosting, inference costs, latency, guardrails, eval pipelines, A/B testing AI', hours: 6, week: 'W7',
+            id: '4.8', title: 'LLM Deployment & Ops', desc: 'Hosting, inference costs, latency, guardrails, eval pipelines, A/B testing AI', hours: 6, week: 'W8',
             done: 'Bridge the gap between AI prototype and production AI',
             resources: [
               { label: 'Anthropic — API reference (rate limits, pricing)', url: 'https://docs.anthropic.com/en/api/getting-started' },
@@ -511,57 +511,57 @@ export const WEEKS: Week[] = [
   // ── Phase 1: AI Native PM + Finance 101 + AI SDLC (blended) ──────────────
   {
     week: 'W1',
-    weekday: 'AI Fundamentals (1.1) + Transformers start (1.2)',
-    weekend: 'Finance Fundamentals (2.1) + Indian Markets (2.2) + CS Primitives start (4.1)',
-    artifacts: 'LLM one-pager, Finance fundamentals cheat sheet',
+    weekday: 'AI Fundamentals (1.1) + Transformers start (1.2) + CS Primitives start (4.1)',
+    weekend: 'Finance Fundamentals start (2.1) + Indian Markets start (2.2)',
+    artifacts: 'LLM one-pager',
   },
   {
     week: 'W2',
-    weekday: 'Transformers complete (1.2) + Prompt Engineering (1.3)',
-    weekend: 'MF Deep Dive (2.3) + CS Primitives complete (4.1)',
-    artifacts: 'Transformer diagram, Prompt library, MF product cheat sheet, CS glossary',
+    weekday: 'Transformers complete (1.2) + Prompt Engineering (1.3) + CS Primitives complete (4.1)',
+    weekend: 'Finance Fundamentals complete (2.1) + Indian Markets complete (2.2)',
+    artifacts: 'Transformer diagram, Prompt library, Finance cheat sheet, Markets diagram',
   },
   {
     week: 'W3',
-    weekday: 'RAG Deep Dive (1.4) + Multimodal & Doc AI (1.9) + Agents start (1.5)',
-    weekend: 'Distribution Economics (2.4) + Architecture Patterns (4.2) + Event Sourcing start (4.3)',
-    artifacts: 'RAG architecture diagram, Document AI use case map, Revenue model diagram',
+    weekday: 'RAG Deep Dive (1.4) + Agents start (1.5) + Architecture Patterns start (4.2)',
+    weekend: 'MF Deep Dive (2.3)',
+    artifacts: 'RAG architecture diagram, MF product cheat sheet',
   },
   {
     week: 'W4',
-    weekday: 'Agents complete (1.5) + AI Product Sense (1.6)',
-    weekend: 'Wealth Products (2.5) + Event Sourcing complete (4.3) + SDLC Fundamentals (4.4) + API Design & Contracts (4.9)',
-    artifacts: 'Agent decision framework, Eval framework, Product comparison matrix, Event sourcing explainer, SDLC lifecycle diagram, API integration spec',
+    weekday: 'Agents complete (1.5) + AI Product Sense (1.6) + Architecture Patterns complete (4.2)',
+    weekend: 'Distribution Economics (2.4) + Event Sourcing start (4.3)',
+    artifacts: 'Agent decision framework, Eval framework, FI architecture diagram, Revenue model diagram',
   },
   {
     week: 'W5',
-    weekday: 'AI in Business Ops (1.7) + Responsible AI (1.10) + AI-Augmented SDLC (4.5) + Cloud & Infra (4.10)',
-    weekend: 'Insurance & Tax (2.6) + Goal-Based Planning start (2.7)',
-    artifacts: 'AI ops map, Responsible AI checklist, AI dev tools comparison, FI infrastructure map, Tax flowchart',
+    weekday: 'Multimodal & Doc AI (1.9) + SDLC Fundamentals (4.4) + API Design & Contracts (4.9)',
+    weekend: 'Wealth Products (2.5) + Event Sourcing complete (4.3)',
+    artifacts: 'Document AI use case map, SDLC lifecycle diagram, API integration spec, Product comparison matrix',
   },
   {
     week: 'W6',
-    weekday: 'AI Product Metrics (1.11) + Data Infrastructure (4.6) + Security & Compliance (4.7) + Observability & SRE start (4.11)',
-    weekend: 'Goal-Based Planning complete (2.7) + Regulatory Landscape (2.8)',
-    artifacts: 'AI metrics spec, FI data architecture, Security checklist, SLO spec (draft), Financial plan, Regulatory constraint map',
+    weekday: 'AI in Business Ops (1.7) + AI-Augmented SDLC (4.5) + Cloud & Infra (4.10)',
+    weekend: 'Insurance & Tax (2.6) + Security & Compliance (4.7)',
+    artifacts: 'AI ops map, AI dev tools comparison, FI infrastructure map, Tax flowchart, Security checklist',
   },
   {
     week: 'W7',
-    weekday: 'LLM Deployment & Ops (4.8) + Observability & SRE complete (4.11) + Feature Flags & Rollouts (4.12)',
-    weekend: 'Hands-on Build start (1.8)',
-    artifacts: 'Production AI checklist, SLO spec (final), Feature flag release plan',
+    weekday: 'Responsible AI (1.10) + AI Product Metrics (1.11) + Data Infrastructure (4.6)',
+    weekend: 'Goal-Based Planning (2.7)',
+    artifacts: 'Responsible AI checklist, AI metrics spec, FI data architecture, Financial plan',
   },
   {
     week: 'W8',
-    weekday: 'Hands-on Build complete (1.8)',
-    weekend: 'Phase 1 review — all L1/L2/L4 artifacts compiled',
-    artifacts: 'Deployed portfolio goal monitor, Phase 1 master artifact folder',
+    weekday: 'LLM Deployment & Ops (4.8) + Observability & SRE (4.11) + Feature Flags (4.12)',
+    weekend: 'Regulatory Landscape (2.8) + Hands-on Build (1.8)',
+    artifacts: 'Production AI checklist, SLO spec, Feature flag release plan, Regulatory constraint map, Deployed portfolio monitor',
   },
   // ── Phase 2: FundsIndia Deep Dive ────────────────────────────────────────
   {
     week: 'W9',
-    weekday: 'FI Business Model (3.1) + Competitive Landscape (3.2) + WestBridge Thesis (3.3) + Blueprint Pass 1 (3.4)',
-    weekend: 'Consolidate FI context — review all three + cross-link insights',
+    weekday: 'FI Business Model (3.1) + Competitive Landscape (3.2) + WestBridge Thesis (3.3)',
+    weekend: 'Blueprint Pass 1 (3.4)',
     artifacts: 'FI business model one-pager, Competitive 2x2 matrix, WestBridge thesis one-pager, Blueprint strategy summary',
   },
   {

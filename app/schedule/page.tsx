@@ -16,7 +16,7 @@ export default async function SchedulePage() {
             Weekly schedule
           </h1>
           <p className="text-sm text-[#6B6560]">
-            10 hrs weekdays · 8 hrs weekends · 18 hrs/week · click a week to see the Gantt
+            10 hrs weekdays · 6 hrs weekends · 16 hrs/week · click a week to see the Gantt
           </p>
         </div>
         <ScheduleView progress={progress} />

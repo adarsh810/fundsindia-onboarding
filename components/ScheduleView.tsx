@@ -13,7 +13,7 @@ const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
 function getCurrentWeek(): number {
   const ms = Date.now() - WEEK1_START.getTime();
   if (ms < 0) return 1;
-  return Math.min(Math.floor(ms / MS_PER_WEEK) + 1, 8);
+  return Math.min(Math.floor(ms / MS_PER_WEEK) + 1, 10);
 }
 
 // ─── Topic-week helpers ───────────────────────────────────────────────────────
@@ -258,7 +258,7 @@ export default function ScheduleView({ progress }: { progress: ProgressMap }) {
                 <DaySection emoji="⏱" dayLabels={['Mon', 'Tue', 'Wed', 'Thu', 'Fri']}
                   hoursPerDay={2} topicIds={weekdayIds} progress={progress} />
                 <DaySection emoji="🌿" dayLabels={['Sat', 'Sun']}
-                  hoursPerDay={4} topicIds={weekendIds} progress={progress} />
+                  hoursPerDay={3} topicIds={weekendIds} progress={progress} />
                 <div className="border-t border-[#EEE9E2] pt-3">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[#9B9590] mb-1.5">📄 Artifacts due</p>
                   <p className="text-[11px] text-[#6B6560] leading-relaxed">{w.artifacts}</p>
