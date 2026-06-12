@@ -104,7 +104,7 @@ export default async function TopicPage({ params }: Props) {
         </div>{/* end main content */}
 
         {/* Track sidebar */}
-        <aside className="hidden lg:block w-52 shrink-0">
+        <aside className="hidden lg:block w-52 shrink-0 self-stretch">
           <div className="sticky top-[4.5rem] max-h-[calc(100vh-5.5rem)] overflow-y-auto">
             <p className="text-[10px] font-semibold uppercase tracking-[0.1em] mb-3" style={{ color: track.color }}>{track.label}</p>
             <div className="space-y-4">
