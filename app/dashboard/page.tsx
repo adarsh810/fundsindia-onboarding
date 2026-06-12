@@ -33,10 +33,11 @@ export default async function Dashboard() {
     return 99;
   }
 
-  const nextTopics = ALL_TOPICS
+  const inProgress = ALL_TOPICS.filter(t => progress[t.id] === 'in_progress');
+  const notStarted = ALL_TOPICS
     .filter(t => (progress[t.id] ?? 'not_started') === 'not_started')
-    .sort((a, b) => topicStartWeek(a.week) - topicStartWeek(b.week))
-    .slice(0, 3);
+    .sort((a, b) => topicStartWeek(a.week) - topicStartWeek(b.week));
+  const nextTopics = [...inProgress, ...notStarted].slice(0, 3);
 
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
