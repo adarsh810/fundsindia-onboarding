@@ -37,7 +37,10 @@ export default async function TopicPage({ params }: Props) {
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
       <AppNav />
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 flex gap-8 items-start">
+
+        {/* Main content */}
+        <div className="flex-1 min-w-0">
 
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-[#9B9590] mb-5">
@@ -97,6 +100,42 @@ export default async function TopicPage({ params }: Props) {
             </Link>
           ) : <div />}
         </div>
+
+        </div>{/* end main content */}
+
+        {/* Track sidebar */}
+        <aside className="hidden lg:block w-52 shrink-0">
+          <div className="sticky top-[4.5rem] max-h-[calc(100vh-5.5rem)] overflow-y-auto">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.1em] mb-3" style={{ color: track.color }}>{track.label}</p>
+            <div className="space-y-4">
+              {track.categories.map(cat => (
+                <div key={cat.name}>
+                  <p className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#C8C2BA] mb-1">{cat.name}</p>
+                  <div className="space-y-0.5">
+                    {cat.topics.map(t => {
+                      const isCurrent = t.id === id;
+                      const tStatus = (progress[t.id] as Status) ?? 'not_started';
+                      return (
+                        <Link key={t.id} href={`/topic/${t.id}`}
+                          className="flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all group"
+                          style={isCurrent ? { background: track.accent } : {}}
+                        >
+                          <span className="w-1.5 h-1.5 rounded-full shrink-0 transition-colors" style={{
+                            background: tStatus === 'done' ? track.color : tStatus === 'in_progress' ? '#F4C97A' : '#D5CFC8',
+                          }} />
+                          <span className="font-mono text-[9px] shrink-0" style={{ color: isCurrent ? track.color : '#9B9590' }}>{t.id}</span>
+                          <span className={`text-[11px] truncate transition-colors ${isCurrent ? 'font-semibold' : 'text-[#6B6560] group-hover:text-[#1C1C1A]'}`}
+                            style={isCurrent ? { color: track.color } : {}}
+                          >{t.title}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </aside>
 
       </div>
     </div>
