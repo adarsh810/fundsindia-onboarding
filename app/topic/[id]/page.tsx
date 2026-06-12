@@ -5,6 +5,7 @@ import StatusToggle from '@/components/StatusToggle';
 import TopicChat from '@/components/TopicChat';
 import ArtifactReviewer from '@/components/ArtifactReviewer';
 import ResourcesPanel from '@/components/ResourcesPanel';
+import TopicSidebar from '@/components/TopicSidebar';
 import { getAllProgress } from '@/lib/supabase';
 import { findTopicById, findTrackForTopic, ALL_TOPICS } from '@/lib/data';
 import type { Status } from '@/lib/types';
@@ -103,39 +104,7 @@ export default async function TopicPage({ params }: Props) {
 
         </div>{/* end main content */}
 
-        {/* Track sidebar */}
-        <aside className="hidden lg:block w-52 shrink-0 self-stretch">
-          <div className="sticky top-[4.5rem] max-h-[calc(100vh-5.5rem)] overflow-y-auto">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.1em] mb-3" style={{ color: track.color }}>{track.label}</p>
-            <div className="space-y-4">
-              {track.categories.map(cat => (
-                <div key={cat.name}>
-                  <p className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#C8C2BA] mb-1">{cat.name}</p>
-                  <div className="space-y-0.5">
-                    {cat.topics.map(t => {
-                      const isCurrent = t.id === id;
-                      const tStatus = (progress[t.id] as Status) ?? 'not_started';
-                      return (
-                        <Link key={t.id} href={`/topic/${t.id}`}
-                          className="flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all group"
-                          style={isCurrent ? { background: track.accent } : {}}
-                        >
-                          <span className="w-1.5 h-1.5 rounded-full shrink-0 transition-colors" style={{
-                            background: tStatus === 'done' ? track.color : tStatus === 'in_progress' ? '#F4C97A' : '#D5CFC8',
-                          }} />
-                          <span className="font-mono text-[9px] shrink-0" style={{ color: isCurrent ? track.color : '#9B9590' }}>{t.id}</span>
-                          <span className={`text-[11px] truncate transition-colors ${isCurrent ? 'font-semibold' : 'text-[#6B6560] group-hover:text-[#1C1C1A]'}`}
-                            style={isCurrent ? { color: track.color } : {}}
-                          >{t.title}</span>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </aside>
+        <TopicSidebar track={track} currentId={id} progress={progress} />
 
       </div>
     </div>
