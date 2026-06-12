@@ -352,7 +352,7 @@ export const TOPICS: L1Track[] = [
     ],
   },
   {
-    id: 'l4', label: 'AI SDLC 101–201', hours: 43, color: '#B7410E', accent: '#FAD7A0',
+    id: 'l4', label: 'AI SDLC 101–201', hours: 58, color: '#B7410E', accent: '#FAD7A0',
     categories: [
       {
         name: 'CS & Architecture', topics: [
@@ -378,6 +378,18 @@ export const TOPICS: L1Track[] = [
               { label: 'ByteByteGo — Microservices vs Monolith (YouTube)', url: 'https://www.youtube.com/watch?v=lTAcCNbJ7KE' },
             ],
             artifact: 'FI architecture diagram: bounded contexts, how they communicate, where ACL sits',
+          },
+          {
+            id: '4.9', title: 'API Design & Contracts', desc: 'REST vs GraphQL vs gRPC, versioning, backward compatibility, OpenAPI, rate limiting, vendor SLA contracts', hours: 4, week: 'W4',
+            done: 'Design a vendor API integration spec and identify breaking vs non-breaking changes without asking engineering',
+            resources: [
+              { label: 'Stripe — API design best practices (docs)', url: 'https://stripe.com/docs/api' },
+              { label: 'Martin Fowler — Richardson Maturity Model', url: 'https://martinfowler.com/articles/richardsonMaturityModel.html' },
+              { label: 'Swagger / OpenAPI — Getting Started', url: 'https://swagger.io/docs/specification/about/' },
+              { label: 'ByteByteGo — REST vs GraphQL vs gRPC (YouTube)', url: 'https://www.youtube.com/watch?v=4vLxWqE94l4' },
+              { label: 'Fintech Primitives — API docs (real vendor example)', url: 'https://fintechprimitives.com/' },
+            ],
+            artifact: 'API integration spec for one FI vendor (BSE StAR or FTP): endpoints, versioning strategy, error handling, rate limits, SLA contract',
           },
           {
             id: '4.3', title: 'Event Sourcing & Streaming', desc: 'Kafka, event stores, bitemporality, CQRS', hours: 6, week: 'W3–4',
@@ -417,10 +429,33 @@ export const TOPICS: L1Track[] = [
             ],
             artifact: 'AI dev tools comparison: Claude Code vs Cursor vs Copilot — when to use which',
           },
+          {
+            id: '4.12', title: 'Feature Flags & Gradual Rollouts', desc: 'Feature flags, canary releases, dark launches, A/B testing infra, gradual rollout strategies for AI features', hours: 3, week: 'W7',
+            done: 'Design a rollout strategy for any AI feature that is safe, reversible, and measurable — before engineering asks',
+            resources: [
+              { label: 'Martin Fowler — Feature Toggles (Feature Flags)', url: 'https://martinfowler.com/articles/feature-toggles.html' },
+              { label: 'LaunchDarkly — Feature flags best practices', url: 'https://launchdarkly.com/blog/feature-flag-best-practices/' },
+              { label: 'Netflix Tech Blog — Canary deployments', url: 'https://netflixtechblog.com/automated-canary-analysis-at-netflix-with-kayenta-3260bc7acc69' },
+              { label: 'Stripe Engineering — Gradual rollouts', url: 'https://stripe.com/blog/game-day' },
+            ],
+            artifact: 'Release plan for one FI AI feature: flag taxonomy, rollout cohorts (% of users), success metrics, rollback trigger criteria',
+          },
         ],
       },
       {
         name: 'Data & Infrastructure', topics: [
+          {
+            id: '4.10', title: 'Cloud & Infrastructure Basics', desc: 'AWS/GCP/Azure, containers (Docker), orchestration (K8s basics), serverless vs containers, IaaS/PaaS/SaaS', hours: 4, week: 'W5',
+            done: 'Reason about FI\'s infrastructure choices and cost/reliability/scalability tradeoffs without relying on engineering to explain everything',
+            resources: [
+              { label: 'AWS — Well-Architected Framework (white paper)', url: 'https://aws.amazon.com/architecture/well-architected/' },
+              { label: 'Fireship — Docker in 100 Seconds (YouTube)', url: 'https://www.youtube.com/watch?v=Gjnup-PuquQ' },
+              { label: 'Fireship — Kubernetes in 100 Seconds (YouTube)', url: 'https://www.youtube.com/watch?v=PziYflu8cB8' },
+              { label: 'ByteByteGo — Cloud providers comparison (YouTube)', url: 'https://www.youtube.com/@ByteByteGo' },
+              { label: 'The Cloud Resume Challenge — hands-on cloud primer', url: 'https://cloudresumechallenge.dev/' },
+            ],
+            artifact: 'FI infrastructure map: what FI likely runs on, cost/reliability/scalability implication for each major component',
+          },
           {
             id: '4.6', title: 'Data Infrastructure', desc: 'Data lakes, lakehouses, ETL/ELT, dbt, data lineage, observability', hours: 6, week: 'W5–6',
             done: 'Understand FI\'s data foundation section in the blueprint',
@@ -443,7 +478,19 @@ export const TOPICS: L1Track[] = [
             artifact: 'Security checklist for any new FI feature: auth, PII, audit trail, DPDP',
           },
           {
-            id: '4.8', title: 'LLM Deployment & Ops', desc: 'Hosting, inference costs, latency, guardrails, eval pipelines, A/B testing AI', hours: 6, week: 'W7–8',
+            id: '4.11', title: 'Observability & SRE', desc: 'SLOs/SLIs/error budgets, three pillars (logs/metrics/traces), alerting, on-call, incident response', hours: 4, week: 'W6–7',
+            done: 'Define SLOs for any FI feature and write an alerting strategy before the engineering team asks you what success looks like',
+            resources: [
+              { label: 'Google SRE Book — Ch 4–5: SLOs and Error Budgets (free online)', url: 'https://sre.google/sre-book/service-level-objectives/' },
+              { label: 'Honeycomb — Observability vs monitoring (blog)', url: 'https://www.honeycomb.io/blog/observability-vs-monitoring' },
+              { label: 'ByteByteGo — Logging vs Tracing vs Metrics (YouTube)', url: 'https://www.youtube.com/@ByteByteGo' },
+              { label: 'Grafana Labs — The three pillars of observability', url: 'https://grafana.com/blog/2019/10/21/whats-next-for-observability/' },
+              { label: 'PagerDuty — Incident Response guide', url: 'https://response.pagerduty.com/' },
+            ],
+            artifact: 'SLO spec for one FI feature: SLI definition, error budget, alert thresholds, on-call runbook outline',
+          },
+          {
+            id: '4.8', title: 'LLM Deployment & Ops', desc: 'Hosting, inference costs, latency, guardrails, eval pipelines, A/B testing AI', hours: 6, week: 'W7',
             done: 'Bridge the gap between AI prototype and production AI',
             resources: [
               { label: 'Anthropic — API reference (rate limits, pricing)', url: 'https://docs.anthropic.com/en/api/getting-started' },
@@ -483,26 +530,26 @@ export const WEEKS: Week[] = [
   {
     week: 'W4',
     weekday: 'Agents complete (1.5) + AI Product Sense (1.6)',
-    weekend: 'Wealth Products (2.5) + Event Sourcing complete (4.3) + SDLC Fundamentals (4.4)',
-    artifacts: 'Agent decision framework, Eval framework, Product comparison matrix, Event sourcing explainer, SDLC lifecycle diagram',
+    weekend: 'Wealth Products (2.5) + Event Sourcing complete (4.3) + SDLC Fundamentals (4.4) + API Design & Contracts (4.9)',
+    artifacts: 'Agent decision framework, Eval framework, Product comparison matrix, Event sourcing explainer, SDLC lifecycle diagram, API integration spec',
   },
   {
     week: 'W5',
-    weekday: 'AI in Business Ops (1.7) + Responsible AI (1.10) + AI-Augmented SDLC (4.5)',
+    weekday: 'AI in Business Ops (1.7) + Responsible AI (1.10) + AI-Augmented SDLC (4.5) + Cloud & Infra (4.10)',
     weekend: 'Insurance & Tax (2.6) + Goal-Based Planning start (2.7)',
-    artifacts: 'AI ops map, Responsible AI checklist, AI dev tools comparison, Tax flowchart',
+    artifacts: 'AI ops map, Responsible AI checklist, AI dev tools comparison, FI infrastructure map, Tax flowchart',
   },
   {
     week: 'W6',
-    weekday: 'AI Product Metrics (1.11) + Data Infrastructure (4.6) + Security & Compliance (4.7)',
+    weekday: 'AI Product Metrics (1.11) + Data Infrastructure (4.6) + Security & Compliance (4.7) + Observability & SRE start (4.11)',
     weekend: 'Goal-Based Planning complete (2.7) + Regulatory Landscape (2.8)',
-    artifacts: 'AI metrics spec, FI data architecture, Security checklist, Financial plan, Regulatory constraint map',
+    artifacts: 'AI metrics spec, FI data architecture, Security checklist, SLO spec (draft), Financial plan, Regulatory constraint map',
   },
   {
     week: 'W7',
-    weekday: 'LLM Deployment & Ops (4.8)',
+    weekday: 'LLM Deployment & Ops (4.8) + Observability & SRE complete (4.11) + Feature Flags & Rollouts (4.12)',
     weekend: 'Hands-on Build start (1.8)',
-    artifacts: 'Production AI checklist',
+    artifacts: 'Production AI checklist, SLO spec (final), Feature flag release plan',
   },
   {
     week: 'W8',
