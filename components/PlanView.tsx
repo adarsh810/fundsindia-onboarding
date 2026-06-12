@@ -17,9 +17,10 @@ const STATUS_STYLE: Record<Status, { bg: string; text: string; dot: string; labe
   done:        { bg: '#D1EDDA', text: '#1B5E2A', dot: '#4CAF65', label: 'Done' },
 };
 
-export default function PlanView({ initialProgress }: { initialProgress: ProgressMap }) {
+export default function PlanView({ initialProgress, initialTrack }: { initialProgress: ProgressMap; initialTrack?: string }) {
   const [progress, setProgress] = useState<ProgressMap>(initialProgress);
-  const [activeTrack, setActiveTrack] = useState<string>(TOPICS[0].id);
+  const validTrack = TOPICS.find(l => l.id === initialTrack)?.id ?? TOPICS[0].id;
+  const [activeTrack, setActiveTrack] = useState<string>(validTrack);
 
   async function cycleStatus(topicId: string, e: React.MouseEvent) {
     e.preventDefault();

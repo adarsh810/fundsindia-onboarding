@@ -41,7 +41,7 @@ export default async function TopicPage({ params }: Props) {
 
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-[#9B9590] mb-5">
-          <Link href="/plan" className="hover:text-[#1C1C1A] transition-colors">Plan</Link>
+          <Link href={`/plan?track=${track.id}`} className="hover:text-[#1C1C1A] transition-colors">Topics</Link>
           <span>/</span>
           <span style={{ color: track.color }}>{track.label}</span>
           <span>/</span>
