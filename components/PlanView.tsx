@@ -49,16 +49,6 @@ export default function PlanView({ initialProgress }: { initialProgress: Progres
     <div>
       {/* Track filter pills */}
       <div className="flex gap-2 flex-wrap mb-7">
-        <button
-          onClick={() => setActiveTrack(null)}
-          className={`text-xs px-3.5 py-1.5 rounded-full border font-medium transition-all ${
-            !activeTrack
-              ? 'bg-[#1C1C1A] text-white border-[#1C1C1A]'
-              : 'bg-[#EEEBE5] text-[#4A4540] border-transparent hover:border-[#D5CFC8]'
-          }`}
-        >
-          All tracks
-        </button>
         {TOPICS.map(l1 => {
           const all = l1.categories.flatMap(c => c.topics);
           const done = all.filter(t => progress[t.id] === 'done').length;
