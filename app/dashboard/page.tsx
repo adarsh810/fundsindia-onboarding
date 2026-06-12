@@ -19,7 +19,24 @@ export default async function Dashboard() {
   const doneHours  = ALL_TOPICS.filter(t => progress[t.id] === 'done').reduce((a, t) => a + t.hours, 0);
   const pct        = Math.round((doneCount / ALL_TOPICS.length) * 100);
 
-  const nextTopics = ALL_TOPICS.filter(t => (progress[t.id] ?? 'not_started') === 'not_started').slice(0, 3);
+  const WEEK1_START = new Date('2026-06-08T00:00:00+05:30');
+  const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
+  const currentWeek = Math.min(Math.max(Math.floor((Date.now() - WEEK1_START.getTime()) / MS_PER_WEEK) + 1, 1), 10);
+
+  function topicStartWeek(w: string): number {
+    const simple = w.match(/^W(\d+)$/);
+    if (simple) return parseInt(simple[1]);
+    const range = w.match(/^W(\d+)[–\-]/);
+    if (range) return parseInt(range[1]);
+    const comma = w.match(/^W(\d+),/);
+    if (comma) return parseInt(comma[1]);
+    return 99;
+  }
+
+  const nextTopics = ALL_TOPICS
+    .filter(t => (progress[t.id] ?? 'not_started') === 'not_started')
+    .sort((a, b) => topicStartWeek(a.week) - topicStartWeek(b.week))
+    .slice(0, 3);
 
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
