@@ -18,7 +18,7 @@ export default function AppNav() {
           <Link href="/dashboard" className="font-[family-name:var(--font-playfair)] text-[17px] font-bold tracking-tight text-[#1C1C1A]">
             FI Prep
           </Link>
-          <span className="hidden sm:block text-[11px] text-[#9B9590] tracking-[0.06em]">167 hrs · 8 weeks · 35 topics</span>
+          <span className="hidden sm:block text-[11px] text-[#9B9590] tracking-[0.06em]">167 hrs · 10 weeks · 35 topics</span>
         </div>
         <nav className="flex gap-1">
           {LINKS.map(l => (

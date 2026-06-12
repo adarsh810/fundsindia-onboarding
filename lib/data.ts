@@ -254,7 +254,7 @@ export const TOPICS: L1Track[] = [
       {
         name: 'Domain', topics: [
           {
-            id: '3.1', title: 'FI Business Model', desc: 'B2C, B2B IFA, private wealth RM — revenue per tier', hours: 3, week: 'W4',
+            id: '3.1', title: 'FI Business Model', desc: 'B2C, B2B IFA, private wealth RM — revenue per tier', hours: 3, week: 'W9',
             done: 'Explain FI\'s business model to a new hire in 5 minutes',
             resources: [
               { label: 'FundsIndia — website (all product pages)', url: 'https://www.fundsindia.com/' },
@@ -264,7 +264,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'FI business model one-pager: 3 tiers, revenue per tier, growth lever per tier',
           },
           {
-            id: '3.2', title: 'Competitive Landscape', desc: 'Groww, Zerodha, NJ, Prudent, Anand Rathi, IIFL Wealth', hours: 3, week: 'W4',
+            id: '3.2', title: 'Competitive Landscape', desc: 'Groww, Zerodha, NJ, Prudent, Anand Rathi, IIFL Wealth', hours: 3, week: 'W9',
             done: 'Draw a competitive positioning map with conviction',
             resources: [
               { label: 'Groww — app/website', url: 'https://groww.in/' },
@@ -277,7 +277,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Competitive 2x2 matrix: self-serve vs advised × mass market vs HNI',
           },
           {
-            id: '3.3', title: 'WestBridge Thesis', desc: 'Acquisition story, AUM growth, private wealth launch, exit thesis', hours: 3, week: 'W5',
+            id: '3.3', title: 'WestBridge Thesis', desc: 'Acquisition story, AUM growth, private wealth launch, exit thesis', hours: 3, week: 'W9',
             done: 'Understand the investor\'s perspective and what success means',
             resources: [
               { label: 'WestBridge Capital — website', url: 'https://westbridge.com/' },
@@ -291,7 +291,7 @@ export const TOPICS: L1Track[] = [
       {
         name: 'Tech', topics: [
           {
-            id: '3.5', title: 'Tech Stack & Vendors', desc: 'Fintech Primitives, BSE StAR, CAMS/KFintech, KYC/KRA stack', hours: 4, week: 'W5–6',
+            id: '3.5', title: 'Tech Stack & Vendors', desc: 'Fintech Primitives, BSE StAR, CAMS/KFintech, KYC/KRA stack', hours: 4, week: 'W10',
             done: 'Map what FI builds vs what it buys',
             resources: [
               { label: 'Fintech Primitives / Cybrilla — API docs', url: 'https://fintechprimitives.com/' },
@@ -302,7 +302,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Build vs buy map: FI in-house vs vendor for every major capability',
           },
           {
-            id: '3.8', title: 'Transaction Lifecycle', desc: 'Order → BSE StAR → RTA → settlement → reconciliation', hours: 4, week: 'W6',
+            id: '3.8', title: 'Transaction Lifecycle', desc: 'Order → BSE StAR → RTA → settlement → reconciliation', hours: 4, week: 'W10',
             done: 'Trace a single SIP transaction end to end through the entire system',
             resources: [
               { label: 'BSE StAR MF — order flow documentation', url: 'https://www.bsestarmf.in/' },
@@ -316,7 +316,7 @@ export const TOPICS: L1Track[] = [
       {
         name: 'Product Sense', topics: [
           {
-            id: '3.4', title: 'Blueprint Deep Read', desc: '3 passes: strategy → architecture → 20 Day-1 questions for Avijit', hours: 6, week: 'W1,3,7',
+            id: '3.4', title: 'Blueprint Deep Read', desc: '3 passes: strategy → architecture → 20 Day-1 questions for Avijit', hours: 6, week: 'W9–10',
             done: '20 Day-1 questions for Avijit, entity model redrawn in your own words',
             resources: [
               { label: 'Blueprint original + revised (internal)' },
@@ -325,7 +325,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Pass 1: strategy one-pager | Pass 2: entity diagram | Pass 3: 20 Day-1 questions',
           },
           {
-            id: '3.6', title: 'Wealth-Tech Product Sense', desc: 'Compliance as design constraint, user trust in financial products', hours: 4, week: 'W6–7',
+            id: '3.6', title: 'Wealth-Tech Product Sense', desc: 'Compliance as design constraint, user trust in financial products', hours: 4, week: 'W10',
             done: 'Make product calls that don\'t get vetoed by compliance',
             resources: [
               { label: 'Wealthfront — US robo UX (for contrast)', url: 'https://www.wealthfront.com/' },
@@ -337,7 +337,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Product decision framework: compliance + trust checklist for any FI feature',
           },
           {
-            id: '3.7', title: 'User Personas', desc: 'B2C investor, IFA, RM, ops — pain points, workflows, what they wish existed', hours: 3, week: 'W7',
+            id: '3.7', title: 'User Personas', desc: 'B2C investor, IFA, RM, ops — pain points, workflows, what they wish existed', hours: 3, week: 'W10',
             done: 'Empathise with the humans in the system not just the architecture',
             resources: [
               { label: 'FundsIndia app — use as B2C investor', url: 'https://www.fundsindia.com/' },
@@ -461,14 +461,68 @@ export const TOPICS: L1Track[] = [
 ];
 
 export const WEEKS: Week[] = [
-  { week: 'W1', weekday: 'AI Fundamentals (1.1) + Transformers start (1.2) + Blueprint Pass 1 (3.4)', weekend: 'Finance Fundamentals (2.1) + Indian Markets (2.2) + CS Primitives (4.1)', artifacts: 'LLM one-pager, Blueprint strategy summary' },
-  { week: 'W2', weekday: 'Transformers complete (1.2) + Prompt Engineering (1.3)', weekend: 'MF Deep Dive (2.3) + CS Primitives contd (4.1)', artifacts: 'Transformer diagram, Prompt library, CS glossary' },
-  { week: 'W3', weekday: 'RAG Deep Dive (1.4) + Agents start (1.5) + Multimodal & Doc AI (1.9) + Blueprint Pass 2 (3.4)', weekend: 'Distribution Economics (2.4) + Architecture Patterns (4.2) + Event Sourcing (4.3)', artifacts: 'RAG architecture diagram, Document AI use case map, FI entity model, Revenue model diagram' },
-  { week: 'W4', weekday: 'Agents complete (1.5) + AI Product Sense (1.6)', weekend: 'SDLC Fundamentals (4.4) + FI Business Model (3.1) + Competitive Landscape (3.2)', artifacts: 'Agent decision framework, Eval framework, FI business model one-pager' },
-  { week: 'W5', weekday: 'AI in Business Ops (1.7) + Responsible AI (1.10) + AI SDLC Tools (4.5) + WestBridge Thesis (3.3)', weekend: 'Wealth Products (2.5) + Insurance & Tax (2.6) + FI Tech Stack (3.5)', artifacts: 'AI ops map, Responsible AI checklist, Product comparison matrix, Build vs buy map' },
-  { week: 'W6', weekday: 'AI Product Metrics (1.11) + Data Infra (4.6) + Security (4.7) + Transaction Lifecycle (3.8)', weekend: 'Financial Planning (2.7) + Regulatory Landscape (2.8) + Wealth-Tech Product Sense (3.6)', artifacts: 'AI metrics spec, Transaction lifecycle diagram, Regulatory constraint map, Security checklist' },
-  { week: 'W7', weekday: 'LLM Deployment (4.8) + User Personas (3.7) + Blueprint Pass 3 (3.4)', weekend: 'Hands-on Build start (1.8)', artifacts: '20 Day-1 questions, Persona cards, Production AI checklist' },
-  { week: 'W8', weekday: 'Hands-on Build complete (1.8)', weekend: 'Final review + gap assessment + all artifacts compiled', artifacts: 'Deployed portfolio goal monitor, Master artifact folder' },
+  // ── Phase 1: AI Native PM + Finance 101 + AI SDLC (blended) ──────────────
+  {
+    week: 'W1',
+    weekday: 'AI Fundamentals (1.1) + Transformers start (1.2)',
+    weekend: 'Finance Fundamentals (2.1) + Indian Markets (2.2) + CS Primitives start (4.1)',
+    artifacts: 'LLM one-pager, Finance fundamentals cheat sheet',
+  },
+  {
+    week: 'W2',
+    weekday: 'Transformers complete (1.2) + Prompt Engineering (1.3)',
+    weekend: 'MF Deep Dive (2.3) + CS Primitives complete (4.1)',
+    artifacts: 'Transformer diagram, Prompt library, MF product cheat sheet, CS glossary',
+  },
+  {
+    week: 'W3',
+    weekday: 'RAG Deep Dive (1.4) + Multimodal & Doc AI (1.9) + Agents start (1.5)',
+    weekend: 'Distribution Economics (2.4) + Architecture Patterns (4.2) + Event Sourcing start (4.3)',
+    artifacts: 'RAG architecture diagram, Document AI use case map, Revenue model diagram',
+  },
+  {
+    week: 'W4',
+    weekday: 'Agents complete (1.5) + AI Product Sense (1.6)',
+    weekend: 'Wealth Products (2.5) + Event Sourcing complete (4.3) + SDLC Fundamentals (4.4)',
+    artifacts: 'Agent decision framework, Eval framework, Product comparison matrix, Event sourcing explainer, SDLC lifecycle diagram',
+  },
+  {
+    week: 'W5',
+    weekday: 'AI in Business Ops (1.7) + Responsible AI (1.10) + AI-Augmented SDLC (4.5)',
+    weekend: 'Insurance & Tax (2.6) + Goal-Based Planning start (2.7)',
+    artifacts: 'AI ops map, Responsible AI checklist, AI dev tools comparison, Tax flowchart',
+  },
+  {
+    week: 'W6',
+    weekday: 'AI Product Metrics (1.11) + Data Infrastructure (4.6) + Security & Compliance (4.7)',
+    weekend: 'Goal-Based Planning complete (2.7) + Regulatory Landscape (2.8)',
+    artifacts: 'AI metrics spec, FI data architecture, Security checklist, Financial plan, Regulatory constraint map',
+  },
+  {
+    week: 'W7',
+    weekday: 'LLM Deployment & Ops (4.8)',
+    weekend: 'Hands-on Build start (1.8)',
+    artifacts: 'Production AI checklist',
+  },
+  {
+    week: 'W8',
+    weekday: 'Hands-on Build complete (1.8)',
+    weekend: 'Phase 1 review — all L1/L2/L4 artifacts compiled',
+    artifacts: 'Deployed portfolio goal monitor, Phase 1 master artifact folder',
+  },
+  // ── Phase 2: FundsIndia Deep Dive ────────────────────────────────────────
+  {
+    week: 'W9',
+    weekday: 'FI Business Model (3.1) + Competitive Landscape (3.2) + WestBridge Thesis (3.3) + Blueprint Pass 1 (3.4)',
+    weekend: 'Consolidate FI context — review all three + cross-link insights',
+    artifacts: 'FI business model one-pager, Competitive 2x2 matrix, WestBridge thesis one-pager, Blueprint strategy summary',
+  },
+  {
+    week: 'W10',
+    weekday: 'Blueprint Passes 2 & 3 (3.4) + Tech Stack & Vendors (3.5) + Transaction Lifecycle (3.8)',
+    weekend: 'Wealth-Tech Product Sense (3.6) + User Personas (3.7)',
+    artifacts: 'FI entity diagram, 20 Day-1 questions for Avijit, Build vs buy map, Transaction lifecycle diagram, Persona cards, Product decision framework',
+  },
 ];
 
 export const ALL_TOPICS = TOPICS.flatMap(l1 => l1.categories.flatMap(c => c.topics));
