@@ -20,7 +20,7 @@ const STATUS_STYLE: Record<Status, { bg: string; text: string; dot: string; labe
 export default function PlanView({ initialProgress }: { initialProgress: ProgressMap }) {
   const [progress, setProgress] = useState<ProgressMap>(initialProgress);
   const [openTracks, setOpenTracks] = useState<Set<string>>(new Set(TOPICS.map(l => l.id)));
-  const [activeTrack, setActiveTrack] = useState<string | null>(null);
+  const [activeTrack, setActiveTrack] = useState<string>(TOPICS[0].id);
 
   function toggleTrack(id: string) {
     setOpenTracks(prev => {
@@ -43,7 +43,7 @@ export default function PlanView({ initialProgress }: { initialProgress: Progres
     });
   }
 
-  const visible = activeTrack ? TOPICS.filter(l => l.id === activeTrack) : TOPICS;
+  const visible = TOPICS.filter(l => l.id === activeTrack);
 
   return (
     <div>
@@ -52,16 +52,16 @@ export default function PlanView({ initialProgress }: { initialProgress: Progres
         {TOPICS.map(l1 => {
           const all = l1.categories.flatMap(c => c.topics);
           const done = all.filter(t => progress[t.id] === 'done').length;
-          const active = activeTrack === l1.id;
+          const isActive = activeTrack === l1.id;
           return (
             <button
               key={l1.id}
-              onClick={() => setActiveTrack(active ? null : l1.id)}
+              onClick={() => setActiveTrack(l1.id)}
               className="text-xs px-3.5 py-1.5 rounded-full border font-medium transition-all"
               style={{
-                background: active ? l1.color : l1.accent,
-                color: active ? '#FAF8F5' : l1.color,
-                borderColor: active ? l1.color : 'transparent',
+                background: isActive ? l1.color : l1.accent,
+                color: isActive ? '#FAF8F5' : l1.color,
+                borderColor: isActive ? l1.color : 'transparent',
               }}
             >
               {l1.label} · {done}/{all.length}
