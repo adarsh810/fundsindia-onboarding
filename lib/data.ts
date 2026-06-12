@@ -233,7 +233,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'FI revenue model diagram: AMC trail → FI → across B2C/B2B/Wealth tiers',
           },
           {
-            id: '2.8', title: 'Regulatory Landscape', desc: 'SEBI circulars, KYC norms, AMFI guidelines, RIA vs MFD, DPDP', hours: 5, week: 'W8',
+            id: '2.8', title: 'Regulatory Landscape', desc: 'SEBI circulars, KYC norms, AMFI guidelines, RIA vs MFD, DPDP', hours: 5, week: 'W9',
             done: 'Understand compliance as a design constraint not a blocker',
             resources: [
               { label: 'SEBI — Circulars (MF distribution, KYC)', url: 'https://www.sebi.gov.in/legal/circulars.html' },
@@ -430,7 +430,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'AI dev tools comparison: Claude Code vs Cursor vs Copilot — when to use which',
           },
           {
-            id: '4.12', title: 'Feature Flags & Gradual Rollouts', desc: 'Feature flags, canary releases, dark launches, A/B testing infra, gradual rollout strategies for AI features', hours: 3, week: 'W8',
+            id: '4.12', title: 'Feature Flags & Gradual Rollouts', desc: 'Feature flags, canary releases, dark launches, A/B testing infra, gradual rollout strategies for AI features', hours: 3, week: 'W9',
             done: 'Design a rollout strategy for any AI feature that is safe, reversible, and measurable — before engineering asks',
             resources: [
               { label: 'Martin Fowler — Feature Toggles (Feature Flags)', url: 'https://martinfowler.com/articles/feature-toggles.html' },
@@ -553,16 +553,16 @@ export const WEEKS: Week[] = [
   },
   {
     week: 'W8',
-    weekday: 'LLM Deployment & Ops (4.8) + Observability & SRE (4.11) + Feature Flags (4.12)',
-    weekend: 'Regulatory Landscape (2.8) + Hands-on Build (1.8)',
-    artifacts: 'Production AI checklist, SLO spec, Feature flag release plan, Regulatory constraint map, Deployed portfolio monitor',
+    weekday: 'LLM Deployment & Ops (4.8) + Observability & SRE (4.11)',
+    weekend: 'Hands-on Build (1.8)',
+    artifacts: 'Production AI checklist, SLO spec, Deployed portfolio monitor',
   },
   // ── Phase 2: FundsIndia Deep Dive ────────────────────────────────────────
   {
     week: 'W9',
-    weekday: 'FI Business Model (3.1) + Competitive Landscape (3.2) + WestBridge Thesis (3.3)',
-    weekend: 'Blueprint Pass 1 (3.4)',
-    artifacts: 'FI business model one-pager, Competitive 2x2 matrix, WestBridge thesis one-pager, Blueprint strategy summary',
+    weekday: 'FI Business Model (3.1) + Competitive Landscape (3.2) + WestBridge Thesis (3.3) + Feature Flags (4.12)',
+    weekend: 'Blueprint Pass 1 (3.4) + Regulatory Landscape (2.8)',
+    artifacts: 'FI business model one-pager, Competitive 2x2 matrix, WestBridge thesis one-pager, Blueprint strategy summary, Feature flag release plan, Regulatory constraint map',
   },
   {
     week: 'W10',
