@@ -4,10 +4,13 @@ import { useEffect, useState } from 'react';
 import type { Resource } from '@/lib/types';
 import type { Status } from '@/lib/types';
 
+interface Section { title: string; bullets: string[] }
+
 interface Summary {
   resource_url: string;
   resource_label: string;
   bullets: string[];
+  sections?: Section[] | null;
   generated_at: string;
 }
 
@@ -205,7 +208,9 @@ export default function ResourceSummaries({
                   >
                     {isOpen ? '▲ Hide' : '▼ Notes'}
                     <span className="text-[10px] bg-[#D1EDDA] text-[#1B5E2A] px-1.5 py-0.5 rounded-full ml-1">
-                      {summary.bullets.length}
+                      {summary.sections
+                        ? summary.sections.reduce((n, s) => n + s.bullets.length, 0)
+                        : summary.bullets.length}
                     </span>
                   </button>
                 ) : (
@@ -258,6 +263,24 @@ export default function ResourceSummaries({
                         </button>
                       </div>
                     </>
+                  ) : summary.sections && summary.sections.length > 0 ? (
+                    <div className="space-y-4">
+                      {summary.sections.map((section, si) => (
+                        <div key={si}>
+                          <p className="text-[10px] font-semibold uppercase tracking-[0.08em] mb-2" style={{ color: trackColor }}>
+                            {section.title}
+                          </p>
+                          <ul className="space-y-2">
+                            {section.bullets.map((b, bi) => (
+                              <li key={bi} className="flex items-start gap-2.5 text-[12px] text-[#3A3530] leading-snug">
+                                <span className="shrink-0 mt-0.5 text-[10px] font-bold text-[#C8C2BA]">–</span>
+                                {b}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
                   ) : (
                     <ul className="space-y-2">
                       {summary.bullets.map((b, bi) => (

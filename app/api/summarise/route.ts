@@ -64,7 +64,7 @@ export async function GET(req: NextRequest) {
 
   const { data } = await supabase
     .from('fi_resource_summaries')
-    .select('resource_url, resource_label, bullets, generated_at')
+    .select('resource_url, resource_label, bullets, sections, generated_at')
     .eq('user_id', USER_ID)
     .eq('topic_id', topicId)
     .order('generated_at', { ascending: false });
@@ -93,31 +93,37 @@ export async function POST(req: NextRequest) {
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   const msg = await anthropic.messages.create({
     model: 'claude-sonnet-4-6',
-    max_tokens: 1024,
+    max_tokens: 1500,
     messages: [{
       role: 'user',
-      content: `You are distilling a learning resource into its core ideas for a product manager.
+      content: `You are distilling a learning resource into its core ideas, organised by theme.
 
 Resource: "${resourceLabel}"
 Source type: ${sourceType === 'youtube' ? 'YouTube video transcript' : 'article/documentation'}
 
-Write exactly 4–5 bullets that together capture the full arc of the content at an abstract level.
-Each bullet should express a single, complete idea — the kind of thing you'd say when explaining the content to someone who'll never read it.
-Prioritise insight and essence over detail. Avoid jargon, examples, or specifics unless they are the point.
-Write in plain, confident prose. No sub-bullets, no markdown inside bullets, no filler phrases like "the author explains" or "this section covers".
-Return a JSON array of strings only — no other text.
+Identify up to 5 natural sections or themes in the content. For each section:
+- Give it a crisp title (2–5 words)
+- Write 3–5 bullets capturing the abstract essence of that section
+
+Each bullet expresses a single complete idea — what you'd say to someone who'll never read the source. Prioritise insight over detail. No jargon, no filler like "the author explains" or "this section covers". Plain, confident prose.
+
+Return a JSON array only — no other text:
+[{ "title": "Section Title", "bullets": ["...", "..."] }, ...]
 
 Content:
 ${content}`,
     }],
   });
 
+  interface Section { title: string; bullets: string[] }
+  let sections: Section[] = [];
   let bullets: string[] = [];
   try {
     const raw = msg.content[0].type === 'text' ? msg.content[0].text.trim() : '';
     const start = raw.indexOf('[');
     const end = raw.lastIndexOf(']') + 1;
-    bullets = JSON.parse(raw.slice(start, end));
+    sections = JSON.parse(raw.slice(start, end));
+    bullets = sections.flatMap(s => s.bullets);
   } catch {
     return NextResponse.json({ error: 'Failed to parse Claude response' }, { status: 500 });
   }
@@ -125,10 +131,10 @@ ${content}`,
   const { data, error } = await supabase
     .from('fi_resource_summaries')
     .upsert(
-      { user_id: USER_ID, topic_id: topicId, resource_url: resourceUrl, resource_label: resourceLabel, bullets, generated_at: new Date().toISOString() },
+      { user_id: USER_ID, topic_id: topicId, resource_url: resourceUrl, resource_label: resourceLabel, bullets, sections, generated_at: new Date().toISOString() },
       { onConflict: 'user_id,topic_id,resource_url' },
     )
-    .select('resource_url, resource_label, bullets, generated_at')
+    .select('resource_url, resource_label, bullets, sections, generated_at')
     .single();
 
   if (error || !data) return NextResponse.json({ error: 'Failed to save summary' }, { status: 500 });
@@ -142,11 +148,11 @@ export async function PATCH(req: NextRequest) {
 
   const { data, error } = await supabase
     .from('fi_resource_summaries')
-    .update({ bullets })
+    .update({ bullets, sections: null })
     .eq('user_id', USER_ID)
     .eq('topic_id', topicId)
     .eq('resource_url', resourceUrl)
-    .select('resource_url, resource_label, bullets, generated_at')
+    .select('resource_url, resource_label, bullets, sections, generated_at')
     .single();
 
   if (error || !data) return NextResponse.json({ error: 'Failed to update' }, { status: 500 });
