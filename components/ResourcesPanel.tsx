@@ -706,7 +706,7 @@ export default function ResourcesPanel({
         {/* Additional section */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[#C8C2BA]">✦ Claude-suggested</p>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[#C8C2BA]">✦ Additional reading</p>
             <button
               onClick={generateMore}
               disabled={generatingMore}

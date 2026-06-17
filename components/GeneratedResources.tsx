@@ -56,7 +56,7 @@ export default function GeneratedResources({
     <div className="bg-white border border-[#E8E4DE] rounded-2xl p-5 mb-4">
       <div className="flex items-center justify-between mb-3">
         <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#9B9590]">
-          ✦ Claude-suggested resources
+          ✦ Additional reading
         </p>
         <button
           onClick={generate}
