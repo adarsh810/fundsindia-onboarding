@@ -96,13 +96,15 @@ export async function POST(req: NextRequest) {
     max_tokens: 1024,
     messages: [{
       role: 'user',
-      content: `You are summarising a learning resource for a product manager.
+      content: `You are distilling a learning resource into its core ideas for a product manager.
 
 Resource: "${resourceLabel}"
 Source type: ${sourceType === 'youtube' ? 'YouTube video transcript' : 'article/documentation'}
 
-Generate exactly 4–5 concise bullet points capturing the key concepts a PM should take away.
-Each bullet: 1–2 sentences, plain language, no markdown formatting inside bullets.
+Write exactly 4–5 bullets that together capture the full arc of the content at an abstract level.
+Each bullet should express a single, complete idea — the kind of thing you'd say when explaining the content to someone who'll never read it.
+Prioritise insight and essence over detail. Avoid jargon, examples, or specifics unless they are the point.
+Write in plain, confident prose. No sub-bullets, no markdown inside bullets, no filler phrases like "the author explains" or "this section covers".
 Return a JSON array of strings only — no other text.
 
 Content:
