@@ -101,14 +101,24 @@ export async function POST(req: NextRequest) {
 Resource: "${resourceLabel}"
 Source type: ${sourceType === 'youtube' ? 'YouTube video transcript' : 'article/documentation'}
 
-Identify up to 5 natural sections or themes in the content. For each section:
-- Give it a crisp title (2–5 words)
-- Write 3–5 bullets capturing the abstract essence of that section
+Identify up to 5 natural sections or themes in the content. Format your response exactly like this:
 
-Each bullet expresses a single complete idea — what you'd say to someone who'll never read the source. Prioritise insight over detail. No jargon, no filler like "the author explains" or "this section covers". Plain, confident prose.
+## Section Title
+- Bullet one
+- Bullet two
+- Bullet three
 
-Return a JSON array only — no other text:
-[{ "title": "Section Title", "bullets": ["...", "..."] }, ...]
+## Another Section
+- Bullet one
+- Bullet two
+
+Rules:
+- Each section gets a crisp title (2–5 words) on a ## heading line
+- 3–5 bullets per section, each starting with -
+- Each bullet is one complete idea expressed plainly and confidently
+- Prioritise insight and essence over detail or specifics
+- No filler phrases like "the author explains" or "this section covers"
+- No other text — just the ## headings and - bullets
 
 Content:
 ${content}`,
@@ -116,17 +126,27 @@ ${content}`,
   });
 
   interface Section { title: string; bullets: string[] }
-  let sections: Section[] = [];
-  let bullets: string[] = [];
-  try {
-    const raw = msg.content[0].type === 'text' ? msg.content[0].text.trim() : '';
-    const start = raw.indexOf('[');
-    const end = raw.lastIndexOf(']') + 1;
-    sections = JSON.parse(raw.slice(start, end));
-    bullets = sections.flatMap(s => s.bullets);
-  } catch {
+
+  function parseMarkdownSections(md: string): Section[] {
+    const result: Section[] = [];
+    const parts = md.split(/^## /m).filter(s => s.trim());
+    for (const part of parts) {
+      const lines = part.trim().split('\n');
+      const title = lines[0].trim();
+      const bullets = lines.slice(1)
+        .map(l => l.replace(/^[-*]\s*/, '').trim())
+        .filter(Boolean);
+      if (title && bullets.length) result.push({ title, bullets });
+    }
+    return result;
+  }
+
+  const raw = msg.content[0].type === 'text' ? msg.content[0].text.trim() : '';
+  const sections = parseMarkdownSections(raw);
+  if (!sections.length) {
     return NextResponse.json({ error: 'Failed to parse Claude response' }, { status: 500 });
   }
+  const bullets = sections.flatMap(s => s.bullets);
 
   const { data, error } = await supabase
     .from('fi_resource_summaries')
