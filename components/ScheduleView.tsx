@@ -93,6 +93,20 @@ function distributeTopics(ids: string[], hoursPerDay: number, numDays: number): 
   return days;
 }
 
+// ─── Status colour helpers ────────────────────────────────────────────────────
+
+type Track = NonNullable<ReturnType<typeof findTrackForTopic>>;
+
+function statusBg(status: string, track: Track): string {
+  if (status === 'done')        return track.color;
+  if (status === 'in_progress') return `${track.color}99`; // ~60% opacity — mid-tone
+  return track.accent;
+}
+
+function statusTextColor(status: string, track: Track): string {
+  return status === 'not_started' ? track.color : '#FAF8F5';
+}
+
 // ─── Day column ───────────────────────────────────────────────────────────────
 
 function DayColumn({ label, hoursPerDay, slots, progress }: {
@@ -106,16 +120,16 @@ function DayColumn({ label, hoursPerDay, slots, progress }: {
           const topic = findTopicById(topicId);
           const track = findTrackForTopic(topicId);
           if (!topic || !track) return null;
-          const isDone = progress[topicId] === 'done';
+          const status = progress[topicId] ?? 'not_started';
           const pct = (hours / hoursPerDay) * 100;
           return (
             <Link key={topicId} href={`/topic/${topicId}`}
               className="flex items-center justify-center overflow-hidden hover:brightness-95 transition-all"
-              style={{ height: `${pct}%`, background: isDone ? track.color : track.accent, borderBottom: '1px solid #FAF8F5' }}
+              style={{ height: `${pct}%`, background: statusBg(status, track), borderBottom: '1px solid #FAF8F5' }}
               title={`${topic.title} · ${hours}h`}
             >
               {pct >= 38 && (
-                <span className="text-[9px] font-bold px-0.5 leading-none" style={{ color: isDone ? '#FAF8F5' : track.color }}>
+                <span className="text-[9px] font-bold px-0.5 leading-none" style={{ color: statusTextColor(status, track) }}>
                   {topic.id}
                 </span>
               )}
@@ -151,19 +165,20 @@ function DaySection({ emoji, dayLabels, hoursPerDay, topicIds, progress }: {
       </div>
       <div className="space-y-1">
         {entries.map(({ id, topic, track, wh, total }) => {
-          const isDone = progress[id] === 'done';
+          const status = progress[id] ?? 'not_started';
           const isMultiWeek = topicWeekNums(id).length > 1;
           return (
             <Link key={id} href={`/topic/${id}`} className="flex items-center gap-2 text-[11px] group">
               <span className="w-2.5 h-2.5 rounded-sm shrink-0"
-                style={{ background: isDone ? track!.color : track!.accent, border: `1.5px solid ${track!.color}` }} />
+                style={{ background: statusBg(status, track!), border: `1.5px solid ${track!.color}` }} />
               <span className="font-mono text-[10px] text-[#9B9590] w-7 shrink-0">{id}</span>
               <span className="text-[#4A4540] group-hover:text-[#1C1C1A] transition-colors truncate">{topic!.title}</span>
               <span className="text-[#9B9590] ml-auto shrink-0">
                 {isMultiWeek ? `${wh}h` : `${total}h`}
                 {isMultiWeek && <span className="text-[#C8C2BA]"> / {total}h total</span>}
               </span>
-              {isDone && <span style={{ color: track!.color }} className="text-[10px] shrink-0">✓</span>}
+              {status === 'done' && <span style={{ color: track!.color }} className="text-[10px] shrink-0">✓</span>}
+              {status === 'in_progress' && <span style={{ color: track!.color }} className="text-[10px] shrink-0 opacity-60">~</span>}
             </Link>
           );
         })}
@@ -224,12 +239,12 @@ export default function ScheduleView({ progress }: { progress: ProgressMap }) {
                   const topic = findTopicById(id);
                   const track = findTrackForTopic(id);
                   if (!topic || !track) return null;
-                  const isDone = progress[id] === 'done';
+                  const status = progress[id] ?? 'not_started';
                   return (
                     <Link key={id} href={`/topic/${id}`} onClick={e => e.stopPropagation()}
                       className="text-[10px] px-2 py-0.5 rounded-full border hover:brightness-95 transition-all"
-                      style={{ borderColor: track.color, color: isDone ? '#FAF8F5' : track.color, background: isDone ? track.color : track.accent }}>
-                      {topic.id}{isDone ? ' ✓' : ''}
+                      style={{ borderColor: track.color, color: statusTextColor(status, track), background: statusBg(status, track) }}>
+                      {topic.id}{status === 'done' ? ' ✓' : status === 'in_progress' ? ' ~' : ''}
                     </Link>
                   );
                 })}
