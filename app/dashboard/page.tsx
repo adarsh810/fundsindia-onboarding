@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import AppNav from '@/components/AppNav';
+import TrackStatusPill from '@/components/TrackStatusPill';
 import { getAllProgress } from '@/lib/supabase';
 import { TOPICS, ALL_TOPICS, TOTAL_HOURS, findTrackForTopic } from '@/lib/data';
 
@@ -47,12 +48,24 @@ export default async function Dashboard() {
     .filter(t => topicEndWeek(t.week) <= currentWeek)
     .reduce((a, t) => a + t.hours, 0);
 
-  const trackRatio = expectedHours > 0 ? doneHours / expectedHours : 1;
+  // In-progress topics count at 30% — fairer than 0%
+  const adjustedDoneHours =
+    doneHours +
+    ALL_TOPICS
+      .filter(t => progress[t.id] === 'in_progress')
+      .reduce((a, t) => a + t.hours * 0.3, 0);
+
+  const trackRatio = expectedHours > 0 ? adjustedDoneHours / expectedHours : 1;
   const trackStatus = trackRatio >= 0.9
     ? { label: 'On track', bg: '#D1FAE5', text: '#065F46' }
     : trackRatio >= 0.6
     ? { label: 'Slightly behind', bg: '#FEF3C7', text: '#92400E' }
     : { label: 'Off track', bg: '#FEE2E2', text: '#991B1B' };
+
+  const overdueTopics = ALL_TOPICS
+    .filter(t => topicEndWeek(t.week) <= currentWeek && progress[t.id] !== 'done')
+    .sort((a, b) => topicEndWeek(a.week) - topicEndWeek(b.week))
+    .map(t => ({ title: t.title, hours: t.hours, week: t.week }));
 
   const inProgress = ALL_TOPICS.filter(t => progress[t.id] === 'in_progress');
   const notStarted = ALL_TOPICS
@@ -90,15 +103,18 @@ export default async function Dashboard() {
           {/* Overall card with track status pill */}
           <div className="bg-white border border-[#E8E4DE] rounded-xl p-4 sm:p-5">
             <p className="text-[10px] text-[#9B9590] uppercase tracking-[0.08em] mb-2">Overall</p>
-            <p className="font-[family-name:var(--font-playfair)] text-[26px] sm:text-[30px] font-bold leading-none text-[#7EB8A4]">
+            <p className="font-[family-name:var(--font-playfair)] text-[26px] sm:text-[30px] font-bold leading-none text-[#7EB8A4] mb-2">
               {pct}%
             </p>
-            <span
-              className="inline-block mt-2 text-[10px] font-semibold px-2 py-0.5 rounded-full"
-              style={{ background: trackStatus.bg, color: trackStatus.text }}
-            >
-              {trackStatus.label}
-            </span>
+            <TrackStatusPill
+              label={trackStatus.label}
+              bg={trackStatus.bg}
+              textColor={trackStatus.text}
+              ratio={trackRatio}
+              hoursExpected={expectedHours}
+              adjustedHoursDone={adjustedDoneHours}
+              overdueTopics={overdueTopics}
+            />
           </div>
         </div>
 
