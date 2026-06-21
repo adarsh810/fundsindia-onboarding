@@ -33,6 +33,27 @@ export default async function Dashboard() {
     return 99;
   }
 
+  function topicEndWeek(w: string): number {
+    const range = w.match(/W\d+[–\-](\d+)/);
+    if (range) return parseInt(range[1]);
+    const comma = w.match(/W\d+,\s*(\d+)/);
+    if (comma) return parseInt(comma[1]);
+    const simple = w.match(/^W(\d+)$/);
+    if (simple) return parseInt(simple[1]);
+    return 99;
+  }
+
+  const expectedHours = ALL_TOPICS
+    .filter(t => topicEndWeek(t.week) <= currentWeek)
+    .reduce((a, t) => a + t.hours, 0);
+
+  const trackRatio = expectedHours > 0 ? doneHours / expectedHours : 1;
+  const trackStatus = trackRatio >= 0.9
+    ? { label: 'On track', bg: '#D1FAE5', text: '#065F46' }
+    : trackRatio >= 0.6
+    ? { label: 'Slightly behind', bg: '#FEF3C7', text: '#92400E' }
+    : { label: 'Off track', bg: '#FEE2E2', text: '#991B1B' };
+
   const inProgress = ALL_TOPICS.filter(t => progress[t.id] === 'in_progress');
   const notStarted = ALL_TOPICS
     .filter(t => (progress[t.id] ?? 'not_started') === 'not_started')
@@ -54,10 +75,9 @@ export default async function Dashboard() {
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
           {[
-            { label: 'Topics done',     value: doneCount,  suffix: `/${ALL_TOPICS.length}`, color: '#6DB07A' },
-            { label: 'In progress',     value: activeCount, suffix: ' topics',             color: '#F4C97A' },
-            { label: 'Hours covered',   value: doneHours,  suffix: `/${TOTAL_HOURS}h`,     color: '#A89FD8' },
-            { label: 'Overall',         value: pct + '%',  suffix: '',                     color: '#7EB8A4' },
+            { label: 'Topics done',   value: doneCount,   suffix: `/${ALL_TOPICS.length}`, color: '#6DB07A' },
+            { label: 'In progress',   value: activeCount, suffix: ' topics',               color: '#F4C97A' },
+            { label: 'Hours covered', value: doneHours,   suffix: `/${TOTAL_HOURS}h`,      color: '#A89FD8' },
           ].map(m => (
             <div key={m.label} className="bg-white border border-[#E8E4DE] rounded-xl p-4 sm:p-5">
               <p className="text-[10px] text-[#9B9590] uppercase tracking-[0.08em] mb-2">{m.label}</p>
@@ -66,6 +86,20 @@ export default async function Dashboard() {
               </p>
             </div>
           ))}
+
+          {/* Overall card with track status pill */}
+          <div className="bg-white border border-[#E8E4DE] rounded-xl p-4 sm:p-5">
+            <p className="text-[10px] text-[#9B9590] uppercase tracking-[0.08em] mb-2">Overall</p>
+            <p className="font-[family-name:var(--font-playfair)] text-[26px] sm:text-[30px] font-bold leading-none text-[#7EB8A4]">
+              {pct}%
+            </p>
+            <span
+              className="inline-block mt-2 text-[10px] font-semibold px-2 py-0.5 rounded-full"
+              style={{ background: trackStatus.bg, color: trackStatus.text }}
+            >
+              {trackStatus.label}
+            </span>
+          </div>
         </div>
 
         {/* Track progress */}
