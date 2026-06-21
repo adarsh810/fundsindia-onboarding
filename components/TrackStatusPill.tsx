@@ -33,6 +33,13 @@ export default function TrackStatusPill({
         <span style={{ opacity: 0.6 }}>· {Math.round(ratio * 100)}% of target</span>
       </span>
 
+      {isOnTrack && hovered && (
+        <div className="absolute left-0 top-full mt-2 z-50 w-56 bg-[#1C1C1A] text-[#FAF8F5] rounded-xl p-3.5 shadow-xl text-[11px] leading-relaxed">
+          <p className="font-semibold text-[#6DB07A] mb-1">Solid progress.</p>
+          <p className="text-[#9B9590]">You&apos;re keeping pace with the schedule. Stay consistent and the rest will follow.</p>
+        </div>
+      )}
+
       {!isOnTrack && hovered && (
         <div className="absolute left-0 top-full mt-2 z-50 w-64 bg-[#1C1C1A] text-[#FAF8F5] rounded-xl p-3.5 shadow-xl text-[11px]">
           <p className="font-semibold mb-2.5" style={{ color: '#F4C97A' }}>
