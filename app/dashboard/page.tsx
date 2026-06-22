@@ -22,7 +22,11 @@ export default async function Dashboard() {
 
   const WEEK1_START = new Date('2026-06-08T00:00:00+05:30');
   const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
-  const currentWeek = Math.min(Math.max(Math.floor((Date.now() - WEEK1_START.getTime()) / MS_PER_WEEK) + 1, 1), 10);
+  const msElapsed = Date.now() - WEEK1_START.getTime();
+  const currentWeek = Math.min(Math.max(Math.floor(msElapsed / MS_PER_WEEK) + 1, 1), 10);
+  // Day-level proration: how far through the current week (1–7, capped at 7)
+  const dayOfWeek = Math.min(Math.floor((msElapsed % MS_PER_WEEK) / (24 * 60 * 60 * 1000)) + 1, 7);
+  const weekProgress = dayOfWeek / 7;
 
   function topicStartWeek(w: string): number {
     const simple = w.match(/^W(\d+)$/);
@@ -44,9 +48,12 @@ export default async function Dashboard() {
     return 99;
   }
 
-  const expectedHours = ALL_TOPICS
-    .filter(t => topicEndWeek(t.week) <= currentWeek)
-    .reduce((a, t) => a + t.hours, 0);
+  const expectedHours = ALL_TOPICS.reduce((a, t) => {
+    const end = topicEndWeek(t.week);
+    if (end < currentWeek) return a + t.hours;               // past week — full hours
+    if (end === currentWeek) return a + t.hours * weekProgress; // current week — prorated
+    return a;                                                  // future — not expected
+  }, 0);
 
   // In-progress topics count at 30% — fairer than 0%
   const adjustedDoneHours =
