@@ -580,6 +580,13 @@ export const WEEKS: Week[] = [
 export const ALL_TOPICS = TOPICS.flatMap(l1 => l1.categories.flatMap(c => c.topics));
 export const TOTAL_HOURS = TOPICS.reduce((a, l) => a + l.hours, 0);
 
+export const ONBOARDING_TOPICS: L1Track[] = [
+  { id: 'l1', label: 'AI Native PM',    hours: 0, color: '#2D6A4F', accent: '#B7E4C7', categories: [] },
+  { id: 'l2', label: 'Finance 101–103', hours: 0, color: '#1B4F72', accent: '#AED6F1', categories: [] },
+  { id: 'l3', label: 'FundsIndia 101',  hours: 0, color: '#6B3FA0', accent: '#D7BDE2', categories: [] },
+  { id: 'l4', label: 'AI SDLC 101–201', hours: 0, color: '#B7410E', accent: '#FAD7A0', categories: [] },
+];
+
 export function findTopicById(id: string) {
   return ALL_TOPICS.find(t => t.id === id) ?? null;
 }
