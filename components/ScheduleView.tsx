@@ -7,7 +7,7 @@ import type { ProgressMap } from '@/lib/types';
 
 // ─── Date helpers ────────────────────────────────────────────────────────────
 
-const WEEK1_START = new Date('2026-06-08T00:00:00+05:30');
+const WEEK1_START = new Date('2026-06-15T00:00:00+05:30');
 const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
 
 function getCurrentWeek(): number {
