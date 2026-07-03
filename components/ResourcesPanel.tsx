@@ -101,6 +101,7 @@ function SortableRow({
   onToggleOpen,
   onToggleDone,
   onSummarise,
+  onAddNotes,
   onRemove,
   onStartEdit,
   onEditChange,
@@ -123,6 +124,7 @@ function SortableRow({
   onToggleOpen: () => void;
   onToggleDone: () => void;
   onSummarise: () => void;
+  onAddNotes: () => void;
   onRemove: () => void;
   onStartEdit: () => void;
   onEditChange: (v: string) => void;
@@ -205,13 +207,23 @@ function SortableRow({
             </span>
           </button>
         ) : (
-          <button
-            onClick={onSummarise}
-            className="shrink-0 text-[10px] font-semibold px-2.5 py-1 rounded-full border transition-all hover:brightness-95"
-            style={{ borderColor: trackColor, color: trackColor }}
-          >
-            ✦ Summarise
-          </button>
+          <div className="shrink-0 flex items-center gap-1.5">
+            <button
+              onClick={onSummarise}
+              className="text-[10px] font-semibold px-2 py-0.5 rounded-full border transition-all hover:brightness-95"
+              style={{ borderColor: trackColor, color: trackColor }}
+              title="AI-generate a summary"
+            >
+              ✦ AI
+            </button>
+            <button
+              onClick={onAddNotes}
+              className="text-[10px] font-medium px-2 py-0.5 rounded-full border border-[#D5CFC8] text-[#9B9590] hover:border-[#9B9590] hover:text-[#4A4540] transition-colors"
+              title="Write your own notes"
+            >
+              ✎ Notes
+            </button>
+          </div>
         )}
 
         {/* Remove */}
@@ -232,93 +244,91 @@ function SortableRow({
         </div>
       )}
 
-      {/* Notes panel */}
-      {summary && isOpen && (
+      {/* Notes edit panel — shown when editing (with or without existing summary) */}
+      {editing && (
         <div className="border-t border-[#EEE9E2] px-4 py-3 bg-[#FAF8F5]">
-          {editing ? (
-            <>
-              <textarea
-                autoFocus
-                value={editText}
-                onChange={e => onEditChange(e.target.value)}
-                onKeyDown={e => {
-                  const el = e.currentTarget;
-                  const pos = el.selectionStart;
+          <textarea
+            autoFocus
+            value={editText}
+            onChange={e => onEditChange(e.target.value)}
+            onKeyDown={e => {
+              const el = e.currentTarget;
+              const pos = el.selectionStart;
 
-                  if (e.key === 'Tab') {
-                    e.preventDefault();
-                    const next = editText.slice(0, pos) + '  ' + editText.slice(el.selectionEnd);
-                    onEditChange(next);
-                    requestAnimationFrame(() => { el.selectionStart = el.selectionEnd = pos + 2; });
-                    return;
-                  }
+              if (e.key === 'Tab') {
+                e.preventDefault();
+                const next = editText.slice(0, pos) + '  ' + editText.slice(el.selectionEnd);
+                onEditChange(next);
+                requestAnimationFrame(() => { el.selectionStart = el.selectionEnd = pos + 2; });
+                return;
+              }
 
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    const before = editText.slice(0, pos);
-                    const currentLine = before.split('\n').pop() ?? '';
-                    const m = currentLine.match(/^(\d+)\.\s+\S/);
-                    if (m) {
-                      e.preventDefault();
-                      const insert = '\n' + (parseInt(m[1]) + 1) + '. ';
-                      onEditChange(editText.slice(0, pos) + insert + editText.slice(el.selectionEnd));
-                      requestAnimationFrame(() => { el.selectionStart = el.selectionEnd = pos + insert.length; });
-                    }
-                    // Shift+Enter or non-bullet line → let browser insert a plain newline
-                  }
-                }}
-                className="w-full text-[12px] text-[#3A3530] leading-relaxed bg-white border border-[#D8D3CC] rounded-lg px-3 py-2.5 resize-none focus:outline-none focus:border-[#9B9590] transition-colors"
-                rows={Math.max(5, editText.split('\n').length + 1)}
-                placeholder="1. First note&#10;2. Second note&#10;   - sub-point (Tab to indent)"
-              />
-              <p className="text-[10px] text-[#C8C2BA] mt-1">Enter → next bullet · Shift+Enter → new line within bullet · Tab → sub-point</p>
-              <div className="flex items-center gap-2 mt-2">
-                <button
-                  onClick={onSaveEdit}
-                  disabled={saving}
-                  className="text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white transition-all hover:brightness-90 disabled:opacity-50"
-                  style={{ background: trackColor }}
-                >
-                  {saving ? 'Saving…' : 'Save'}
-                </button>
-                <button onClick={onCancelEdit} className="text-[11px] text-[#9B9590] hover:text-[#4A4540] transition-colors">
-                  Cancel
-                </button>
-              </div>
-            </>
-          ) : (
-            <ul className="space-y-2">
-              {summary.bullets.map((b, bi) => {
-                const lines = b.split('\n');
-                return (
-                  <li key={bi} className="flex items-start gap-2.5 text-[12px] text-[#3A3530] leading-snug">
-                    <span className="shrink-0 mt-0.5 text-[10px] font-bold" style={{ color: trackColor }}>{bi + 1}.</span>
-                    <div className="flex-1">
-                      {lines.map((line, li) =>
-                        /^\s*[-•]\s/.test(line) ? (
-                          <div key={li} className="flex items-start gap-1.5 mt-1 ml-1">
-                            <span className="shrink-0 text-[9px] mt-0.5 font-bold" style={{ color: trackColor }}>–</span>
-                            <span>{line.replace(/^\s*[-•]\s+/, '')}</span>
-                          </div>
-                        ) : (
-                          <div key={li}>{line}</div>
-                        )
-                      )}
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
+              if (e.key === 'Enter' && !e.shiftKey) {
+                const before = editText.slice(0, pos);
+                const currentLine = before.split('\n').pop() ?? '';
+                const m = currentLine.match(/^(\d+)\.\s+\S/);
+                if (m) {
+                  e.preventDefault();
+                  const insert = '\n' + (parseInt(m[1]) + 1) + '. ';
+                  onEditChange(editText.slice(0, pos) + insert + editText.slice(el.selectionEnd));
+                  requestAnimationFrame(() => { el.selectionStart = el.selectionEnd = pos + insert.length; });
+                }
+              }
+            }}
+            className="w-full text-[12px] text-[#3A3530] leading-relaxed bg-white border border-[#D8D3CC] rounded-lg px-3 py-2.5 resize-none focus:outline-none focus:border-[#9B9590] transition-colors"
+            rows={Math.max(5, editText.split('\n').length + 1)}
+            placeholder="1. First note&#10;2. Second note&#10;   - sub-point (Tab to indent)"
+          />
+          <p className="text-[10px] text-[#C8C2BA] mt-1">Enter → next bullet · Shift+Enter → new line · Tab → sub-point</p>
+          <div className="flex items-center gap-2 mt-2">
+            <button
+              onClick={onSaveEdit}
+              disabled={saving}
+              className="text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white transition-all hover:brightness-90 disabled:opacity-50"
+              style={{ background: trackColor }}
+            >
+              {saving ? 'Saving…' : 'Save'}
+            </button>
+            <button onClick={onCancelEdit} className="text-[11px] text-[#9B9590] hover:text-[#4A4540] transition-colors">
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Notes view panel — shown when summary exists, panel is open, and not currently editing */}
+      {summary && isOpen && !editing && (
+        <div className="border-t border-[#EEE9E2] px-4 py-3 bg-[#FAF8F5]">
+          <ul className="space-y-2">
+            {summary.bullets.map((b, bi) => {
+              const lines = b.split('\n');
+              return (
+                <li key={bi} className="flex items-start gap-2.5 text-[12px] text-[#3A3530] leading-snug">
+                  <span className="shrink-0 mt-0.5 text-[10px] font-bold" style={{ color: trackColor }}>{bi + 1}.</span>
+                  <div className="flex-1">
+                    {lines.map((line, li) =>
+                      /^\s*[-•]\s/.test(line) ? (
+                        <div key={li} className="flex items-start gap-1.5 mt-1 ml-1">
+                          <span className="shrink-0 text-[9px] mt-0.5 font-bold" style={{ color: trackColor }}>–</span>
+                          <span>{line.replace(/^\s*[-•]\s+/, '')}</span>
+                        </div>
+                      ) : (
+                        <div key={li}>{line}</div>
+                      )
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
           <div className="flex items-center justify-between mt-3 pt-2 border-t border-[#EEE9E2]">
             <p className="text-[10px] text-[#C8C2BA]">
               {new Date(summary.generated_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
             </p>
-            {!editing && (
-              <div className="flex items-center gap-3">
-                <button onClick={onStartEdit} className="text-[10px] text-[#9B9590] hover:text-[#4A4540] transition-colors">Edit</button>
-                <button onClick={onRegenerate} className="text-[10px] text-[#9B9590] hover:text-[#4A4540] transition-colors">Re-generate</button>
-              </div>
-            )}
+            <div className="flex items-center gap-3">
+              <button onClick={onStartEdit} className="text-[10px] text-[#9B9590] hover:text-[#4A4540] transition-colors">Edit</button>
+              <button onClick={onRegenerate} className="text-[10px] text-[#9B9590] hover:text-[#4A4540] transition-colors">Re-generate</button>
+            </div>
           </div>
         </div>
       )}
@@ -504,7 +514,14 @@ export default function ResourcesPanel({
     }
   }
 
-  async function saveEdit(url: string) {
+  function openFreshNotes(r: ManagedResource) {
+    if (!r.url) return;
+    setEditing(r.url);
+    setEditText('');
+    setOpen(prev => ({ ...prev, [r.url!]: true }));
+  }
+
+  async function saveEdit(url: string, label: string) {
     setSaving(true);
     const bullets: string[] = [];
     let current: string[] = [];
@@ -523,7 +540,7 @@ export default function ResourcesPanel({
       const res = await fetch('/api/summarise', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topicId, resourceUrl: url, bullets: filtered }),
+        body: JSON.stringify({ topicId, resourceUrl: url, resourceLabel: label, bullets: filtered }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? 'Failed');
@@ -642,10 +659,11 @@ export default function ResourcesPanel({
                   onToggleOpen={() => r.url && setOpen(prev => ({ ...prev, [r.url!]: !prev[r.url!] }))}
                   onToggleDone={() => toggleDone(r)}
                   onSummarise={() => summarise(r)}
+                  onAddNotes={() => openFreshNotes(r)}
                   onRemove={() => remove(r.label, 'primary')}
                   onStartEdit={() => { if (r.url && summaries[r.url]) { setEditing(r.url); setEditText(summaries[r.url].bullets.map((b, i) => `${i + 1}. ${b}`).join('\n')); } }}
                   onEditChange={setEditText}
-                  onSaveEdit={() => r.url && saveEdit(r.url)}
+                  onSaveEdit={() => r.url && saveEdit(r.url, r.label)}
                   onCancelEdit={() => setEditing(null)}
                   onRegenerate={() => summarise(r)}
                 />
@@ -745,10 +763,11 @@ export default function ResourcesPanel({
                   onToggleOpen={() => r.url && setOpen(prev => ({ ...prev, [r.url!]: !prev[r.url!] }))}
                   onToggleDone={() => {}}
                   onSummarise={() => summarise(r)}
+                  onAddNotes={() => openFreshNotes(r)}
                   onRemove={() => remove(r.label, 'additional')}
                   onStartEdit={() => { if (r.url && summaries[r.url]) { setEditing(r.url); setEditText(summaries[r.url].bullets.map((b, i) => `${i + 1}. ${b}`).join('\n')); } }}
                   onEditChange={setEditText}
-                  onSaveEdit={() => r.url && saveEdit(r.url)}
+                  onSaveEdit={() => r.url && saveEdit(r.url, r.label)}
                   onCancelEdit={() => setEditing(null)}
                   onRegenerate={() => summarise(r)}
                 />

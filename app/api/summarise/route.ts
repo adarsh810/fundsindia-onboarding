@@ -162,19 +162,27 @@ ${content}`,
 }
 
 export async function PATCH(req: NextRequest) {
-  const { topicId, resourceUrl, bullets } = await req.json();
+  const { topicId, resourceUrl, resourceLabel, bullets } = await req.json();
   if (!topicId || !resourceUrl || !Array.isArray(bullets))
     return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
 
   const { data, error } = await supabase
     .from('fi_resource_summaries')
-    .update({ bullets, sections: null })
-    .eq('user_id', USER_ID)
-    .eq('topic_id', topicId)
-    .eq('resource_url', resourceUrl)
+    .upsert(
+      {
+        user_id: USER_ID,
+        topic_id: topicId,
+        resource_url: resourceUrl,
+        resource_label: resourceLabel ?? resourceUrl,
+        bullets,
+        sections: null,
+        generated_at: new Date().toISOString(),
+      },
+      { onConflict: 'user_id,topic_id,resource_url' },
+    )
     .select('resource_url, resource_label, bullets, sections, generated_at')
     .single();
 
-  if (error || !data) return NextResponse.json({ error: 'Failed to update' }, { status: 500 });
+  if (error || !data) return NextResponse.json({ error: 'Failed to save notes' }, { status: 500 });
   return NextResponse.json({ summary: data });
 }
