@@ -103,7 +103,7 @@ export default function ArtifactReviewer({ topicId, artifactDesc }: { topicId: s
                 <span className={`text-sm font-semibold ${vc.text}`}>{vc.label}</span>
                 <div className="flex items-center gap-2">
                   <div className="w-24 h-1.5 bg-white/60 rounded-full overflow-hidden">
-                    <div className="h-full rounded-full bg-current transition-all" style={{ width: `${result.score * 10}%`, color: vc.text.replace('text-', '') }} />
+                    <div className={`h-full rounded-full transition-all ${vc.text.replace('text-', 'bg-')}`} style={{ width: `${result.score * 10}%` }} />
                   </div>
                   <span className={`text-sm font-bold ${vc.text}`}>{result.score}/10</span>
                 </div>

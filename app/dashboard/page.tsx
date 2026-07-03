@@ -106,8 +106,7 @@ export default async function Dashboard() {
             { label: 'In progress',   value: activeCount, suffix: ' topics',               color: '#E6A020' },
             { label: 'Hours covered', value: doneHours,   suffix: `/${TOTAL_HOURS}h`,      color: '#7B68C8' },
           ].map(m => (
-            <div key={m.label} className="bg-white border border-[#E8E4DE] rounded-xl overflow-hidden">
-              <div className="h-1.5" style={{ background: m.color }} />
+            <div key={m.label} className="bg-white border border-[#E8E4DE] rounded-xl" style={{ borderTop: `3px solid ${m.color}` }}>
               <div className="p-4 sm:p-5">
                 <p className="text-[10px] text-[#9B9590] uppercase tracking-[0.08em] mb-2">{m.label}</p>
                 <p className="font-[family-name:var(--font-playfair)] text-[26px] sm:text-[30px] font-bold leading-none" style={{ color: m.color }}>
@@ -118,8 +117,7 @@ export default async function Dashboard() {
           ))}
 
           {/* Overall card with track status pill */}
-          <div className="bg-white border border-[#E8E4DE] rounded-xl overflow-hidden">
-            <div className="h-1.5 bg-[#4B9E85]" />
+          <div className="bg-white border border-[#E8E4DE] rounded-xl" style={{ borderTop: '3px solid #4B9E85' }}>
             <div className="p-4 sm:p-5">
               <p className="text-[10px] text-[#9B9590] uppercase tracking-[0.08em] mb-2">Overall</p>
               <p className="font-[family-name:var(--font-playfair)] text-[26px] sm:text-[30px] font-bold leading-none text-[#4B9E85] mb-2">
