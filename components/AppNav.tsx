@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { SHADOW_RAISED } from '@/lib/elevation';
 
 export default function AppNav() {
   const path = usePathname();
@@ -39,20 +40,28 @@ export default function AppNav() {
               <Link
                 key={l.href}
                 href={l.href}
-                className={`px-3.5 py-1.5 rounded-2xl text-[13px] tracking-[0.03em] transition-all ${
+                className={`px-3.5 py-1.5 rounded-2xl text-[13px] tracking-[0.03em] transition-all active:scale-[0.97] ${
                   path === l.href || path.startsWith(l.href + '/')
-                    ? 'bg-[#1C1C1A] text-[#FAF8F5] shadow-sm'
+                    ? 'text-[#FAF8F5]'
                     : 'text-[#6B6560] hover:text-[#1C1C1A] hover:bg-[#EEEBE5]'
                 }`}
+              style={
+                path === l.href || path.startsWith(l.href + '/')
+                  ? { background: 'linear-gradient(135deg, #2A2A28 0%, #111110 100%)', boxShadow: SHADOW_RAISED }
+                  : {}
+              }
               >
                 {l.label}
               </Link>
             ))}
           </nav>
           <Link href="/"
-            className="ml-1 flex items-center gap-1 text-[11px] text-[#9B9590] hover:text-[#4A4540] transition-colors px-2.5 py-2 rounded-lg hover:bg-[#EEEBE5]"
-            title="Switch mode">
-            <span>⇄</span>
+            className="ml-1 flex items-center gap-1 text-[11px] text-[#9B9590] hover:text-[#4A4540] transition-colors px-2.5 py-2 rounded-lg hover:bg-[#EEEBE5] active:scale-[0.97]"
+            title="Switch mode"
+            aria-label="Switch mode">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+              <path d="M1.5 4.5h8M7 2l2.5 2.5L7 7M11.5 8.5h-8M6 6l-2.5 2.5L6 11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
             <span className="hidden sm:inline">Switch</span>
           </Link>
         </div>

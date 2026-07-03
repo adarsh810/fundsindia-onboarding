@@ -2,6 +2,7 @@
 
 import { useState, useTransition, useEffect } from 'react';
 import type { Status } from '@/lib/types';
+import { SHADOW_SUBTLE } from '@/lib/elevation';
 
 const OPTIONS: { value: Status; label: string }[] = [
   { value: 'not_started', label: 'Not started' },
@@ -46,11 +47,16 @@ export default function StatusToggle({ topicId, initial, color }: Props) {
           key={opt.value}
           type="button"
           onClick={() => update(opt.value)}
-          className="flex-1 py-2.5 text-xs font-medium rounded-lg border transition-all"
-          style={{
-            border: `1.5px solid ${status === opt.value ? color : '#E8E4DE'}`,
-            background: status === opt.value ? color : '#fff',
-            color: status === opt.value ? '#fff' : '#6B6560',
+          className="flex-1 py-2.5 text-xs font-medium rounded-lg border transition-all active:scale-[0.97]"
+          style={status === opt.value ? {
+            border: `1.5px solid ${color}`,
+            background: color,
+            color: '#fff',
+            boxShadow: `${SHADOW_SUBTLE}, 0 2px 8px ${color}28`,
+          } : {
+            border: '1.5px solid #E8E4DE',
+            background: '#fff',
+            color: '#6B6560',
           }}
         >
           {opt.label}

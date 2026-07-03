@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { TOPICS } from '@/lib/data';
 import type { ProgressMap, Status } from '@/lib/types';
+import { SHADOW_RAISED } from '@/lib/elevation';
 
 const CYCLE: Record<Status, Status> = {
   not_started: 'in_progress',
@@ -53,12 +54,16 @@ export default function PlanView({ initialProgress, initialTrack }: { initialPro
             <button
               key={l1.id}
               onClick={() => setActiveTrack(l1.id)}
-              className="text-[13px] px-4 py-2 rounded-full border font-medium transition-all hover:shadow-sm active:scale-[0.97]"
-              style={{
-                background: isActive ? l1.color : l1.accent,
-                color: isActive ? '#FAF8F5' : l1.color,
-                borderColor: isActive ? l1.color : 'transparent',
-                boxShadow: isActive ? `0 2px 8px ${l1.color}40` : undefined,
+              className="text-[13px] px-4 py-2 rounded-full border font-medium transition-all active:scale-[0.97] hover:opacity-90"
+              style={isActive ? {
+                background: `linear-gradient(135deg, ${l1.color} 0%, ${l1.color}E0 100%)`,
+                color: '#FAF8F5',
+                borderColor: 'transparent',
+                boxShadow: `${SHADOW_RAISED}, 0 4px 16px ${l1.color}35`,
+              } : {
+                background: l1.accent,
+                color: l1.color,
+                borderColor: 'transparent',
               }}
             >
               {l1.label} · {done}/{all.length}
@@ -111,7 +116,7 @@ export default function PlanView({ initialProgress, initialTrack }: { initialPro
                   >
                     <button
                       onClick={e => cycleStatus(t.id, e)}
-                      className="shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all hover:scale-110 active:scale-95"
+                      className="shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all hover:scale-110 active:scale-[0.97]"
                       style={{ borderColor: s.dot, background: status === 'not_started' ? 'transparent' : s.bg }}
                       title={`${s.label} — click to advance`}
                     >

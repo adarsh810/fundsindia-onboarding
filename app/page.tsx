@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { SHADOW_SUBTLE, SHADOW_RAISED, shadowFloat } from '@/lib/elevation';
 
 export default function Home() {
   const router = useRouter();
-  const [saved, setSaved] = useState<string | null>(null);
+  const [saved, setSaved]     = useState<string | null>(null);
+  const [hovered, setHovered] = useState<string | null>(null);
 
   useEffect(() => {
     setSaved(localStorage.getItem('fi-mode'));
@@ -18,22 +20,26 @@ export default function Home() {
 
   const tiles = [
     {
-      mode: 'pre-joining' as const,
-      title: 'Pre-joining KT',
-      subtitle: 'June 8 → August 8, 2026',
-      desc: 'Self-paced learning plan across AI, Finance, FundsIndia & SDLC — built for the weeks before you join.',
-      color: '#2D6A4F',
-      accent: '#B7E4C7',
-      stats: '182h · 10 weeks · 39 topics',
+      mode:       'pre-joining' as const,
+      title:      'Pre-joining KT',
+      subtitle:   'June 8 → August 8, 2026',
+      desc:       'Self-paced learning plan across AI, Finance, FundsIndia & SDLC — built for the weeks before you join.',
+      color:      '#2D6A4F',
+      colorDark:  '#1F5240',
+      colorLight: '#3D8A65',
+      accent:     '#B7E4C7',
+      stats:      '182h · 10 weeks · 39 topics',
     },
     {
-      mode: 'onboarding' as const,
-      title: 'Onboarding KT',
-      subtitle: 'Starting Day 1',
-      desc: 'Structured knowledge transfer for your first weeks at FundsIndia. Topics being set up.',
-      color: '#6B3FA0',
-      accent: '#D7BDE2',
-      stats: 'Topics coming soon',
+      mode:       'onboarding' as const,
+      title:      'Onboarding KT',
+      subtitle:   'Starting Day 1',
+      desc:       'Structured knowledge transfer for your first weeks at FundsIndia. Topics being set up.',
+      color:      '#6B3FA0',
+      colorDark:  '#52308A',
+      colorLight: '#8B5BC0',
+      accent:     '#D7BDE2',
+      stats:      'Topics coming soon',
     },
   ];
 
@@ -48,34 +54,88 @@ export default function Home() {
           <p className="text-[14px] text-[#6B6560]">Choose your learning mode to continue</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full max-w-2xl">
           {tiles.map(t => {
-            const isActive = saved === t.mode;
+            const isActive  = saved === t.mode;
+            const isHovered = hovered === t.mode;
+
             return (
               <button
                 key={t.mode}
                 onClick={() => pick(t.mode)}
-                className="text-left rounded-2xl overflow-hidden border-2 transition-all duration-200 hover:shadow-xl hover:-translate-y-1 active:scale-[0.99] bg-white"
-                style={{ borderColor: isActive ? t.color : '#E8E4DE' }}
+                onMouseEnter={() => setHovered(t.mode)}
+                onMouseLeave={() => setHovered(null)}
+                className="relative text-left rounded-2xl overflow-hidden border-2 transition-all duration-300 active:scale-[0.97]"
+                style={{
+                  borderColor: isActive
+                    ? t.color
+                    : isHovered ? `${t.color}55` : '#E8E4DE',
+                  background: isActive
+                    ? `linear-gradient(148deg, ${t.accent}95 0%, rgba(255,255,255,0.97) 58%)`
+                    : 'linear-gradient(148deg, #ffffff 0%, #F6F3EF 100%)',
+                  boxShadow: isHovered
+                    ? shadowFloat(t.color)
+                    : isActive
+                    ? `${SHADOW_RAISED}, 0 4px 16px ${t.color}22`
+                    : SHADOW_SUBTLE,
+                  transform: isHovered ? 'translateY(-6px)' : undefined,
+                }}
               >
-                <div className="h-1 w-full" style={{ background: isActive ? t.color : t.accent }} />
-                <div className="p-6">
+                {/* Gloss overlay — subtle light catch, only visible on active (tinted) surface */}
+                {isActive && (
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      background: 'linear-gradient(155deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 36%)',
+                      borderRadius: 'inherit',
+                    }}
+                  />
+                )}
+
+                {/* Top accent bar — luminosity gradient */}
+                <div
+                  className="relative h-[3px] w-full"
+                  style={{
+                    background: `linear-gradient(90deg, ${t.colorDark} 0%, ${t.color} 45%, ${t.colorLight} 100%)`,
+                  }}
+                />
+
+                <div className="relative p-6">
                   {isActive && (
-                    <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mb-3"
-                      style={{ background: t.color, color: '#FAF8F5' }}>
+                    <span
+                      className="inline-flex items-center text-[10px] font-semibold px-2.5 py-0.5 rounded-full mb-3"
+                      style={{ background: t.color, color: '#FAF8F5' }}
+                    >
                       Last used
                     </span>
                   )}
+
                   <p className="text-[11px] font-semibold uppercase tracking-[0.08em] mb-1.5" style={{ color: t.color }}>
                     {t.subtitle}
                   </p>
                   <h2 className="font-[family-name:var(--font-playfair)] text-[22px] font-bold text-[#1C1C1A] mb-2.5">
                     {t.title}
                   </h2>
-                  <p className="text-[13px] text-[#6B6560] leading-relaxed mb-4">{t.desc}</p>
+                  <p className="text-[13px] text-[#6B6560] leading-relaxed mb-5">{t.desc}</p>
+
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] text-[#9B9590]">{t.stats}</span>
-                    <span className="text-[13px] font-semibold" style={{ color: t.color }}>Open →</span>
+
+                    {/* Glossy CTA pill — luminosity gradient */}
+                    <span
+                      className="inline-flex items-center gap-1.5 text-[12px] font-semibold px-4 py-1.5 rounded-full text-white transition-all duration-200"
+                      style={{
+                        background: `linear-gradient(135deg, ${t.colorLight} 0%, ${t.color} 50%, ${t.colorDark} 100%)`,
+                        boxShadow: isHovered
+                          ? `${SHADOW_RAISED}, 0 4px 14px ${t.color}55`
+                          : `0 2px 8px ${t.color}40`,
+                      }}
+                    >
+                      Open
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                        <path d="M2.5 6h7m0 0L6.5 3m3 3L6.5 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </span>
                   </div>
                 </div>
               </button>
