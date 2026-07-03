@@ -212,7 +212,7 @@ export default function ScheduleView({ progress }: { progress: ProgressMap }) {
             style={{ border: isCurrent ? '2px solid #2D6A4F' : '1px solid #E8E4DE' }}>
 
             <button onClick={() => setOpenWeek(isOpen ? null : weekNum)}
-              className="w-full flex items-center justify-between px-5 py-3.5 hover:bg-[#FAF8F5] transition-colors text-left">
+              className={`w-full flex items-center justify-between px-5 py-4 transition-colors text-left ${isCurrent ? 'bg-[#F0F9F4] hover:bg-[#EAF5EE]' : 'hover:bg-[#FAF8F5]'}`}>
               <div className="flex items-center gap-2.5 min-w-0 flex-wrap">
                 <h2 className="font-[family-name:var(--font-playfair)] text-[17px] font-bold text-[#1C1C1A] shrink-0">
                   Week {weekNum}
@@ -242,7 +242,7 @@ export default function ScheduleView({ progress }: { progress: ProgressMap }) {
                   const status = progress[id] ?? 'not_started';
                   return (
                     <Link key={id} href={`/topic/${id}`} onClick={e => e.stopPropagation()}
-                      className="text-[10px] px-2 py-0.5 rounded-full border hover:brightness-95 transition-all"
+                      className="text-[10px] px-2 py-0.5 rounded-full border hover:brightness-95 hover:underline transition-all"
                       style={{ borderColor: track.color, color: statusTextColor(status, track), background: statusBg(status, track) }}>
                       {topic.id}{status === 'done' ? ' ✓' : status === 'in_progress' ? ' ~' : ''}
                     </Link>

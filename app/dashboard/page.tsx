@@ -85,43 +85,56 @@ export default async function Dashboard() {
       <AppNav />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
 
-        <div className="mb-8">
-          <h1 className="font-[family-name:var(--font-playfair)] text-[30px] sm:text-[36px] font-bold tracking-tight text-[#1C1C1A] mb-1.5">
-            Your learning journey
-          </h1>
-          <p className="text-sm text-[#6B6560]">June 8 → August 8, 2026 · FundsIndia joins in 2 months</p>
+        <div className="mb-8 flex items-start justify-between flex-wrap gap-3">
+          <div>
+            <h1 className="font-[family-name:var(--font-playfair)] text-[30px] sm:text-[36px] font-bold tracking-tight text-[#1C1C1A] mb-1.5">
+              Your learning journey
+            </h1>
+            <p className="text-sm text-[#6B6560]">June 8 → August 8, 2026 · FundsIndia joins in 2 months</p>
+          </div>
+          <div className="flex items-center gap-2 bg-white border border-[#E8E4DE] rounded-xl px-4 py-2.5 self-start shrink-0">
+            <div className="w-2 h-2 rounded-full bg-[#2D6A4F]" />
+            <span className="text-sm font-semibold text-[#1C1C1A]">Week {currentWeek}</span>
+            <span className="text-xs text-[#9B9590]">of 10</span>
+          </div>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
           {[
             { label: 'Topics done',   value: doneCount,   suffix: `/${ALL_TOPICS.length}`, color: '#6DB07A' },
-            { label: 'In progress',   value: activeCount, suffix: ' topics',               color: '#F4C97A' },
-            { label: 'Hours covered', value: doneHours,   suffix: `/${TOTAL_HOURS}h`,      color: '#A89FD8' },
+            { label: 'In progress',   value: activeCount, suffix: ' topics',               color: '#E6A020' },
+            { label: 'Hours covered', value: doneHours,   suffix: `/${TOTAL_HOURS}h`,      color: '#7B68C8' },
           ].map(m => (
-            <div key={m.label} className="bg-white border border-[#E8E4DE] rounded-xl p-4 sm:p-5">
-              <p className="text-[10px] text-[#9B9590] uppercase tracking-[0.08em] mb-2">{m.label}</p>
-              <p className="font-[family-name:var(--font-playfair)] text-[26px] sm:text-[30px] font-bold leading-none" style={{ color: m.color }}>
-                {m.value}<span className="text-sm font-normal text-[#9B9590] font-[family-name:var(--font-dm)]">{m.suffix}</span>
-              </p>
+            <div key={m.label} className="bg-white border border-[#E8E4DE] rounded-xl overflow-hidden">
+              <div className="h-1.5" style={{ background: m.color }} />
+              <div className="p-4 sm:p-5">
+                <p className="text-[10px] text-[#9B9590] uppercase tracking-[0.08em] mb-2">{m.label}</p>
+                <p className="font-[family-name:var(--font-playfair)] text-[26px] sm:text-[30px] font-bold leading-none" style={{ color: m.color }}>
+                  {m.value}<span className="text-sm font-normal text-[#9B9590] font-[family-name:var(--font-dm)]">{m.suffix}</span>
+                </p>
+              </div>
             </div>
           ))}
 
           {/* Overall card with track status pill */}
-          <div className="bg-white border border-[#E8E4DE] rounded-xl p-4 sm:p-5">
-            <p className="text-[10px] text-[#9B9590] uppercase tracking-[0.08em] mb-2">Overall</p>
-            <p className="font-[family-name:var(--font-playfair)] text-[26px] sm:text-[30px] font-bold leading-none text-[#7EB8A4] mb-2">
-              {pct}%
-            </p>
-            <TrackStatusPill
-              label={trackStatus.label}
-              bg={trackStatus.bg}
-              textColor={trackStatus.text}
-              ratio={trackRatio}
-              hoursExpected={expectedHours}
-              adjustedHoursDone={adjustedDoneHours}
-              overdueTopics={overdueTopics}
-            />
+          <div className="bg-white border border-[#E8E4DE] rounded-xl overflow-hidden">
+            <div className="h-1.5 bg-[#4B9E85]" />
+            <div className="p-4 sm:p-5">
+              <p className="text-[10px] text-[#9B9590] uppercase tracking-[0.08em] mb-2">Overall</p>
+              <p className="font-[family-name:var(--font-playfair)] text-[26px] sm:text-[30px] font-bold leading-none text-[#4B9E85] mb-2">
+                {pct}%
+              </p>
+              <TrackStatusPill
+                label={trackStatus.label}
+                bg={trackStatus.bg}
+                textColor={trackStatus.text}
+                ratio={trackRatio}
+                hoursExpected={expectedHours}
+                adjustedHoursDone={adjustedDoneHours}
+                overdueTopics={overdueTopics}
+              />
+            </div>
           </div>
         </div>
 
@@ -146,7 +159,7 @@ export default async function Dashboard() {
                     </div>
                     <span className="text-xs text-[#9B9590]">{done}/{l1topics.length} · {l1.hours}h</span>
                   </div>
-                  <div className="h-1.5 bg-[#E8E4DE] rounded-full overflow-hidden">
+                  <div className="h-2 bg-[#E8E4DE] rounded-full overflow-hidden">
                     <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pctDone}%`, background: l1.color }} />
                   </div>
                 </Link>
@@ -157,21 +170,26 @@ export default async function Dashboard() {
 
         {/* What to do now */}
         <div className="bg-[#1C1C1A] rounded-xl p-5 sm:p-6 text-[#FAF8F5]">
-          <h2 className="font-[family-name:var(--font-playfair)] text-[18px] font-semibold mb-1">What to do now</h2>
-          <p className="text-xs text-[#6B6560] mb-5">Next 3 topics to start based on the weekly schedule</p>
-          <div className="space-y-0 divide-y divide-[#2D2D2A]">
+          <div className="flex items-center justify-between mb-1">
+            <h2 className="font-[family-name:var(--font-playfair)] text-[18px] font-semibold">What to do now</h2>
+            <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: '#2D6A4F', color: '#B7E4C7' }}>Week {currentWeek}</span>
+          </div>
+          <p className="text-xs text-[#FAF8F5]/50 mb-5">Next 3 topics to start based on the weekly schedule</p>
+          <div className="divide-y divide-[#2D2D2A]">
             {nextTopics.map(t => {
               const track = findTrackForTopic(t.id)!;
               return (
-                <Link key={t.id} href={`/topic/${t.id}`} className="flex items-center gap-3 py-3 group">
-                  <div className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-bold text-white" style={{ background: track.color }}>
+                <Link key={t.id} href={`/topic/${t.id}`} className="flex items-center gap-3 py-3.5 group">
+                  <div className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-[10px] font-bold text-white" style={{ background: track.color }}>
                     {t.id}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium group-hover:underline">{t.title}</p>
-                    <p className="text-[11px] text-[#6B6560]">{t.week} · {t.hours}h · {track.label}</p>
+                    <p className="text-[11px] text-[#FAF8F5]/40 mt-0.5">{t.week} · {t.hours}h · {track.label}</p>
                   </div>
-                  <span className="text-[#6B6560] group-hover:text-[#FAF8F5] transition-colors">→</span>
+                  <svg className="w-4 h-4 text-[#4A4540] group-hover:text-[#FAF8F5] transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
                 </Link>
               );
             })}

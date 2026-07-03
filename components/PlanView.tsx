@@ -53,11 +53,12 @@ export default function PlanView({ initialProgress, initialTrack }: { initialPro
             <button
               key={l1.id}
               onClick={() => setActiveTrack(l1.id)}
-              className="text-xs px-3.5 py-1.5 rounded-full border font-medium transition-all"
+              className="text-[13px] px-4 py-2 rounded-full border font-medium transition-all hover:shadow-sm active:scale-[0.97]"
               style={{
                 background: isActive ? l1.color : l1.accent,
                 color: isActive ? '#FAF8F5' : l1.color,
                 borderColor: isActive ? l1.color : 'transparent',
+                boxShadow: isActive ? `0 2px 8px ${l1.color}40` : undefined,
               }}
             >
               {l1.label} · {done}/{all.length}
@@ -80,7 +81,7 @@ export default function PlanView({ initialProgress, initialTrack }: { initialPro
             )}
           </div>
           <div className="flex items-center gap-2.5">
-            <div className="flex-1 h-1.5 bg-[#EEE9E2] rounded-full overflow-hidden">
+            <div className="flex-1 h-2 bg-[#EEE9E2] rounded-full overflow-hidden">
               <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: track.color }} />
             </div>
             <span className="text-[11px] text-[#9B9590] shrink-0">{doneCount}/{allTopics.length} done</span>
@@ -92,8 +93,8 @@ export default function PlanView({ initialProgress, initialTrack }: { initialPro
       <div className="bg-white border border-[#E8E4DE] rounded-xl overflow-hidden">
         {track.categories.map((cat, ci) => (
           <div key={cat.name}>
-            <div className={`px-5 py-2.5 bg-[#FAF8F5] flex items-center gap-2 ${ci > 0 ? 'border-t border-[#EEE9E2]' : ''}`}>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#9B9590]">{cat.name}</p>
+            <div className={`px-5 py-3 bg-[#F5F2EE] flex items-center gap-2 ${ci > 0 ? 'border-t border-[#EEE9E2]' : ''}`}>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#6B6560]">{cat.name}</p>
               <span className="text-[10px] text-[#C8C2BA]">
                 {cat.topics.filter(t => progress[t.id] === 'done').length}/{cat.topics.length}
               </span>
@@ -106,7 +107,7 @@ export default function PlanView({ initialProgress, initialTrack }: { initialPro
                   <Link
                     key={t.id}
                     href={`/topic/${t.id}`}
-                    className="flex items-center gap-3 px-5 py-3 hover:bg-[#FAF8F5] transition-colors group"
+                    className="flex items-center gap-3 px-5 py-3.5 hover:bg-[#FAF8F5] transition-colors group"
                   >
                     <button
                       onClick={e => cycleStatus(t.id, e)}

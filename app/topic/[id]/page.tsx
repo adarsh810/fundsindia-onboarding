@@ -44,31 +44,34 @@ export default async function TopicPage({ params }: Props) {
         <div className="flex-1 min-w-0">
 
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-xs text-[#9B9590] mb-5">
+        <div className="flex items-center gap-1.5 text-xs text-[#9B9590] mb-5">
           <Link href={`/plan?track=${track.id}`} className="hover:text-[#1C1C1A] transition-colors">Topics</Link>
-          <span>/</span>
+          <svg className="w-3 h-3 text-[#C8C2BA]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
           <span style={{ color: track.color }}>{track.label}</span>
-          <span>/</span>
+          <svg className="w-3 h-3 text-[#C8C2BA]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
           <span className="text-[#6B6560]">{topic.id}</span>
         </div>
 
         {/* Header */}
-        <div className="bg-white border border-[#E8E4DE] rounded-2xl p-5 sm:p-6 mb-4">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full" style={{ background: track.accent, color: track.color }}>{topic.id}</span>
-            <span className="text-[11px] text-[#9B9590]">{topic.week} · {topic.hours}h</span>
-            <span className="text-[11px] text-[#9B9590]">·</span>
-            <span className="text-[11px]" style={{ color: track.color }}>{track.label}</span>
+        <div className="bg-white border border-[#E8E4DE] rounded-2xl overflow-hidden mb-4">
+          <div className="h-1 w-full" style={{ background: track.color }} />
+          <div className="p-5 sm:p-6">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full" style={{ background: track.accent, color: track.color }}>{topic.id}</span>
+              <span className="text-[11px] text-[#9B9590]">{topic.week} · {topic.hours}h</span>
+              <span className="text-[11px] text-[#9B9590]">·</span>
+              <span className="text-[11px]" style={{ color: track.color }}>{track.label}</span>
+            </div>
+            <h1 className="font-[family-name:var(--font-playfair)] text-[22px] sm:text-[26px] font-bold text-[#1C1C1A] mb-1.5 leading-snug">{topic.title}</h1>
+            <p className="text-sm text-[#6B6560] mb-5">{topic.desc}</p>
+            <StatusToggle topicId={topic.id} initial={status} color={track.color} />
           </div>
-          <h1 className="font-[family-name:var(--font-playfair)] text-[22px] sm:text-[26px] font-bold text-[#1C1C1A] mb-1.5 leading-snug">{topic.title}</h1>
-          <p className="text-sm text-[#6B6560] mb-5">{topic.desc}</p>
-          <StatusToggle topicId={topic.id} initial={status} color={track.color} />
         </div>
 
         {/* Done when */}
         <div className="bg-white border border-[#E8E4DE] rounded-2xl p-5 mb-4">
           <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#9B9590] mb-3">✓ Done when you can</p>
-          <p className="text-sm text-[#3A3530] leading-relaxed border-l-2 pl-4" style={{ borderColor: track.color }}>{topic.done}</p>
+          <p className="text-sm text-[#3A3530] leading-relaxed border-l-[3px] pl-4" style={{ borderColor: track.color }}>{topic.done}</p>
         </div>
 
         {/* Resources panel — primary + additional, drag-and-drop */}
@@ -89,15 +92,15 @@ export default async function TopicPage({ params }: Props) {
         {/* Prev / Next */}
         <div className="flex justify-between gap-3">
           {prevId ? (
-            <Link href={`/topic/${prevId}`} className="flex items-center gap-1.5 text-xs text-[#6B6560] hover:text-[#1C1C1A] transition-colors">
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-              {findTopicById(prevId)?.title}
+            <Link href={`/topic/${prevId}`} className="flex items-center gap-1.5 text-xs text-[#6B6560] hover:text-[#1C1C1A] bg-white border border-[#E8E4DE] rounded-xl px-3.5 py-2.5 hover:border-[#C8C2BA] transition-all max-w-[48%]">
+              <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+              <span className="truncate">{findTopicById(prevId)?.title}</span>
             </Link>
           ) : <div />}
           {nextId ? (
-            <Link href={`/topic/${nextId}`} className="flex items-center gap-1.5 text-xs text-[#6B6560] hover:text-[#1C1C1A] transition-colors">
-              {findTopicById(nextId)?.title}
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+            <Link href={`/topic/${nextId}`} className="flex items-center gap-1.5 text-xs text-[#6B6560] hover:text-[#1C1C1A] bg-white border border-[#E8E4DE] rounded-xl px-3.5 py-2.5 hover:border-[#C8C2BA] transition-all max-w-[48%] ml-auto">
+              <span className="truncate">{findTopicById(nextId)?.title}</span>
+              <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
             </Link>
           ) : <div />}
         </div>

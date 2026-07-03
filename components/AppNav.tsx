@@ -15,7 +15,7 @@ export default function AppNav() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#E8E4DE] bg-[#FAF8F5]">
+    <header className="sticky top-0 z-50 border-b border-[#E8E4DE] bg-[#FAF8F5]/95 backdrop-blur-sm">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14">
         <div className="flex items-center gap-3">
           <Link href="/" className="font-[family-name:var(--font-playfair)] text-[17px] font-bold tracking-tight text-[#1C1C1A]">
@@ -41,7 +41,7 @@ export default function AppNav() {
                 href={l.href}
                 className={`px-3.5 py-1.5 rounded-2xl text-[13px] tracking-[0.03em] transition-all ${
                   path === l.href || path.startsWith(l.href + '/')
-                    ? 'bg-[#1C1C1A] text-[#FAF8F5]'
+                    ? 'bg-[#1C1C1A] text-[#FAF8F5] shadow-sm'
                     : 'text-[#6B6560] hover:text-[#1C1C1A] hover:bg-[#EEEBE5]'
                 }`}
               >
@@ -50,9 +50,10 @@ export default function AppNav() {
             ))}
           </nav>
           <Link href="/"
-            className="ml-1 text-[11px] text-[#9B9590] hover:text-[#4A4540] transition-colors px-2 py-1.5"
+            className="ml-1 flex items-center gap-1 text-[11px] text-[#9B9590] hover:text-[#4A4540] transition-colors px-2.5 py-2 rounded-lg hover:bg-[#EEEBE5]"
             title="Switch mode">
-            ⇄
+            <span>⇄</span>
+            <span className="hidden sm:inline">Switch</span>
           </Link>
         </div>
       </div>

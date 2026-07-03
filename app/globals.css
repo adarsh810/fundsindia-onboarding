@@ -16,6 +16,14 @@
 
 * { box-sizing: border-box; }
 
+html { scroll-behavior: smooth; }
+
+*:focus-visible {
+  outline: 2px solid #2D6A4F;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
 body {
   background: #FAF8F5;
   color: #1C1C1A;

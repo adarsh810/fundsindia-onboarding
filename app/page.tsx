@@ -41,11 +41,11 @@ export default function Home() {
     <div className="min-h-screen bg-[#FAF8F5] flex flex-col">
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-16">
         <div className="mb-12 text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9B9590] mb-3">FundsIndia</p>
-          <h1 className="font-[family-name:var(--font-playfair)] text-[38px] sm:text-[48px] font-bold tracking-tight text-[#1C1C1A] mb-3">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9B9590] mb-4">FundsIndia</p>
+          <h1 className="font-[family-name:var(--font-playfair)] text-[42px] sm:text-[52px] font-bold tracking-tight text-[#1C1C1A] mb-3 leading-[1.1]">
             FI Prep
           </h1>
-          <p className="text-sm text-[#6B6560]">Choose your learning mode to continue</p>
+          <p className="text-[14px] text-[#6B6560]">Choose your learning mode to continue</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
@@ -55,30 +55,28 @@ export default function Home() {
               <button
                 key={t.mode}
                 onClick={() => pick(t.mode)}
-                className="text-left rounded-2xl p-6 border-2 transition-all hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.99]"
-                style={{
-                  borderColor: isActive ? t.color : '#E8E4DE',
-                  background: isActive ? t.accent : '#FFFFFF',
-                }}
+                className="text-left rounded-2xl overflow-hidden border-2 transition-all duration-200 hover:shadow-xl hover:-translate-y-1 active:scale-[0.99] bg-white"
+                style={{ borderColor: isActive ? t.color : '#E8E4DE' }}
               >
-                {isActive && (
-                  <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mb-3"
-                    style={{ background: t.color, color: '#FAF8F5' }}>
-                    Last used
-                  </span>
-                )}
-                <p className="text-[11px] font-semibold uppercase tracking-[0.08em] mb-1" style={{ color: t.color }}>
-                  {t.subtitle}
-                </p>
-                <h2 className="font-[family-name:var(--font-playfair)] text-[22px] font-bold text-[#1C1C1A] mb-2">
-                  {t.title}
-                </h2>
-                <p className="text-[13px] text-[#6B6560] leading-relaxed mb-4">{t.desc}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] text-[#9B9590]">{t.stats}</span>
-                  <span className="text-[13px] font-semibold" style={{ color: t.color }}>
-                    Open →
-                  </span>
+                <div className="h-1 w-full" style={{ background: isActive ? t.color : t.accent }} />
+                <div className="p-6">
+                  {isActive && (
+                    <span className="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full mb-3"
+                      style={{ background: t.color, color: '#FAF8F5' }}>
+                      Last used
+                    </span>
+                  )}
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.08em] mb-1.5" style={{ color: t.color }}>
+                    {t.subtitle}
+                  </p>
+                  <h2 className="font-[family-name:var(--font-playfair)] text-[22px] font-bold text-[#1C1C1A] mb-2.5">
+                    {t.title}
+                  </h2>
+                  <p className="text-[13px] text-[#6B6560] leading-relaxed mb-4">{t.desc}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] text-[#9B9590]">{t.stats}</span>
+                    <span className="text-[13px] font-semibold" style={{ color: t.color }}>Open →</span>
+                  </div>
                 </div>
               </button>
             );
