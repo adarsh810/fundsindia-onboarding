@@ -187,7 +187,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Product comparison matrix: MF vs PMS vs AIF — fees, liquidity, target investor',
           },
           {
-            id: '2.6', title: 'Insurance & Tax Planning', desc: 'Term life, health, 80C/80D, new vs old regime, capital gains', hours: 4, week: 'W6',
+            id: '2.6', title: 'Insurance & Tax Planning', desc: 'Term life, health, 80C/80D, new vs old regime, capital gains', hours: 4, week: 'W7',
             done: 'Understand cross-sell opportunities in wealth-tech',
             resources: [
               { label: 'Zerodha Varsity — Personal Finance module', url: 'https://zerodha.com/varsity/module/personalfinance/' },
@@ -388,7 +388,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'FI architecture diagram: bounded contexts, how they communicate, where ACL sits',
           },
           {
-            id: '4.9', title: 'API Design & Contracts', desc: 'REST vs GraphQL vs gRPC, versioning, backward compatibility, OpenAPI, rate limiting, vendor SLA contracts', hours: 4, week: 'W5',
+            id: '4.9', title: 'API Design & Contracts', desc: 'REST vs GraphQL vs gRPC, versioning, backward compatibility, OpenAPI, rate limiting, vendor SLA contracts', hours: 4, week: 'W8',
             done: 'Design a vendor API integration spec and identify breaking vs non-breaking changes without asking engineering',
             resources: [
               { label: 'Stripe — API design best practices (docs)', url: 'https://stripe.com/docs/api' },
@@ -569,27 +569,27 @@ export const WEEKS: Week[] = [
   },
   {
     week: 'W5',
-    weekday: 'Multimodal & Doc AI (1.9) + SDLC Fundamentals (4.4) + API Design & Contracts (4.9) + CS Primitives 2.0 complete (4.13)',
+    weekday: 'Multimodal & Doc AI (1.9) + SDLC Fundamentals (4.4) + CS Primitives 2.0 complete (4.13)',
     weekend: 'Wealth Products (2.5) + Event Sourcing complete (4.3)',
-    artifacts: 'Document AI use case map, SDLC lifecycle diagram, API integration spec, Product comparison matrix, FI backend cheatsheet',
+    artifacts: 'Document AI use case map, SDLC lifecycle diagram, Product comparison matrix, FI backend cheatsheet',
   },
   {
     week: 'W6',
     weekday: 'AI in Business Ops (1.7) + AI-Augmented SDLC (4.5) + Cloud & Infra (4.10) + Frontend & Mobile 101 (4.14)',
-    weekend: 'Insurance & Tax (2.6) + Security & Compliance (4.7)',
-    artifacts: 'AI ops map, AI dev tools comparison, FI infrastructure map, Tax flowchart, Security checklist, FI frontend map',
+    weekend: 'Security & Compliance (4.7)',
+    artifacts: 'AI ops map, AI dev tools comparison, FI infrastructure map, Security checklist, FI frontend map',
   },
   {
     week: 'W7',
     weekday: 'Responsible AI (1.10) + AI Product Metrics (1.11) + Data Infrastructure (4.6)',
-    weekend: 'Goal-Based Planning (2.7)',
-    artifacts: 'Responsible AI checklist, AI metrics spec, FI data architecture, Financial plan',
+    weekend: 'Insurance & Tax (2.6) + Goal-Based Planning (2.7)',
+    artifacts: 'Responsible AI checklist, AI metrics spec, FI data architecture, Tax flowchart, Financial plan',
   },
   {
     week: 'W8',
-    weekday: 'LLM Deployment & Ops (4.8) + Observability & SRE (4.11)',
+    weekday: 'LLM Deployment & Ops (4.8) + Observability & SRE (4.11) + API Design & Contracts (4.9)',
     weekend: 'Hands-on Build (1.8)',
-    artifacts: 'Production AI checklist, SLO spec, Deployed portfolio monitor',
+    artifacts: 'Production AI checklist, SLO spec, API integration spec, Deployed portfolio monitor',
   },
   // ── Phase 2: FundsIndia Deep Dive ────────────────────────────────────────
   {
