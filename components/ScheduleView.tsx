@@ -271,9 +271,11 @@ export default function ScheduleView({ progress }: { progress: ProgressMap }) {
                   </div>
                 </div>
                 <DaySection emoji="⏱" dayLabels={['Mon', 'Tue', 'Wed', 'Thu', 'Fri']}
-                  hoursPerDay={2} topicIds={weekdayIds} progress={progress} />
+                  hoursPerDay={Math.max(2, Math.ceil(weekdayHours / 5))}
+                  topicIds={weekdayIds} progress={progress} />
                 <DaySection emoji="🌿" dayLabels={['Sat', 'Sun']}
-                  hoursPerDay={3} topicIds={weekendIds} progress={progress} />
+                  hoursPerDay={Math.max(3, Math.ceil(weekendHours / 2))}
+                  topicIds={weekendIds} progress={progress} />
                 <div className="border-t border-[#EEE9E2] pt-3">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[#9B9590] mb-1.5">📄 Artifacts due</p>
                   <p className="text-[11px] text-[#6B6560] leading-relaxed">{w.artifacts}</p>

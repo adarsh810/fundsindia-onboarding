@@ -411,7 +411,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Event sourcing explainer: why FI uses it, problems it solves, what it costs',
           },
           {
-            id: '4.13', title: 'CS Primitives 2.0', desc: 'Databases (SQL/NoSQL, indexes, transactions), backend/frontend language & framework choices, distributed systems (CAP, consistency, consensus), caching & scale', hours: 6, week: 'W4–5',
+            id: '4.13', title: 'CS Primitives 2.0', desc: 'Databases (SQL/NoSQL, indexes, transactions), backend/frontend language & framework choices, distributed systems (CAP, consistency, consensus), caching & scale', hours: 6, week: 'W5',
             done: 'Reason about why FI picked Postgres over Mongo for a given service; explain caching layers and consistency tradeoffs without engineering hand-holding',
             resources: [
               { label: 'Hussein Nasser — Fundamentals of Database Engineering (YouTube course, ~9h)', url: 'https://www.youtube.com/playlist?list=PLQnljOFTspQXjD0HOzN7P2tgzu7scWpl2' },
@@ -563,13 +563,13 @@ export const WEEKS: Week[] = [
   },
   {
     week: 'W4',
-    weekday: 'Agents complete (1.5) + AI Product Sense (1.6) + Architecture Patterns complete (4.2) + CS Primitives 2.0 start (4.13)',
+    weekday: 'Agents complete (1.5) + AI Product Sense (1.6) + Architecture Patterns complete (4.2)',
     weekend: 'Distribution Economics (2.4) + Event Sourcing start (4.3)',
     artifacts: 'Agent decision framework, Eval framework, FI architecture diagram, Revenue model diagram',
   },
   {
     week: 'W5',
-    weekday: 'Multimodal & Doc AI (1.9) + SDLC Fundamentals (4.4) + CS Primitives 2.0 complete (4.13)',
+    weekday: 'Multimodal & Doc AI (1.9) + SDLC Fundamentals (4.4) + CS Primitives 2.0 (4.13)',
     weekend: 'Wealth Products (2.5) + Event Sourcing complete (4.3)',
     artifacts: 'Document AI use case map, SDLC lifecycle diagram, Product comparison matrix, FI backend cheatsheet',
   },
