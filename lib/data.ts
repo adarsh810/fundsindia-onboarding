@@ -357,7 +357,7 @@ export const TOPICS: L1Track[] = [
     ],
   },
   {
-    id: 'l4', label: 'AI SDLC 101–201', hours: 58, color: '#B7410E', accent: '#FAD7A0',
+    id: 'l4', label: 'AI SDLC 101–201', hours: 69, color: '#B7410E', accent: '#FAD7A0',
     categories: [
       {
         name: 'CS & Architecture', topics: [
@@ -409,6 +409,32 @@ export const TOPICS: L1Track[] = [
               { label: 'Martin Kleppmann — Designing Data-Intensive Applications', url: 'https://dataintensive.net/' },
             ],
             artifact: 'Event sourcing explainer: why FI uses it, problems it solves, what it costs',
+          },
+          {
+            id: '4.13', title: 'CS Primitives 2.0', desc: 'Databases (SQL/NoSQL, indexes, transactions), backend/frontend language & framework choices, distributed systems (CAP, consistency, consensus), caching & scale', hours: 6, week: 'W4–5',
+            done: 'Reason about why FI picked Postgres over Mongo for a given service; explain caching layers and consistency tradeoffs without engineering hand-holding',
+            resources: [
+              { label: 'Hussein Nasser — Fundamentals of Database Engineering (YouTube course, ~9h)', url: 'https://www.youtube.com/playlist?list=PLQnljOFTspQXjD0HOzN7P2tgzu7scWpl2' },
+              { label: 'Use The Index, Luke! — SQL indexing tutorial (article)', url: 'https://use-the-index-luke.com/' },
+              { label: 'ByteByteGo — System Design videos (YouTube)', url: 'https://www.youtube.com/@ByteByteGo/videos' },
+              { label: 'Jepsen — Consistency Models (interactive article)', url: 'https://jepsen.io/consistency' },
+              { label: 'Distributed Systems for Fun and Profit (mixu.net, free online book)', url: 'http://book.mixu.net/distsys/' },
+              { label: 'Google SRE Book — Handling Overload + Load Balancing (free online)', url: 'https://sre.google/sre-book/handling-overload/' },
+            ],
+            artifact: 'FI backend cheatsheet: which service uses which DB, why; where caching sits; consistency guarantees for money movement vs KYC vs analytics',
+          },
+          {
+            id: '4.14', title: 'Frontend & Mobile 101', desc: 'SPA vs SSR vs MPA, React/Next.js, state, PWA, native vs React Native/Flutter, mobile release cadence', hours: 5, week: 'W6',
+            done: 'Read a frontend PR or mobile release plan and understand the tradeoffs; know when a PWA suffices vs when native is needed',
+            resources: [
+              { label: 'patterns.dev — Rendering Patterns (article)', url: 'https://www.patterns.dev/react/rendering-patterns' },
+              { label: 'Next.js — "React Foundations" course (interactive)', url: 'https://nextjs.org/learn/react-foundations' },
+              { label: 'Josh W. Comeau — Modern SPA alternatives (article)', url: 'https://www.joshwcomeau.com/react/modern-spa-alternatives/' },
+              { label: 'Theo (t3.gg) — You should probably use React Server Components (YouTube)', url: 'https://www.youtube.com/watch?v=63S4VCn8FKI' },
+              { label: 'web.dev — Progressive Web Apps overview (article)', url: 'https://web.dev/explore/progressive-web-apps' },
+              { label: 'React Native — Introduction (docs)', url: 'https://reactnative.dev/docs/getting-started' },
+            ],
+            artifact: 'FI frontend map: web (SSR/SPA?), mobile (native/RN/PWA?), where state lives, offline requirements for transactions vs discovery',
           },
         ],
       },
@@ -537,21 +563,21 @@ export const WEEKS: Week[] = [
   },
   {
     week: 'W4',
-    weekday: 'Agents complete (1.5) + AI Product Sense (1.6) + Architecture Patterns complete (4.2)',
+    weekday: 'Agents complete (1.5) + AI Product Sense (1.6) + Architecture Patterns complete (4.2) + CS Primitives 2.0 start (4.13)',
     weekend: 'Distribution Economics (2.4) + Event Sourcing start (4.3)',
     artifacts: 'Agent decision framework, Eval framework, FI architecture diagram, Revenue model diagram',
   },
   {
     week: 'W5',
-    weekday: 'Multimodal & Doc AI (1.9) + SDLC Fundamentals (4.4) + API Design & Contracts (4.9)',
+    weekday: 'Multimodal & Doc AI (1.9) + SDLC Fundamentals (4.4) + API Design & Contracts (4.9) + CS Primitives 2.0 complete (4.13)',
     weekend: 'Wealth Products (2.5) + Event Sourcing complete (4.3)',
-    artifacts: 'Document AI use case map, SDLC lifecycle diagram, API integration spec, Product comparison matrix',
+    artifacts: 'Document AI use case map, SDLC lifecycle diagram, API integration spec, Product comparison matrix, FI backend cheatsheet',
   },
   {
     week: 'W6',
-    weekday: 'AI in Business Ops (1.7) + AI-Augmented SDLC (4.5) + Cloud & Infra (4.10)',
+    weekday: 'AI in Business Ops (1.7) + AI-Augmented SDLC (4.5) + Cloud & Infra (4.10) + Frontend & Mobile 101 (4.14)',
     weekend: 'Insurance & Tax (2.6) + Security & Compliance (4.7)',
-    artifacts: 'AI ops map, AI dev tools comparison, FI infrastructure map, Tax flowchart, Security checklist',
+    artifacts: 'AI ops map, AI dev tools comparison, FI infrastructure map, Tax flowchart, Security checklist, FI frontend map',
   },
   {
     week: 'W7',
