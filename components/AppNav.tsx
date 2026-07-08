@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SHADOW_RAISED } from '@/lib/elevation';
+import { TOTAL_HOURS, ALL_TOPICS } from '@/lib/data';
 
 export default function AppNav() {
   const path = usePathname();
@@ -31,7 +32,7 @@ export default function AppNav() {
             {isOnboarding ? 'Onboarding' : 'Pre-joining'}
           </span>
           {!isOnboarding && (
-            <span className="hidden sm:block text-[11px] text-[#9B9590] tracking-[0.06em]">182 hrs · 10 weeks · 39 topics</span>
+            <span className="hidden sm:block text-[11px] text-[#9B9590] tracking-[0.06em]">{TOTAL_HOURS} hrs · 10 weeks · {ALL_TOPICS.length} topics</span>
           )}
         </div>
         <div className="flex items-center gap-2">

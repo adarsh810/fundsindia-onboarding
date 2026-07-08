@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { SHADOW_SUBTLE, SHADOW_RAISED, shadowFloat } from '@/lib/elevation';
+import { TOTAL_HOURS, ALL_TOPICS } from '@/lib/data';
 
 export default function Home() {
   const router = useRouter();
@@ -28,7 +29,7 @@ export default function Home() {
       colorDark:  '#1F5240',
       colorLight: '#3D8A65',
       accent:     '#B7E4C7',
-      stats:      '182h · 10 weeks · 39 topics',
+      stats:      `${TOTAL_HOURS}h · 10 weeks · ${ALL_TOPICS.length} topics`,
     },
     {
       mode:       'onboarding' as const,
