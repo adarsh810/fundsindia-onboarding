@@ -96,29 +96,36 @@ export async function POST(req: NextRequest) {
     max_tokens: 1500,
     messages: [{
       role: 'user',
-      content: `You are distilling a learning resource into its core ideas, organised by theme.
+      content: `You are distilling a learning resource into its essential ideas.
 
 Resource: "${resourceLabel}"
 Source type: ${sourceType === 'youtube' ? 'YouTube video transcript' : 'article/documentation'}
 
-Identify up to 5 natural sections or themes in the content. Format your response exactly like this:
+Your job:
+- Detect the natural emergent topics in the content honestly. This may be 1, 2, or at most 3-4. Do not force a topic count. Most resources have 1-3 real topics; anything more usually means you are inventing structure that isn't there.
+- For each topic, extract **exactly 3-4 essential bullets** — the ideas someone actually learns. If you only have 3 genuinely useful ideas, give 3. Never pad to 4.
+- If the content is thin (short article, narrow scope, or one clear thesis), a single-topic summary with 3-4 bullets is the correct answer.
+- Total bullets across all topics should almost never exceed 12. If yours is heading past that, you are including filler.
 
-## Section Title
+Format:
+## Topic name
 - Bullet one
 - Bullet two
 - Bullet three
 
-## Another Section
+## Next topic (only if there IS a distinct second topic)
 - Bullet one
 - Bullet two
+- Bullet three
 
 Rules:
-- Each section gets a crisp title (2–5 words) on a ## heading line
-- 3–5 bullets per section, each starting with -
-- Each bullet is one complete idea expressed plainly and confidently
-- Prioritise insight and essence over detail or specifics
-- No filler phrases like "the author explains" or "this section covers"
-- No other text — just the ## headings and - bullets
+- Topic titles: 2-5 words, concrete, name what the topic actually is. Never use "Introduction", "Overview", "Conclusion", "Key Points", or any generic label.
+- Bullets: one idea per bullet, expressed as if you understood it and are telling a peer at their level. Confident and plain.
+- Zero filler phrases ("the author discusses", "this section covers", "in summary", "in conclusion", "notably", "importantly").
+- No overlap between topics — if two headings would say similar things, they are one topic.
+- If a bullet just restates the topic title or another bullet, drop it.
+- Never pad. Fewer sharp bullets beats more padded ones. Every time.
+- Output nothing outside ## headings and - bullets. No preamble, no closing.
 
 Content:
 ${content}`,
