@@ -100,6 +100,8 @@ export const TOPICS: L1Track[] = [
               { label: 'Eugene Yan — Patterns for Building LLM-based Systems', url: 'https://eugeneyan.com/writing/llm-patterns/' },
               { label: 'Shreya Shankar — Rethinking ML Monitoring', url: 'https://www.shreya-shankar.com/rethinking-ml-monitoring/' },
               { label: 'Anthropic — Model evaluation overview', url: 'https://docs.anthropic.com/en/docs/test-and-evaluate/eval-tool' },
+              { label: 'Ethan Mollick — AI in Organizations: Some Tactics (essay)', url: 'https://www.oneusefulthing.org/p/ai-in-organizations-some-tactics' },
+              { label: 'a16z — Emerging Architectures for LLM Applications (Bornstein & Radovanovic)', url: 'https://a16z.com/emerging-architectures-for-llm-applications/' },
             ],
             artifact: 'Evaluation framework for one FI AI feature: metrics, test cases, failure modes',
           },
