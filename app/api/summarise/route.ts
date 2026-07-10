@@ -134,24 +134,60 @@ ${content}`,
 
   interface Section { title: string; bullets: string[] }
 
-  function parseMarkdownSections(md: string): Section[] {
+  function parseMarkdownSections(md: string, fallbackTitle: string): Section[] {
+    // Strip code-fence wrappers the model sometimes adds
+    let text = md.trim();
+    if (text.startsWith('```')) {
+      text = text.replace(/^```(?:markdown|md)?\s*\n?/i, '').replace(/\n?```\s*$/, '').trim();
+    }
+
     const result: Section[] = [];
-    const parts = md.split(/^## /m).filter(s => s.trim());
+
+    // Tolerant heading match: 1-3 hashes, optional space, ignore trailing spaces
+    const parts = text.split(/^#{1,3}\s*/m).filter(s => s.trim());
     for (const part of parts) {
       const lines = part.trim().split('\n');
       const title = lines[0].trim();
       const bullets = lines.slice(1)
-        .map(l => l.replace(/^[-*]\s*/, '').trim())
+        .map(l => l.replace(/^[-*•]\s+/, '').trim())
         .filter(Boolean);
-      if (title && bullets.length) result.push({ title, bullets });
+      // Reject titles that look like bullets (edge case when first line has no heading)
+      if (title && bullets.length && !/^[-*•]\s/.test(title)) {
+        result.push({ title, bullets });
+      }
     }
+
+    // Fallback: no proper heading found but bullets exist → wrap under fallback title
+    if (result.length === 0) {
+      const bullets = text.split('\n')
+        .map(l => l.trim())
+        .filter(l => /^[-*•]\s+/.test(l))
+        .map(l => l.replace(/^[-*•]\s+/, '').trim())
+        .filter(Boolean);
+      if (bullets.length > 0) {
+        result.push({ title: fallbackTitle, bullets });
+      }
+    }
+
     return result;
   }
 
   const raw = msg.content[0].type === 'text' ? msg.content[0].text.trim() : '';
-  const sections = parseMarkdownSections(raw);
+
+  // Detect "the model gave up" responses (thin/refused/apologetic)
+  if (raw.length < 60 || /^(i\s|i'm|sorry|there is|there's|the content|the (article|resource|page))/i.test(raw)) {
+    console.error('[summarise] Model returned non-summary output for', resourceUrl, ':', raw.slice(0, 200));
+    return NextResponse.json({
+      error: 'This resource looks thin — the model couldn\'t extract a real summary. Try opening the link to check, or retry.',
+    }, { status: 422 });
+  }
+
+  const sections = parseMarkdownSections(raw, resourceLabel);
   if (!sections.length) {
-    return NextResponse.json({ error: 'Failed to parse Claude response' }, { status: 500 });
+    console.error('[summarise] Parse failed for', resourceUrl, '\nRaw:', raw.slice(0, 400));
+    return NextResponse.json({
+      error: 'The model returned an unexpected format. Retry usually works.',
+    }, { status: 502 });
   }
   const bullets = sections.flatMap(s => s.bullets);
 
