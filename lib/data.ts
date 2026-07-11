@@ -256,7 +256,7 @@ export const TOPICS: L1Track[] = [
     ],
   },
   {
-    id: 'l3', label: 'FundsIndia 101', hours: 50, color: '#6B3FA0', accent: '#D7BDE2',
+    id: 'l3', label: 'FundsIndia 101', hours: 47, color: '#6B3FA0', accent: '#D7BDE2',
     categories: [
       {
         name: 'Domain', topics: [
@@ -353,17 +353,6 @@ export const TOPICS: L1Track[] = [
               { label: 'Blueprint Executive Summary v2.1', url: '/reading-material/1.1_FundsIndia_Blueprint_Executive_Summary_v2_1.html' },
             ],
             artifact: 'Pass 1: strategy one-pager | Pass 2: entity diagram | Pass 3: 20 Day-1 questions',
-          },
-          {
-            id: '3.7', title: 'User Personas', desc: 'B2C investor, IFA, RM, ops — pain points, workflows, what they wish existed', hours: 3, week: 'W10',
-            done: 'Empathise with the humans in the system not just the architecture',
-            resources: [
-              { label: 'FundsIndia app — use as B2C investor', url: 'https://www.fundsindia.com/' },
-              { label: 'Subramoney — IFA perspective blog', url: 'https://www.subramoney.com/' },
-              { label: 'IFA Galaxy — IFA community forum', url: 'https://www.ifagalaxy.com/' },
-              { label: 'FundsIndia — LinkedIn (RM posts)', url: 'https://www.linkedin.com/company/fundsindia/' },
-            ],
-            artifact: 'Persona cards: 4 personas with goals, pain points, current tools, wish list',
           },
           {
             id: '3.10', title: 'Investor Journeys (J0–J14)', desc: '15 end-to-end flows: onboarding, KYC, folio, mandates, orders, SIP, redemption, transmission', hours: 8, week: 'W10–11',
@@ -670,8 +659,8 @@ export const WEEKS: Week[] = [
   {
     week: 'W10',
     weekday: 'Blueprint Passes 2 & 3 (3.4) + Tech Stack & Vendors (3.5) + Transaction Lifecycle (3.8) + FI Entities E1–E5 (3.9)',
-    weekend: 'User Personas (3.7) + V1 Build Strategy start (3.11)',
-    artifacts: 'FI entity diagram, 20 Day-1 questions for Avijit, Build vs buy map, Transaction lifecycle diagram, Entity relationship diagram, Persona cards, V1 open-decisions notes',
+    weekend: 'V1 Build Strategy start (3.11)',
+    artifacts: 'FI entity diagram, 20 Day-1 questions for Avijit, Build vs buy map, Transaction lifecycle diagram, Entity relationship diagram, V1 open-decisions notes',
   },
   {
     week: 'W11',
