@@ -78,7 +78,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Document AI use case map for FundsIndia: 5 documents (KYC/PAN/bank statement/ITR/CAS) — what to extract, which model, expected accuracy, key failure modes',
           },
           {
-            id: '1.8', title: 'Hands-on Build', desc: 'Portfolio goal monitor agent — Claude API + Supabase + Vercel', hours: 6, week: 'W8',
+            id: '1.8', title: 'Hands-on Build', desc: 'Portfolio goal monitor agent — Claude API + Supabase + Vercel', hours: 6, week: 'W10',
             done: 'Deployed working app that monitors a portfolio goal and surfaces alerts',
             resources: [
               { label: 'Anthropic API docs — messages, tool use, streaming', url: 'https://docs.anthropic.com/en/api/getting-started' },
@@ -117,7 +117,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'FI internal AI opportunity map: 5 use cases with effort/impact matrix',
           },
           {
-            id: '1.10', title: 'Responsible AI in Regulated Products', desc: 'Explainability, hallucination risk in financial advice, AI liability, DPDP, guardrails as product features', hours: 4, week: 'W7',
+            id: '1.10', title: 'Responsible AI in Regulated Products', desc: 'Explainability, hallucination risk in financial advice, AI liability, DPDP, guardrails as product features', hours: 4, week: 'W9',
             done: 'Identify every liability and compliance risk in a proposed AI feature before engineering writes a line of code',
             resources: [
               { label: 'Google PAIR — People + AI Guidebook', url: 'https://pair.withgoogle.com/guidebook/' },
@@ -129,7 +129,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Responsible AI checklist for FI: for any AI feature — liability owner, explainability approach, consent mechanism, audit trail, SEBI compliance touchpoints, DPDP obligations',
           },
           {
-            id: '1.11', title: 'AI Product Metrics & Feedback Loops', desc: 'Acceptance rate, override rate, trust calibration, AI A/B testing pitfalls, data flywheel, drift monitoring', hours: 4, week: 'W7',
+            id: '1.11', title: 'AI Product Metrics & Feedback Loops', desc: 'Acceptance rate, override rate, trust calibration, AI A/B testing pitfalls, data flywheel, drift monitoring', hours: 4, week: 'W9',
             done: 'Define what "working" means for an AI feature before it ships — metrics, thresholds, monitoring plan, and how you will iterate',
             resources: [
               { label: 'Chip Huyen — Designing Machine Learning Systems (book)', url: 'https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/' },
@@ -189,7 +189,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Product comparison matrix: MF vs PMS vs AIF — fees, liquidity, target investor',
           },
           {
-            id: '2.6', title: 'Insurance & Tax Planning', desc: 'Term life, health, 80C/80D, new vs old regime, capital gains', hours: 4, week: 'W7',
+            id: '2.6', title: 'Insurance & Tax Planning', desc: 'Term life, health, 80C/80D, new vs old regime, capital gains', hours: 4, week: 'W9',
             done: 'Understand cross-sell opportunities in wealth-tech',
             resources: [
               { label: 'Zerodha Varsity — Personal Finance module', url: 'https://zerodha.com/varsity/module/personalfinance/' },
@@ -200,7 +200,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Tax-optimised investment flowchart for a salaried ₹80L CTC employee',
           },
           {
-            id: '2.7', title: 'Goal-Based Financial Planning', desc: 'Risk profiling, rebalancing, how RMs/IFAs think about client portfolios', hours: 5, week: 'W7',
+            id: '2.7', title: 'Goal-Based Financial Planning', desc: 'Risk profiling, rebalancing, how RMs/IFAs think about client portfolios', hours: 5, week: 'W9',
             done: 'Think like the user (investor + RM) not just the builder',
             resources: [
               { label: 'CFA Institute — Fundamentals of Financial Planning', url: 'https://www.cfainstitute.org/en/programs/investment-foundations/overview' },
@@ -308,7 +308,7 @@ export const TOPICS: L1Track[] = [
       {
         name: 'Tech', topics: [
           {
-            id: '3.5', title: 'Tech Stack & Vendors', desc: 'Fintech Primitives, BSE StAR, CAMS/KFintech, KYC/KRA stack', hours: 4, week: 'W7',
+            id: '3.4', title: 'Tech Stack & Vendors', desc: 'Fintech Primitives, BSE StAR, CAMS/KFintech, KYC/KRA stack', hours: 4, week: 'W7',
             done: 'Map what FI builds vs what it buys',
             resources: [
               { label: 'Fintech Primitives / Cybrilla — API docs', url: 'https://fintechprimitives.com/' },
@@ -319,7 +319,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Build vs buy map: FI in-house vs vendor for every major capability',
           },
           {
-            id: '3.8', title: 'Transaction Lifecycle', desc: 'Order → BSE StAR → RTA → settlement → reconciliation', hours: 4, week: 'W8',
+            id: '3.5', title: 'Transaction Lifecycle', desc: 'Order → BSE StAR → RTA → settlement → reconciliation', hours: 4, week: 'W8',
             done: 'Trace a single SIP transaction end to end through the entire system',
             resources: [
               { label: 'BSE StAR MF — order flow documentation', url: 'https://www.bsestarmf.in/' },
@@ -329,7 +329,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Transaction lifecycle diagram: ₹10K SIP from bank to units — every step, every system',
           },
           {
-            id: '3.9', title: 'FI Entities (E1–E5)', desc: 'Investor, Instruments, Order, Folio, Rails — the 5 core domain nouns every downstream doc references', hours: 5, week: 'W7',
+            id: '3.6', title: 'FI Entities (E1–E5)', desc: 'Investor, Instruments, Order, Folio, Rails — the 5 core domain nouns every downstream doc references', hours: 5, week: 'W7',
             done: 'Draw the entity model from memory: relationships between Investor, Instruments, Order, Folio, Rails',
             resources: [
               { label: 'E1 — Investor', url: '/reading-material/E1-Investor.html' },
@@ -345,7 +345,7 @@ export const TOPICS: L1Track[] = [
       {
         name: 'Product Sense', topics: [
           {
-            id: '3.4', title: 'Blueprint Deep Read', desc: '3 passes: strategy → architecture → 20 Day-1 questions for Avijit', hours: 6, week: 'W8',
+            id: '3.7', title: 'Blueprint Deep Read', desc: '3 passes: strategy → architecture → 20 Day-1 questions for Avijit', hours: 6, week: 'W8',
             done: '20 Day-1 questions for Avijit, entity model redrawn in your own words',
             resources: [
               { label: 'Blueprint original + revised (internal)' },
@@ -355,7 +355,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Pass 1: strategy one-pager | Pass 2: entity diagram | Pass 3: 20 Day-1 questions',
           },
           {
-            id: '3.10', title: 'Investor Journeys (J0–J14)', desc: '15 end-to-end flows: onboarding, KYC, folio, mandates, orders, SIP, redemption, transmission', hours: 8, week: 'W8',
+            id: '3.8', title: 'Investor Journeys (J0–J14)', desc: '15 end-to-end flows: onboarding, KYC, folio, mandates, orders, SIP, redemption, transmission', hours: 8, week: 'W8',
             done: 'Explain how a first-time investor goes from signup to first settled order — every step, every system',
             resources: [
               { label: 'J0 — Journey Index', url: '/reading-material/J0-A-Journey-Index.html' },
@@ -377,7 +377,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Journey map: 15 flows summarised — happy path + top 2 edge cases per flow',
           },
           {
-            id: '3.11', title: 'V1 Build Strategy & Open Decisions', desc: 'The Key Calls, lock list, build strategy, block map, tech strategy view, open decisions register', hours: 5, week: 'W8',
+            id: '3.9', title: 'V1 Build Strategy & Open Decisions', desc: 'The Key Calls, lock list, build strategy, block map, tech strategy view, open decisions register', hours: 5, week: 'W8',
             done: 'Know what FI is building in V1, what\'s locked, what\'s still open — questions ready for Day 1',
             resources: [
               { label: 'V1-0 — The Key Calls', url: '/reading-material/V1-0-FundsIndia_The_Key_Calls_V1.html' },
@@ -427,7 +427,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'FI architecture diagram: bounded contexts, how they communicate, where ACL sits',
           },
           {
-            id: '4.9', title: 'API Design & Contracts', desc: 'REST vs GraphQL vs gRPC, versioning, backward compatibility, OpenAPI, rate limiting, vendor SLA contracts', hours: 4, week: 'W8',
+            id: '4.9', title: 'API Design & Contracts', desc: 'REST vs GraphQL vs gRPC, versioning, backward compatibility, OpenAPI, rate limiting, vendor SLA contracts', hours: 4, week: 'W10',
             done: 'Design a vendor API integration spec and identify breaking vs non-breaking changes without asking engineering',
             resources: [
               { label: 'Stripe — API design best practices (docs)', url: 'https://stripe.com/docs/api' },
@@ -516,7 +516,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'AI dev tools comparison: Claude Code vs Cursor vs Copilot — when to use which',
           },
           {
-            id: '4.12', title: 'Feature Flags & Gradual Rollouts', desc: 'Feature flags, canary releases, dark launches, A/B testing infra, gradual rollout strategies for AI features', hours: 3, week: 'W9',
+            id: '4.12', title: 'Feature Flags & Gradual Rollouts', desc: 'Feature flags, canary releases, dark launches, A/B testing infra, gradual rollout strategies for AI features', hours: 3, week: 'W10',
             done: 'Design a rollout strategy for any AI feature that is safe, reversible, and measurable — before engineering asks',
             resources: [
               { label: 'Martin Fowler — Feature Toggles (Feature Flags)', url: 'https://martinfowler.com/articles/feature-toggles.html' },
@@ -545,7 +545,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'FI infrastructure map: what FI likely runs on, cost/reliability/scalability implication for each major component',
           },
           {
-            id: '4.6', title: 'Data Infrastructure', desc: 'Data lakes, lakehouses, ETL/ELT, dbt, data lineage, observability', hours: 6, week: 'W7',
+            id: '4.6', title: 'Data Infrastructure', desc: 'Data lakes, lakehouses, ETL/ELT, dbt, data lineage, observability', hours: 6, week: 'W10',
             done: 'Understand FI\'s data foundation section in the blueprint',
             resources: [
               { label: 'Databricks — What is a Lakehouse?', url: 'https://www.databricks.com/glossary/data-lakehouse' },
@@ -568,7 +568,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'Security checklist for any new FI feature: auth, PII, audit trail, DPDP',
           },
           {
-            id: '4.11', title: 'Observability & SRE', desc: 'SLOs/SLIs/error budgets, three pillars (logs/metrics/traces), alerting, on-call, incident response', hours: 4, week: 'W8',
+            id: '4.11', title: 'Observability & SRE', desc: 'SLOs/SLIs/error budgets, three pillars (logs/metrics/traces), alerting, on-call, incident response', hours: 4, week: 'W9',
             done: 'Define SLOs for any FI feature and write an alerting strategy before the engineering team asks you what success looks like',
             resources: [
               { label: 'Google SRE Book — Ch 4–5: SLOs and Error Budgets (free online)', url: 'https://sre.google/sre-book/service-level-objectives/' },
@@ -582,7 +582,7 @@ export const TOPICS: L1Track[] = [
             artifact: 'SLO spec for one FI feature: SLI definition, error budget, alert thresholds, on-call runbook outline',
           },
           {
-            id: '4.8', title: 'LLM Deployment & Ops', desc: 'Hosting, inference costs, latency, guardrails, eval pipelines, A/B testing AI', hours: 6, week: 'W8',
+            id: '4.8', title: 'LLM Deployment & Ops', desc: 'Hosting, inference costs, latency, guardrails, eval pipelines, A/B testing AI', hours: 6, week: 'W10',
             done: 'Bridge the gap between AI prototype and production AI',
             resources: [
               { label: 'Anthropic — API reference (rate limits, pricing)', url: 'https://docs.anthropic.com/en/api/getting-started' },
@@ -641,27 +641,27 @@ export const WEEKS: Week[] = [
   {
     week: 'W7',
     weekday: 'Wealthtech + FI Business Model (3.1) + Competitive Landscape (3.2) + WestBridge Thesis (3.3)',
-    weekend: 'FI Entities E1–E5 (3.9) + Tech Stack & Vendors (3.5)',
-    artifacts: 'Wealthtech + FI business model one-pager, Competitive 2x2 matrix + product-UX comparison, WestBridge thesis one-pager, Entity relationship diagram, Build vs buy map',
+    weekend: 'Tech Stack & Vendors (3.4) + FI Entities E1–E5 (3.6)',
+    artifacts: 'Wealthtech + FI business model one-pager, Competitive 2x2 matrix + product-UX comparison, WestBridge thesis one-pager, Build vs buy map, Entity relationship diagram',
   },
   {
     week: 'W8',
-    weekday: 'Blueprint Deep Read — 3 passes (3.4) + Transaction Lifecycle (3.8) + Investor Journeys J0–J14 (3.10)',
-    weekend: 'V1 Build Strategy & Open Decisions (3.11)',
-    artifacts: 'Blueprint strategy + entity + 20 Day-1 questions for Avijit, Transaction lifecycle diagram, Journey map — 15 flows summarised, V1 open-decisions one-pager ready for Day 1',
+    weekday: 'Transaction Lifecycle (3.5) + Blueprint Deep Read — 3 passes (3.7) + Investor Journeys J0–J14 (3.8)',
+    weekend: 'V1 Build Strategy & Open Decisions (3.9)',
+    artifacts: 'Transaction lifecycle diagram, Blueprint strategy + entity + 20 Day-1 questions for Avijit, Journey map — 15 flows summarised, V1 open-decisions one-pager ready for Day 1',
   },
   // ── Phase 3: Remaining AI Native PM + AI SDLC (pushed) ───────────────────
   {
     week: 'W9',
-    weekday: 'Responsible AI (1.10) + AI Product Metrics (1.11) + Data Infrastructure (4.6)',
+    weekday: 'Responsible AI (1.10) + AI Product Metrics (1.11) + Observability & SRE (4.11)',
     weekend: 'Insurance & Tax (2.6) + Goal-Based Planning (2.7) + Regulatory Landscape (2.8)',
-    artifacts: 'Responsible AI checklist, AI metrics spec, FI data architecture, Tax flowchart, Financial plan, Regulatory constraint map',
+    artifacts: 'Responsible AI checklist, AI metrics spec, SLO spec, Tax flowchart, Financial plan, Regulatory constraint map',
   },
   {
     week: 'W10',
-    weekday: 'LLM Deployment & Ops (4.8) + Observability & SRE (4.11) + API Design & Contracts (4.9) + Feature Flags (4.12)',
+    weekday: 'LLM Deployment & Ops (4.8) + Data Infrastructure (4.6) + API Design & Contracts (4.9) + Feature Flags (4.12)',
     weekend: 'Hands-on Build (1.8)',
-    artifacts: 'Production AI checklist, SLO spec, API integration spec, Feature flag release plan, Deployed portfolio monitor',
+    artifacts: 'Production AI checklist, FI data architecture, API integration spec, Feature flag release plan, Deployed portfolio monitor',
   },
 ];
 
