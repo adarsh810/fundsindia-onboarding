@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J10: Switch and STP</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Journey Layer</p>
+  <h1 class="title">J10: Switch and STP</h1>
+  <p class="subtitle">The two-scheme money-movement flows: a switch run as two linked orders within one AMC, with the buy leg driven off the sell leg's settlement, and the STP that repeats the switch on a schedule. One instruction to the investor, two orders with a dependency to the system.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.1: Decision-surfacing draft</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Journey document (not a reference, not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>The governing view of <strong>how a switch and an STP run</strong>. A switch redeems from one scheme and buys into another within the same AMC, as a single instruction the system runs as two linked orders: the buy leg is priced and placed only once the sell leg has settled. An STP is the recurring form, a standing instruction that emits a switch on a schedule. J10 draws the two-leg dependency, the gap between the legs where a switch can silently stall, and the STP plan wrapper that reuses the J8 plan lifecycle. It draws on Order for the two-linked-orders construct, on J9 for the sell leg, on J6 for the buy leg, and on J8 for the STP plan lifecycle.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a reference and not a PRD. It is the <strong>intra-AMC</strong> two-scheme flow. A move <strong>across</strong> AMCs is not a switch: it is a redemption to the bank (J9) followed by a fresh purchase (J7), with a bank round-trip and, for a non-resident, a TDS event. V1 does not offer a cross-AMC move as a single convenience flow; it is handled as those two separate steps, and the settlement-timing complexity it would otherwise raise stays the architect-owned item, out of V1 scope. The STP, unlike a SIP, moves money scheme-to-scheme inside the AMC, so its buy leg is funded by its own sell leg and needs no bank payment mandate. That last point differed from one line in the Order reference and was corrected there at v0.3, as Section 5 records.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong, where the default intuition is likely to mislead.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a point the firm must actively design around, where a switch can strand money between legs or be mistaken for a cross-AMC move.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not yet settled, or one turning on a decision or a reference correction still open; each names its owner.</p></div>
+  <p>State names are shown in <span class="mono">monospace</span> when they refer to a lifecycle state the Order reference owns: each leg runs the common order spine, and the STP plan runs the J8 plan states. The altitude follows the draw-or-bullet test: a fork that reroutes the path is drawn, a captured value or an added check is bulleted.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">The spine</a></li>
+    <li><a href="#s2">Decision points</a></li>
+    <li><a href="#s3">Failure taxonomy</a></li>
+    <li><a href="#s4">Special cases</a></li>
+    <li><a href="#s5">Entities and states exercised</a></li>
+    <li><a href="#s6">Decisions surfaced</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1"><span class="num">1.</span>The spine</h2>
+<p class="lead">A switch looks like one move and behaves like two. The investor expresses a single instruction, but the system runs a redemption from the source scheme and a purchase into the target scheme, each priced on its own cut-off, each able to fail on its own, and linked by a hard rule: the buy leg does not place until the sell leg has settled and its proceeds are realised within the AMC. The first diagram draws the one-time switch. The second wraps it in the STP plan, which emits a switch on each scheduled date.</p>
+
+<h3>The switch, two linked legs</h3>
+<pre class="mermaid">
+flowchart TD
+  A([Switch intent, source scheme to target scheme, same AMC]) --> B{Sell-leg pre-flight, unencumbered units and lock-in and KYC}
+  B -->|blocked| X1([Blocked, no leg placed])
+  B -->|clear| C([Sell leg Placed, a redemption from the source scheme])
+  C --> D([Sell leg Allotted, redemption value at the source NAV, exit load applied])
+  D --> E([Sell leg Settled, proceeds realised within the AMC])
+  E --> F([Buy leg Placed, a purchase into the target scheme, funded by the proceeds])
+  F --> G([Buy leg Allotted, units at the target NAV])
+  G --> H([Buy leg Settled, switch complete])
+</pre>
+<p>The sell leg is a redemption in everything but its destination: it runs the same gates as J9, unencumbered units, lock-in, and KYC, and it applies any exit load and is a taxable event. What differs is that the proceeds are not paid to a bank account but realised inside the AMC to fund the buy leg. The buy leg then runs a purchase into the target scheme, priced at the target scheme's NAV on its own cut-off, which may fall on a later day than the sell leg's NAV. The link between them is the whole point and is drawn as a decision in Section 2.</p>
+
+<h3>The STP, a switch on a schedule</h3>
+<pre class="mermaid">
+flowchart TD
+  A([STP intent, source and target schemes and amount and schedule]) --> B[Register the plan, schedule and amount and source and target, no payment mandate]
+  B --> C([Active, switch instalments generate on schedule])
+  C -->|on each scheduled date, if source units are available| D[Emit a switch instalment that runs the two-leg switch spine]
+  D -->|outcome recorded, plan unchanged by one result| C
+  C -->|tenure or instalment count reached| G([Completed])
+</pre>
+<p>The STP reuses the J8 plan lifecycle exactly, <span class="mono">Registered</span>, <span class="mono">Active</span>, <span class="mono">Paused</span>, <span class="mono">Completed</span>, <span class="mono">Cancelled</span>, and the rule that a single failed instalment is an instalment event, not a plan stop. Two things differ from a SIP. The instalment is a two-leg switch rather than a single buy order. And there is no bank payment mandate: the money moves scheme-to-scheme inside the AMC, so the gate on each scheduled date is the availability of unencumbered units in the source scheme, the same units check an SWP uses, not a debit on a bank account.</p>
+
+<h3>Who acts at each step</h3>
+<table>
+  <thead><tr><th>Step</th><th>Acting party (by role)</th><th>What the firm does</th></tr></thead>
+  <tbody>
+    <tr><td>Sell-leg pre-flight and place</td><td>The firm originates; the RTA and AMC register and price.</td><td>Runs the source-scheme gates and places the redemption leg. Units leave the source scheme; no bank money moves.</td></tr>
+    <tr><td>Realise proceeds</td><td>The AMC and RTA.</td><td>Strike the source NAV, compute the redemption value, apply exit load, and for a non-resident withhold capital-gains TDS. The firm reflects the realised, net amount available to reinvest.</td></tr>
+    <tr><td>Place the buy leg</td><td>The firm, driven off the sell-leg settlement.</td><td>Places the purchase into the target scheme only once the sell leg has settled, funded by the realised proceeds, priced at the target cut-off.</td></tr>
+    <tr><td>Complete</td><td>The AMC and RTA.</td><td>Allot and settle the target units. The firm reconciles both legs against the RTA feed; money never rests with the firm and never leaves the AMC.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="s2"><span class="num">2.</span>Decision points</h2>
+<p>One structural dependency that defines the journey, drawn, and one timing detail that the dependency creates.</p>
+
+<h3>The sell leg drives the buy leg</h3>
+<p>This is the load-bearing rule. The buy leg is placed only when the sell leg has settled, and a sell-leg failure must abort the buy leg cleanly rather than leave a half-done switch. The danger is not the failure; it is the gap, the window where the money is realised but not yet reinvested, during which a switch can silently stall if the buy leg is not driven off the sell leg's settlement.</p>
+<pre class="mermaid">
+flowchart TD
+  P([Sell leg outcome]) --> Q{Sell leg settled}
+  Q -->|yes, proceeds realised| R([Place the buy leg, funded by the realised proceeds])
+  Q -->|no, sell leg failed| S([Abort cleanly, no buy leg, nothing stranded])
+  R --> T{Buy leg outcome}
+  T -->|settled| U([Switch complete])
+  T -->|failed| V([Proceeds realised but not reinvested, the gap, recover or pay out])
+</pre>
+<div class="callout flag">
+  <p class="ck">Red flag: the gap between the legs is where a switch goes wrong</p>
+  <p>Two failure shapes need different handling. If the sell leg fails, nothing has moved, so aborting is clean. If the sell leg settles but the buy leg fails, the units are gone from the source and the money is realised but not reinvested, and it must not be left sitting silently. The platform must either drive a buy-leg recovery or fall the proceeds back to the investor as a redemption, and it must surface the state rather than show a switch as still in progress. Driving the buy leg off the sell leg's settlement, not off a timer or the original instruction, is what keeps this correct.</p>
+</div>
+
+<h3>Each leg on its own cut-off</h3>
+<p>Because the buy leg waits on the sell leg's settlement, the two legs are priced on different cut-offs and often on different days. The sell leg takes the source scheme's redemption cut-off; the buy leg takes the target scheme's purchase cut-off, applied when it is placed after settlement. The investor experiences one switch but receives two NAVs struck at two times, which the journey should make legible rather than imply a single instantaneous price.</p>
+
+<h2 id="s3"><span class="num">3.</span>Failure taxonomy</h2>
+<p>The switch inherits the sell leg's failures from J9 and the buy leg's from J6, plus the one failure that belongs to the link itself: a settled sell with a failed buy.</p>
+<table>
+  <thead><tr><th>How it breaks</th><th>Cause</th><th>Where it lands, and recovery</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Sell leg blocked at pre-flight</strong></td><td>Insufficient unencumbered units in the source scheme, or a lock-in not elapsed, for example switching out of an ELSS still inside its lock-in.</td><td>Blocked before any leg places. No buy leg, nothing to unwind.</td></tr>
+    <tr><td><strong>Sell settles, buy fails</strong></td><td>The buy leg is rejected at the target, for a closed scheme, an eligibility block, or a missed cut-off, after the sell has settled.</td><td>The gap. Proceeds are realised but not reinvested. Recover by re-placing the buy leg, or fall the proceeds back as a redemption to the bank. Must be surfaced, never silent.</td></tr>
+    <tr><td><strong>Buy leg reversed after allotment</strong></td><td>The buy leg progressed to or past allotment and must be undone.</td><td>Lands <span class="mono">Reversed</span> on the buy leg, a compensating entry per the J6 spine, leaving the sell leg settled.</td></tr>
+    <tr><td><strong>STP instalment failure</strong></td><td>On one scheduled date the source scheme lacks available unencumbered units.</td><td>The instalment simply does not generate; the plan stays <span class="mono">Active</span> and may count toward the pause threshold (D9), reusing the J8 rule. No double-transfer on retry.</td></tr>
+    <tr><td><strong>Mistaken cross-AMC switch</strong></td><td>An attempt to switch into a scheme at a different fund house.</td><td>Not a switch at all. Rejected as a switch and, if offered, routed as a redemption plus a fresh purchase, with the bank round-trip and TDS that implies. See Section 4.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="s4"><span class="num">4.</span>Special cases</h2>
+<p>Variants that change a value or add a check without rerouting the two-leg spine. Listed, never drawn.</p>
+<ul class="tight">
+  <li><strong>Cross-AMC is not a switch.</strong> A move from a scheme at one fund house to a scheme at another is a redemption to the bank, then a fresh purchase, two separate flows with a bank round-trip. For a resident it is mostly an inconvenience; for an NRI it triggers a TDS event on the redemption and the settlement-timing question the architect owns. The platform must not present it as a switch, and V1 does not offer it as a single convenience flow: a cross-AMC move is handled as a redemption then a separate purchase. The call is recorded in Section 6.</li>
+  <li><strong>The switch-out is a taxable redemption.</strong> The sell leg realises a capital gain, applies any exit load, and respects the source scheme's lock-in, exactly as a redemption does. For an NRI, capital-gains TDS is withheld on the switch-out, so the amount reinvested in the buy leg is the net, which carries the same pre-trade visibility limit as a redemption (D45).</li>
+  <li><strong>STP needs no payment mandate.</strong> Unlike a SIP, the STP funds its buy leg from its own sell leg inside the AMC, so no eNACH or UPI Autopay mandate is involved. The standing instruction is the STP registration itself.</li>
+  <li><strong>By amount versus by units.</strong> A switch can be expressed as an amount or a number of source units; an amount is converted to source units at the source NAV, so the exact units leaving are known once that NAV is struck.</li>
+  <li><strong>Scheme support.</strong> The source must allow redemption and the target must allow purchase. An ELSS or solution-oriented source blocks the switch-out during lock-in; a closed-ended or maturing target may not accept the buy leg.</li>
+  <li><strong>Attribution on every leg.</strong> The ARN and EUIN stamping happens on each leg of a switch and on every STP instalment, non-negotiable, the same as any order.</li>
+  <li><strong>Repatriability for a non-resident.</strong> Both legs sit within the non-resident's folios at the AMC, and the repatriability class carries across the switch; a switch does not convert a non-repatriable holding into a repatriable one.</li>
+  <li><strong>Investor-initiated and threshold pause on an STP.</strong> The STP pauses either deliberately or on repeated instalment failure, the same two triggers as a SIP, with the threshold and retry behaviour the open D9 policy.</li>
+</ul>
+
+<h2 id="s5"><span class="num">5.</span>Entities and states exercised</h2>
+<p>The references and journeys J10 composes. It invents no state; it sequences the two-linked-orders construct the Order reference owns and reuses the J8 plan lifecycle. It raised one reference correction, now applied, below.</p>
+<table>
+  <thead><tr><th>Reference or journey</th><th>What J10 exercises</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Order</strong></td><td>The switch and STP as two linked orders within an AMC; the rule that the buy leg places only once the sell leg has settled and that a sell-leg failure aborts the buy leg; and the STP plan states, shared with the systematic-plan engine.</td></tr>
+    <tr><td><strong>J9 (redemption)</strong></td><td>By reference: the sell leg, which runs the redemption gates, exit load, and TDS overlay, differing only in that proceeds are realised within the AMC rather than paid to a bank.</td></tr>
+    <tr><td><strong>J6 (order spine)</strong></td><td>By reference: the buy leg, which runs the purchase branch of the common order spine into the target scheme.</td></tr>
+    <tr><td><strong>J8 (SIP plan lifecycle)</strong></td><td>By reference: the plan lifecycle the STP reuses, with the deltas that the instalment is a two-leg switch and there is no payment mandate.</td></tr>
+    <tr><td><strong>Folio and Investor</strong></td><td>Encumbrance and repatriability on the source folio, and the residential-status TDS overlay on the switch-out.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Resolved: a line in the Order reference corrected, the STP buy leg and the payment mandate</p>
+  <p>The Order reference, in its money-in versus money-out asymmetry, previously stated that the STP buy leg depends on a payment mandate and inherits the e-mandate machinery, the pre-debit notification and authentication thresholds. That was inconsistent with the intra-AMC nature of an STP: the buy leg is funded by the STP's own sell leg inside the AMC, with no bank debit, so no e-mandate construct applies to it. The reference was corrected at v0.3 so the STP sits with the SWP as a no-mandate plan, with only the one-time funding of the source scheme using a bank rail; the plan-state definition was reconciled in the same pass. J10 is drawn on that corrected reading, the STP buy leg needs no payment mandate, and invents no state of its own.</p>
+</div>
+
+<h2 id="s6"><span class="num">6.</span>Decisions surfaced</h2>
+<p>The decisions J10 applies, exercises, or brushes, and the scope boundary it records.</p>
+<table>
+  <thead><tr><th>#</th><th>Decision and what J10 needs</th><th>Owner</th><th>Status after J10</th></tr></thead>
+  <tbody>
+    <tr><td>D6</td><td>Settlement cycles. Applied: the buy leg waits on the sell leg's settlement, so the two legs settle on their own scheme cycles and the switch completes after both.</td><td>Internal</td><td>Applied.</td></tr>
+    <tr><td>D9</td><td>Pause-on-failure. Reused for the STP: a failed instalment is an instalment event that may count toward a pause threshold, with the threshold and retry behaviour the same open Product call as for a SIP.</td><td>Product</td><td>Reused; still open as for J8.</td></tr>
+    <tr><td>D27</td><td>Repatriability. Exercised: the repatriability class carries across both legs and a switch does not change it.</td><td>Internal / Engineering</td><td>Exercised; position holds.</td></tr>
+    <tr><td>D28</td><td>Encumbrance. Brushed: the sell leg runs the unencumbered-units gate on the source scheme.</td><td>Internal / Engineering</td><td>Brushed; gate is clear.</td></tr>
+    <tr><td>D45</td><td>NRI pre-trade TDS visibility. Brushed: the switch-out withholds TDS for a non-resident, so the reinvested amount is the net, carrying the same pre-trade visibility limit as a redemption.</td><td>Product / Architect</td><td>Brushed; same open call as J9.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Decided: cross-AMC switch is out of V1 scope</p>
+  <p>J10 adds no register row. The reference correction it raised, the STP buy leg needs no payment mandate, has been applied to the Order reference at v0.3, as set out in Section 5. The one scope question it surfaced is now decided: <strong>V1 does not offer a cross-AMC switch convenience flow</strong>. A move between fund houses is handled as a redemption then a separate purchase, the investor's two ordinary transactions, rather than an orchestrated one-instruction flow. Because V1 does not orchestrate that round-trip, the architect-owned NRI TDS settlement-timing item stays parked rather than activated, and there is no new register row: the boundary is simply that a cross-AMC move is two separate flows. This is recorded here as a settled V1 constraint, to be revisited only if a cross-AMC convenience flow is taken into a later scope.</p>
+</div>
+
+<div class="footer">
+  <p><strong>Document control.</strong> J10: Switch and STP. Version v0.1, decision-surfacing draft, June 2026. The eighth journey document and the first of Wave 3, drawing the intra-AMC two-scheme flows: the switch run as two linked orders with the buy leg driven off the sell leg's settlement, and the STP that repeats it on a schedule. Composes J9 for the sell leg, J6 for the buy leg, and J8 for the STP plan lifecycle; draws on Order for the two-linked-orders construct, and Folio and Investor for encumbrance, repatriability, and the switch-out TDS. Applies D6, reuses D9, exercises D27, brushes D28 and D45. Adds no register row. The one reference correction it raised, the STP buy leg needs no payment mandate, has been applied to the Order reference at v0.3; and the cross-AMC switch convenience flow is decided out of V1 scope, so a move between fund houses is handled as a redemption then a separate purchase. The cross-AMC NRI TDS settlement-timing complexity correspondingly stays the architect-owned item, parked rather than activated in V1. Not a reference and not a PRD.</p>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  try {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      themeVariables: {
+        fontFamily: "'Source Sans 3', sans-serif",
+        primaryColor: '#efe9f7',
+        primaryBorderColor: '#6a4a9c',
+        primaryTextColor: '#26222e',
+        lineColor: '#6a4a9c',
+        secondaryColor: '#fbf2dd',
+        tertiaryColor: '#fffdf8',
+        fontSize: '15px'
+      }
+    });
+  } catch (e) { /* if the CDN is unreachable, the Mermaid source remains legible as text */ }
+</script>
+</body>
+</html>

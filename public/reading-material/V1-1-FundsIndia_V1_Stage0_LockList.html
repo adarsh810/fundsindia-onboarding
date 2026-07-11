@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FundsIndia V1: Stage 0 Lock-List</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 20mm 16mm; }
+  * { box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 11pt; line-height: 1.55; color: #2B2A26; background: #FBFAF6; margin: 0; padding: 0; }
+  .page { max-width: 980px; margin: 0 auto; background: #FFFFFF; padding: 64px 84px 72px; box-shadow: 0 2px 24px rgba(0,0,0,0.05); }
+
+  .doc-title { font-size: 27pt; font-weight: 600; color: #1A1A18; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .doc-sub { font-size: 12.5pt; font-weight: 400; color: #5F5E5A; margin: 0 0 10px; }
+  .doc-meta { font-size: 10pt; color: #888780; margin: 0 0 8px; padding-bottom: 22px; border-bottom: 2px solid #534AB7; }
+
+  h1 { font-size: 18pt; font-weight: 600; color: #2B2A26; margin: 44px 0 16px; padding-bottom: 10px; border-bottom: 1px solid #D3D1C7; scroll-margin-top: 20px; }
+  h1 .num { color: #534AB7; font-weight: 600; margin-right: 10px; }
+  h2 { font-size: 13.5pt; font-weight: 600; color: #2B2A26; margin: 26px 0 10px; }
+  h3 { font-size: 12pt; font-weight: 600; color: #5F5E5A; margin: 20px 0 8px; }
+
+  p { margin: 0 0 12px; }
+  em { font-style: italic; color: #3D3D3A; }
+  strong { font-weight: 600; color: #1A1A18; }
+  ul, ol { margin: 0 0 14px; padding-left: 22px; }
+  li { margin: 0 0 10px; }
+  a { color: #534AB7; text-decoration: none; }
+  code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace; font-size: 9.5pt; background: #F1EFE8; padding: 1px 5px; border-radius: 4px; color: #3C3489; }
+
+  .lead { font-size: 11.5pt; color: #444441; border-left: 3px solid #534AB7; padding: 4px 0 4px 18px; margin: 0 0 18px; }
+
+  .ent-inv { display: block; font-size: 10pt; color: #5F5E5A; margin-top: 3px; }
+  .ent-inv strong { color: #3C3489; font-weight: 600; }
+  .ent-open { display: block; font-size: 10pt; color: #6b5326; margin-top: 3px; }
+  .ent-open strong { color: #854F0B; font-weight: 600; }
+
+  .caveat { background: #FCF6EC; border-left: 3px solid #BA7517; border-radius: 0 6px 6px 0; padding: 11px 18px; margin: 14px 0; font-size: 10.5pt; color: #4A3F2E; }
+  .caveat strong { color: #633806; }
+  .note { background: #F1EFE8; border-radius: 6px; padding: 11px 18px; margin: 14px 0; font-size: 10.5pt; color: #444441; }
+  .rule-box { background: #F4F3FB; border-left: 3px solid #534AB7; border-radius: 0 6px 6px 0; padding: 12px 18px; margin: 16px 0; font-size: 10.5pt; color: #2C2752; }
+  .rule-box strong { color: #3C3489; }
+
+  .window { border: 1px solid #D8D5EC; border-radius: 10px; padding: 6px 22px 14px; margin: 18px 0; background: #FCFBFF; }
+  .window .wtag { font-size: 9pt; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #534AB7; margin: 14px 0 2px; }
+  .window .wcast { font-size: 10pt; color: #6E6C8A; margin: 0 0 8px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 18px; font-size: 9.5pt; table-layout: fixed; }
+  th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid #E3E1D8; overflow-wrap: break-word; }
+  thead th { background: #F4F2EB; color: #2C2C2A; font-weight: 600; border-bottom: 1.5px solid #C9C7BD; }
+  td.flow { font-weight: 600; color: #1A1A18; }
+  tbody tr:last-child td { border-bottom: 1px solid #C9C7BD; }
+
+  .port { margin: 0 0 12px; }
+  .port .pn { font-weight: 600; color: #085041; }
+
+  .dod li::marker { color: #0F6E56; }
+
+  .toc { background: #FAF9F4; border: 1px solid #E3E1D8; border-radius: 10px; padding: 18px 26px; margin: 26px 0 8px; }
+  .toc h2 { margin: 0 0 10px; font-size: 11pt; color: #5F5E5A; text-transform: uppercase; letter-spacing: 0.05em; }
+  .toc ol { margin: 0; padding-left: 18px; font-size: 10pt; }
+  .toc li { margin: 0 0 6px; }
+  .toc a { color: #444441; }
+  .toc a:hover { color: #534AB7; }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; max-width: none; padding: 0; }
+    h1 { page-break-after: avoid; }
+    table, .caveat, .rule-box, .note, .port, .window { page-break-inside: avoid; }
+    tr { page-break-inside: avoid; }
+    thead { display: table-header-group; }
+  }
+  @media (max-width: 720px) { .page { padding: 32px 22px; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="doc-title">Stage 0 Lock-List</p>
+  <p class="doc-sub">FundsIndia V1: what gets prepared, then frozen, before feature code</p>
+  <p class="doc-meta">Companion to the V1 Build Strategy (v2.1) &middot; two windows, the prep window (1 July to 14 August) and the lock window (17 August to early September), ahead of feature code in September</p>
+
+  <p class="lead">Stage 0 is now two windows, not one. The first is a prep window worked by the Head of Engineering and you while the senior devs and PMs are still inbound. The second is the lock window, when the full team has landed and the three foundational artifacts are ratified and frozen. This document is the agenda for both.</p>
+
+  <p><strong>Locked</strong> means written down and signed off so the build does not drift, not that every detail is pre-solved. The no-feature-code rule holds across both windows: Stage 0 exists to settle the shapes everything else depends on, and to start the slow external clocks, before anyone writes a feature.</p>
+
+  <p>What follows are recommended shapes grounded in the decisions already made, with the genuinely open calls flagged explicitly. This document does not assume FundsIndia's existing data model or a vendor's exact field names, so attribute-level detail is for the team to fill against the real APIs during the lock window. Treat it as the structure to ratify, not a frozen specification.</p>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#w">The two windows, and who is in each</a></li>
+      <li><a href="#prep">The prep window: 1 July to 14 August</a></li>
+      <li><a href="#entity">Artifact 1: the entity model</a></li>
+      <li><a href="#event">Artifact 2: the event-versus-not taxonomy</a></li>
+      <li><a href="#acl">Artifact 3: the anti-corruption contract shapes</a></li>
+      <li><a href="#lock">The lock window: 17 August to early September</a></li>
+      <li><a href="#open">Open calls to park</a></li>
+      <li><a href="#dod">Definition of done</a></li>
+    </ol>
+  </div>
+
+  <h1 id="w"><span class="num">1</span>The two windows, and who is in each</h1>
+  <p>The staffing reality splits Stage 0 cleanly in two, and the work each window can carry is different because the cast is different.</p>
+
+  <div class="window">
+    <p class="wtag">Prep window &middot; 1 July to 14 August</p>
+    <p class="wcast">Cast: Head of Engineering (full time from 1 July) and you. Senior devs and PMs are inbound, not yet joined.</p>
+    <p>The binding work here is the slow external clocks and the infra skeleton, because those run on counterparties' calendars and on nobody being present to start them but the HoE. Alongside that, the HoE and you draft the three foundational artifacts to a <strong>v0.9, for-the-team-to-tear-into</strong> state, and the inbound team immerses by reading a curated pack. The drafting is deliberately not finished here: the point is a running start that the team can still own, not a fait accompli.</p>
+  </div>
+
+  <div class="window">
+    <p class="wtag">Lock window &middot; 17 August to early September</p>
+    <p class="wcast">Cast: the full team, once the senior devs and the three PMs have landed.</p>
+    <p>This is where the three artifacts are ratified, challenged, and frozen, each major call gets an ADR, and the team co-owns the ontology rather than inheriting it. This is the three-week freeze the old version of this document described, now correctly placed after the team arrives rather than spanning the whole summer.</p>
+  </div>
+
+  <div class="caveat"><strong>Pre-join boundary.</strong> Inbound seniors and PMs immerse by reading only. They do not produce work product before 17 August: most are serving notice elsewhere, and pre-join authorship invites notice-period and IP complications you do not want. Drafting the artifacts is the HoE and you; the team's first collective act is ratifying them.</p></div>
+
+  <h1 id="prep"><span class="num">2</span>The prep window: 1 July to 14 August</h1>
+  <p>Four parallel tracks, in priority order. The first two cannot slip; the last two are the value-add that a running start buys.</p>
+
+  <h2>Track A &middot; the onboarding clocks (P0, cannot slip)</h2>
+  <p>These run on counterparties' calendars, not yours, and the external critical path, not engineering velocity, is the binding constraint on the March go-live. They start on day one, each with a named owner and a tracked date:</p>
+  <ul>
+    <li>FP and Cybrilla onboarding and sandbox access.</li>
+    <li>The Razorpay rail: Payments under Third Party Validation, plus Route to the AMC, with Cybrilla's written fund-flow confirmation and Compliance sign-off.</li>
+    <li>The KYC vendor (HyperVerge) onboarding cycle.</li>
+    <li>The Account Aggregator FIU registration and Sahamati certification. This is the longest and least controllable clock, and the financial picture depends on it; the Compliance confirmation on certification timing and the reciprocity question is owed here (see the Build Strategy, section 9).</li>
+  </ul>
+  <div class="caveat"><strong>Why this is P0.</strong> Starting these in week one rather than waiting for the team can be the difference between hitting and missing March. Nothing in Tracks C and D is allowed to crowd these out; if the window gets tight, the clocks win and the spec drafting slips into the lock window.</p></div>
+
+  <h2>Track B &middot; the infra skeleton (P0)</h2>
+  <p>Cloud accounts, the repo and service topology decision, CI and CD, secrets and KMS, observability scaffolding, and environments. Owned by the HoE, stood up in the prep window so the team builds on rails from day one rather than bikeshedding setup in the lock window.</p>
+
+  <h2>Track C &middot; curated immersion for the inbound team</h2>
+  <p>The inbound seniors and PMs have asked to start early, which is a gift, but a thirty-document library handed over unguided is a firehose, and several documents are stale right now. Immersion is therefore a <strong>curated pack with a freshness map and a reading order</strong>, not a dump.</p>
+  <p>The freshness map labels every document as one of three states, so nobody absorbs a superseded ontology:</p>
+  <ul>
+    <li><strong>Authoritative:</strong> the five entity references, the thirteen journeys (J1 to J13), the Build Strategy v2.1, the Big-Block Map v2, the Technical Architecture View, the Open Decisions Register, and the Documentation Index.</li>
+    <li><strong>In rewrite:</strong> Spec 1 (entity model and event spine) and Spec 2 (canonical ledger), being redrafted after the competitive research. Read for direction, not detail.</li>
+    <li><strong>Superseded:</strong> the Strategic Blueprint and the Architecture Companion, which have known drift. Read last, if at all, and only with the note that Spec 1 and the Build Strategy supersede them wherever they differ.</li>
+  </ul>
+  <p>Two reading paths over the same library:</p>
+  <ul>
+    <li><strong>PM path:</strong> the journeys, the Build Strategy, the Open Decisions Register, and the competitive context, oriented to product behaviour and the decisions still open.</li>
+    <li><strong>Dev path:</strong> the five entity references, the Technical Architecture View, and the event-spine and ledger material, oriented to boundaries, invariants, and the ACL seam.</li>
+  </ul>
+
+  <h2>Track D &middot; v0.9 drafting of the three artifacts (HoE and you)</h2>
+  <p>The HoE and you draft the entity model, the event taxonomy, and the ACL contract shapes (sections 3 to 5) to a v0.9 state. Draft the <strong>research-independent core</strong>: entity identities, boundaries, invariants, the event-versus-not rule, and the port shapes all rest on decisions already locked in the journeys and the Register, not on the competitive research, so they are safe to draft now. <strong>Hold</strong> only the parts genuinely downstream of the research and the Spec 1 and Spec 2 rewrite. The output is explicitly a draft for the team to challenge, which is what keeps the lock window a real ratification rather than a rubber stamp.</p>
+
+  <h1 id="entity"><span class="num">3</span>Artifact 1: the entity model</h1>
+  <p>Lock this first; everything else hangs off it. For each first-class entity, pin its identity, its boundary (what it is <em>not</em>), and the invariants that must always hold.</p>
+
+  <p><strong>Investor.</strong> The natural person and KYC subject, one per human, deduped on PAN. Holds KYC status, tax residency, and nominee declarations. It is not the login, and it is not the advisory relationship. V1 personas are Resident Individual, NRI, OCI, and Minor (guardian-operated); HUF and the entity personas are deferred to Private Wealth.
+  <span class="ent-inv"><strong>Invariant:</strong> cannot transact until KYC status is a permitted state; PAN is the dedupe key.</span></p>
+
+  <p><strong>Identity / Account.</strong> The auth principal: login, session, device binding, RBAC and ABAC. Distinct from Investor. One Identity may act for several Investors (family, guardian-operated minor, RM-assisted) and a person may have different Identities over time.
+  <span class="ent-inv"><strong>Invariant:</strong> every action carries an acting Identity and a subject Investor, even when they are the same person.</span></p>
+
+  <p><strong>Goal.</strong> Mandatory and first-class, the organising lens. Type, target amount, horizon, risk profile, and linked holdings, where unassigned is a valid state rather than a null, and a default goal is auto-created so no investor is blocked. Holdings hang under goals, never the reverse.
+  <span class="ent-inv"><strong>Invariant:</strong> a holding's goal link is itself a time-stamped, auditable fact.</span></p>
+
+  <p><strong>Commercial Relationship.</strong> The time-aware, attributable contract: which Investor is advised by which RM or distributor, on what model, under what regulatory posture and ARN and EUIN attribution. The commission-cleanliness and SEBI-attribution backbone, distinct from both the Investor and the relationship graph. The RM-facing surface is V2, but this entity is V1.
+  <span class="ent-inv"><strong>Invariant:</strong> bitemporal, so you can always answer who was the attributed advisor on date X.</span></p>
+
+  <p><strong>Relationship graph.</strong> Typed, directional edges between people: nominee, spouse, parent, child, referral. Distinct from the Commercial Relationship. Referral is an edge plus an onboarding event, not a separate feature silo.
+  <span class="ent-inv"><strong>Invariant:</strong> edges are typed and directional; a nominee edge carries its own legal metadata.</span></p>
+
+  <p><strong>Instrument / Catalog entry.</strong> Strongly typed and multi-asset-ready. V1 transactable instruments are regular-plan mutual funds and SIFs; the schema is built multi-asset from day one even so. Asset class, issuer or AMC, tier-eligibility flags, goal-suitability signals, and capability flags for supported transaction types. Not a flat SKU. FDs and NPS appear in V1 only as held-away AA data categories, never transactable.
+  <span class="ent-inv"><strong>Invariant:</strong> lock the extension mechanism now (capability flags plus per-asset-class extension blocks); this is the multi-asset reshape risk that V1.5 (FDs, NPS, bonds) and beyond will exercise.</span></p>
+
+  <p><strong>Transaction / Order.</strong> Immutable; corrections are new events, never edits. Carries explicit lifecycle states (accepted by us, routed to rail, acknowledged by RTA, settled, failed, reversed), since committed has three or more distinct meanings, plus the client idempotency key.
+  <span class="ent-inv"><strong>Invariant:</strong> state is the fold of its events; no in-place mutation.</span></p>
+
+  <p><strong>Mandate.</strong> First-class, not a field on an order. Full eNACH and UPI-autopay lifecycle (created, pending, active, paused, failed, cancelled). SIP, SWP, and STP all hang off it.
+  <span class="ent-inv"><strong>Invariant:</strong> whether a plan is actually live is mandate-derived, never assumed.</span>
+  <span class="ent-open"><strong>Open, affecting this entity:</strong> the pause-on-failure logic (D9) and plan behaviour on a KYC downgrade (D46). Both shape the Mandate state machine, so park them with owners before this entity freezes.</span></p>
+
+  <p><strong>Ledger entry.</strong> The canonical record. Double-entry, immutable, bitemporal. Every money or unit movement posts here, and FP (like every future rail) is a source reconciled against it, not a truth adopted. It is a reconciliation projection of RTA truth, not the legal system of record, since the firm holds no client money. Reconciliation is batch in V1; microbatch is V2.
+  <span class="ent-inv"><strong>Invariant:</strong> postings balance; record-time and effective or NAV-date are separate axes; holdings are derived from it; no advisory-fee posting (the MFD consequence).</span></p>
+
+  <p><strong>Holding / Folio position.</strong> A projection folded from ledger entries, reconciled against the RTA view through FP, with discrepancies surfaced rather than silently overwritten. Holds nominee and guardian as folio attributes (they drive transmission, J12, and the minor-attains-majority lifecycle). Joint is a holding-mode overlay on the folio (multiple Investor parties, a mode of operation), not a persona of its own.
+  <span class="ent-inv"><strong>Invariant:</strong> never written directly by a rail; only derived.</span>
+  <span class="ent-open"><strong>Open, affecting this entity:</strong> nominee-survivor-heir precedence on transmission (D12), pending a Legal opinion. The joint-survivorship subtlety (the surviving holder takes the whole holding and can re-nominate freely) is a known sharp edge to design against.</span></p>
+
+  <p><strong>Consent.</strong> Purpose-bound, time-bound, revocable, fully audited. Required for AA and DPDP, and cited by KYC, ordinary data use, the CAS pull, and the AA fetch alike.
+  <span class="ent-inv"><strong>Invariant:</strong> any data fetch or use cites a live consent; revocation is a recorded event with downstream effect, and AA fetches stay within the consent's fetch frequency.</span></p>
+
+  <div class="rule-box"><strong>The two rules to write on the wall.</strong> First, Investor (person) is not Identity (login) is not Commercial Relationship (advisory contract) is not relationship graph (kinship and referral). Conflating any two of those four is the expensive retrofit. Second, the ledger is canonical and holdings are derived, so nothing a vendor returns becomes truth without posting through the ledger.</div>
+
+  <h1 id="event"><span class="num">4</span>Artifact 2: the event-versus-not taxonomy</h1>
+  <p>Lock the rule first, then the worked examples. A thing becomes a domain event only if it is business-significant, durable, and would matter for reconciliation, regulation, or reconstructing what you knew when. Everything else is either clickstream or just derived state. The constitution's caution holds: event proliferation is architecture debt, so when unsure, it is not a domain event.</p>
+
+  <h3>Three planes, kept separate</h3>
+  <ul>
+    <li><strong>Domain spine.</strong> Typed, durable, replayable, bitemporal, per-aggregate ordered, with idempotent consumers, a schema registry, and versioning.</li>
+    <li><strong>Clickstream.</strong> Taps, views, funnel steps, search and sort and filter interactions. High volume, lossy-tolerant, with separate ingestion, processing, serving, and DR. Never merged into the spine.</li>
+    <li><strong>Neither.</strong> A holding balance, a goal's progress, a cached NAV. Derived state, not evented.</li>
+  </ul>
+
+  <h3>Worked examples</h3>
+  <p>This table is what the team argues through and writes down in the lock window, one row per real flow.</p>
+  <table>
+    <thead><tr><th style="width:18%">Flow</th><th style="width:40%">Domain events</th><th style="width:21%">Clickstream</th><th style="width:21%">Neither (derived)</th></tr></thead>
+    <tbody>
+      <tr><td class="flow">Onboarding</td><td><code>InvestorRegistered</code>, <code>KycSubmitted</code>, <code>KycCompleted</code> / <code>KycFailed</code></td><td>Viewing the KYC screen, tapping upload</td><td>The half-filled form state</td></tr>
+      <tr><td class="flow">Order lifecycle</td><td><code>OrderPlaced</code>, <code>OrderRoutedToRail</code>, <code>OrderAcknowledged</code>, <code>OrderSettled</code>, <code>OrderFailed</code>, <code>OrderReversed</code> (each a distinct ledger-affecting fact)</td><td>Seeing the confirmation screen</td><td>Order status as currently displayed</td></tr>
+      <tr><td class="flow">SIP and mandate</td><td><code>MandateCreated</code>, <code>MandateActivated</code>, <code>SipScheduled</code></td><td>SIP calculator interactions, slider changes</td><td>The next-debit date</td></tr>
+      <tr><td class="flow">Consent (AA)</td><td><code>ConsentRequested</code>, <code>ConsentGranted</code>, <code>ConsentRevoked</code>, <code>DataFetched</code> (regulatory)</td><td>Consent-screen taps</td><td>Current consent validity window</td></tr>
+      <tr><td class="flow">Referral</td><td><code>ReferralAttributed</code> at onboarding (the durable fact)</td><td>The link-share action itself</td><td>Referral count on a dashboard</td></tr>
+    </tbody>
+  </table>
+  <div class="caveat"><strong>Naming note.</strong> <code>OrderPlaced</code> is the kept name for order acceptance; do not reintroduce <code>OrderSubmitted</code>, which collides with <code>OrderRoutedToRail</code>. Lock the past-tense convention so this stays consistent.</p></div>
+
+  <h3>Conventions to lock alongside</h3>
+  <p>Past-tense event naming, the partition key for per-aggregate ordering, idempotency-key handling, at-least-once delivery with idempotent consumers, the schema registry and versioning policy, dead-letter handling, and the replay window.</p>
+
+  <h1 id="acl"><span class="num">5</span>Artifact 3: the anti-corruption contract shapes</h1>
+  <p>Lock one port per domain. The conventions first: every adapter exposes our domain verbs and types only, vendor concepts never cross the seam, one adapter per domain even when a single vendor spans two, every money-moving call is idempotent, and status sync is polling today with a push-ready seam, since FP webhooks are beta.</p>
+  <p>Then for each port, write down the domain-facing operations, the translation map (vendor concept to ours), the resilience posture (retry, circuit-breaker, timeout, fallback), and the <em>must not leak</em> list.</p>
+
+  <div class="port"><p class="pn">FP MF-execution port.</p><p><code>placeOrder</code>, <code>getOrderStatus</code>, <code>hydrateLedger</code>, <code>ingestSchemeMaster</code>. Maps FP folio, scheme, and order shapes to our Instrument, Holding, and Transaction. Must not leak: FP order ids as our transaction ids, FP's reporting view as our holdings, or AMC-specific response shapes into the domain. This port also carries the canonical-record hydration contract, exposing the event-level transitions we fold into the ledger.</p></div>
+
+  <div class="port"><p class="pn">FP KYC port.</p><p><code>checkKyc</code>, <code>doKyc</code>, <code>fetchKyc</code>, plus lifecycle (re-KYC, modification). Modelled as its own port so it stays swappable even though FP provides it.</p></div>
+
+  <div class="port"><p class="pn">Payment-gateway port (Razorpay, FP-native).</p><p><code>collect</code>, <code>setupMandate</code>, <code>getPaymentStatus</code>, <code>reconcile</code>, all idempotent. Razorpay Payments under Third Party Validation plus Razorpay Route to the AMC, the no-pooling-compliant path, so the firm never takes custody. Single PG in V1; the earlier Cashfree option is dropped.</p></div>
+
+  <div class="port"><p class="pn">Account Aggregator port (vendor-neutral, firm as FIU).</p><p><code>requestConsent</code>, <code>fetchData</code> against a consent, <code>revokeConsent</code>. The firm is the FIU; this port binds to our Consent entity and is written to a vendor-neutral interface, with the live AA behind it left unnamed in the contract by convention. AA is in V1, powering the held-away financial picture. The V1.5 multi-AA gateway (a TSP orchestrating several AAs) slots in behind this same port without a domain change.</p></div>
+
+  <div class="port"><p class="pn">Held-away read port (CAS and MF Central).</p><p><code>pullPositions</code> via customer OTP for mutual fund and demat positions, the latter including equities as a read only. Needs no FIU and no Sahamati certification, so it is the always-available held-away read that sits alongside the AA pull. Maps to a held-away read-model, never a posting.</p></div>
+
+  <div class="port"><p class="pn">Legacy-CRM ingestion port.</p><p>Outbound only: pushes V1 domain facts (the Commercial Relationship and the relationship graph) into the legacy CRM in our domain terms, so neither data model corrupts the other. The new CRM surface is V2; this port is the V1 bridge to the existing stack. There is no legacy-equity port: equities are read-only through the held-away pull, and the platform does no direct equity transactions in V1.</p></div>
+
+  <h1 id="lock"><span class="num">6</span>The lock window: 17 August to early September</h1>
+  <p>The full team has landed. This window turns the v0.9 drafts into frozen, co-owned artifacts.</p>
+  <ul>
+    <li><strong>Ratify the three artifacts.</strong> The team challenges the entity model, the event taxonomy, and the ACL contracts against the real APIs and their own judgement, fills the attribute-level detail, and signs off. The drafts are the starting point, not the answer.</li>
+    <li><strong>One ADR per major call.</strong> Each significant modelling, taxonomy, or contract decision gets a one-paragraph ADR: the decision, why, the alternatives, and what would reverse it. This is what makes the ontology the team's rather than inherited.</li>
+    <li><strong>Close or park the open calls.</strong> Resolve what can be resolved; park the rest with an owner and a needed-by date (section 7), never silently assumed.</li>
+    <li><strong>Agree the no-feature-code rule.</strong> The team commits to it explicitly, so Stage 1 starts from a settled substrate.</li>
+  </ul>
+  <div class="note">The three-week duration the old version assumed was right; only its placement was wrong. It belongs here, after the team arrives, not spread across the summer when only the HoE was present.</div>
+
+  <h1 id="open"><span class="num">7</span>Open calls to park</h1>
+  <p>These are the calls still genuinely open at lock-list altitude, carried from the Open Decisions Register. Each needs an owner and a needed-by date before the artifact it touches freezes. The earlier list of open calls is mostly resolved and is recorded here as closed, so nobody reopens settled ground.</p>
+  <table>
+    <thead><tr><th style="width:34%">Call</th><th style="width:14%">Touches</th><th style="width:52%">Status and needed-by</th></tr></thead>
+    <tbody>
+      <tr><td class="flow">Mandate pause-on-failure logic (D9)</td><td>Mandate</td><td>Open. Shapes the Mandate state machine; needed before the entity freezes in the lock window.</td></tr>
+      <tr><td class="flow">Plan behaviour on KYC downgrade (D46)</td><td>Mandate, Investor</td><td>Open. Cross-entity rule; needed before the Mandate and Investor entities freeze.</td></tr>
+      <tr><td class="flow">Nominee-survivor-heir precedence (D12)</td><td>Folio, Relationship graph</td><td>Open, with Legal. Routed to Legal for maximum runway; needed before transmission (J12) is built, not before the entity freeze.</td></tr>
+      <tr><td class="flow">Recommendation-surface policing</td><td>Architecture</td><td>Open, owner you. Whether the recommendation-shaped surfaces police the MFD boundary independently or through one enforcement point; does not block the entity freeze.</td></tr>
+      <tr><td class="flow">Multi-AA gateway provider (Finarkein or Setu)</td><td>AA port</td><td>Deferred to V1.5, reversible behind the AA port; not a V1 lock concern.</td></tr>
+    </tbody>
+  </table>
+  <div class="note"><strong>Now closed (do not reopen).</strong> AA in V1 versus fast-follow: closed, AA is in V1. Cashfree via FP versus a separate adapter: closed, Cashfree dropped, Razorpay is the single PG. The FP NPS POP model: moot, NPS is deferred to V1.5 or V2. Joint and minor modelling: resolved, joint is a holding-mode overlay on the folio and minor is a guardian-operated persona.</div>
+
+  <h1 id="dod"><span class="num">8</span>Definition of done</h1>
+  <p>Stage 0 closes against two gates, one per window.</p>
+
+  <h3>Prep window done (mid-August)</h3>
+  <ul class="dod">
+    <li>Every onboarding clock is started, with a named owner and a tracked date.</li>
+    <li>The infra skeleton is stood up: cloud, repo and topology, CI and CD, secrets and KMS, observability scaffolding, environments.</li>
+    <li>The curated immersion pack is shared with the inbound team, with the freshness map and the two reading paths.</li>
+    <li>The three artifacts exist as v0.9 drafts on the research-independent core, explicitly marked for ratification.</li>
+  </ul>
+
+  <h3>Lock window done (early September): the green light into Stage 1</h3>
+  <ul class="dod">
+    <li>Each of the three artifacts (entity model, event taxonomy, ACL contracts) is ratified, attribute-detail filled against the real APIs, and signed off.</li>
+    <li>Each major modelling, taxonomy, or contract decision has a one-paragraph ADR.</li>
+    <li>The genuinely open calls are parked with an owner and a needed-by date rather than silently assumed.</li>
+    <li>The team has agreed the no-feature-code rule for Stage 0.</li>
+  </ul>
+  <p>That is the green light into Stage 1, the canonical core, and the path to the substrate gate.</p>
+
+  <div class="note"><strong>Document control.</strong> Rewritten against Build Strategy v2.1. Restructured from one three-week block into two windows (prep, 1 July to 14 August, HoE and you; lock, 17 August to early September, full team), with a pre-join reading-only boundary and a curated immersion pack added. Destaled throughout: AA confirmed in V1 (firm as FIU, vendor-neutral AA port), the Setu FD port removed (FDs to V1.5), the legacy-equity port replaced with a legacy-CRM ingestion port, Cashfree dropped in favour of a single Razorpay PG, the Instrument scope corrected to regular-plan mutual funds and SIFs, NPS noted as held-away-only, and the target corrected from February to March. The open-calls list is refreshed to the currently-open Register items (D9, D46, D12, recommendation-policing), with the previously-open calls recorded as closed.</div>
+
+</div>
+</body>
+</html>

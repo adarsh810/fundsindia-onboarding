@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open Decisions: Master Register</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+
+.facet.closure{background:var(--accent-soft);border-left:4px solid var(--accent);border-radius:6px;padding:12px 16px;}
+.facet.closure .fl{color:var(--accent-dark);}
+.facet.update{background:var(--amber-soft);border-left:4px solid var(--amber);border-radius:6px;padding:12px 16px;}
+.facet.update .fl{color:var(--amber);}
+.hookchip{display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--amber-soft);color:var(--amber);border:1px solid var(--amber-line);border-radius:20px;padding:1px 10px;margin:0 6px 2px 0;white-space:nowrap;}
+.facet.closure .hookchip{background:#fff;}
+
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Decision Register</p>
+  <h1 class="title">Open Decisions: Master Register</h1>
+  <p class="subtitle">Every open decision across the five entity references, consolidated and deduplicated into one list to take to the business, tiered by priority, each carrying a recommended position to react to rather than a blank question.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.16: Stakeholder closure pass recorded; register reordered open-first</b></div>
+    <div><span class="label">Date</span><b>July 2026</b></div>
+    <div><span class="label">Audience</span><b>Business, Compliance, Product</b></div>
+    <div><span class="label">Type</span><b>Decision register (not a reference)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this is</p>
+    <p>A single consolidated register of every decision left open across the Investor, Instrument, Order, Folio, and Rails references. The five documents each carried their own verification register; this gathers all of them, merges the items that recurred across documents, and orders them by how urgently an answer is needed. Its purpose is to be the list you work through with the business, Compliance, Legal, and the partners, so that the journey documents can harden from decision-surfacing drafts into governing ones.</p>
+    <p class="ck" style="margin-top:14px;">How to use it</p>
+    <p>Each decision carries a <strong>recommended position</strong> where one is defensible. As of v0.16 the register records the stakeholder closure pass of June and July 2026: twenty-two decisions are closed and twenty-seven remain open. The register is now ordered open-first, so the working list sits at the top: Part 1 holds every open decision in numerical order, Part 2 holds the closed decisions in numerical order with each closure ruling highlighted in place, and the history of every block is preserved. Tier chips remain on each heading so priority still reads at a glance. The owner column says who can answer, so the open part can be parcelled out rather than worked serially.</p>
+  </div>
+
+  <h3>Orientation</h3>
+  <p>Forty-nine distinct decisions after the thirteen-journey layer and the June and July 2026 stakeholder closure pass. Twenty-two are closed: all four <span class="bkt core">Tier 1</span> foundations plus eighteen from Tiers 2 and 3, several carrying a named residual action or a <span class="hookchip">PRD hook</span> so the commitment survives into authoring time. Twenty-seven remain open, including the six decision-pending journey branches (D9, D45, D46, D47, D48, D49) and the financial-picture cluster (D34, D35, D49), which is re-tiered from Tier 3 to <span class="bkt fac">Tier 2</span> alongside D35 now that the feature is V1-scoped. The nature of a decision is read from its owner: a Compliance, KRA, AMFI, or RTA owner means confirm an external fact; an Internal or Product owner means make a choice; a Legal owner means a judgment call.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#hooks">The PRD hook ledger</a></li>
+    <li><a href="#open">Part 1: Open decisions</a></li>
+    <li><a href="#closed">Part 2: Closed decisions</a></li>
+    <li><a href="#feed">How this feeds the journey work</a></li>
+  </ol>
+</nav>
+
+<h2 id="hooks">The PRD hook ledger</h2>
+<div class="callout verify">
+  <p class="ck">Why this section exists</p>
+  <p>The closure pass repeatedly resolved a decision by deferring its residual into a named future PRD. Those commitments are exactly the kind that vanish between a register update and PRD authoring, so this ledger names each one once. Every hook also appears highlighted inside its source decision block. When a PRD is authored, its row here is the inherited obligation set, and the hook is discharged by writing it into the PRD, not by remembering it.</p>
+</div>
+<table>
+  <thead><tr><th style="width:22%;">PRD</th><th>Hooks carried into it</th><th style="width:14%;">Source</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Order</strong></td><td>Call out explicitly that the SEBI (Mutual Funds) Regulations, 2026 leave order, cut-off, and settlement mechanics unchanged, confirmed against the operational circulars. Document the order-to-mandate attachment contract: attach from Authenticated, hold pending, activate at Active, unwind cleanly on a Rejected mandate.</td><td>D7, D43</td></tr>
+    <tr><td><strong>Mandate</strong></td><td>Document the same attachment contract from the mandate side. Confirm per-bank effective caps beneath the NPCI and RBI UPI and e-mandate ceilings with the banking partner; D31 stays open until this lands.</td><td>D43, D31</td></tr>
+    <tr><td><strong>Folio</strong></td><td>Cover the RTA's inactive-folio definition and the reactivation step explicitly, confirmed with the RTA.</td><td>D29</td></tr>
+    <tr><td><strong>Transmission</strong></td><td>Confirm the current AMFI documentation bands against the operative master circular and model the thresholds to absorb future revision. Carry the trustee-versus-heir precedence boundary into the heir-claim servicing design, per the residual moved from D12 into D48.</td><td>D11, D48 (ex&#8209;D12)</td></tr>
+    <tr><td><strong>Instruments / Catalog</strong></td><td>Define the per-scheme SIF attribute set for below-threshold handling. Carry SIF tax-bucket classification from the scheme document per scheme. Derive every fund's tax bucket from its AMC-defined attribute, never a labelled default. Model the US and Canada accepting-AMC set and the PFIC expectation per scheme. Model NRI and OCI eligibility as a first-class per-scheme construct for all schemes, MF and SIF alike. Author the MFD-not-RIA constraint in explicitly: recommendations are distributor suitability, never advice for a fee.</td><td>D33, D16, D18, D20, D32, standing</td></tr>
+    <tr><td><strong>Redemption</strong></td><td>Carry the SIF forced-redemption special case where a scheme's below-threshold rule applies, read from the per-scheme attribute set.</td><td>D33</td></tr>
+    <tr><td><strong>NRI handling</strong></td><td>Build the graceful flow for repatriable and non-repatriable folio segregation on NRE and NRO accounts, confirmed as standard RTA practice.</td><td>D27</td></tr>
+    <tr><td><strong>Recommendation surface</strong></td><td>Author the MFD-not-RIA constraint in explicitly, paired with the Catalog PRD's copy of the same obligation.</td><td>standing</td></tr>
+  </tbody>
+</table>
+
+<div class="part-band" id="open"><div class="pk">Part 1</div><div class="pt">Open decisions</div></div>
+<p class="lead" style="margin-top:18px;">The twenty-seven decisions still open after the June and July 2026 stakeholder pass, in numerical order. Six of them, D9, D45, D46, D47, D48, and D49, remain the decision-pending branches marked in the journey diagrams; of these, only D48 and D49 were touched by the pass, D48 to absorb the precedence residual from D12 and D49 to re-tier, while their underlying questions stay open. D28 is part-closed, D34 is narrowed to its positioning half, and D31 is deliberately parked until Mandate PRD time; each carries its v0.16 update in place. Tier chips on each heading preserve the priority read.</p>
+<div class="persona">
+  <h3>D8. Provisional-allotment reversal mechanics <span class="bkt fac">Tier 2</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Sharpened by J6 to a per-rail confirmation.</div>
+  <div class="facet"><span class="fl">Context</span>The costliest edge in the order lifecycle is a purchase whose payment is dishonoured after units were allotted on a provisional basis. The allotment has to be rescinded and the units backed off the register by a compensating correction, never a quiet deletion, because units existed and the register changed. How that unwind runs in practice differs by execution rail.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The precise unwind mechanics depend on which rail executes, and the V1 plan now carries two: the FP middleware path at launch and a direct BSE StAR MF path as a fast-follow. So the unwind must be confirmed for each rail rather than once.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Confirm the dishonour-after-provisional-allotment unwind separately for the FP middleware path and the future BSE-direct path, against whichever is being integrated.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The Reversed edge in J6 and every purchase journey, and the reconciliation logic on the firm's books for a backed-off allotment.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Downstream of D1 (which rails). Tied to D36 (holding visibility in the same provisional window) and to the candidate provisional-versus-confirmed sub-state on the Order reference's Allotted state, which is a reference-propagation flag rather than a register row.</div>
+  <div class="facet"><span class="fl">Owner</span>RTA and execution rail. A confirmation of external operational fact, per rail. Source: Order register, sharpened by J6.</div>
+</div>
+<div class="persona">
+  <h3>D9. SIP pause-on-failure policy and instalment retry <span class="bkt fac">Tier 2</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>A product call. Exercised by J8, which centres it: the pause fork is drawn against the proposed three-consecutive-failures default with a no-double-invest retry rule. Refined by J11 (SWP): a non-generating withdrawal instalment has no debit and no order to fail, so the recommendation is that it is recorded as information and does not count toward the consecutive-failure pause, with a holding running to zero reaching Completed on its own. Product to confirm the SIP threshold and whether SIP and SWP share one plan-health rule. Awaiting Product.</div>
+  <div class="facet"><span class="fl">Context</span>A systematic plan has a lifecycle of its own, registered, active, paused, completed, and cancelled, distinct from any single instalment's state. The Order reference already models a plan as pausable by repeated instalment failure, and the governing principle is that one failed instalment is an instalment event, not a plan stop.</div>
+  <div class="facet"><span class="fl">Why it is open</span>What counts as repeated is not fixed by any external rule; it is a product policy. How many consecutive failures pause a plan, and whether and how a failed instalment is retried, is a choice the firm makes. No attached source settles the specific number; the three-consecutive-failures figure below is a proposed default, not an established fact.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Mark a failed instalment as that instalment failed without stopping the plan, and pause the plan only after a set number of consecutive failures, three as a starting proposal, with the retry behaviour defined alongside. Confirm with Product.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J8 (SIP), the standing-instruction layer J6 and J7 deferred; it is the rule J8 hardens around.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Sits on the J5 mandate (D4) that funds the plan; otherwise self-contained.</div>
+  <div class="facet"><span class="fl">Owner</span>Product. An internal choice. Source: the Order reference's plan-lifecycle model; awaits J8.</div>
+</div>
+<div class="persona">
+  <h3>D13. SIF distribution and order-routing rail <span class="bkt fac">Tier 2</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Treat as potentially distinct from the ordinary MF rails.</div>
+  <div class="facet"><span class="fl">Context</span>A Specialised Investment Fund is a young SEBI category (framework effective 1 April 2025) sitting above mutual funds, with a &#8377;10 lakh per-PAN minimum. Whether it transacts on the ordinary mutual fund rails or through a dedicated AMC platform is not settled, and third-party distribution availability is still evolving.</div>
+  <div class="facet"><span class="fl">Why it is open</span>SIF routing cannot be assumed to reuse the ordinary MF rails. If it runs on a dedicated AMC platform, the order-routing adapter and the servicing the firm carries both change. The same uncertainty is flagged independently in the Instrument, Order, and Rails references.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Confirm per AMC, and treat SIF routing as potentially distinct from the ordinary MF rails rather than assuming reuse.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>Any SIF transaction journey, and the order-routing adapter shape in the Rails layer.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Clusters with the other SIF rows: D14 (per-strategy mechanics), D15 (large-ticket payment), D16 (tax bucket), D32 (NRI and OCI eligibility), D33 (threshold breach).</div>
+  <div class="facet"><span class="fl">Owner</span>AMC and distribution partner. A confirmation of external fact. Source: Instrument, Order, and Rails registers.</div>
+</div>
+<div class="persona">
+  <h3>D14. SIF per-strategy cut-off, redemption window, and settlement <span class="bkt fac">Tier 2</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Read per strategy from the offer document.</div>
+  <div class="facet"><span class="fl">Context</span>SIF mechanics are not uniform across the category. Equity long-short strategies are open-ended with daily redemption; hybrid strategies are commonly interval funds with twice-weekly or monthly windows; debt strategies are typically weekly. The cut-off, redemption window, and settlement are defined per strategy in the offer document.</div>
+  <div class="facet"><span class="fl">Why it is open</span>Interval-window mechanics gate the redemption lifecycle to defined windows, which the ordinary MF norms do not capture. Assuming the ordinary norms carry over would misdraw the redemption flow for interval strategies.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Read the cut-off, redemption window, and settlement per strategy from the offer document; do not assume the ordinary MF norms carry over.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The SIF redemption and order journeys, and the interval-window gating in any SIF flow.</div>
+  <div class="facet"><span class="fl">Dependencies</span>SIF cluster with D13, D15, D16, D32, and D33.</div>
+  <div class="facet"><span class="fl">Owner</span>AMC and offer document. A confirmation of external fact, per strategy. Source: Order and Instrument registers.</div>
+</div>
+<div class="persona">
+  <h3>D15. SIF large-ticket payment handling <span class="bkt fac">Tier 2</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>A high-value rail is required.</div>
+  <div class="facet"><span class="fl">Context</span>SIF carries a &#8377;10 lakh per-PAN minimum aggregated across an AMC's strategies. A single &#8377;10 lakh purchase exceeds the UPI ceiling: the NPCI capital-markets enhancement raised UPI to &#8377;5 lakh per transaction with a &#8377;10 lakh daily aggregate from September 2025, so a single order of that size cannot ride UPI.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The supported high-value rail for the first SIF purchase, and its reconciliation, must be confirmed; the ordinary UPI path the rest of the platform leans on does not stretch to a single &#8377;10 lakh debit.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Support a high-value rail (RTGS, NEFT, or netbanking) for the first SIF purchase, and confirm its reconciliation; UPI cannot carry a single &#8377;10 lakh order.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>SIF onboarding and first-purchase journeys, and the payment adapter, which must offer a non-UPI high-value path for this case.</div>
+  <div class="facet"><span class="fl">Dependencies</span>SIF cluster with D13 and D14; touches D31 (bank-level caps) for the high-value debit.</div>
+  <div class="facet"><span class="fl">Owner</span>Banking and AMC. A confirmation of external operational fact. Source: Order register.</div>
+</div>
+<div class="persona">
+  <h3>D17. Gold and international fund reclassification effective date <span class="bkt fac">Tier 2</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Confirm the operative date.</div>
+  <div class="facet"><span class="fl">Context</span>The recent capital-gains changes reclassified the holding-period and rate treatment of certain fund types, including gold and international funds, into a residual bucket. Early reporting put parts of the correction at April 2026 rather than April 2025, so the operative date is ambiguous in the sources.</div>
+  <div class="facet"><span class="fl">Why it is open</span>Relying on a residual-bucket holding period for gold and international funds before the operative date is confirmed risks applying the wrong holding-period and rate to those funds.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Confirm the operative date, April 2025 versus April 2026, with Tax counsel before relying on a residual-bucket holding period for these funds.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The catalog's tax tagging for gold and international funds, and any capital-gains reporting that reads it.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tax cluster with D16 and D18.</div>
+  <div class="facet"><span class="fl">Owner</span>Tax counsel and Compliance. A confirmation of external fact. Source: Investor register.</div>
+</div>
+<div class="persona">
+  <h3>D19. UBO-tracing depth and the non-individual entity onboarding document set <span class="bkt ref">Tier 3</span></h3>
+  <div class="facet"><span class="fl">Status: deferred</span>Deferred from V1 per D41; picked up with the entity personas in the Private Wealth phase.</div>
+  <div class="facet"><span class="fl">Context</span>For every non-individual persona, identity verification does not stop at the entity. Under the PMLA framework the controlling natural persons must be traced and verified, conventionally those holding more than 25 percent for companies and more than 15 percent for partnerships, trusts, and unincorporated bodies, or control exercised by other means. Layered ownership makes this a graph rather than a list, and each entity type carries its own document set (deed, registration certificate, authority resolutions, signatory lists, FATCA and CRS).</div>
+  <div class="facet"><span class="fl">Why it is open</span>The controlling-person tracing depth and the per-entity document set need definition, but with the entity personas out of V1 (D41), this is no longer needed for the first build.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Defer from V1, and define the tracing depth and per-entity document set under the PMLA framework when the entity personas enter scope.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>Entity-persona onboarding in the Private Wealth phase; nothing in the V1 journeys.</div>
+  <div class="facet"><span class="fl">Dependencies</span>A consequence of D41 (V1 persona scope); relates to D25 (charitable trust modes) as another entity-persona concern.</div>
+  <div class="facet"><span class="fl">Owner</span>Compliance. A confirmation of external regulatory fact, deferred. Source: Investor reference, reframed by J1.</div>
+</div>
+<div class="persona">
+  <h3>D21. Foreign National resident in India <span class="bkt ref">Tier 3</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Brushed by J1; recommended out of the initial V1 set, to confirm.</div>
+  <div class="facet"><span class="fl">Context</span>A Foreign National resident in India is a narrow natural persona, an expatriate who is a FEMA and tax resident of India. Eligibility across MF, equities, and bonds is condition-laden, and the population is small for a mass-affluent book.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The eligibility scope is narrow and condition-laden, and the reverse-residency exit, what happens when the person's residency reverses, needs explicit handling. J1 surfaced it as a scope question rather than drawing it as a governing branch on this pass.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Recommend out of the initial V1 set given low mass-affluent volume, and define the reverse-residency exit handling if it is later brought in. Confirm.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>Whether J1 carries this persona at all; it is currently surfaced, not drawn.</div>
+  <div class="facet"><span class="fl">Dependencies</span>A separate narrow natural persona from the D41 entity-persona deferral; sits alongside the non-resident cluster.</div>
+  <div class="facet"><span class="fl">Owner</span>Compliance. An internal scope choice informed by external eligibility fact. Source: Investor reference, brushed by J1.</div>
+</div>
+<div class="persona">
+  <h3>D22. FD KYC reuse <span class="bkt ref">Tier 3</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>A secondary asset class, not on the first path.</div>
+  <div class="facet"><span class="fl">Context</span>Securities-market KYC for mutual funds runs through the KRAs and CKYC. Fixed deposits sit on the banking KYC regime under the RBI, a different framework, though CKYC is the shared backbone.</div>
+  <div class="facet"><span class="fl">Why it is open</span>Whether the captured securities-KYC documents satisfy the FD partner bank's RBI-regime KYC, or a separate satisfaction is required, is unconfirmed. FDs are a deferred asset class, so this is not on the first path.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Confirm with the banking partner whether securities-KYC reuse satisfies the FD bank's RBI-regime KYC; not on the first path.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>FD onboarding when fixed deposits enter scope; nothing in the V1 mutual fund journeys.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tied to the deferred FD instrument scope and the broader deferred-instrument carry-forward.</div>
+  <div class="facet"><span class="fl">Owner</span>Compliance and Banking. A confirmation of external fact, deferred. Source: Investor register.</div>
+</div>
+<div class="persona">
+  <h3>D24. Minor equity-trading contours inside a guardian-operated demat <span class="bkt ref">Tier 3</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Relevant only once demat and equities are in scope.</div>
+  <div class="facet"><span class="fl">Context</span>A minor holds in their own name but is operated entirely by a guardian, with an attaining-majority freeze. Inside a guardian-operated minor demat account, the set of permitted equity actions is constrained.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The exact set of permitted actions inside a guardian-operated minor demat should be confirmed, but this is relevant only once equities and demat are in scope, which V1 defers (D3 is SOA-only).</div>
+  <div class="facet"><span class="fl">Recommendation</span>Confirm the permitted-action set with Compliance and the depository when equities and demat enter scope; not relevant to the SOA-only V1.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>Minor equity trading when equities and demat arrive; nothing in V1.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Downstream of D3 (SOA-only defers demat) and the deferred equities scope.</div>
+  <div class="facet"><span class="fl">Owner</span>Compliance and Depository. A confirmation of external fact, deferred. Source: Investor register.</div>
+</div>
+<div class="persona">
+  <h3>D25. Charitable trust Section 11(5) permissible investment modes <span class="bkt ref">Tier 3</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>A narrow entity persona, deferred with the entity personas.</div>
+  <div class="facet"><span class="fl">Context</span>A charitable trust can be tax-exempt, but only if 12A registered, applying income as required, and keeping investments within the Section 11(5) permissible modes. Step outside those modes and the exemption is at risk.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The precise permissible-mode list and its interaction with equity-oriented MF and SIF must be confirmed, because the exemption depends on it. It is a narrow entity persona, deferred with the entity personas (D41).</div>
+  <div class="facet"><span class="fl">Recommendation</span>Confirm the permissible-mode list and its interaction with equity-oriented MF and SIF with Legal and Tax counsel, when the entity personas enter scope.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>Charitable-trust onboarding and suitability in the Private Wealth phase; nothing in V1.</div>
+  <div class="facet"><span class="fl">Dependencies</span>A consequence of D41 (entity personas deferred); relates to D19 (entity onboarding) and the SIF tax cluster (D16).</div>
+  <div class="facet"><span class="fl">Owner</span>Legal and Tax. A confirmation of external fact, deferred. Source: Investor register.</div>
+</div>
+<div class="persona">
+  <h3>D26. Accredited Investor net-worth and income thresholds and certificate validity <span class="bkt ref">Tier 3</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Figures that move; not on the first path.</div>
+  <div class="facet"><span class="fl">Context</span>Accredited Investor is a SEBI status for investors meeting set net-worth or income thresholds, which unlocks lighter rules such as the SIF minimum-ticket waiver.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The exact net-worth and income thresholds and the certificate validity are specific figures that move, and the reference deliberately did not quote them.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Confirm the current thresholds and certificate validity rather than quoting them, when the accredited overlay is built.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The accredited-investor overlay, including the SIF minimum-ticket waiver path; not on the first path.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Touches the SIF cluster (D15 large-ticket, D13, D14) via the minimum-ticket waiver.</div>
+  <div class="facet"><span class="fl">Owner</span>Compliance. A confirmation of external fact. Source: Investor register.</div>
+  <div class="facet update"><span class="fl">Update &middot; v0.16</span>Non-blocking; Operations confirms the current net-worth and income thresholds and the certificate validity when the accredited overlay is built. Remains open until that confirmation lands.</div>
+</div>
+<div class="persona">
+  <h3>D28. Encumbrance reflection: lien on an SOA folio versus pledge on a demat holding <span class="bkt ref">Tier 3</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Relevant once loan-against-MF or pledging is supported.</div>
+  <div class="facet"><span class="fl">Context</span>Encumbrance is a claim on units that blocks their redemption, surfaced to the order pre-flight as the unencumbered-units gate. It takes different forms: a lien marked on an SOA folio versus a pledge on a demat holding.</div>
+  <div class="facet"><span class="fl">Why it is open</span>How a lien on an SOA folio versus a pledge on a demat holding is surfaced to the firm for the pre-flight check should be confirmed, and it is relevant once loan-against-MF or pledging is supported.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Confirm the encumbrance feed for both lien and pledge forms; relevant once loan-against-MF or pledging is supported.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The unencumbered-units pre-flight gate in J6 and the redemption journey (J9) when pledging is live.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Feeds the pre-flight freshness question (D37) on the encumbrance dimension.</div>
+  <div class="facet"><span class="fl">Owner</span>RTA, depository, and lender. A confirmation of external operational fact, deferred. Source: Folio register.</div>
+  <div class="facet update"><span class="fl">Update &middot; v0.16</span>Part-closed. The V1 scope aspect is decided: an encumbrance check is built for claim and redemption flows in V1. The feed-mechanics aspect, how a lien on an SOA folio versus a pledge on a demat holding is surfaced to the pre-flight, stays deferred and reopens with the loan-against-MF or pledging phase.</div>
+</div>
+<div class="persona">
+  <h3>D30. NRI joined with a resident: repatriability and reporting on a mixed-status joint folio <span class="bkt ref">Tier 3</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Follows the first holder; confirm the precise handling.</div>
+  <div class="facet"><span class="fl">Context</span>A joint folio can mix residential statuses, for example an NRI joined with a resident. Repatriability and reporting on such a folio follow the first holder, and Joint is a holding-mode overlay applied over any natural persona.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The precise handling of repatriability and reporting on a mixed-status joint folio carries over from the Investor reference and should be confirmed with Compliance.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Treat repatriability and reporting as following the first holder, and confirm the precise handling with Compliance.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The folio-creation match key (D42) on its repatriability dimension for joint folios, and reporting for mixed-status holdings.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tied to D27 (repatriability folio mechanics) and D42 (match key).</div>
+  <div class="facet"><span class="fl">Owner</span>Compliance. A confirmation of external fact. Source: Folio register.</div>
+  <div class="facet update"><span class="fl">Update &middot; v0.16</span>Aligned with the first-holder treatment; the Compliance confirmation of the precise repatriability and reporting handling on a mixed-status joint folio is still to land, so the decision stays open.</div>
+</div>
+<div class="persona">
+  <h3>D31. Bank-level caps under the UPI and e-mandate ceilings <span class="bkt ref">Tier 3</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Confirm with the banking partner.</div>
+  <div class="facet"><span class="fl">Context</span>The NPCI and RBI set the headline UPI and e-mandate ceilings: UPI raised to &#8377;5 lakh per transaction for capital markets from September 2025, and the e-mandate no-additional-factor limit at &#8377;1 lakh for mutual fund subscriptions. Individual banks may set internal limits below those maxima.</div>
+  <div class="facet"><span class="fl">Why it is open</span>A bank's internal limit below the NPCI or RBI maximum can bite on a large lumpsum or a large SIP debit, so the effective ceiling per partner bank must be confirmed rather than assumed from the headline figure.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Confirm the per-bank effective limits with the banking partner for large lumpsum and large SIP debits.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>Large-ticket funding in any purchase or SIP journey, including the SIF large-ticket case (D15).</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tied to D4 (mandate ceilings), D15 (SIF large-ticket), and D23 (cross-border UPI).</div>
+  <div class="facet"><span class="fl">Owner</span>Banking. A confirmation of external operational fact. Source: Order register.</div>
+  <div class="facet update"><span class="fl">Update &middot; v0.16</span><span class="hookchip">PRD hook &middot; Mandate</span> Held open by design until Mandate PRD time: the per-bank effective limits beneath the NPCI and RBI ceilings are confirmed with the banking partner then, and the ledger row in the PRD hook section carries the obligation.</div>
+</div>
+<div class="persona">
+  <h3>D34. Account Aggregator integration scope and timing for the financial-picture feature <span class="bkt fac">Tier 2</span></h3>
+  <div class="facet"><span class="fl">Status: scoped</span>Scoped into V1 for the financial picture by J13. The firm is onboarded as a Financial Information User through its chosen technology partner; the V1 categories are bank, mutual funds, and NPS, with fixed deposits a likely addition; the cadence is a monthly scheduled pull plus on-demand refresh within the consent's fetch frequency. The financial picture moves from deferred to in-scope. Residuals: confirm the live FIU implementation stage and whether fixed deposits join the V1 categories.</div>
+  <div class="facet"><span class="fl">Context</span>The Account Aggregator framework lets a financial-information user pull a consented view of a person's held-away assets. The financial-picture feature (J13) would consume it, with the firm onboarding as an FIU and a consent rail feeding the picture view.</div>
+  <div class="facet"><span class="fl">Why it is open</span>Which data categories feed the picture view, and when the firm onboards as an FIU, is a phase decision, with the consent rail and its flows planned rather than necessarily in the first cut.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Treat AA integration as a later-phase decision; plan the FIU onboarding and the data categories, but not as a first-cut build.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J13 (financial-picture aggregation), which is deferred pending this scope; nothing in the first journey waves.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tied to D35 (MF Central and CAS as the interim held-away rail).</div>
+  <div class="facet"><span class="fl">Owner</span>Internal and Compliance. An internal scope choice. Source: Rails register.</div>
+  <div class="facet update"><span class="fl">Update &middot; v0.16</span>Narrowed, and re-tiered from Tier 2 to Tier 2 with the financial picture scoped into V1. The coverage half of the question is answered: the current setup already pulls MF, SIF, and bank holdings through Finvu and MF Central. What remains is the positioning half: Compliance to confirm the firm's FIU standing and Sahamati compliance, and the licence and registration posture for pulling investor information from the AA rails.</div>
+</div>
+<div class="persona">
+  <h3>D36. Holding visibility at provisional allotment <span class="bkt fac">Tier 2</span> <span class="bkt core">new</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Surfaced by J6. The conservative design is recommended.</div>
+  <div class="facet"><span class="fl">Context</span>On a purchase, the most exposed moment in the whole lifecycle is the gap where units have been allotted on a provisional basis but the payment is not yet confirmed realised. In that window the investor may appear to hold something the money has not yet paid for. If the payment then dishonours, the allotment is reversed and the firm has to explain a holding it had shown as real.</div>
+  <div class="facet"><span class="fl">Why it is open</span>Whether the platform shows a confirmed holding at provisional Allotted, or waits for Settled when allotment and realisation agree, is a product decision about what the investor sees in the dangerous window. J6's red flag forces it into the open.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Treat a purchase as final only when allotment and realisation agree; show a confirmed holding only at Settled, and surface a provisional allotment distinctly rather than as a settled holding.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>Every purchase journey's holding-display semantics. It ties to a candidate provisional-versus-confirmed sub-state on the Order reference's Allotted state, which is a reference-propagation flag rather than a register row.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tied to D8 (the reversal mechanics in the same window) and to the Order-reference Allotted sub-state question; brushes D37 (reflected-state freshness) as another facet of trusting reflected state.</div>
+  <div class="facet"><span class="fl">Owner</span>Product. An internal choice. Source: J6.</div>
+</div>
+<div class="persona">
+  <h3>D37. Reflected-state freshness and the pre-flight trust threshold <span class="bkt fac">Tier 2</span> <span class="bkt core">new</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Surfaced by J6. A confirmable default; an engineering tuning call rather than a stakeholder decision.</div>
+  <div class="facet"><span class="fl">Context</span>The firm is not the system of record. It reads a reflected projection of external state, KYC, folio, and encumbrance, that can lag the external truth, and the order pre-flight check validates against that projection.</div>
+  <div class="facet"><span class="fl">Why it is open</span>A stale projection can pass an order at pre-flight that the RTA then rejects after acknowledgement, once the true state has moved: a lien marked on the units, KYC fallen to On-Hold, a folio gone under transmission. How current the reflected state must be for pre-flight to trust it is the open question, and the tradeoff is real. Too loose a window raises the rate of first orders that pass and then bounce, a poor new-investor experience and a reconciliation burden, while demanding a freshness the feeds cannot supply either blocks good orders or forces expensive real-time integration.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Define a freshness window with a reconciliation cadence tied to the RTA and depository feed cycle, which is largely daily and batch rather than real-time, trusting reflected state inside the window and letting the post-acknowledgement rejection edge catch the residual. Confirm the cadence with Engineering and the feed providers.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The pre-flight gate in J6 and every transaction journey, and the reconciliation cadence the platform runs against the RTA and depository feeds.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Brushes D36 (both turn on trusting reflected state). Placed in Tier 2 because it concerns the in-scope core pre-flight rather than deferred scope and carries a confirmable default, even though it is an engineering tuning call.</div>
+  <div class="facet"><span class="fl">Owner</span>Internal and Engineering, with the feed providers to confirm the cadence. An internal engineering tuning call. Source: J6.</div>
+</div>
+<div class="persona">
+  <h3>D38. Folio-creation timing <span class="bkt fac">Tier 2</span> <span class="bkt core">new</span></h3>
+  <div class="facet"><span class="fl">Status: recommended</span>Surfaced by J7, owned by J3. The fused path is recommended as the marquee.</div>
+  <div class="facet"><span class="fl">Context</span>The intuitive model, create the account then transact into it, is not how mutual fund folios work. For a net-new investor at a new fund house, the folio number is issued by the RTA at the first allotment, so the first lumpsum can carry a new-folio instruction and the folio comes back with the allotment. Drawing folio creation as a mandatory discrete pre-step would model a sequence the rail does not require.</div>
+  <div class="facet"><span class="fl">Why it is open</span>Whether to fuse folio creation into the first order, the marquee, or run it as a discrete pre-step is the central container seam. J3 owns the decision and has carried the recommendation forward; what remains is the Product confirmation.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Fuse folio creation into the first allotment as the marquee for net-new investors, with discrete folio creation supported as the J3 standalone variant. To confirm with Product.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J7 (the marquee thread) and J3 (the container journey); it shapes both the happy path and the ambiguous-rejection recovery.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tied to D42 (the folio-reuse matching rule) and D40 (migration scope, which sets how common the not-net-new path is); applies D3 (SOA-only) as the container form.</div>
+  <div class="facet"><span class="fl">Owner</span>Product and Internal. An internal product choice. Source: J7 and J3.</div>
+</div>
+<div class="persona">
+  <h3>D39. KYC-to-order sequencing <span class="bkt fac">Tier 2</span> <span class="bkt core">new</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Surfaced by J7. The KYC-first baseline is recommended.</div>
+  <div class="facet"><span class="fl">Context</span>For a mass-affluent resident reaching a first purchase, only a Validated identity clears pre-flight, because Registered permits transacting only where a relationship already exists and a first order is by definition a new one. That means the identity segment must use an Aadhaar-based full-KYC modality, not a non-Aadhaar OVD that would settle at Registered and silently block the order at pre-flight.</div>
+  <div class="facet"><span class="fl">Why it is open</span>Whether the platform strictly requires Validated before an order, or captures the order and holds it pending Validated, is a sequencing choice. The order-held option would require an order to exist in a captured state before Placed, which the Order reference does not carry, since Placed already assumes pre-flight passed.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Make KYC-Validated-before-order the baseline, requiring Validated before routing. Treat order-held-pending-KYC as an opt-in conversion enhancement only, and only if a pre-Placed draft state is added to the Order reference, which it would force.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J7 and J1 (the front-of-journey shape). It carries a propagation consequence for the Order reference, a candidate pre-Placed state.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Downstream of D2 (Validated requirement for NRI and OCI) and the KYC modality facts; tied to the candidate pre-Placed Order state, a reference-propagation flag rather than a register row.</div>
+  <div class="facet"><span class="fl">Owner</span>Product. An internal choice. Source: J7.</div>
+</div>
+<div class="persona">
+  <h3>D42. Folio-reuse matching rule and the multiple-folios policy <span class="bkt fac">Tier 2</span> <span class="bkt core">new</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Surfaced by J3. To define with Engineering.</div>
+  <div class="facet"><span class="fl">Context</span>A single investor often holds more than one folio at the same fund house, legitimately, split by holding mode (a single and a joint folio cannot share a number), repatriability class, tax status, or simply separate transactions never consolidated. The platform should consolidate the investor's view by PAN, but must not assume one investor maps to one folio per AMC, because the RTA does not.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The platform needs a defined key on which it decides an existing folio matches, so it reuses that folio rather than minting a duplicate, and a policy for same-mode duplicates as a data-hygiene matter. Legitimate multiples across different modes or repatriability classes are not duplicates and must not be collapsed.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Define the match key as investor, AMC, holding mode, and repatriability; reuse the folio when those agree; and treat same-mode duplicates as a data-hygiene matter rather than a legitimate multiple.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J3 (the reuse no-op path) and J7 (the not-net-new variant); the consolidation-by-PAN view reads it.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tied to D38 (folio-creation timing) and D40 (migration scope), and to D27 and D30 on the repatriability dimension of the key.</div>
+  <div class="facet"><span class="fl">Owner</span>Internal and Engineering. An internal engineering definition. Source: J3.</div>
+</div>
+<div class="persona">
+  <h3>D44. Mandate-to-plan cardinality and the one-time-versus-registered boundary <span class="bkt fac">Tier 2</span> <span class="bkt core">new</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Surfaced by J5; exercised by J8, where the reuse fork drew one mandate backing several plans within its ceiling and the position held. To confirm with Engineering.</div>
+  <div class="facet"><span class="fl">Context</span>A mandate is registered on a bank account with a per-debit ceiling, and a plan debits against it. Two shape questions follow. First, whether one registered mandate may back several plans on the same account, or is one-to-one with a plan. Second, where the line sits between a one-time mandate, a single scheduled debit registered as a standing instruction and owned by J5, and an immediate one-time direct payment with no registered instruction, a lump-sum pull owned by J6's money leg.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The cardinality shapes how the platform models reuse of a mandate across plans and how it presents mandate management to the investor. The one-time boundary determines which journey owns a given money path. Both are modelling calls the references and journeys must agree on, not investor-facing choices, and the Order reference currently says a mandate funds the plan it backs in the singular without foreclosing the multi-plan case.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Model the mandate as attachable to one or more plans on the same bank account within its ceiling, so a single mandate can back multiple SIPs; and fix the boundary as registered-to-debit-later belongs to J5, pull-now belongs to J6. Confirm with Engineering.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J5 (the one-time special case) and J8 (whether a plan reuses an existing mandate or registers its own).</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tied to D4 and to the mandate machinery in the Order reference.</div>
+  <div class="facet"><span class="fl">Owner</span>Internal and Engineering. An internal engineering definition. Source: J5.</div>
+</div>
+<div class="persona">
+  <h3>D45. NRI redemption pre-trade TDS and net-proceeds visibility <span class="bkt fac">Tier 2</span> <span class="bkt core">new</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Surfaced by J9. To define with Product and the architect.</div>
+  <div class="facet"><span class="fl">Context</span>For a resident, a redemption's net proceeds are simple: the gross less any exit load, with no TDS. For an NRI or OCI, capital-gains TDS is withheld at source on each redemption, so the net depends on the capital gain, which depends on the cost basis of the units sold. Because cost-basis lot accounting is scoped out of V1, the platform does not hold that cost basis; the AMC and RTA compute the gain and the TDS, and the platform reflects the net it receives.</div>
+  <div class="facet"><span class="fl">Why it is open</span>A money-out flow naturally wants to show the investor what they will receive before they confirm. For a resident that is straightforward. For an NRI the platform cannot derive the TDS itself in V1, so the product question is what to show pre-trade: an exact net from an RTA pre-trade computation if one is available, a clear gross-only view with the net revealed at settlement, or a labelled estimate the platform is honest about not being able to compute precisely. It is a product and architecture call rooted in the cost-basis-out-of-V1 decision, not a tax question.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Show the resident an exact net. For the NRI, show the gross and the exit load with a clear note that capital-gains TDS is withheld at source and the net is confirmed at settlement, and adopt an RTA pre-trade TDS figure only where one is reliably available; do not present a platform-derived estimate that implies a precision the V1 data cannot support. Confirm with Product and the architect.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J9 (the NRI payout representation) and J11 (the SWP, which repeats the redemption spine); the pre-trade confirmation screen the PRD will design.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Rooted in the Spec 2 cost-basis-out-of-V1 decision; tied to D2 (NRI and OCI Validated) and D27 (repatriability routing) on the non-resident payout. Revisits alongside the architect-owned NRI TDS settlement-timing item if cost basis later enters scope.</div>
+  <div class="facet"><span class="fl">Owner</span>Product and Architect. A product and architecture choice bounded by a spec decision. Source: J9.</div>
+</div>
+<div class="persona">
+  <h3>D46. Plan behaviour on a KYC downgrade <span class="bkt fac">Tier 2</span> <span class="bkt core">new</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>A product and engineering call surfaced by J2. To define against the D9 pause logic.</div>
+  <div class="facet"><span class="fl">Context</span>The KYC status ladder blocks new investment and SIPs at On Hold, but a SIP that is already Active sits in an ambiguous place: each instalment is a fresh order that runs the J6 pre-flight, which consumes KYC status, so a downgrade either reacts at the plan level or surfaces only as per-instalment pre-flight failures. J2 draws this fork. A SWP complicates it further, since its instalments have no bank debit to fail.</div>
+  <div class="facet"><span class="fl">Why it is open</span>No external rule settles whether a standing plan should pause proactively on a downgrade or let its instalments fail at pre-flight. The two answers harm the investor differently: per-instalment failures look like funding failures the investor did not cause, and would entangle with the D9 consecutive-failure pause, telling the investor their debit failed when the cause was a status change. The proactive pause is cleaner but introduces a second kind of pause, distinct from the funding pause, that must be modelled.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Pause the plan proactively the moment the identity goes On Hold, with a message naming the downgrade rather than the funding as the cause, and resume on restore to Validated. Model a downgrade-pause as distinct from a D9 funding-pause so the two do not conflate, and decide the SWP case explicitly since it has no debit. Confirm with Product and Engineering.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J8 (SIP) and J11 (SWP) behaviour under a status downgrade; the D9 pause logic it must reconcile with; and the investor messaging on a downgrade.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tied to D9 (pause-on-failure) and to the Investor reference's KYC status regime. Sits with the J6 pre-flight gate.</div>
+  <div class="facet"><span class="fl">Owner</span>Product and Engineering. An internal product and engineering choice. Source: J2.</div>
+</div>
+<div class="persona">
+  <h3>D47. Residency-status-change servicing scope <span class="bkt fac">Tier 2</span> <span class="bkt core">new</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>A scope ruling surfaced by J2. To rule for V1.</div>
+  <div class="facet"><span class="fl">Context</span>A change of residential status, resident to non-resident and back, is not one status change but several at once: it moves the KYC record, changes the bank account class to NRE or NRO, re-tags the folio's repatriability, shifts tax residency and withholding, and pulls in FATCA and CRS reporting. The Investor reference flags the return leg, non-resident to resident, as routinely under-built. J2 bullets the trigger with its blast radius rather than drawing the full flow.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The blast radius makes residency-change servicing a plausible journey of its own, and nothing in the suite currently owns it as a flow. Whether it is in V1 scope, and whether it earns a dedicated journey, is an unmade decision with investor-harm consequences, since a mishandled reclassification routes a returning or departing investor's money and tax wrongly.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Bullet the trigger in J2, defer the full servicing flow to a dedicated later journey, and rule explicitly on whether that journey is in V1. Call out the non-resident-to-resident return leg as the under-built case to build deliberately rather than discover. Confirm scope with Product and Compliance.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J2 (which bullets it), the NRI and resident persona servicing, the bank-account-class and repatriability machinery in the Folio reference, and the tax-residency overlay in the Investor reference.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tied to D2 (NRI Validated), D27 (repatriability routing), and the Investor reference's residency transition in Part V. A scope decision, not a fact.</div>
+  <div class="facet"><span class="fl">Owner</span>Product and Compliance. A V1 scope ruling with a compliance dimension. Source: J2.</div>
+</div>
+<div class="persona">
+  <h3>D48. Heir-claim and contested-claim servicing path <span class="bkt fac">Tier 2</span> <span class="bkt core">new</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>A product and operations call surfaced by J12. To define for the transmission servicing flow.</div>
+  <div class="facet"><span class="fl">Context</span>Transmission is facilitated by the firm and executed by the RTA, and the references flag the heir-claim path as something the design must allow for without specifying how far the platform builds it. The no-nominee legal-heir path and the contested-claim case both need a servicing flow: capturing the tiered documentation, tracking a claim that can stretch across many folios and several AMCs, and routing a dispute to legal escalation, all while the firm never adjudicates.</div>
+  <div class="facet"><span class="fl">Why it is open</span>How far the platform builds here is a genuine choice. It can build full tracking and guidance for the heir-claim and contested-claim cases, or treat them as a near-manual RTA matter with minimal surface. The Folio reference names the trap of letting facilitate quietly become ignore, and transmission is where a private-wealth relationship is most tested, so the level of build is a real product and operations decision with relationship consequences.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Build the tracking and guidance: capture the path and the value-band documents, show multi-folio progress faithfully rather than as a single done-or-not state, and route any contest to legal escalation. Never adjudicate a disputed claim. Confirm the build extent with Product and Operations, with a Compliance view on the escalation path.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J12 (transmission servicing), the nominee and heir experience in J4, and the operations model for death-claim handling.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tied to D12 (the precedence the servicing path must respect) and D11 (the documentation bands it collects). Sits in the nomination and transmission cluster.</div>
+  <div class="facet"><span class="fl">Owner</span>Product and Operations. An internal build-extent choice, with a Compliance view on escalation. Source: J12.</div>
+  <div class="facet update"><span class="fl">Update &middot; v0.16</span><span class="hookchip">PRD hook &middot; Transmission</span> Now also carries the precedence residual moved out of D12: the nominee and the surviving holder receive in trust, the heirs' beneficial rights can prevail, and the platform's behaviour when they differ is answered inside this servicing build rather than left as an abstract legal position. The recommended build extent stands: tracking and guidance, faithful multi-folio progress, legal escalation on contest, and never adjudicating a disputed claim.</div>
+</div>
+<div class="persona">
+  <h3>D49. Financial-picture tax and cost display treatment <span class="bkt fac">Tier 2</span> <span class="bkt core">new</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>A product and architecture call surfaced by J13. V1 treatment set; target state recorded.</div>
+  <div class="facet"><span class="fl">Context</span>The financial picture (J13) compares the investor's holdings against a benchmark and the firm's strategy, and is most useful net of cost and tax. Cost is largely derivable, but a precise after-tax figure needs cost basis, the acquisition cost and holding period that split a gain into long and short term, which the platform holds no cost basis for in V1, least of all for held-away assets pulled through the Account Aggregator.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The precise after-tax view cannot be produced faithfully in V1, so the treatment is a deliberate choice between an indicative estimate now and a precise figure later. This shares its root with the Spec 2 cost-basis-out-of-V1 decision and with D45, the NRI pre-trade TDS gap; all three wait on the platform acquiring cost basis.</div>
+  <div class="facet"><span class="fl">Recommendation</span>V1: show an after-cost view where derivable and an indicative, clearly disclaimed tax view, labelled an estimate and not tax advice. Target state: a precise after-tax view computed from cost basis and holding period, for the own book first and held-away assets as far as the aggregator's transaction data allows. Build J13 so the swap from indicative to precise is a treatment change, not a re-architecture.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J13 (the financial-picture comparison and net-worth display); the cost-basis roadmap shared with D45 and the Spec 2 decision.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tied to the Spec 2 cost-basis-out-of-V1 decision and to D45 (NRI pre-trade TDS visibility). Sits in the financial-picture cluster with D34 and D35.</div>
+  <div class="facet"><span class="fl">Owner</span>Product and Architect. A product and architecture choice bounded by the cost-basis decision. Source: J13.</div>
+  <div class="facet update"><span class="fl">Update &middot; v0.16</span>Re-tiered from Tier 2 to Tier 2 with the financial picture scoped into V1. Untouched by the June and July closure pass; remains a live product and architecture call, and one of the decision-pending branches marked in the journey diagrams.</div>
+</div>
+
+<div class="part-band" id="closed"><div class="pk">Part 2</div><div class="pt">Closed decisions</div></div>
+<p class="lead" style="margin-top:18px;">The twenty-two decisions closed as of v0.16, in numerical order. Each block preserves its full history, with the closure ruling highlighted at the foot of the block; where the closure defers a residual into a future PRD, the obligation is chipped in place and listed once in the PRD hook ledger above. A closure with a named residual, such as D1's Compliance sign-off set or D2's citation, is closed for design purposes but the residual action remains live.</p>
+<div class="persona">
+  <h3>D1. Order-routing rail and the money path</h3>
+  <div class="facet"><span class="fl">Decision</span>Which order-routing rail or rails do we integrate first, RTA-direct, an exchange platform, or the unified utility, and does the chosen money path keep the firm out of the flow of funds to satisfy the SEBI no-pooling rule?</div>
+  <div class="facet"><span class="fl">What it blocks</span>The marquee onboard-to-first-order journey, mandate registration, SIP, and redemption. It shapes the order-routing and payment adapters.</div>
+  <div class="facet"><span class="fl">Recommended position (to confirm)</span>Lead with an exchange platform for the core rail, because its clearing corporation satisfies no-pooling cleanly and the volume path is proven, with RTA-direct considered as a fallback for resilience. Confirm the no-pooling design of whichever money path is chosen with Compliance.</div>
+  <div class="facet"><span class="fl">Status: decided</span>V1 leads with a transaction-infrastructure middleware (Fintech Primitives / Cybrilla) and its paired payment port (Razorpay) rather than the exchange platform the original recommendation favoured, with a direct BSE StAR MF integration as a fast-follow fallback. Residual, narrowed after a review of FP's documentation: the no-pooling design is confirmed by FP's documented architecture, which collects from the investor's pre-registered account through Razorpay Payments under Third Party Validation and routes funds to the AMC through Razorpay Route, so the firm never takes custody of investor money. This is the payment-aggregator route the SEBI no-pooling circular expressly permits. What remains is procedural rather than open: obtain Cybrilla's written fund-flow confirmation and a Compliance sign-off on three specifics, that the firm uses Razorpay Payments plus Route rather than self-collecting into its own account, that the aggregator co-mingling mitigation under the AMFI guidelines is in place, and that redemptions settle from the scheme account to the investor's registered bank account directly. The legal obligation formally sits on the AMC; FP wires the firm into compliant rails rather than certifying the firm compliant.</div>
+  <div class="facet"><span class="fl">Owner</span>Internal and Compliance. Source: Rails register.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span>Closed. The residual actions are named rather than dissolved, and travel into the FP engagement as a checklist: obtain Cybrilla's written fund-flow confirmation, and a Compliance sign-off on the three specifics, that the firm uses Razorpay Payments plus Route rather than self-collecting into its own account, that the aggregator co-mingling mitigation under the AMFI guidelines is in place, and that redemptions settle from the scheme account to the investor's registered bank account directly.</div>
+</div>
+<div class="persona">
+  <h3>D2. NRI and OCI Registered-status onboarding</h3>
+  <div class="facet"><span class="fl">Decision</span>Now that the relaxation treating NRI and OCI Registered-status records as Validated has lapsed, can NRI onboarding rely on Registered status, or must it force Validated?</div>
+  <div class="facet"><span class="fl">What it blocks</span>The NRI and OCI branches of the onboarding journey and the redemption journey for non-residents.</div>
+  <div class="facet"><span class="fl">Recommended position (to confirm)</span>The relaxation ran to 30 April 2026 and has now passed, with no permanent successor rule confirmed as of early 2026. Until a live position is confirmed, design NRI onboarding to require Validated status rather than assume Registered will be accepted across fund houses. Confirm the current operative rule with Compliance and the KRA before building.</div>
+  <div class="facet"><span class="fl">Status: confirmed</span>Confirmed as recommended: NRI and OCI onboarding requires Validated status, not Registered, until a live successor rule is confirmed.</div>
+  <div class="facet"><span class="fl">Owner</span>Compliance and KRA. Source: Investor and Rails registers.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span>Closed with a citation residual. Compliance reports the Registered-status relaxation has been extended again; the circular number and operative end-date are to be obtained from Operations before the register carries the extension as settled fact, since public sources corroborate only the run to 30 April 2026. The build proceeds Validated-ready regardless, in readiness for the eventual restriction, so the risk is hedged whichever way the citation lands.</div>
+</div>
+<div class="persona">
+  <h3>D3. Demat-held mutual fund scope</h3>
+  <div class="facet"><span class="fl">Decision</span>Does the platform support demat-held mutual fund units from launch, or begin SOA-only and add demat when equities enter scope?</div>
+  <div class="facet"><span class="fl">What it blocks</span>The folio-creation journey and the container path inside onboard-to-first-order.</div>
+  <div class="facet"><span class="fl">Recommended position (to confirm)</span>Begin SOA-only, since the great majority of mutual fund investing runs on SOA and the demat container becomes load-bearing only when equities arrive. This keeps the first build simpler and defers the depository-participant relationship. A scope decision, not a regulatory one.</div>
+  <div class="facet"><span class="fl">Status: confirmed</span>Confirmed as recommended: SOA-only at launch; demat added when equities enter scope.</div>
+  <div class="facet"><span class="fl">Owner</span>Internal. Source: Folio and Rails registers.</div>
+</div>
+<div class="persona">
+  <h3>D4. Mandate rail and the authentication threshold</h3>
+  <div class="facet"><span class="fl">Decision</span>Which mandate rails do we support for recurring debits, eNACH, UPI autopay, or both, and how do we handle SIP instalments above the no-authentication ceiling?</div>
+  <div class="facet"><span class="fl">What it blocks</span>Mandate registration and the SIP journey, the highest-volume recurring flow.</div>
+  <div class="facet"><span class="fl">Recommended position (to confirm)</span>Support both eNACH and UPI autopay. Keep default SIP amounts and mandate ceilings within the ₹1 lakh enhanced no-authentication limit for mutual fund subscriptions so the common case needs no per-cycle authentication, and flag SIPs above ₹1 lakh as requiring an additional factor each cycle. Confirm bank-level support with the banking partner.</div>
+  <div class="facet"><span class="fl">Status: confirmed</span>Confirmed as recommended: support both eNACH and UPI autopay; keep default SIP amounts and mandate ceilings within the &#8377;1 lakh enhanced no-authentication limit, and flag SIPs above it as needing an additional factor each cycle.</div>
+  <div class="facet"><span class="fl">Owner</span>Banking and Compliance. Source: Order and Rails registers.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span>Closed. Aligned with the recommended position: both eNACH and UPI autopay supported, default SIP amounts and mandate ceilings kept within the one lakh no-authentication limit, and above-ceiling SIPs flagged for a per-cycle additional factor. The bank-level support confirmation folds into D31 and is discharged at Mandate PRD time.</div>
+</div>
+<div class="persona">
+  <h3>D5. Cut-off clock times by scheme type <span class="bkt fac">Tier 2</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Recommendation to confirm. The afternoon standard is corroborated; the precise per-scheme minutes are pending.</div>
+  <div class="facet"><span class="fl">Context</span>A mutual fund order does not price at the moment it is placed. It prices at a forward NAV, and which day's NAV applies turns on whether the order is registered before a daily cut-off, and, for purchases, on when the money is realised under the funds-realisation rule. The cut-off is therefore the clock the whole order lifecycle is timed against, and the order spine's pre-flight check includes a closed-cut-off test.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The standard SEBI cut-offs are known in shape, earlier for liquid and overnight purchases and an afternoon cut-off for other schemes, but the precise clock minutes per scheme type were left to confirm with the RTA. J6 corroborated the 3 PM afternoon standard against the SEBI March 2026 Master Circular; the per-scheme minutes are still to nail.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Adopt the SEBI-standard cut-offs as the design baseline and read the precise minutes per scheme from the RTA before any flow hard-codes them.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The cut-off pre-flight check in J6, and every transaction journey that instantiates it (J7, J8, J9, J10, J11). It sets which NAV day an order earns.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Pairs with D6 (settlement cycles) and D7 (the 2026 regulations operational impact); together they are the time-sensitive order-mechanics cluster.</div>
+  <div class="facet"><span class="fl">Owner</span>RTA and operations. A confirmation of external operational fact. Source: Order and Instrument registers, sharpened by J6.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span>Closed. Cut-off clock times are parameterised, never hard-coded; the platform reads the operative per-scheme minutes from the RTA and refreshes them daily, so a regulatory or operational change lands as data rather than a build.</div>
+</div>
+<div class="persona">
+  <h3>D6. Per-scheme settlement cycles <span class="bkt fac">Tier 2</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Recommendation to confirm. Current cycles verified to mid-2026; further tightening to track.</div>
+  <div class="facet"><span class="fl">Context</span>Settlement is when money and units finish moving. For a purchase it is units credited once funds realise; for a redemption it is proceeds reaching the registered bank account, expressed as T plus a number of working days, where T is the applicable-NAV day. The cycle differs by scheme type, and the cash market's move toward T+1 and an optional T+0 can shorten it.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The exact per-scheme cycles, and any tightening as equity pursues a shorter cycle, are operational figures to confirm with the RTA rather than hard-code. J6 verified equity T+2, liquid and overnight T+1, and debt T+1 to T+2 as current to mid-2026, with the equity redemption payout already at T+2 since February 2023.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Adopt equity T+2, liquid and overnight T+1, and debt T+1 to T+2 pending RTA confirmation, and track the cash-market cycle for further shortening rather than treating the numbers as fixed.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The settlement leg of J6 and every transaction journey, and the payout-timing expectation J9 (redemption) sets for the investor.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Pairs with D5 (cut-off) and D7; the redemption-payout overlay also touches D2 (NRI and OCI TDS at source) by way of J9.</div>
+  <div class="facet"><span class="fl">Owner</span>RTA, operations, and AMFI. A confirmation of external operational fact. Source: Order register, verified by J6.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span>Closed. Settlement cycles are parameterised and kept current from the RTA. Equity T+2, liquid and overnight T+1, and debt T+1 to T+2 stand as the design baseline, with the cash-market shortening tracked as a data change rather than assumed away.</div>
+</div>
+<div class="persona">
+  <h3>D7. SEBI (Mutual Funds) Regulations, 2026 operational impact <span class="bkt fac">Tier 2</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Confirmation pending.</div>
+  <div class="facet"><span class="fl">Context</span>SEBI approved the SEBI (Mutual Funds) Regulations, 2026 on 17 December 2025, replacing the 1996 regulations. The headline change is to the total expense ratio and cost caps, a cost-structure matter rather than an order-mechanics one.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The operational circulars under the new regulations have to be read for any change to order, cut-off, or settlement mechanics beyond the cost restructuring. The reference's working position is that order mechanics are unchanged, but that is a stated assumption to confirm, not an established fact.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Read the 2026 operational circulars and confirm that order, cut-off, and settlement mechanics are unchanged before relying on the assumption; treat the regulations as cost-structure-only until that confirmation lands.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>Potentially D5 and D6, if the circulars move cut-off or settlement; otherwise principally the catalog and pricing rather than the journeys.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Sits upstream of D5 and D6, which would have to be revisited if the circulars move them.</div>
+  <div class="facet"><span class="fl">Owner</span>Compliance and operations. A confirmation of external regulatory fact. Source: Order register.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span><span class="hookchip">PRD hook &middot; Order</span> Closed. The current FundsIndia implementation is compliant with the 2026 regulations and the new build adheres to the same. The Order PRD must call this out explicitly and confirm that order, cut-off, and settlement mechanics are unchanged against the operational circulars.</div>
+</div>
+<div class="persona">
+  <h3>D10. Operative nomination rule at build time <span class="bkt fac">Tier 2</span></h3>
+  <div class="facet"><span class="fl">Status: resolved</span>Settled by the SEBI circular dated 29 May 2026, effective 1 September 2026. The maximum is three nominees, with name and relationship the only mandatory fields. One residual remains: Compliance to confirm the provisions against the primary circular text before form build.</div>
+  <div class="facet"><span class="fl">Context</span>Nomination capture is a core firm-built flow, registered with the RTA. The earlier framework (SEBI circular of 10 January 2025) allowed up to ten nominees with a per-nominee share, investor-only nomination, an affirmed online opt-out, and joint holders not required to nominate. A SEBI consultation of 17 March 2026 proposed cutting the maximum from ten to four and slimming the mandatory fields to name and relationship. The final circular of 29 May 2026 adopted the field slimming but set the maximum at three, not the proposed four, and grounded all-holder consent for nomination changes on joint folios irrespective of operation mode.</div>
+  <div class="facet"><span class="fl">Why it was open, and what closed it</span>The count and mandatory-field set turned on a consultation outcome, so building risked rework. The 29 May 2026 circular closed it: build to three, name and relationship mandatory, equal apportionment with the odd lot to the first nominee. The earlier configurable-count recommendation is vindicated and now has a concrete value.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Build the nominee capture to three, with name and relationship mandatory and the rest optional, equal apportionment where no share is given, and all-holder consent on joint folios. Keep the count lightly configurable against future revision, but the operative value is three. Confirm against the primary circular before form build.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J3 (folio creation), corrected to three at v0.3, and J4 (nomination), drawn to three. The 1 September 2026 mandatory nominate-or-opt-out framework is the same circular's settled constraint J3 already builds to.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Sits with D11 and D12 in the nomination and transmission cluster. Propagated to Folio v0.2 and J3 v0.3.</div>
+  <div class="facet"><span class="fl">Owner</span>Compliance. A confirmation of external regulatory fact, now substantially settled, with a residual primary-source check. Source: Folio register; SEBI circular dated 29 May 2026.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span>Closed. Build the nominee capture to three, with the count kept parameterised against future revision; name and relationship mandatory, equal apportionment where no share is given, and all-holder consent on joint folios. Residual: Compliance confirms the provisions against the primary circular text before form build.</div>
+</div>
+<div class="persona">
+  <h3>D11. Transmission documentation threshold <span class="bkt fac">Tier 2</span></h3>
+  <div class="facet"><span class="fl">Status: confirmed</span>Confirmed by J12 against the AMFI Best Practices Guidelines, now consolidated into the 2026 SEBI and AMFI master circulars. The bands are PAN-level aggregate: up to &#8377;5 lakh simplified, &#8377;5 to &#8377;10 lakh with notarised attestation and affidavits or a will-or-no-objection, and above &#8377;10 lakh a probated will or letter of administration. Residual: confirm against the current master circular before form build.</div>
+  <div class="facet"><span class="fl">Context</span>Transmission is the post-death transfer of units, which the firm facilitates but does not execute; the RTA effects it on its register. For a single-holder folio passing to a nominee, the documents required step up above a value threshold, commonly around &#8377;5 lakh for mutual funds, where an affidavit, indemnity, or no-objection from other heirs may be needed.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The around-&#8377;5-lakh threshold and the above-threshold document set follow AMFI Best Practices Guidelines and can be revised, so the current figure and document set must be confirmed rather than assumed.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Adopt the AMFI Best Practices threshold of around &#8377;5 lakh as the design baseline pending confirmation of the current figure and the contested-claim document set.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J4 (nomination and transmission) when drawn, and J12 (transmission). It shapes the document-collection step in the transmission facilitation flow.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Part of the nomination and transmission cluster with D10 and D12.</div>
+  <div class="facet"><span class="fl">Owner</span>AMFI and AMC. A confirmation of external operational fact. Source: Folio register.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span><span class="hookchip">PRD hook &middot; Transmission</span> Closed. The current threshold figure and the document set are confirmed at Transmission PRD time, and the model is built to absorb future revision of the AMFI bands rather than hard-coding them.</div>
+</div>
+<div class="persona">
+  <h3>D12. Nominee, survivor, and legal-heir precedence <span class="bkt fac">Tier 2</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>A legal judgment, and a contested boundary. Brushed by J4 and exercised by J12, which draws the precedence fork against the recommended position, the nominee and survivor receiving in trust and heirs' beneficial rights able to prevail, with a heir-claim servicing path designed for. The fork is provisional: the Legal opinion sought from the week of 15 June has not landed, so J12 is drawn against the recommendation rather than a settled rule. Remains open with Legal.</div>
+  <div class="facet"><span class="fl">Context</span>A registered nominee receives units on death so the family can access them quickly, but holds them as a caretaker, not as the final owner. The legal heirs under a will or succession law remain the rightful owners, and their claim can prevail where the two differ. On a joint folio, survivorship comes first: the surviving holder takes ahead of any nominee, and the nominee only comes into play on the last holder's death.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The Folio reference itself calls the boundary contested: the survivor and nominee receive as trustees, yet the heirs' beneficial rights can prevail, and how the platform should behave when they differ, or when a sole surviving holder re-nominates or redeems away from the deceased's intended beneficiary, is not settled. This is a genuine legal question, not a product default.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Treat the nominee and surviving holder as receiving in trust, with heirs' beneficial rights able to prevail, and design for a heir-claim path rather than presenting nomination as estate planning. Settle the boundary with Legal.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J12 (transmission) and the nominee experience in J4; the heir-claim path is a servicing flow the design must allow for.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Sits with D10 and D11 in the nomination and transmission cluster.</div>
+  <div class="facet"><span class="fl">Owner</span>Legal. A legal judgment call. Source: Folio register.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span>Closed for the operating-mode aspect only. Legal's position: the primary holder of a joint folio operates the account within the registered mode of operation, and the platform facilitates human handling of these situations in the servicing experience. What this closes is who transacts during life. What it does not close is the post-death boundary: the nominee and the surviving holder receive in trust, the heirs' beneficial rights can prevail, and how the platform behaves when they differ is answered inside the heir-claim servicing build, so that precedence residual now lives in D48. Note also that the 29 May 2026 circular's all-holder consent rule on joint-folio nomination changes constrains the nomination surface irrespective of operation mode, per D10, so sole-operative rights do not extend there.</div>
+</div>
+<div class="persona">
+  <h3>D16. SIF tax-bucket classification <span class="bkt fac">Tier 2</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Route per strategy to Tax counsel.</div>
+  <div class="facet"><span class="fl">Context</span>A fund's tax treatment follows its orientation: equity-oriented funds get the equity capital-gains regime, others the debt or residual regime. SIF is assumed to inherit MF taxation by underlying orientation, but a derivative-heavy long-short equity strategy may or may not reliably meet the equity-oriented test, and the product is barely a year old with no SIF-specific tax guidance confirmed.</div>
+  <div class="facet"><span class="fl">Why it is open</span>Whether a long-short SIF reliably qualifies as equity-oriented for tax is unconfirmed, and hard-coding equity treatment without confirmation would misstate the after-tax outcome to the investor.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Route classification to Tax counsel per strategy; do not hard-code equity treatment for a long-short SIF without confirmation.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The catalog's tax tagging for SIF, and the suitability and reporting surfaces that read it.</div>
+  <div class="facet"><span class="fl">Dependencies</span>SIF cluster with D13, D14, D15; tax cluster with D17 and D18.</div>
+  <div class="facet"><span class="fl">Owner</span>Tax counsel. A confirmation of external fact, per strategy. Source: Investor and Instrument registers.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span><span class="hookchip">PRD hook &middot; Instruments / Catalog</span> Closed. SIF tax-bucket classification follows the scheme's document specification per scheme, carried as a catalog attribute rather than a hard-coded equity assumption for long-short strategies.</div>
+</div>
+<div class="persona">
+  <h3>D18. Index-fund tax tagging discipline <span class="bkt fac">Tier 2</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>A build discipline to enforce in the catalog.</div>
+  <div class="facet"><span class="fl">Context</span>An index fund is a mutual fund variant, not a tax class of its own. Its tax bucket is whatever its underlying is: an equity index fund is taxed as equity, a target-maturity or debt index fund as debt, an international index fund in the international bucket.</div>
+  <div class="facet"><span class="fl">Why it is open</span>This is a build discipline rather than an external unknown. The risk is the catalog applying a single default tax bucket to everything labelled index fund, which would misclassify debt and international index funds.</div>
+  <div class="facet"><span class="fl">Recommendation</span>The catalog must derive each index fund's tax bucket from its underlying, never a single default, and this must be confirmed and enforced in the catalog.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The catalog build, and the suitability and reporting surfaces that read the tax bucket.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tax cluster with D16 and D17; a catalog-build dependency.</div>
+  <div class="facet"><span class="fl">Owner</span>Internal and Tax. An internal build choice with a tax-correctness consequence. Source: Instrument register.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span><span class="hookchip">PRD hook &middot; Instruments / Catalog</span> Closed. Aligned: taxation treatment is a proper AMC-defined attribute per scheme and the catalog adheres to it. No single default bucket for anything labelled index fund; the discipline is enforced in the catalog build.</div>
+</div>
+<div class="persona">
+  <h3>D20. US and Canada NRI and OCI acceptance, the accepting-AMC set, and PFIC handling <span class="bkt ref">Tier 3</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Brushed by J1; remains open, not blocking the branch shape.</div>
+  <div class="facet"><span class="fl">Context</span>NRI and OCI investing is available, but US- and Canada-resident persons face AMC-level restrictions because of FATCA reporting, so only a subset of fund houses accept them. The US PFIC (Passive Foreign Investment Company) regime adds a heavy home-side tax-reporting burden on Indian mutual fund holdings for US persons.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The accepting-AMC set and the operational handling are not confirmed, and the PFIC overlay compounds the home-side burden in a way that affects suitability and expectation-setting.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Confirm the accepting-AMC set and the operational handling, and set the US PFIC expectation; it does not block the branch shape but must be resolved before serving US and Canada residents.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The NRI and OCI branch of J1, specifically the US and Canada sub-case; not the resident marquee.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Part of the non-resident cluster with D2 (Validated requirement), D23 (cross-border UPI), and D32 (SIF NRI eligibility).</div>
+  <div class="facet"><span class="fl">Owner</span>Legal, Compliance, and AMC. A confirmation of external fact. Source: Investor reference, brushed by J1.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span><span class="hookchip">PRD hook &middot; Instruments / Catalog</span> Closed. Checked and aligned: the AMCs publish the accepting set, the RTA enforces it at transaction time, and the platform models it as a first-class catalog construct so the gate fires at the suitability surface rather than as a failed order. US and Canada handling, including the PFIC expectation, is modelled per scheme.</div>
+</div>
+<div class="persona">
+  <h3>D23. NRI cross-border UPI availability <span class="bkt ref">Tier 3</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Brushed by J1; uneven coverage, not on the critical path.</div>
+  <div class="facet"><span class="fl">Context</span>Cross-border UPI lets NRIs with international mobile numbers transact on UPI, and availability is widening, but it is uneven across banks and across numbers.</div>
+  <div class="facet"><span class="fl">Why it is open</span>Coverage is uneven, so the platform cannot assume an NRI can fund via UPI; the banking-rail caveat on the non-resident branch needs the current coverage confirmed.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Confirm cross-border UPI coverage with the banking partner rather than assuming it; not on the critical path.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The funding step on the NRI branch of J1 and downstream transaction journeys for NRIs.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Non-resident cluster with D2 and D20; touches D31 (bank-level caps) on the payment rail.</div>
+  <div class="facet"><span class="fl">Owner</span>Banking. A confirmation of external fact. Source: Investor reference, brushed by J1.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span>Closed. V1 ships non-UPI funding flows for NRI users; cross-border UPI is revisited if adoption reaches critical mass rather than assumed from the headline availability.</div>
+</div>
+<div class="persona">
+  <h3>D27. Repatriability separate-folio mechanics and proceeds classification on transmission <span class="bkt ref">Tier 3</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Confirm the RTA handling.</div>
+  <div class="facet"><span class="fl">Context</span>Repatriability, whether money can flow back out of India, is fixed by the bank account behind the folio: NRE and FCNR are repatriable, NRO non-repatriable, and a difference in repatriability is a hard reason for separate folios. The classification must be preserved through the holding's life.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The exact RTA handling that keeps repatriable and non-repatriable money in separate folios, and how proceeds classification is enforced on transmission, should be confirmed.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Confirm the RTA handling that segregates repatriable and non-repatriable folios and the proceeds-classification rule on transmission.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The folio-creation match key (D42) on its repatriability dimension, and the transmission flow (J12) for non-resident holdings.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tied to D30 (mixed-status joint folio) and D42 (match key); part of the repatriability set.</div>
+  <div class="facet"><span class="fl">Owner</span>RTA, AMC, and Compliance. A confirmation of external operational fact. Source: Folio register.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span><span class="hookchip">PRD hook &middot; NRI handling</span> Closed. Confirmed as standard NRE and NRO account handling at the RTA. The platform builds a graceful flow for the repatriable and non-repatriable folio segregation, carried into the NRI handling PRD.</div>
+</div>
+<div class="persona">
+  <h3>D29. Folio dormancy definition and the reactivation step <span class="bkt ref">Tier 3</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Confirm the RTA definition.</div>
+  <div class="facet"><span class="fl">Context</span>A folio's lifecycle includes an inactive or dormant state that the order pre-flight reads, since a dormant folio may need reactivation before it can transact.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The RTA's definition of an inactive or dormant folio, and the reactivation step required before transacting, should be confirmed.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Confirm the RTA's inactive-folio definition and the reactivation requirement.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The folio-lifecycle read in the J6 pre-flight gate, and any transaction on a long-idle folio.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Feeds the pre-flight gate alongside D37 (reflected-state freshness).</div>
+  <div class="facet"><span class="fl">Owner</span>RTA and operations. A confirmation of external operational fact. Source: Folio register.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span><span class="hookchip">PRD hook &middot; Folio</span> Closed with residual. The RTA's inactive-folio definition and the reactivation step are confirmed with the RTA and baked into the product; the Folio PRD covers both explicitly so the pre-flight gate reads a defined state rather than an assumption.</div>
+</div>
+<div class="persona">
+  <h3>D32. SIF NRI and OCI eligibility <span class="bkt ref">Tier 3</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Treat as unconfirmed.</div>
+  <div class="facet"><span class="fl">Context</span>SIF is a young category, and its framework does not clearly address non-resident eligibility. The large-ticket payment rail (a &#8377;10 lakh first purchase) is operationally awkward for non-resident accounts.</div>
+  <div class="facet"><span class="fl">Why it is open</span>SEBI's SIF framework does not clearly address NRI and OCI eligibility, and the large-ticket rail is awkward for non-resident accounts, so non-resident SIF access cannot be assumed.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Treat non-resident SIF access as unconfirmed, and confirm eligibility with Compliance and the AMC before offering SIF to NRIs and OCIs.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>SIF availability on the non-resident branch; not the resident SIF path.</div>
+  <div class="facet"><span class="fl">Dependencies</span>SIF cluster with D13, D14, D15, D16, and D33; non-resident cluster with D2 and D20.</div>
+  <div class="facet"><span class="fl">Owner</span>Compliance and AMC. A confirmation of external fact. Source: Investor and Instrument registers.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span><span class="hookchip">PRD hook &middot; Instruments / Catalog</span> Closed as a modelling decision, with a per-scheme confirmation residual. NRI and OCI eligibility, including the US and Canada sub-case, becomes a first-class per-scheme construct for all schemes, MF and SIF alike. Eligibility may differ scheme to scheme, so the value is confirmed per scheme with Compliance and the AMC rather than assumed category-wide.</div>
+</div>
+<div class="persona">
+  <h3>D33. SIF behaviour when the &#8377;10 lakh PAN-aggregate threshold falls below <span class="bkt ref">Tier 3</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Confirm against the offer document.</div>
+  <div class="facet"><span class="fl">Context</span>SIF carries a &#8377;10 lakh per-PAN minimum aggregated across an AMC's strategies. After a partial redemption or a market fall, the holding can drop below that threshold, and what happens then is not settled in the public framework.</div>
+  <div class="facet"><span class="fl">Why it is open</span>Whether any forced or restricted-redemption rule applies once the holding falls below the &#8377;10 lakh threshold should be confirmed, per the offer document and framework; the reference flags it as a known unknown of a young category.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Confirm whether a forced or restricted-redemption rule applies on a below-threshold holding, per the AMC's offer document and the framework.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The SIF redemption journey and the holding-state logic for SIF; not the ordinary MF flows.</div>
+  <div class="facet"><span class="fl">Dependencies</span>SIF cluster with D13, D14, D15, D16, and D32.</div>
+  <div class="facet"><span class="fl">Owner</span>AMC and offer document. A confirmation of external fact. Source: Instrument register.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span><span class="hookchip">PRD hook &middot; Instruments / Catalog</span><span class="hookchip">PRD hook &middot; Redemption</span> Closed. Below-threshold handling is carried as a dedicated per-scheme attribute set specifying each SIF scheme's treatment. The Instruments and Catalog PRD defines the attribute set; the Redemption PRD carries the forced-redemption special case for SIFs where a scheme's rule applies.</div>
+</div>
+<div class="persona">
+  <h3>D35. MF Central and CAS as the held-away and servicing rail, and its scope <span class="bkt fac">Tier 2</span></h3>
+  <div class="facet"><span class="fl">Status: scoped</span>Scoped by J13 as the complementary and interim held-away rail for mutual funds, drawn on alongside or ahead of Account Aggregator coverage where it is thin.</div>
+  <div class="facet"><span class="fl">Context</span>MF Central and the Consolidated Account Statement (CAS) provide a consolidated view of an investor's mutual fund holdings across AMCs, usable as a held-away and servicing rail ahead of full Account Aggregator integration.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The scope of MF Central and CAS as the consolidated-view, held-away, and servicing rail should be confirmed; it is a servicing and held-away decision, not on the first path.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Confirm the consolidated-view and servicing scope of MF Central and CAS as the interim held-away rail.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>The held-away view ahead of AA, and the servicing surface; not the core transaction journeys.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tied to D34 (AA integration, the fuller successor rail).</div>
+  <div class="facet"><span class="fl">Owner</span>Internal. An internal scope choice. Source: Rails register.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span>Closed. The firm is already integrated with Finvu and MF Central for an end-to-end consolidated view across MF, SIF, bank, and FD holdings, and continues with the same as the held-away and servicing rail. Re-tiered from Tier 2 to Tier 2 alongside D34 and D49, since the financial picture is V1-scoped.</div>
+</div>
+<div class="persona">
+  <h3>D40. Customer-migration scope <span class="bkt fac">Tier 2</span> <span class="bkt core">new</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Surfaced by J7, brushed by J3. Net-new first is recommended.</div>
+  <div class="facet"><span class="fl">Context</span>The marquee onboarding thread assumes a net-new investor. Whether V1 also onboards the existing book changes how common the existing-KYC and folio-reuse special cases are, and whether they are first-class paths or edge cases.</div>
+  <div class="facet"><span class="fl">Why it is open</span>If existing-book migration is in V1, the existing-KYC and folio-reuse paths are first-class and must be built as such; if not, they are deliberate follow-ons. The decision sets the prominence of those paths.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Draw V1 onboarding net-new first, with existing-book migration scoped as a deliberate follow-on rather than assumed.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J7 and J3 (how first-class the folio-reuse and existing-KYC paths are), and the breadth of V1 onboarding.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tied to D42 (folio-reuse matching) and D38 (folio-creation timing), whose not-net-new variants depend on this scope.</div>
+  <div class="facet"><span class="fl">Owner</span>Internal and Business. An internal scope choice. Source: J7 and J3.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span>Closed. V1 onboards net-new users only. Existing-book migration is a distinct phase following V1.5, with proper migration tooling built for it, so the existing-KYC and folio-reuse paths are deliberate follow-ons rather than first-class V1 branches.</div>
+</div>
+<div class="persona">
+  <h3>D41. V1 investor persona scope <span class="bkt fac">Tier 2</span> <span class="bkt core">new</span></h3>
+  <div class="facet"><span class="fl">Status: decided</span>Surfaced and decided by J1. J1's governing boundary.</div>
+  <div class="facet"><span class="fl">Context</span>The investor personas span natural persons, Resident, NRI, OCI, and Minor, with Joint as a holding-mode overlay, and non-individual entities, HUF, companies, trusts, partnerships, and societies. Onboarding each entity persona carries its own KYC document set and UBO tracing.</div>
+  <div class="facet"><span class="fl">What was decided and why</span>V1 covers the natural personas only, Resident, NRI, OCI, and Minor, with Joint as a holding-mode overlay. The entity personas, HUF and the non-individual entities, are deferred to the Private Wealth phase, since even HUF is a private-wealth rather than mass-affluent concern.</div>
+  <div class="facet"><span class="fl">Recommendation</span>None outstanding; the scope is decided and recorded as the V1 boundary.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J1 (its persona scope) and, by consequence, D19 (UBO tracing and the entity document set), which is reframed as deferred from V1. It bounds the whole onboarding build.</div>
+  <div class="facet"><span class="fl">Dependencies</span>Reframes D19; the Foreign National persona (D21) is a separate narrow natural-persona scope question, not part of this entity-persona deferral.</div>
+  <div class="facet"><span class="fl">Owner</span>Internal and Business. An internal scope decision, now taken. Source: J1.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span>Closed. Natural personas only: Resident, NRI, OCI, and Minor, with Joint as a holding-mode overlay. HUF and the non-individual entities defer to the Private Wealth phase, since even HUF is a private-wealth rather than mass-affluent concern.</div>
+</div>
+<div class="persona">
+  <h3>D43. The order-to-mandate attachment state <span class="bkt fac">Tier 2</span> <span class="bkt core">new</span></h3>
+  <div class="facet"><span class="fl">Status: open</span>Surfaced by J5; exercised by J8, where the recommended position held: a plan with a still-registering mandate waits in <span class="mono">Registered</span> with no new state needed. To confirm with Engineering.</div>
+  <div class="facet"><span class="fl">Context</span>A plan or order can be captured before its backing mandate is live, so the order is held and activates when the mandate reaches <span class="mono">Active</span>. This pending-attach pattern lets an investor set up a SIP and its first order in one sitting, without waiting for the rail to confirm the mandate registration first.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The platform must fix the earliest mandate state an order may attach to, <span class="mono">Created</span>, <span class="mono">Authenticated</span>, or only once <span class="mono">Active</span>, and define what happens to an attached order if the mandate ends in <span class="mono">Rejected</span>. Attaching too early risks an order bound to a mandate that never goes live; attaching only at <span class="mono">Active</span> loses the single-sitting setup. It is a modelling call, not an investor-facing choice.</div>
+  <div class="facet"><span class="fl">Recommendation</span>Allow an order to attach from <span class="mono">Authenticated</span>, holding it pending, and activate it when the mandate reaches <span class="mono">Active</span>; unwind the held order cleanly if the mandate is <span class="mono">Rejected</span>. Confirm with Engineering.</div>
+  <div class="facet"><span class="fl">What it blocks or affects</span>J5 (the pending-attach special case) and J8 (the SIP whose first instalment may attach to a still-registering mandate).</div>
+  <div class="facet"><span class="fl">Dependencies</span>Tied to D4 (the mandate rail and lifecycle) and to the <span class="mono">Rejected</span> mandate terminal, now first-class in the Order reference as of v0.2.</div>
+  <div class="facet"><span class="fl">Owner</span>Internal and Engineering. An internal engineering definition. Source: J5.</div>
+  <div class="facet closure"><span class="fl">Closed &middot; v0.16</span><span class="hookchip">PRD hook &middot; Order</span><span class="hookchip">PRD hook &middot; Mandate</span> Closed. Aligned with the recommended position: an order attaches from Authenticated, holds pending, activates when the mandate reaches Active, and unwinds cleanly if the mandate ends in Rejected. Documented explicitly in both the Order PRD and the Mandate PRD so the contract is stated once and read twice.</div>
+</div>
+
+<h2 id="feed">How this feeds the journey work</h2>
+<p>This register is the bridge between the references and the journeys. The journey documents will be drawn decision-surfacing first, and each will route the decisions it forces into this list; in turn, closing a decision here lets the corresponding journey harden into a governing document. The dependency is concentrated at the top: the four Tier 1 decisions gate the first wave of journeys, the onboard-to-first-order north star and the SIP flow, so they are the ones to close before those journeys can be more than skeletons. The Tier 2 decisions mostly carry a confirmable default, so their journeys can be drawn against the recommendation and confirmed in parallel. The Tier 3 decisions sit on deferred scope and need not hold anything up. Once this register is vetted, it becomes the standing decision log the journey work draws from and writes back to.</p>
+<p><strong>Revision at v0.16, the stakeholder closure pass (July 2026).</strong> Business responses to the consolidated open-questions circulation were recorded against twenty-eight decisions, closing twenty-two overall. The register was restructured open-first: Part 1 carries the twenty-seven open decisions and Part 2 the twenty-two closed ones, both in numerical order, with every closure ruling highlighted in place and the block histories preserved. Notable rulings: D12 closes for the operating-mode aspect only, with the trustee-versus-heir precedence residual moved into D48, where the transmission servicing build must answer it, and with the D10 all-holder consent rule noted as still constraining the nomination surface; D28 part-closes, with the V1 encumbrance check committed and the lien-versus-pledge feed mechanics deferred to the loan-against-MF phase; D29 closes with the RTA confirmation carried as a Folio PRD residual; D1 closes with its Cybrilla written confirmation and three Compliance sign-off specifics named as live residual actions; D2 closes on Compliance's report that the Registered-status relaxation is extended again, with the circular number and end-date held as a citation residual since public sources corroborate only the run to 30 April 2026, and with the build proceeding Validated-ready regardless. The financial-picture cluster, D34, D35, and D49, is re-tiered from Tier 3 to Tier 2 now that the feature is V1-scoped, with D35 closing on the existing Finvu and MF Central integration and D34 narrowing to the FIU and Sahamati positioning question. A PRD hook ledger is added as a standing section: eight closures defer residuals into named future PRDs (Order, Mandate, Folio, Transmission, Instruments and Catalog, Redemption, NRI handling, and the Recommendation surface), and the ledger names each obligation once so it is inherited at authoring time rather than remembered. The pass was not exhaustive: D8, D9, D13, D14, D15, D17, and the D36 to D39 and D42 to D47 rows were untouched, so D9, D45, D46, D47, D48, and D49 remain the decision-pending branches in the journey diagrams, D48 now also carrying the precedence residual from D12.</p>
+
+<p><strong>Revision after J6 and J7.</strong> Drawing the order spine (J6) and the onboard-to-first-order thread (J7) confirmed the four Tier 1 decisions recorded above and added five rows: D36 holding visibility at provisional allotment, D37 reflected-state freshness, D38 folio-creation timing, D39 KYC-to-order sequencing, and D40 customer-migration scope. It also surfaced reference deltas that flow back to the references rather than into this register, since the precedence rule keeps state ownership with the references. The Order reference may need an explicit provisional-versus-confirmed sub-state on Allotted, tied to D36, and a pre-Placed draft state if D39 resolves to order-held-pending-KYC. The Investor and Folio references should confirm the seam between a transactable identity and the folio Created-to-Active transition on the fused onboarding path.</p>
+<p><strong>Revision after J1.</strong> Drawing the onboarding journey set the V1 investor persona scope as a governing boundary, D41, natural personas only, with the entity personas deferred to the Private Wealth phase, and reframed D19 as deferred from V1. It applied and grounded D2, the NRI and OCI Validated requirement, against the 30 April 2026 lapse of the Registered-status relaxation, and brushed D20, D21, and D23 on the non-resident branch. On review, D37, reflected-state freshness, was moved from Tier 3 to Tier 2, since it concerns the in-scope core pre-flight rather than deferred scope and carries a confirmable default, with its reasoning elaborated in the row.</p>
+<p><strong>Revision after the FP no-pooling review.</strong> A read of Fintech Primitives' going-live and payments documentation, cross-checked against the SEBI no-pooling circular, narrowed the D1 residual from an open question to a procedural confirmation. FP's documented architecture, Razorpay Payments to collect under Third Party Validation and Razorpay Route to transfer to the AMC, keeps the firm out of the flow of funds by design, which is the payment-aggregator route the circular permits. The residual is now a written fund-flow note from Cybrilla and a Compliance sign-off on the payment mode, the aggregator co-mingling mitigation, and direct redemption routing, recorded in the D1 block.</p>
+<p><strong>Revision after J3.</strong> Drawing folio creation confirmed D38, folio-creation timing, as J3-owned with the fused path recommended as the marquee, applied D3 as SOA-only in the container, and added D42, the folio-reuse matching rule and multiple-folios policy. It also grounded the nomination constraint J3 builds to, the SEBI framework effective 1 September 2026, mandatory nominate-or-opt-out for single-holder folios and optional for joint, which is a constraint rather than an open decision and so is recorded in the J3 document, not as a register row.</p>
+<p><strong>Enrichment to v0.6.</strong> Every row from D5 to D42 was expanded from a table line into a standalone block carrying its own status, context, rationale, recommendation, blast radius, dependencies, and owner, matching how the Tier 1 blocks and D37 already read, so the register can be read end to end without cross-referencing the source documents. The context and the why-it-is-open for each row were drawn from the reference or journey that raised it rather than from memory, and every row was found to be supported by a source, so none carries an unsupported flag. Two rows are thin and are recorded as open in substance rather than papered over: D9, where the three-consecutive-failures pause trigger is a proposed default not yet fixed in any source, and D12, where the nominee-versus-survivor-versus-heir precedence is described as contested in the Folio reference and turns on a legal reading. No decision content changed in this pass; it is an elaboration of rows already present.</p>
+<p><strong>Revision after J5.</strong> Drawing mandate registration applied D4 as settled and added two rows, both Tier 2: D43, the order-to-mandate attachment state, the earliest mandate state an order may attach to and how an attached order unwinds if the mandate is rejected; and D44, the mandate-to-plan cardinality and the boundary between a registered one-time mandate and an immediate one-time direct payment. J5 also surfaced a reference gap that was closed by direct edit rather than carried as a flag: the Order reference mandate lifecycle had no terminal for a registration the bank or rail declines, so a first-class <span class="mono">Rejected</span> state was added to the Order reference at v0.2, distinct from <span class="mono">Cancelled or expired</span>. The recurring-debit thresholds J5 builds to, the &#8377;15,000 general and &#8377;1 lakh mutual-fund no-authentication bands, were reconfirmed against the RBI e-mandate framework in force in mid-2026.</p>
+<p><strong>Revision after J9.</strong> Drawing redemption, the money-out flow, applied D2 and D6, exercised D27 (repatriability routing) and brushed D28 (encumbrance), all of which held when the payout was drawn, and added one Tier 2 row: D45, NRI redemption pre-trade TDS and net-proceeds visibility. The row is rooted in the Spec 2 cost-basis-out-of-V1 decision: because the platform holds no cost basis in V1, it cannot derive an NRI's capital-gains TDS itself, so what it shows a non-resident before they confirm a redemption is a product and architecture call, not a tax question. J9 added no reference gap, since the redemption branch and its terminals are all carried by the order spine and the platform reflects the gain and TDS the AMC and RTA compute.</p>
+<p><strong>Revision after J8 and J10.</strong> Drawing the SIP (J8) and switch-and-STP (J10) added no rows. J8 exercised three: D9, which it centres with the proposed three-consecutive-failures pause and a no-double-invest retry rule, routed to Product; and D43 and D44, whose recommended positions held when a real flow leaned on them, now marked exercised and awaiting Engineering confirmation. J10 applied D6, reused D9 for the STP, exercised D27, and brushed D28 and D45. It also surfaced a correctness fix applied directly to the Order reference at v0.3, the STP buy leg is funded by its own sell leg within the AMC and needs no payment mandate, and recorded one scope constraint in the journey rather than as a row: V1 offers no cross-AMC switch convenience flow, a move between fund houses being a redemption then a separate purchase, which keeps the architect-owned NRI TDS settlement-timing item parked.</p>
+<p><strong>Consistency pass to v0.9.</strong> A suite-wide audit reconciled the register with the drawn journeys, the D9, D43, and D44 statuses above, and propagated three corrections: J3's nominee capture was aligned to the Folio reference's operative ten-nominee rule with the ten-to-four consultation pending as D10 (J3 v0.2), and the Investor and Rails open callouts on the NRI and OCI Registered-status relaxation were grounded to the confirmed 30 April 2026 lapse per D2 (Investor v0.3, Rails v0.2). The locked instrument scope is recorded here so the drift is tracked: fixed deposits and bonds move to V1.5, direct equities and ETFs sit beyond that, and the strategy-layer documents (Build Strategy, Lock-List, Documentation Index), which predate the lock, will be reconciled in a single pass at the end of the entities-and-journeys exercise.</p>
+
+<p><strong>Revision after J11.</strong> Drawing the SWP, the recurring money-out plan, added no rows. J11 is a composition: J8's plan lifecycle and two-clocks principle running J9's redemption spine on each scheduled date, with no payment mandate because money flows outward. It refined D9 rather than adding to it: a non-generating withdrawal instalment, one that does not emit because the unencumbered units are insufficient, has no debit and no order to fail, so the recommendation is that it is recorded as information and does not feed the consecutive-failure pause the SIP uses, with the Product call now extended to whether SIP and SWP share one plan-health rule. J11 reused D27 (repatriability routing) and D28 (encumbrance, now the generation gate) per instalment, both holding, and brushed D45, since J9's NRI pre-trade-visibility question recurs every cycle without changing the row. J11 added no reference gap; the SWP and its non-generation behaviour are carried by the Order reference, and the per-instalment redemption is J9's.</p>
+
+<p><strong>Revision after the 29 May 2026 nomination circular.</strong> A web verification before drawing J4 found that the 17 March 2026 nomination consultation has produced a final SEBI circular dated 29 May 2026, effective 1 September 2026, superseding all earlier nomination circulars. It resolved D10: the maximum is three nominees, not the ten previously operative or the four the consultation proposed, with name and relationship the only mandatory fields, equal apportionment with the odd lot to the first nominee, and all-holder consent required for nomination changes on joint folios. D10 moves from open to resolved, with a residual Compliance confirmation against the primary circular text. The fact propagated by direct edit, per references-win-on-facts: the Folio reference went to v0.2 (operative rule grounded to three) and J3 to v0.3 (nominee count set to three, correcting its prior ten). The 1 September 2026 mandatory nominate-or-opt-out date, which J3 already built to, was confirmed unchanged by the same circular.</p>
+
+<p><strong>Revision after J4.</strong> Drawing nomination capture and update, the standing life of a nomination on a live folio, added no rows. J4 applied D10 as settled, building to the three-nominee rule resolved at v0.11, with name and relationship mandatory and the single residual a Compliance confirmation against the primary circular text. It brushed D12: J4 draws the hard boundary that no nomination changes once a death is intimated and routes the folio to J12, but does not adjudicate the nominee-versus-survivor-versus-heir precedence, which stays the contested legal call J12 carries. J4 found no reference gap, since the Folio reference at v0.2 now carries the operative framework in full. The all-holder-consent rule on joint folios and the investor-only authority rule are drawn as hard requirements rather than latitude, both grounded in the 29 May 2026 circular and the Investor reference.</p>
+
+<p><strong>Revision after J2.</strong> Drawing KYC lifecycle events, the downgrade-and-restore loop and the minor-to-major reroute, added two rows and applied D2 as settled for the non-resident branch. D46, plan behaviour on a KYC downgrade, asks whether an Active SIP pauses proactively when the identity goes On Hold or lets its instalments fail at the J6 pre-flight and count toward D9; the recommendation is a proactive downgrade-pause modelled distinctly from a funding-pause, with the SWP case decided explicitly since it has no debit, routed to Product and Engineering. D47, residency-status-change servicing scope, is a scope ruling: whether the resident-to-non-resident and return-leg flow is in V1 and whether it earns its own journey, given its blast radius across KYC, bank account class, repatriability, tax residency, and FATCA and CRS, with the under-built return leg flagged, routed to Product and Compliance. J2 flagged no reference gap, since every status and transition it uses is the Investor reference's and every failure mode is the Rails reference's; the two additions are product surface, not reference facts. The register moves from forty-five to forty-seven decisions, both new rows in Tier 2. A lighter item is also recorded: the tightened post-2026 KRA validation bar should be confirmed against primary KRA and SEBI material before build, since it is grounded in contemporaneous reporting.</p>
+
+<p><strong>Revision after J12.</strong> Drawing transmission, the post-death transfer of units and the last journey of Wave 3, confirmed D11, exercised D12, and added one row. D11, the transmission documentation threshold, is confirmed against the AMFI Best Practices Guidelines as consolidated into the 2026 SEBI and AMFI master circulars: PAN-level aggregate bands of up to five lakh simplified, five to ten lakh with notarised attestation and affidavits or a will-or-no-objection, and above ten lakh a probated will or letter of administration, with a residual check against the current master circular. D12, the nominee-survivor-heir precedence, is exercised but not closed: J12 draws the precedence fork against the recommended position, the nominee and survivor receiving in trust with heirs' beneficial rights able to prevail, but the Legal opinion sought from the week of 15 June has not landed, so the fork is provisional and D12 stays open. D48, the heir-claim and contested-claim servicing path, is new: how far the platform builds the tracking, guidance, and escalation for legal-heir and contested claims, given it facilitates but never adjudicates, routed to Product and Operations with a Compliance view on escalation. The register moves from forty-seven to forty-eight decisions. With J12 drawn, the thirteen-journey layer is complete bar J13, which stays deferred pending the Account Aggregator scope (D34).</p>
+
+<p><strong>Revision after J13.</strong> Drawing financial-picture aggregation, the consent-based held-away view, scoped two rows and added one, and completed the thirteen-journey layer. D34, Account Aggregator integration, moves from a deferred later-phase decision to scoped for V1: the firm is onboarded as a Financial Information User through its chosen technology partner, the V1 categories are bank, mutual funds, and NPS with fixed deposits a likely addition, and the cadence is a monthly scheduled pull plus on-demand refresh within the consent's fetch frequency, with residuals on the live FIU stage and fixed deposits. The financial picture itself moves from deferred to in-scope, and although D34, D35, and D49 sit in the secondary-scope tier as a non-transactional value-add, the firm may wish to revisit that tiering now that the feature is V1. D35, MF Central and the Consolidated Account Statement, is scoped as the complementary held-away rail for mutual funds. D49, new, is the financial-picture tax and cost display treatment: V1 shows an after-cost view and an indicative, clearly disclaimed tax view, with a precise after-tax target state tied to the Spec 2 cost-basis decision and D45's root. The MFD-not-RIA constraint, generic guidance and comparison only with no advisory fee and Compliance sign-off on the copy, is recorded in the J13 document rather than as a register row, the way J3 carried the nomination constraint. The register moves from forty-eight to forty-nine decisions.</p>
+
+<div class="footer">
+  <p><strong>Document control.</strong> Open Decisions: Master Register. Version v0.15, June 2026. Builds on v0.14 by reconciling the register with J13 (financial-picture aggregation), the thirteenth and final journey, which scoped D34 (Account Aggregator integration) into V1 for the financial picture, scoped D35 (MF Central and CAS) as the complementary held-away rail, and added one Tier 3 row, D49 (the financial-picture tax and cost display treatment, indicative in V1 with a precise target state tied to the Spec 2 cost-basis decision). The financial picture moves from deferred to V1-scoped, completing the thirteen-journey layer. The prior v0.14 reconciled the register with J12 (transmission), which confirmed D11, exercised D12, and added one Tier 2 row, D48 (the heir-claim and contested-claim servicing path, routed to Product and Operations). D11, the transmission documentation threshold, is confirmed against the AMFI guidelines as consolidated into the 2026 master circulars (PAN-level bands of five and ten lakh). D12, the nominee-survivor-heir precedence, is exercised but stays open, drawn against the recommended position with the Legal opinion still pending. The register moves from forty-seven to forty-eight decisions, and the thirteen-journey layer is complete bar J13, deferred pending the Account Aggregator scope (D34). The prior v0.13 reconciled the register with J2 (KYC lifecycle events), which added two Tier 2 rows: D46, plan behaviour on a KYC downgrade, and D47, residency-status-change servicing scope. The prior v0.12 built on v0.11 by reconciling the register with J4 (nomination capture and update), which added no rows: J4 applied D10 as settled (three nominees, resolved at v0.11) and brushed D12 (the no-change-after-death-intimation boundary drawn, the precedence left with Legal and J12). The prior v0.11 built on v0.10 by recording the SEBI nomination circular dated 29 May 2026, effective 1 September 2026, which resolved D10: the maximum is three nominees (not the prior ten or the consultation's proposed four), name and relationship are the only mandatory fields, and all-holder consent is required on joint folios. D10 moves to resolved with a residual Compliance confirmation, and the fact propagated by direct edit to the Folio reference (v0.2) and J3 (v0.3). The prior v0.10 reconciled the register with J11 (SWP), which added no rows and refined D9: a non-generating withdrawal instalment is recorded as information rather than counted toward the SIP's consecutive-failure pause, and the Product call is extended to whether SIP and SWP share one plan-health rule. J11 reused D27 and D28 per instalment and brushed D45, all holding. The prior v0.9 reconciled the register with J8 and J10, which added no rows: D9 is exercised by J8 with a proposed default awaiting Product, and D43 and D44 are exercised with their recommended positions holding, awaiting Engineering confirmation. Records J10's outcomes, the STP correction applied to the Order reference at v0.3 and the cross-AMC switch decided out of V1 scope as a constraint in J10, and the consistency-audit corrections: J3 v0.2 (nominee count to the ten-nominee rule), Investor v0.3 and Rails v0.2 (NRI relaxation grounded to the 30 April 2026 lapse per D2). The locked instrument scope is recorded: fixed deposits and bonds to V1.5, direct equities and ETFs beyond, strategy-layer documents to be reconciled in a later pass. Consolidates the open items from the verification registers of all five entity references (Investor, Instrument, Order, Folio, Rails) and the deltas from the journey documents into forty-nine distinct decisions across three priority tiers. The four Tier 1 decisions are taken as of this revision, D1 with a residual no-pooling confirmation, and the rows added by the journey work are D36 to D49. Each carries a recommended position to confirm or overrule, not a decision already made. Tier 1 is foundational and gates the first journey wave; Tier 2 hardens the core journeys; Tier 3 covers secondary scope and detail. Owners indicate who can answer and whether the decision is a confirmation of external fact, an internal choice, or a legal judgment. Intended as the standing decision log the journey documents surface into and harden against.</p>
+</div>
+
+</div>
+</body>
+</html>

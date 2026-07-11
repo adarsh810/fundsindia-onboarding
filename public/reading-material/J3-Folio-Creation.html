@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J3: Folio Creation</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Journey Layer</p>
+  <h1 class="title">J3: Folio Creation</h1>
+  <p class="subtitle">How the holding container comes into existence: the investor-by-AMC folio, brought to life by the first transaction, held in SOA form, with nomination captured at creation. The container J7 fuses into the first order and that J5, J8, and J9 transact against.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.3: Nominee count set to three per the 29 May 2026 circular</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Journey document (not a reference, not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>The governing view of <strong>how a folio is created</strong>. A folio is the join of one investor with one fund house, in a given holding mode and repatriability, and it is the container every transaction journey writes into. J3 draws how that container comes into existence: the SOA holding form, the operation mode and repatriability tag set at creation, the nominate-or-opt-out step, and the <span class="mono">Created</span> to <span class="mono">Active</span> lifecycle. It draws on Folio and Rails, and references the transactable identity that J1 produces, since a folio cannot be created for a record that cannot yet transact.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a reference and not a PRD. It does not restate the folio facets, it sequences them. It is not the order, which is J6 and J7, and it is not nomination depth or transmission, which are J4's. Per the settled D3 the holding form is <strong>SOA only</strong>; demat is deferred. J3 is the journey that <strong>owns the folio-creation timing decision (D38)</strong>, fused into the first order or run as a discrete step, and surfaces it here. This is a decision-surfacing pass on the net-new path; existing-book folio import sits downstream of the migration-scope call (D40).</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong, where the default intuition is likely to mislead.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a point the firm must actively design around, where a created folio can be wrong or unintended.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not yet settled, or one turning on a decision still open in the register; each names its owner.</p></div>
+  <p>State names are shown in <span class="mono">monospace</span> when they refer to a specific lifecycle state the Folio reference owns. The altitude follows the draw-or-bullet test: a fork that reroutes the path is drawn, a captured value or an added check is bulleted.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">The spine</a></li>
+    <li><a href="#s2">Decision points</a></li>
+    <li><a href="#s3">Failure taxonomy</a></li>
+    <li><a href="#s4">Special cases</a></li>
+    <li><a href="#s5">Entities and states exercised</a></li>
+    <li><a href="#s6">Decisions surfaced</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1"><span class="num">1.</span>The spine</h2>
+<p class="lead">A folio does not exist until it is needed, and it is the first transaction into a fund house that brings it into being, because the RTA issues the folio number on first transaction. So the spine starts not with a create-account step but with an intent to hold, checks whether a folio for this investor and fund house already exists, and creates one only if it does not. The container is shaped at creation, the SOA form, the operation mode, the repatriability tag, and nomination, and then it goes live carrying its first holding.</p>
+<pre class="mermaid">
+flowchart TD
+  A([New holding intent, an investor-AMC pair]) --> B{Folio exists for this AMC, mode, repatriability}
+  B -->|yes| R([Reuse the existing folio])
+  B -->|no| C[Set SOA holding form, operation mode, repatriability tag]
+  C --> D{Nomination captured}
+  D -->|provided, or a joint folio| E[Folio number issued by the RTA at first transaction]
+  D -->|single-holder, neither given| X1([Blocked, creation cannot complete])
+  E --> F([Folio Active, carrying the first holding])
+</pre>
+<p>The reuse check at the top matters more than it looks: a careless flow that always creates rather than reuses will scatter an investor's money across duplicate folios with the same fund house, which is a servicing and reporting mess later. The nomination gate is a real stop for a single-holder folio under the current framework, covered in Section 2. And the folio number arriving from the RTA at the first transaction is the fusion point that J7 builds on.</p>
+
+<h3>Who acts at each step</h3>
+<table>
+  <thead><tr><th>Step</th><th>Acting party (by role)</th><th>What the firm does</th></tr></thead>
+  <tbody>
+    <tr><td>Shape the folio</td><td>The firm.</td><td>Captures the holding intent, resolves reuse-or-create, and sets the SOA form, the operation mode, the repatriability tag, and the nomination. Nothing is registered yet.</td></tr>
+    <tr><td>Issue the folio number</td><td>The RTA.</td><td>Issues and owns the folio number at the first transaction. The firm reflects it; it does not mint folio numbers.</td></tr>
+    <tr><td>Go <span class="mono">Active</span></td><td>The AMC and RTA.</td><td>The first allotment lands and the folio carries a holding. The firm reconciles its reflected folio against the RTA record.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="s2"><span class="num">2.</span>Decision points</h2>
+<p>One structural fork that J3 owns, and one regulatory gate. The reuse-or-create fork already sits in the spine.</p>
+
+<h3>Folio-creation timing (D38)</h3>
+<p>This is the decision J3 owns. A folio can be created as a side effect of the first order, the fused path, or as a deliberate standalone step before any money moves. The choice changes the early sequence, so it is drawn.</p>
+<pre class="mermaid">
+flowchart TD
+  P[New investor-AMC pair, no folio yet] --> Q{Creation timing}
+  Q -->|fused, the marquee| M1[First order carries a new-folio instruction<br/>folio number returns at first allotment]
+  Q -->|discrete| M2[Create the folio as a standalone step<br/>then transact into it]
+</pre>
+<p>The recommended marquee is the fused path, since for a net-new investor the first purchase is what the RTA needs to mint the folio, so creating a folio first and funding it second models a sequence the rail does not require. The discrete path stays supported for the case where a folio is opened deliberately ahead of funding. The consequence of the fused choice, that a folio failure and a payment failure both present as a rejected first order, is the recovery subtlety in Section 3 and is shared with J7.</p>
+
+<h3>The nomination gate</h3>
+<p>Nomination is captured at creation, and under the framework that takes effect on 1 September 2026 it is a real gate rather than an optional field. Since V1 creates folios around and after that date, J3 builds to it.</p>
+<table>
+  <thead><tr><th>Folio type</th><th>Nomination requirement at creation</th></tr></thead>
+  <tbody>
+    <tr><td>Single-holder</td><td>Mandatory to either nominate or formally opt out through a declaration. The field cannot be left blank, so creation is blocked until one is given.</td></tr>
+    <tr><td>Jointly held</td><td>Optional. If a nomination is made, the consent of all joint holders is required to set or change it, whatever the operation mode.</td></tr>
+  </tbody>
+</table>
+<p>The captured detail follows the operative framework the Folio reference carries: up to three nominees, each with a percentage share, apportioned equally where no share is specified and any odd lot going to the first nominee. The SEBI circular dated 29 May 2026, effective 1 September 2026, settled this: it cut the maximum from the earlier ten to three (the 17 March 2026 consultation had proposed four), made only the nominee's name and relationship mandatory with the rest optional, and requires all-holder consent for a nomination on a joint folio. D10 is resolved accordingly, so the capture form builds to three; a residual Compliance confirmation against the primary circular text remains before form build. J3 captures the choice; the depth, updates, and the transmission that draws on it are J4's.</p>
+
+<h2 id="s3"><span class="num">3.</span>Failure taxonomy</h2>
+<p>Folio creation fails in a few clean ways, and on the fused path some of them wear the disguise of an order failure. None moves money on its own, since creation precedes or accompanies the first allotment.</p>
+<table>
+  <thead><tr><th>How it breaks</th><th>Cause</th><th>Where it lands, and recovery</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Not in good order</strong></td><td>A data or name-to-PAN mismatch the RTA rejects.</td><td>On the fused path this surfaces as a first-order rejection at <span class="mono">Acknowledged</span>; on the discrete path as a standalone creation rejection. Correct the data and re-submit.</td></tr>
+    <tr><td><strong>Mode or repatriability mismatch</strong></td><td>An attempt to create a folio whose repatriability does not match the funding account, for instance a repatriable folio funded from a non-repatriable account.</td><td>Blocked before registration. Align the account class with the intended folio, then proceed.</td></tr>
+    <tr><td><strong>Nomination gate unmet</strong></td><td>A single-holder folio with neither a nomination nor an opt-out declaration.</td><td>Creation cannot complete. Capture one or the other and continue.</td></tr>
+    <tr><td><strong>Unintended duplicate</strong></td><td>A new folio created where an existing one for the same investor, AMC, mode, and repatriability should have been reused.</td><td>Not a hard failure but a data-hygiene fault that fragments the investor's holdings. Prevented by the reuse check, which leans on the matching rule in Section 6.</td></tr>
+  </tbody>
+</table>
+<div class="callout">
+  <p class="ck">Special attention: a rejected first order can be a folio problem wearing an order's clothes</p>
+  <p>Because the marquee fuses creation into the first order, "the first order did not go through" can mean the payment failed or it can mean the folio data was not in good order. These need different fixes, a funding retry versus a data correction, so the journey must distinguish them rather than treat every failed first order alike. This is the same recovery subtlety J7 carries, seen from the folio side.</p>
+</div>
+
+<h2 id="s4"><span class="num">4.</span>Special cases</h2>
+<p>Modes, reuse paths, and persona-specific shapes that change a value or add a check without rerouting the spine. Listed, never drawn.</p>
+<ul class="tight">
+  <li><strong>Folio reuse.</strong> When a folio for this investor, AMC, mode, and repatriability already exists, the holding lands in it and the container step is a no-op. The marquee assumes net-new; this is the not-net-new path, and its prevalence depends on the migration-scope call (D40).</li>
+  <li><strong>Legitimate multiple folios per AMC.</strong> Different operation modes or repatriability classes correctly produce separate folios with the same fund house, a resident-repatriable and a non-repatriable folio, for instance. What the reuse check guards against is duplicates within the same mode and repatriability, not these.</li>
+  <li><strong>Minor folio.</strong> Held in the minor's name and operated by a guardian, with the guardian's authority set at creation. The attaining-majority freeze that follows is a lifecycle event owned by J2, not a creation concern.</li>
+  <li><strong>Joint folio.</strong> The operation mode, Jointly, Either or Survivor, Anyone or Survivor, or Former or Survivor, is fixed at creation and feeds the authority engine. Each holder is KYC'd individually in J1, and nomination is optional but needs all-holder consent if made.</li>
+  <li><strong>Non-resident folio.</strong> The repatriability tag, NRE for repatriable or NRO for non-repatriable, is set at creation and determines where redemption proceeds may later route. A repatriable and a non-repatriable folio with the same AMC are distinct containers by design.</li>
+  <li><strong>Household is never a folio attribute.</strong> A folio belongs to an investor and a fund house; household grouping is a reporting projection laid over folios afterwards, never a field baked into the folio at creation.</li>
+</ul>
+
+<h2 id="s5"><span class="num">5.</span>Entities and states exercised</h2>
+<p>The references J3 draws on, the identity it depends on, and the handoffs it makes. Per the precedence rule J3 invents no state; it sequences the ones the Folio reference owns.</p>
+<table>
+  <thead><tr><th>Reference</th><th>What J3 exercises</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Folio</strong></td><td>The folio as the investor-by-AMC join; the SOA holding form per D3; the operation mode and repatriability tag set at creation; nomination at creation; and the <span class="mono">Created</span> to <span class="mono">Active</span> lifecycle transition.</td></tr>
+    <tr><td><strong>Investor</strong></td><td>By reference: the persona and the transactable, Validated identity that J1 produces, since a folio cannot be created for a record that cannot transact; and the operating authority that sets the folio's mode.</td></tr>
+    <tr><td><strong>Instrument</strong></td><td>The fund house and scheme whose first allotment the folio comes to carry.</td></tr>
+    <tr><td><strong>Rails</strong></td><td>The RTA, which issues and owns the folio number at first transaction and is the system of record the firm reflects.</td></tr>
+    <tr><td><strong>Order</strong></td><td>By reference: the first transaction that triggers creation on the fused path, owned by J6 and J7.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: J3 picks up a transactable identity and hands off the folio's later life</p>
+  <p>J3 begins at the transactable identity J1 produces and turns it into a live container, confirming the identity-to-folio seam from the folio side, with no new state invented. What happens to the folio after it is <span class="mono">Active</span>, the nomination updates and transmission in J4, and the dormancy, freeze, and attaining-majority events in J2, is owned by those journeys. J3 creates the container; the lifecycle journeys run it.</p>
+</div>
+
+<h2 id="s6"><span class="num">6.</span>Decisions surfaced</h2>
+<p>The decisions J3 owns, applies, or adds, routed to owners and written back to the register.</p>
+<table>
+  <thead><tr><th>#</th><th>Decision and what J3 needs</th><th>Owner</th><th>Status after J3</th></tr></thead>
+  <tbody>
+    <tr><td>D38</td><td>Folio-creation timing, the decision J3 owns. Fused into the first order as the marquee for net-new investors, with discrete creation supported for opening a folio ahead of funding.</td><td>Product / Internal</td><td>Recommended: fused as marquee, discrete supported. To confirm with Product.</td></tr>
+    <tr><td>D3</td><td>Holding form. Applied as settled: SOA only, so the container has no demat fork in V1.</td><td>Internal</td><td>Applied.</td></tr>
+    <tr><td><strong>D42</strong> <span class="bkt core" style="margin-left:4px;">new</span></td><td>Folio-reuse matching rule and the multiple-folios policy. The key on which the platform decides an existing folio matches, investor, AMC, mode, and repatriability, so it reuses rather than creates, and how it treats same-mode duplicates as a data-hygiene matter.</td><td>Internal / Engineering</td><td>New row, to define with Engineering.</td></tr>
+    <tr><td>D40</td><td>Customer-migration scope. J3 draws the net-new path; whether existing-book folios are imported and how the reuse and existing-folio paths become first-class turns on this.</td><td>Internal / Business</td><td>Brushed; J3 assumes net-new.</td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Open: a regulatory constraint J3 builds to, not a decision</p>
+  <p>The nomination framework effective 1 September 2026 is a constraint, not an open call: single-holder folios must nominate or formally opt out at creation, joint folios may leave it optional, with all-holder consent where a joint nomination is made. J3 builds the gate to it. What hardens J3 is D38 closing on the timing and D42 settling the reuse key; D3 is applied, and the identity-to-folio seam is recorded with J1 and J7.</p>
+</div>
+
+<div class="footer">
+  <p><strong>Document control.</strong> J3: Folio Creation. Version v0.1, decision-surfacing draft, June 2026. The fourth journey document and the first of Wave 2, drawing how the investor-by-AMC folio comes into existence in SOA form, with nomination captured at creation and the folio number issued by the RTA at the first transaction. Owns the folio-creation timing decision (D38), applies D3 as SOA-only, adds the folio-reuse matching rule (D42), and brushes the migration scope (D40). Draws on Folio and Rails; depends on the transactable identity from J1; hands the folio's later life to J4 for nomination and transmission and to J2 for lifecycle events. The nomination framework it builds to, mandatory nominate-or-opt-out for single-holder folios and optional for joint, was verified against the SEBI circular dated 29 May 2026, effective 1 September 2026. v0.3 sets the nominee-capture detail to the operative three-nominee rule from the SEBI circular dated 29 May 2026, with name and relationship the only mandatory fields and D10 resolved. This corrects v0.2, which carried the ten-nominee rule and a pending ten-to-four consultation, a shape now superseded by the circular. Not a reference and not a PRD.</p>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  try {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      themeVariables: {
+        fontFamily: "'Source Sans 3', sans-serif",
+        primaryColor: '#efe9f7',
+        primaryBorderColor: '#6a4a9c',
+        primaryTextColor: '#26222e',
+        lineColor: '#6a4a9c',
+        secondaryColor: '#fbf2dd',
+        tertiaryColor: '#fffdf8',
+        fontSize: '15px'
+      }
+    });
+  } catch (e) { /* if the CDN is unreachable, the Mermaid source remains legible as text */ }
+</script>
+</body>
+</html>

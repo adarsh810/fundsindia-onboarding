@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FundsIndia V1: Technical Architecture View (Big-Block)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--teal-line:#bfe0db;--red:#9d2f2f;--red-soft:#f8e7e3;--red-line:#e8c4bc;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1040px;margin:0 auto;padding:56px 56px 92px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+
+.cover{border-bottom:3px solid var(--accent);padding-bottom:30px;margin-bottom:24px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.45rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.12rem;color:var(--muted);font-weight:400;margin:0 0 24px;max-width:760px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:22px 44px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.92rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+
+p{margin:12px 0;}
+strong{font-weight:700;color:var(--ink);}
+
+.intro{font-size:.97rem;color:#43404a;line-height:1.62;margin:20px 0 6px;}
+
+.callout{border-radius:8px;padding:16px 20px;margin:18px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;font-size:.94rem;}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.open{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.open .ck{color:var(--amber);}
+
+.legend{display:flex;flex-wrap:wrap;gap:10px 18px;margin:22px 0 4px;font-size:.82rem;color:var(--muted);align-items:center;}
+.legend .ll{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--soft-muted);margin-right:2px;}
+.legend span.k{display:inline-flex;align-items:center;gap:7px;}
+.swatch{width:13px;height:13px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.08);}
+.sw-home{background:var(--accent-soft);border-color:var(--accent-line);}
+.sw-sens{background:var(--red-soft);border-color:var(--red-line);}
+.sw-seam{background:var(--teal-soft);border-color:var(--teal-line);}
+.sw-rail{background:var(--amber-soft);border-color:var(--amber-line);}
+.sw-cross{background:#efeae2;border-color:var(--line-strong);}
+.sw-read{background:#eef3f7;border-color:#c9d8e4;}
+
+/* layer band */
+.layer{margin:20px 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--paper);}
+.layer-head{padding:11px 20px;background:var(--accent-soft);border-bottom:1px solid var(--accent-line);display:flex;align-items:baseline;justify-content:space-between;gap:14px;}
+.layer-name{font-size:1.06rem;font-weight:700;color:var(--accent-dark);}
+.layer-tag{font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent);white-space:nowrap;}
+.layer-note{padding:11px 20px 0;font-size:.86rem;color:var(--muted);line-height:1.5;}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(224px,1fr));gap:13px;padding:14px 20px 20px;}
+
+.card{border:1px solid var(--line);border-left:4px solid var(--accent-line);border-radius:9px;padding:12px 14px;background:var(--cream);}
+.card .ct{font-weight:700;color:var(--accent-dark);font-size:.96rem;line-height:1.25;}
+.card .cd{font-size:.82rem;color:var(--muted);margin-top:5px;line-height:1.48;}
+.card .tag{display:inline-block;font-size:.6rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-top:9px;}
+.card.home{border-left-color:var(--accent);}
+.card.home .tag{background:var(--accent-soft);color:var(--accent-dark);}
+.card.sens{border-left-color:var(--red);background:var(--red-soft);}
+.card.sens .tag{background:#fff;color:var(--red);border:1px solid var(--red-line);}
+.card.seam{border-left-color:var(--teal);background:var(--teal-soft);}
+.card.seam .tag{background:#fff;color:var(--teal);border:1px solid var(--teal-line);}
+.card.rail{border-left-color:var(--amber);background:var(--amber-soft);}
+.card.rail .tag{background:#fff;color:var(--amber);border:1px solid var(--amber-line);}
+.card.read{border-left-color:#5a82a6;background:#eef3f7;}
+.card.read .tag{background:#fff;color:#406a8f;border:1px solid #c9d8e4;}
+.card .note{font-size:.74rem;color:var(--soft-muted);font-style:italic;margin-top:8px;display:block;}
+.card .hook{font-size:.73rem;color:var(--teal);margin-top:7px;display:block;font-weight:600;}
+
+/* spine pipe */
+.spine{margin:20px 0;border:1.5px dashed var(--accent-line);border-radius:12px;background:linear-gradient(0deg,var(--accent-soft),var(--paper));padding:14px 20px;}
+.spine .st{font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent);}
+.spine .sn{font-size:1.02rem;font-weight:700;color:var(--accent-dark);margin:2px 0 4px;}
+.spine .sd{font-size:.86rem;color:var(--muted);line-height:1.5;}
+
+/* cross-cutting rail */
+.cross{margin:20px 0;border:1px solid var(--line-strong);border-radius:12px;background:#f4f1ea;padding:0;overflow:hidden;}
+.cross-head{padding:11px 20px;background:#ece8df;border-bottom:1px solid var(--line-strong);display:flex;align-items:baseline;justify-content:space-between;gap:14px;}
+.cross-name{font-size:1.02rem;font-weight:700;color:#55505e;}
+.cross-tag{font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--soft-muted);}
+.cross-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(224px,1fr));gap:13px;padding:14px 20px 20px;}
+.ccard{border:1px solid var(--line-strong);border-left:4px solid var(--soft-muted);border-radius:9px;padding:12px 14px;background:var(--paper);}
+.ccard .ct{font-weight:700;color:#55505e;font-size:.95rem;}
+.ccard .cd{font-size:.81rem;color:var(--muted);margin-top:5px;line-height:1.48;}
+
+.spacer-note{text-align:center;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;margin:4px 0;}
+
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+.footer b{color:var(--muted);}
+
+@media print{
+  body{background:#fff;}
+  .wrap{max-width:none;padding:0 14mm;box-shadow:none;}
+  .layer,.cross,.spine,.callout{break-inside:avoid;}
+  @page{size:A4;margin:14mm;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="cover">
+  <p class="eyebrow">FundsIndia V1 &middot; Engineering</p>
+  <h1 class="title">Technical Architecture View</h1>
+  <p class="subtitle">The big-block component picture for V1, drawn through an MFD lens, with explicit seams held open for V2 and beyond.</p>
+  <div class="meta-grid">
+    <div><span class="label">Lens</span><b>Component &amp; module boundaries</b></div>
+    <div><span class="label">Companion to</span><b>Big-Block Map v2 (strategic)</b></div>
+    <div><span class="label">Status</span><b>v0.1 &middot; first draft</b></div>
+    <div><span class="label">Authority</span><b>Spec 1 (entities/spine), Spec 2 (ledger)</b></div>
+  </div>
+</div>
+
+<p class="intro">This view is deliberately a different lens from the Big-Block Map v2. The Map is build-sequence and strategic; this is component-and-altitude. The organising question here is not "what do we build when" but "what is a domain home, what is an adapter behind an ACL, what is a read layer, what is cross-cutting, and what is just a pipe." Everything is drawn purely through the MFD distributor lens: the platform never touches client money, the ledger is a reconciliation projection of RTA truth, and recommendation-shaped surfaces stay inside dissection-not-prescription bounds.</p>
+
+<div class="legend">
+  <span class="ll">Legend</span>
+  <span class="k"><span class="swatch sw-home"></span>Domain home</span>
+  <span class="k"><span class="swatch sw-read"></span>Read layer</span>
+  <span class="k"><span class="swatch sw-rail"></span>Rail ACL / adapter</span>
+  <span class="k"><span class="swatch sw-sens"></span>Sensitive / legally operative</span>
+  <span class="k"><span class="swatch sw-seam"></span>Seam held for V2+</span>
+  <span class="k"><span class="swatch sw-cross"></span>Cross-cutting</span>
+</div>
+
+<!-- SURFACE -->
+<div class="layer">
+  <div class="layer-head"><span class="layer-name">Surface Layer</span><span class="layer-tag">Client &middot; Edge</span></div>
+  <div class="layer-note">What the investor touches, plus the marketing instrumentation that rides on top of it. Stateless against the domains below.</div>
+  <div class="cards">
+    <div class="card home"><div class="ct">Investor Surface</div><div class="cd">Web (Next.js SSR), MSite, Android &amp; iOS (Flutter). Renders from the read layer, never reaches into domain homes directly.</div><span class="tag">Surface</span></div>
+    <div class="card home"><div class="ct">Martech Layer</div><div class="cd">Acquisition, attribution, lifecycle messaging instrumentation riding on the Investor Surface. Reads clickstream, not the domain spine.</div><span class="tag">Surface</span></div>
+  </div>
+</div>
+
+<!-- READ -->
+<div class="layer">
+  <div class="layer-head"><span class="layer-name">Read &amp; Composition Layer</span><span class="layer-tag">Query &middot; BFF</span></div>
+  <div class="layer-note">Read-only composition that serves the surface. Owns no domain state of its own; it projects and joins from the homes beneath.</div>
+  <div class="cards">
+    <div class="card read"><div class="ct">Discovery</div><div class="cd">Browse, filter, sort, and characteristic pills. Composes Catalog + Scheme Intelligence + Portfolio overlay into a query surface. Read-only; owns no state.</div><span class="tag">Read layer</span></div>
+  </div>
+</div>
+
+<div class="callout open">
+  <p class="ck">Open decision &middot; flagged on the artifact</p>
+  <p><strong>Recommendation-surface policing.</strong> Three surfaces can read as recommendation-shaped: Goal (goal-to-allocation), Portfolio overlay (characteristic tagging), and Discovery pills. Open question: do they each police the MFD dissection-not-prescription boundary independently, or route through one shared enforcement chokepoint? This is a structural decision, not a copy one. Copy/wording is a separate Compliance-in-the-loop exercise and is parked. Unresolved as of v0.1.</p>
+</div>
+
+<!-- DOMAIN -->
+<div class="layer">
+  <div class="layer-head"><span class="layer-name">Domain Homes</span><span class="layer-tag">Bounded contexts &middot; system of engagement</span></div>
+  <div class="layer-note">Each owns its entity, lifecycle, and invariants. These are the blocks that own state and emit domain events onto the spine. The ledger is a projection of RTA truth, not the system of record.</div>
+  <div class="cards">
+    <div class="card home"><div class="ct">Identity</div><div class="cd">Social + phone/OTP login; KYC for Resident, Minor, NRI/OCI. Owns the investor identity and KYC status ladder.</div><span class="tag">Domain</span></div>
+    <div class="card sens"><div class="ct">Consent &amp; Authorization</div><div class="cd">Binding, non-repudiable artifacts: AA consent, NACH/mandate authorization, KYC + DPDP processing consent. Own lifecycle, retention, audit trail.</div><span class="tag">Domain &middot; legally operative</span></div>
+    <div class="card home"><div class="ct">Catalog</div><div class="cd">Factual scheme/security metadata for everything sellable. MFs and SIFs only in V1. Source of factual truth, surfaceable.</div><span class="tag">Domain</span></div>
+    <div class="card home"><div class="ct">Scheme Intelligence</div><div class="cd">Decomposition of schemes into constituents: sector, equity/debt split, weights, risk profile. Derived, factual, surfaceable.</div><span class="tag">Domain</span></div>
+    <div class="card home"><div class="ct">Portfolio Service</div><div class="cd">Thin personalisation overlay. Dissection-only tagging of investor holdings against Scheme Intelligence + risk inputs. Surfaces state, never prescribes.</div><span class="tag">Domain</span><span class="hook">&rarr; membrane to internal Research kept explicit</span></div>
+    <div class="card home"><div class="ct">Goal Engine</div><div class="cd">Goal modelling and goal-to-allocation guidance, MFD-incidental framing. One of the three recommendation-shaped surfaces.</div><span class="tag">Domain</span></div>
+    <div class="card home"><div class="ct">Order</div><div class="cd">Order entity, J6 lifecycle state machine, ARN/EUIN attribution. Distinct from the execution rail it dispatches to.</div><span class="tag">Domain</span></div>
+    <div class="card home"><div class="ct">Mandate</div><div class="cd">Standing authorizations (NACH, eNACH, UPI Autopay) that spawn transactions. SIP/SWP/STP hang here. Owns pause/retry (D9).</div><span class="tag">Domain</span></div>
+    <div class="card sens"><div class="ct">Folio</div><div class="cd">Where units live; what recon reconciles against. Holds nominee &amp; guardian as legally-operative attributes (drives J12 transmission, minor-attains-majority).</div><span class="tag">Domain &middot; legally operative</span><span class="hook">&rarr; info hook to Relationships</span></div>
+    <div class="card home"><div class="ct">Relationships &amp; User Insights</div><div class="cd">Soft graph only in V1: RM relationship map, referral data, behavioural inference. Evolves into a richer graph. Receives hook from Folio.</div><span class="tag">Domain</span></div>
+  </div>
+</div>
+
+<!-- LEDGER -->
+<div class="layer">
+  <div class="layer-head"><span class="layer-name">Ledger &amp; Reconciliation</span><span class="layer-tag">System of record projection</span></div>
+  <div class="layer-note">Double-entry bitemporal immutable ledger. A reconciliation projection of RTA truth, never a replacement for it. No-pooling is architectural: no money ever transits the platform.</div>
+  <div class="cards">
+    <div class="card home"><div class="ct">Ledger &amp; Recon</div><div class="cd">Bitemporal double-entry ledger; reconciles folio/unit truth against RTA (CAMS, KFin) mailback/CAS. No advisory-fee posting (MFD).</div><span class="tag">Domain &middot; ledger</span></div>
+  </div>
+</div>
+
+<!-- RAILS -->
+<div class="layer">
+  <div class="layer-head"><span class="layer-name">Rail ACLs &amp; Integration Adapters</span><span class="layer-tag">Anti-corruption layer &middot; system of record = external</span></div>
+  <div class="layer-note">Every external rail sits behind its own ACL written to a vendor-neutral domain interface. Rail-agnostic architecture behind a proper ACL is sacrosanct: vendor change must never bleed into a domain home. One ACL per domain even where a single vendor spans two.</div>
+  <div class="cards">
+    <div class="card rail"><div class="ct">Execution Rail ACL</div><div class="cd">Transaction execution abstracted via Fintech Primitives (FP) in V1; BSE StAR MF as V1.5 fast-follow; PG (Razorpay) on the FP-RTA gateway path.</div><span class="tag">Rail ACL</span></div>
+    <div class="card rail"><div class="ct">Account Aggregator Rail ACL</div><div class="cd">Finvu as live AA in V1, behind a vendor-neutral interface. Feeds financial-picture (J13). Multi-AA gateway (Finarkein/Setu) is a V1.5 upgrade.</div><span class="tag">Rail ACL</span><span class="hook">&rarr; seam for multi-AA gateway</span></div>
+    <div class="card rail"><div class="ct">Identity Rail ACL</div><div class="cd">HyperVerge (identity), KRA/CKYC at CERSAI, UIDAI. Feeds the Identity domain; abstracted so the rail can change beneath KYC.</div><span class="tag">Rail ACL</span></div>
+    <div class="card rail"><div class="ct">Legacy CRM Sync</div><div class="cd">Outbound integration edge. Ingests V1 domain info into the legacy CRM. An ACL, not a relationships concern.</div><span class="tag">Rail ACL</span></div>
+  </div>
+</div>
+
+<!-- SPINE -->
+<div class="spine">
+  <span class="st">Pipe &middot; not a block</span>
+  <div class="sn">Domain Event Spine</div>
+  <div class="sd">Typed, bitemporal Kafka stream carrying domain events between bounded contexts. The operational backbone every home publishes to and subscribes from. It is a connector, drawn here as a pipe rather than a node. Clickstream is kept permanently separate from this spine.</div>
+</div>
+
+<!-- SINK -->
+<div class="layer">
+  <div class="layer-head"><span class="layer-name">Analytical Sink</span><span class="layer-tag">Downstream consumer</span></div>
+  <div class="layer-note">Reads off the spine and clickstream; emits nothing back into the domains. A destination, not a participant.</div>
+  <div class="cards">
+    <div class="card home"><div class="ct">Data Lake</div><div class="cd">Analytical sink. Consumes domain events + clickstream (the two kept separate). Downstream of the spine; never writes back into domain homes.</div><span class="tag">Sink</span></div>
+  </div>
+</div>
+
+<!-- CROSS-CUTTING -->
+<div class="cross">
+  <div class="cross-head"><span class="cross-name">Cross-Cutting Capabilities</span><span class="cross-tag">Wraps every layer &middot; not nodes</span></div>
+  <div class="cross-cards">
+    <div class="ccard"><div class="ct">Crypto / PII / DPDP</div><div class="cd">KMS, tokenization vault for Aadhaar/PAN, data residency, DPDP erasure. Tiered: AA-pulled financial data is heavier than KYC fields. A capability, not a block.</div></div>
+    <div class="ccard"><div class="ct">Audit &amp; Attribution</div><div class="cd">A property of the bitemporal ledger + spine, plus ARN/EUIN attribution integrity in the Order path and a recommendation-surface audit trail for MFD provability.</div></div>
+  </div>
+</div>
+
+<!-- DEFERRED SEAMS -->
+<div class="layer">
+  <div class="layer-head"><span class="layer-name">Seams Held for V2 and Beyond</span><span class="layer-tag">Deferred &middot; bolt-on points</span></div>
+  <div class="layer-note">Not built in V1. Listed here only where a genuine seam exists today, so the bolt-on does not force a re-architecture. Not every deferred capability earns a seam.</div>
+  <div class="cards">
+    <div class="card seam"><div class="ct">Internal Research</div><div class="cd">Instrument analysis for the internal research team. Grows off Scheme Intelligence + Portfolio Service, with the internal-read membrane kept explicit so signals never leak to the investor surface.</div><span class="tag">Seam</span></div>
+    <div class="card seam"><div class="ct">Multi-AA Gateway</div><div class="cd">Finarkein or Setu orchestration behind the AA Rail ACL. The vendor-neutral interface is the seam; V1.5 upgrade slots in without touching domains.</div><span class="tag">Seam</span></div>
+    <div class="card seam"><div class="ct">Relationship Graph</div><div class="cd">The soft Relationships block is the seed; the full referral/children/household graph bolts on as it matures.</div><span class="tag">Seam</span></div>
+    <div class="card seam"><div class="ct">Recommendation / Agentic</div><div class="cd">Recommendation engine, agentic capabilities, voice. Deferred beyond V1. The intelligence boundary (capture-and-internal-read only) is what keeps the seam clean.</div><span class="tag">Seam</span></div>
+  </div>
+</div>
+
+<div class="footer">
+  <p><b>FundsIndia V1 &middot; Technical Architecture View (Big-Block) &middot; v0.1.</b> Companion to, not a replacement for, Big-Block Map v2. Governed by Spec 1 (domain entity model + event spine) and Spec 2 (canonical ledger). One open structural decision flagged: recommendation-surface policing. Copy/wording deferred to a Compliance-in-the-loop exercise.</p>
+</div>
+
+</div>
+</body>
+</html>

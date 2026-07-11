@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J1: Investor Onboarding and KYC</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Journey Layer</p>
+  <h1 class="title">J1: Investor Onboarding and KYC</h1>
+  <p class="subtitle">The front door in depth: how a new investor reaches a transactable, Validated identity, the modality that earns that status, and the persona branches that reroute the path. The identity segment J7 references, drawn in full, on the natural personas V1 serves.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.1: Decision-surfacing draft</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Journey document (not a reference, not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>The governing view of <strong>onboarding a new investor to a transactable identity</strong>. It navigates the three layers the Investor reference defines, the KYC <strong>rail</strong> a record lives on, the <strong>modality</strong> used to verify, and the <strong>status</strong> that modality earns, and it draws the persona branches that change the path. The happy path ends at a <span class="mono">Validated</span> record, the only status that lets a new investor transact with a new fund house. It draws on Investor for the machinery and the personas, and on Rails for the identity counterparties.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a reference and not a PRD. It does not restate the persona definitions, the tax overlays, or the status taxonomy, it references them. It is the identity segment of J7 drawn in depth, and it stops at a transactable identity: the lifecycle events that come after, periodic re-KYC, attaining majority, and residency change, belong to J2. <strong>V1 scope is the natural personas only</strong>: Resident Individual, NRI, OCI, and Minor, with Joint drawn as a holding-mode overlay rather than a persona. The entity personas, HUF and the non-individual entities, are an explicit, recorded deferral to the Private Wealth phase, since even HUF, the most retail-leaning of them, is a private-wealth concern rather than mass-affluent. This is a decision-surfacing pass.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong, where the default intuition is likely to mislead.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a point the firm must actively design around, where a record can look complete and still not transact.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not yet settled, or one turning on a decision still open in the register; each names its owner.</p></div>
+  <p>State names are shown in <span class="mono">monospace</span> when they refer to a specific status or lifecycle state the Investor reference owns. The altitude follows the draw-or-bullet test: a persona divergence that reroutes the flow is a branch; a mode or a check on a step already drawn is bulleted.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">The spine</a></li>
+    <li><a href="#s2">Decision points</a></li>
+    <li><a href="#s3">Failure taxonomy</a></li>
+    <li><a href="#s4">Special cases</a></li>
+    <li><a href="#s5">Entities and states exercised</a></li>
+    <li><a href="#s6">Decisions surfaced</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1"><span class="num">1.</span>The spine</h2>
+<p class="lead">A new resident investor moves from intent to a transactable identity through capture, verification, and status resolution. The resident individual is the baseline; every other persona is a branch off it. The journey ends not when documents are submitted but when the KRA resolves the record to <span class="mono">Validated</span>, because that status, and not a completed form, is what permits the first investment with a new fund house.</p>
+<pre class="mermaid">
+flowchart TD
+  A([New investor intent]) --> B[Capture identity, bank proof, FATCA self-certification]
+  B --> C{PAN-Aadhaar operative}
+  C -->|inoperative| X1([Blocked, remediate the link first])
+  C -->|operative| D[Verify via the chosen KYC modality]
+  D --> E{KRA status resolved}
+  E -->|Validated| F([Transactable identity])
+  E -->|Registered| G[Drive to Validated via Aadhaar validation]
+  G --> E
+  E -->|On-Hold or Rejected| X2([Remediate the defect and re-resolve])
+</pre>
+<p>Two parts of this spine are where the design earns its keep, and both are drawn out below. The verify step hides a modality choice that decides whether the record can ever reach <span class="mono">Validated</span>, covered in Section 2. And the persona determines which capture and verification path applies, which is the primary branch. The PAN-Aadhaar operative check sits before verification deliberately: an inoperative PAN drops the record to a blocked state, so it is a pre-condition, not a post-submission surprise.</p>
+
+<h2 id="s2"><span class="num">2.</span>Decision points</h2>
+<p>Two genuine forks. The persona reroutes the path and is drawn. The modality changes whether the path can reach a transactable status, and is tabled because the choice is a selection among methods rather than a rerouting of steps.</p>
+
+<h3>The persona branch</h3>
+<p>For V1 the personas are the four natural ones. Each branch changes the documents, the accounts, and the verification path enough to be a genuine reroute, not just an added check.</p>
+<pre class="mermaid">
+flowchart TD
+  CAP[Captured new investor] --> P{Persona}
+  P -->|Resident Individual| R[Baseline, Aadhaar full KYC, self-operated]
+  P -->|NRI or OCI| N[Overseas docs, NRE NRO FCNR accounts, FATCA, repatriability<br/>Validated required, US and Canada gated by the AMC]
+  P -->|Minor| M[Guardian-operated, guardian KYC, birth proof<br/>attaining-majority freeze ahead, owned by J2]
+  R --> T([Transactable identity])
+  N --> T
+  M --> T
+</pre>
+<p>Resident Individual is the baseline, self-operated, Aadhaar-validated. NRI and OCI travel together because OCI is treated on par under FEMA: both add overseas address proof, the NRE, NRO, or FCNR account that fixes repatriability, and the FATCA and CRS exposure that gates US and Canada residents. Minor holds in their own name but is operated entirely by a guardian, needs the guardian's own KYC and a relationship proof, and carries an attaining-majority freeze that J2 owns. <strong>Joint is an overlay, not a branch</strong>: it is a mode applied over any natural persona, with each holder KYC'd individually and the operation mode feeding the authority engine, so it is bulleted in Section 4 rather than drawn here. The entity personas are out of V1 entirely, and the Foreign National resident persona is a narrow natural persona surfaced as a scope question in Section 6 rather than drawn as a governing branch on this pass.</p>
+
+<h3>The modality menu</h3>
+<p>The modality decides the status the record can reach, and for this segment that is the whole game. The verified figures below are current to mid-2026.</p>
+<table>
+  <thead><tr><th>Modality</th><th>How it works</th><th>Status and ceiling consequence</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Video IPV</strong></td><td>A live video call where the investor presents originals, completes liveness and geotag, and e-signs.</td><td>Full KYC, no ceiling, Aadhaar-validated to <span class="mono">Validated</span>. The practical default for affluent and for non-resident onboarding.</td></tr>
+    <tr><td><strong>Biometric Aadhaar eKYC</strong></td><td>Fingerprint or iris at an authorised KUA or sub-KUA device.</td><td>Counts as in-person verification, so no ceiling, and resolves to <span class="mono">Validated</span>.</td></tr>
+    <tr><td><strong>OTP-only Aadhaar eKYC</strong></td><td>Fully online, an OTP to the UIDAI-linked mobile, details fetched.</td><td>A hard ceiling of &#8377;50,000 per fund house per financial year where no in-person verification is done, and single-holder only. Breached immediately at affluent ticket sizes, so unsuitable as the sole onboarding path for this segment.</td></tr>
+    <tr><td><strong>CKYC or KRA fetch</strong></td><td>Reuse of an existing CKYC identifier or KRA record.</td><td>Seamless if the fetched status is <span class="mono">Validated</span>; an incremental Aadhaar-validation step if it is only <span class="mono">Registered</span>.</td></tr>
+  </tbody>
+</table>
+<div class="callout flag">
+  <p class="ck">Red flag: only Validated clears a new fund house, and for non-residents that bar just rose</p>
+  <p>A new investor at a new fund house needs <span class="mono">Validated</span>, because <span class="mono">Registered</span> permits transacting only where a relationship already exists. So the resident path must use an Aadhaar-based full-KYC modality, not a non-Aadhaar OVD that settles at <span class="mono">Registered</span>. For NRI and OCI investors this is now sharper: the relaxation that let them transact across fund houses on <span class="mono">Registered</span> status ran to 30 April 2026 and has lapsed, with no successor rule confirmed. A non-resident opening a new relationship must therefore reach <span class="mono">Validated</span>, which for capital-market products requires Aadhaar linkage even though NRIs are otherwise exempt from Aadhaar. The onboarding cannot assume a foreign-document path will transact.</p>
+</div>
+
+<h2 id="s3"><span class="num">3.</span>Failure taxonomy</h2>
+<p>Onboarding breaks at a stage and, on the branches, in persona-specific ways. None of these moves money, because no folio or order exists yet, so every failure here is a remediation rather than an unwind. That is what makes the front door the cheapest place to catch a problem.</p>
+<table>
+  <thead><tr><th>Where it breaks</th><th>How, and the persona angle</th><th>Recovery</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Capture</strong></td><td>Incomplete or invalid documents, or a non-OVD document, since the 2024 tightening removed utility bills and bank statements as standalone OVDs. A missing or inoperative PAN blocks before verification.</td><td>Re-capture on a valid OVD, or remediate the PAN-Aadhaar link, then proceed.</td></tr>
+    <tr><td><strong>Status resolution</strong></td><td>The record resolves to <span class="mono">On-Hold</span> on an unverified mobile or email or a non-OVD document, or <span class="mono">Rejected</span> on mismatched documents.</td><td>Fix the specific defect and re-resolve. <span class="mono">On-Hold</span> blocks new investment entirely.</td></tr>
+    <tr><td><strong>Insufficient status</strong></td><td>The record reaches <span class="mono">Registered</span>, not a failure but not enough for a new fund house.</td><td>Drive to <span class="mono">Validated</span> through Aadhaar validation before any first order can route.</td></tr>
+    <tr><td><strong>NRI and OCI branch</strong></td><td>A US or Canada resident refused by the AMC over FATCA burden and PFIC exposure; missing overseas address proof; a foreign-number mobile-validation gap; or the Aadhaar-linkage requirement for capital-market products unmet.</td><td>Route to an accepting AMC where applicable, complete the overseas proofs, validate via email where the mobile is foreign, and link Aadhaar.</td></tr>
+    <tr><td><strong>Minor branch</strong></td><td>Guardian KYC incomplete, or the guardian-minor relationship proof missing.</td><td>Complete the guardian's own full KYC and the relationship evidence; the minor's record cannot stand alone.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="s4"><span class="num">4.</span>Special cases</h2>
+<p>Modes, shortcuts, and narrow conditions that change a value or add a check without rerouting the path. Listed, never drawn.</p>
+<ul class="tight">
+  <li><strong>Existing-record fetch.</strong> A CKYC or KRA fetch that returns <span class="mono">Validated</span> collapses the verify step to a fetch-and-confirm. If it returns <span class="mono">Registered</span>, an incremental Aadhaar-validation step is added. A shortcut or an added check, not a new path.</li>
+  <li><strong>The Joint overlay.</strong> Joint holding is a mode applied over a natural persona, in one of four operation modes, Jointly, Either or Survivor, Anyone or Survivor, or Former or Survivor. Each holder is KYC'd individually, and OTP-only eKYC is single-holder only so a joint holding forces a full-KYC modality. The mode feeds the authority engine but does not reroute onboarding.</li>
+  <li><strong>PoA-operated non-resident.</strong> An NRI or OCI often operates through a resident power-of-attorney holder acting within registered limits. An authority overlay captured at onboarding, not a separate path. The PoA holder cannot later make a nomination, but nomination is a folio concern owned by J4.</li>
+  <li><strong>Periodic re-KYC classification.</strong> KYC is not a one-time event; a risk-based re-KYC schedule, broadly two, eight, or ten years by risk class, must be set. J1 sets the initial risk classification; J2 owns the re-KYC events themselves.</li>
+  <li><strong>Foreign National resident in India.</strong> A narrow natural persona, an expatriate who is a FEMA and tax resident of India. Eligibility is condition-laden and the population is small for a mass-affluent book, so it is surfaced as a scope question rather than drawn as a governing branch on this pass.</li>
+</ul>
+
+<h2 id="s5"><span class="num">5.</span>Entities and states exercised</h2>
+<p>The references J1 draws on, the handoffs it makes to J2 and to the folio journeys, and the one seam it shares with J7. Per the precedence rule, J1 invents no state; it references the ones the Investor reference owns.</p>
+<table>
+  <thead><tr><th>Reference</th><th>What J1 exercises</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Investor</strong></td><td>The KYC machinery across all three layers, rail, modality, and the <span class="mono">Validated</span>, <span class="mono">Registered</span>, <span class="mono">On-Hold</span>, <span class="mono">Rejected</span> status regime; the natural-person personas and their defining attributes; operating authority for Self, Guardian, and PoA; the Joint holding-mode overlay and the repatriability tag for non-residents; and the persona lifecycle, of which the Minor-to-Major and residency-change transitions are handed to J2.</td></tr>
+    <tr><td><strong>Rails</strong></td><td>The identity rail: the KRAs and the central CKYC registry, the Aadhaar and PAN sources, and the identity middleware that wraps them, named by function. The cross-border UPI caveat on the non-resident branch.</td></tr>
+    <tr><td><strong>Folio</strong></td><td>Light, by reference only: the four Joint operation modes are defined at the holding level in Folio, and the repatriability tag is set when the folio is funded in J3. J1 captures the persona and the intended mode; J3 creates the container.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: J1 ends where J7 and J3 begin, and where J2 takes over</p>
+  <p>J1 stops at a transactable, <span class="mono">Validated</span> identity, the exact seam J7 picks up to create the folio and place the first order. That handoff is the transactable-identity state both journeys name, confirmed here from the identity side, with no new state invented. Everything that happens to an identity after it is transactable, periodic re-KYC, attaining majority, and residency change, is a persona-lifecycle transition the Investor reference owns and J2 draws. J1 sets the initial conditions; J2 runs the lifecycle.</p>
+</div>
+
+<h2 id="s6"><span class="num">6.</span>Decisions surfaced</h2>
+<p>The decisions J1 confirmed, recorded, or brushed, routed to owners and written back to the register. The headline is the persona-scope boundary, which this journey makes governing.</p>
+<table>
+  <thead><tr><th>#</th><th>Decision and what J1 needs</th><th>Owner</th><th>Status after J1</th></tr></thead>
+  <tbody>
+    <tr><td><strong>D41</strong> <span class="bkt core" style="margin-left:4px;">new</span></td><td>V1 investor persona scope. Natural personas only, Resident, NRI, OCI, and Minor, with Joint as a holding-mode overlay; the entity personas, HUF and the non-individual entities, are deferred to the Private Wealth phase. J1's governing boundary.</td><td>Internal / Business</td><td>Decided and recorded as the V1 scope.</td></tr>
+    <tr><td>D19</td><td>UBO-tracing depth and the non-individual onboarding document set. A consequence of D41: with entities out of V1, this is no longer needed for the first build.</td><td>Compliance</td><td>Reframed: deferred from V1, picked up with the entity personas.</td></tr>
+    <tr><td>D2</td><td>NRI and OCI Registered-status position. Applied as confirmed: require <span class="mono">Validated</span>. Now grounded, the relaxation lapsed on 30 April 2026 with no successor, and Aadhaar linkage is required for non-residents investing in capital-market products.</td><td>Compliance / KRA</td><td>Confirmed and grounded current to mid-2026.</td></tr>
+    <tr><td>D21</td><td>Foreign National resident eligibility scope and the reverse-residency exit. J1 brushes it: is this narrow persona in V1 at all?</td><td>Compliance</td><td>Surfaced; recommend out of the initial V1 set, confirm.</td></tr>
+    <tr><td>D20</td><td>US and Canada acceptance, the accepting-AMC set, and PFIC handling. Brushed on the NRI and OCI branch, drawn decision-surfacing.</td><td>Legal / Compliance / AMC</td><td>Brushed; remains open, not blocking the branch shape.</td></tr>
+    <tr><td>D23</td><td>NRI cross-border UPI availability. A banking-rail caveat on the non-resident branch.</td><td>Banking</td><td>Brushed; remains open, uneven coverage.</td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Open: what hardens this draft into a governing contract</p>
+  <p>J1 governs the resident spine now, and D41 makes its persona scope a governing boundary. The non-resident branch hardens as D20 and D23 resolve and the Foreign National scope (D21) is confirmed; D2 is already applied and grounded. The transactable-identity seam in Section 5 is the shared handoff with J7 and J3 and is recorded, not reopened. D41 and the D19 reframe are written back to the register; the rest were already there and are updated in place.</p>
+</div>
+
+<div class="footer">
+  <p><strong>Document control.</strong> J1: Investor Onboarding and KYC. Version v0.1, decision-surfacing draft, June 2026. The third journey document in Wave 1 and the front door drawn in depth, ending at a transactable, Validated identity. The identity segment of J7 in full. V1 scope is the natural personas only, Resident Individual, NRI, OCI, and Minor, with Joint as a holding-mode overlay; the entity personas including HUF are deferred to the Private Wealth phase (D41), which reframes D19 as deferred. Draws on Investor and Rails; hands the post-onboarding lifecycle, re-KYC, attaining majority, and residency change, to J2. Surfaces the persona-scope boundary (D41), applies and grounds D2, and brushes D20, D21, and D23 on the non-resident branch. The KYC status regime, the modality ceilings, and the lapsed NRI relaxation it leans on were verified current to mid-2026 against the KRA framework, the SEBI Aadhaar and PAN authentication position, and the 30 April 2026 relaxation expiry. Not a reference and not a PRD.</p>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  try {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      themeVariables: {
+        fontFamily: "'Source Sans 3', sans-serif",
+        primaryColor: '#efe9f7',
+        primaryBorderColor: '#6a4a9c',
+        primaryTextColor: '#26222e',
+        lineColor: '#6a4a9c',
+        secondaryColor: '#fbf2dd',
+        tertiaryColor: '#fffdf8',
+        fontSize: '15px'
+      }
+    });
+  } catch (e) { /* if the CDN is unreachable, the Mermaid source remains legible as text */ }
+</script>
+</body>
+</html>

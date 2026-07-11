@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Investor Entity: Master Reference</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;
+  --paper:#fffdf8;
+  --ink:#26222e;
+  --muted:#6f6878;
+  --soft-muted:#8a8494;
+  --accent:#6a4a9c;
+  --accent-dark:#473073;
+  --accent-soft:#efe9f7;
+  --accent-line:#d8cae9;
+  --line:#e6ddcd;
+  --line-strong:#d8cdb8;
+  --amber:#9a6a16;
+  --amber-soft:#fbf2dd;
+  --amber-line:#e8d2a0;
+  --teal:#1f6f6a;
+  --teal-soft:#e3f0ee;
+  --code:#5a4730;
+}
+
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{
+  margin:0;
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-weight:400;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{
+  max-width:880px;
+  margin:0 auto;
+  padding:64px 60px 96px;
+  background:var(--paper);
+  box-shadow:0 1px 0 rgba(0,0,0,0.02);
+}
+
+/* Cover */
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+
+/* Typography */
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.section-rule{border:0;border-top:1px solid var(--line);margin:0;}
+
+/* TOC */
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+
+/* Callouts */
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.yes{color:#2f7a3a;font-weight:700;}
+.no{color:#a23a3a;font-weight:700;}
+.cond{color:var(--amber);font-weight:700;}
+
+/* Persona profile */
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+
+/* misc */
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform · Domain Reference</p>
+  <h1 class="title">The Investor Entity</h1>
+  <p class="subtitle">A master reference across every eligible persona and every facet that shapes how an investor behaves in an Indian wealth platform.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.3: NRI relaxation grounded (D2)</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Master reference (not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>A single, exhaustive reference view of the <strong>Investor entity</strong> across all of its facets. It catalogues every eligible persona and describes, at a consistent depth, what each persona may invest in, how it is verified, how it is taxed, who may operate it, how it holds and pays, how it passes on, what it reports, and how it changes state over time. It is meant to be the place a product manager or engineer comes to understand <em>who an investor is</em> before any specific flow is designed.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>It is not a PRD and not a build plan. It carries no phasing, sequencing, or platform-architecture decisions. Individual PRDs will later draw on subsets of this material for specific flows. It is also not legal, tax, or compliance advice; the regulatory and tax figures are current to the date above and several of them move with each Union Budget and SEBI circular.</p>
+  </div>
+
+  <h3>Scope</h3>
+  <p><strong>Personas in scope:</strong> all natural-person personas (Resident Individual, Minor, Non-Resident Indian, Overseas Citizen of India, Foreign National resident in India) and all non-individual entity personas commonly seen in retail and affluent wealth (HUF, Sole Proprietorship, Partnership Firm, LLP, Company, Private/Family Trust, Public/Charitable Trust, Society/AOP/BOI). Institutional and specialised personas (FPI, banks, insurers, pension and provident funds, government bodies) are deliberately excluded.</p>
+  <p><strong>Instruments in scope:</strong> Mutual Funds, Specialised Investment Funds (SIF), Bonds, Fixed Deposits, and Equities. Digital gold, NPS, and insurance are out of scope for this reference.</p>
+  <p><strong>Joint holding</strong> is covered as a cross-cutting <em>holding mode</em> rather than a persona, because in law it is a configuration layered on top of natural-person personas, not a distinct investor identity. The reasoning is set out in Part IV.</p>
+
+  <h3>Conventions used in this document</h3>
+  <p>The document is built on a <strong>common spine plus per-persona overlay</strong> structure. Facets that behave identically across most personas (the KYC machinery, the tax engine, the documentation backbone) are described once, in depth, in Part II. Each persona profile in Part III then states only what that persona <em>changes</em> about the spine. This keeps the depth consistent and prevents the same paragraph being copied thirteen times.</p>
+  <p>Three callout treatments recur:</p>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something genuinely unusual or easy to get wrong, where the default intuition is likely to mislead.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point I could not establish with confidence, or one that turns on a current regulatory position that may have moved. Each names who to vet it with: Legal, Compliance, Tax counsel, or an AMC / banking partner.</p></div>
+  <div class="callout principle"><p class="ck">Key principle</p><p>Marks a load-bearing idea worth carrying into every downstream design conversation.</p></div>
+  <p>In matrices: <span class="yes">Y</span> means eligible, <span class="no">N</span> means not eligible, <span class="cond">C</span> means conditional with a footnote.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#p1">Part I: The Investor entity model</a>
+      <ol>
+        <li><a href="#s1">What an investor persona is in this domain</a></li>
+        <li><a href="#s2">The facet taxonomy</a></li>
+        <li><a href="#s3">The persona catalogue</a></li>
+      </ol>
+    </li>
+    <li><a href="#p2">Part II: The common spine</a>
+      <ol>
+        <li><a href="#s4">Identifiers and the documentation backbone</a></li>
+        <li><a href="#s5">The KYC machinery</a></li>
+        <li><a href="#s6">The tax engine</a></li>
+        <li><a href="#s7">Operating authority and mandates</a></li>
+        <li><a href="#s8">Holding and ownership modes</a></li>
+        <li><a href="#s9">Banking and payment rails</a></li>
+        <li><a href="#s10">Nomination, succession and transmission</a></li>
+        <li><a href="#s11">Regulatory reporting and attribution</a></li>
+        <li><a href="#s12">The home-jurisdiction overlay</a></li>
+      </ol>
+    </li>
+    <li><a href="#p3">Part III: Persona profiles</a>
+      <ol>
+        <li><a href="#nat">Natural persons (Resident, Minor, NRI, OCI, Foreign National)</a></li>
+        <li><a href="#ent">Non-individual entities (HUF through Society/AOP/BOI)</a></li>
+      </ol>
+    </li>
+    <li><a href="#p4">Part IV: Cross-cutting modes and overlays</a>
+      <ol>
+        <li><a href="#joint">Joint holding</a></li>
+        <li><a href="#ai">Accredited Investor status</a></li>
+      </ol>
+    </li>
+    <li><a href="#p5">Part V: The persona lifecycle state model</a></li>
+    <li><a href="#p6">Part VI: Instrument eligibility master matrix</a></li>
+    <li><a href="#p7">Part VII: Open items and verification register</a></li>
+    <li><a href="#p8">Part VIII: The build-scope view (MFD-only firm)</a></li>
+    <li><a href="#refs">References</a></li>
+  </ol>
+</nav>
+
+<div class="part-band" id="p1"><div class="pk">Part I</div><div class="pt">The Investor entity model</div></div>
+
+<h2 id="s1"><span class="num">1.</span>What an investor persona is in this domain</h2>
+<p class="lead">A persona is not a label attached to an account. It is a <strong>stateful entity</strong> carrying a set of attributes, from which most of its observable behaviour can be derived, and which moves between states over its life.</p>
+<p>It is tempting to treat eligibility, KYC, and tax as three independent axes that vary by persona. They are not independent. They are largely <em>downstream</em> of a smaller set of attributes the entity carries:</p>
+<ul class="tight">
+  <li><strong>Residential and FEMA status</strong> (resident, non-resident, person of Indian origin), which drives eligibility limits, account type, and repatriation.</li>
+  <li><strong>Tax residency and home jurisdiction</strong>, which drives withholding, treaty relief, and foreign reporting consequences such as US PFIC exposure.</li>
+  <li><strong>Legal nature</strong> (natural person, undivided family, body corporate, trust, unincorporated association), which drives who may act, what documents establish the entity, and how it dissolves or devolves.</li>
+  <li><strong>Operating-authority model</strong> (self, guardian, Karta, authorised signatory with resolution, power-of-attorney holder), which drives transaction authorisation.</li>
+  <li><strong>Holding-mode capability</strong> (single or joint, statement-of-account or demat, repatriable or non-repatriable), which colours the entire holding.</li>
+  <li><strong>Lifecycle state</strong> (for example a minor before majority, a record before KYC validation, a holding in transmission), which gates what is permitted right now.</li>
+</ul>
+<div class="callout principle">
+  <p class="ck">Key principle</p>
+  <p>Eligibility, KYC, and tax are best modelled as <em>functions</em> of an investor's attributes and current lifecycle state, not as free-standing properties to be set per persona. The attributes are the source of truth; the three familiar axes are projections of them. The part a pure lookup table misses is the lifecycle: the same investor produces different correct answers before and after a residency change, a coming-of-age, or a death.</p>
+</div>
+
+<h2 id="s2"><span class="num">2.</span>The facet taxonomy</h2>
+<p>Each persona is examined through the same set of facets, in the same order, so the profiles in Part III can be read side by side. The facets are:</p>
+<ol class="tight">
+  <li><strong>Definition and defining attributes</strong>: who this is, and the attribute values that distinguish it.</li>
+  <li><strong>Instrument eligibility</strong>: what it may hold across MF, SIF, Bonds, FD, Equities, and on what condition.</li>
+  <li><strong>KYC</strong>: the documents, the permitted verification modalities, and any status constraints.</li>
+  <li><strong>Tax overlay</strong>: what it changes about the instrument-driven tax base.</li>
+  <li><strong>Operating authority</strong>: who is permitted to act on the account.</li>
+  <li><strong>Holding mode</strong>: single or joint, SOA or demat, repatriability.</li>
+  <li><strong>Banking and payment</strong>: the accounts and rails it can use.</li>
+  <li><strong>Nomination and transmission</strong>: how the holding passes on.</li>
+  <li><strong>Reporting and attribution</strong>: the regulatory reporting it triggers.</li>
+  <li><strong>Special attention and opens</strong>: the unusual and the unverified.</li>
+</ol>
+
+<h2 id="s3"><span class="num">3.</span>The persona catalogue</h2>
+<p>The thirteen personas in scope, grouped by legal nature. One-line descriptions only; the full treatment is in Part III.</p>
+
+<h3>Natural persons</h3>
+<table>
+  <thead><tr><th>Persona</th><th>One-line description</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Resident Individual</strong></td><td>An individual who is resident in India under FEMA and the Income Tax Act, transacting on their own PAN.</td></tr>
+    <tr><td><strong>Minor</strong></td><td>An individual below eighteen, holding in their own name but operated entirely by a guardian until majority.</td></tr>
+    <tr><td><strong>NRI</strong></td><td>An Indian passport holder who is non-resident under FEMA, investing through NRE, NRO or FCNR accounts.</td></tr>
+    <tr><td><strong>OCI</strong></td><td>A foreign passport holder of Indian origin with an OCI card, treated on par with an NRI for investment under FEMA.</td></tr>
+    <tr><td><strong>Foreign National resident in India</strong></td><td>A non-Indian citizen who is a FEMA and tax resident of India, for example an expatriate on assignment.</td></tr>
+  </tbody>
+</table>
+<p style="font-size:.9rem;color:var(--muted);"><strong>A note on PIO.</strong> The Person of Indian Origin card scheme was merged into the OCI scheme in 2015, and existing PIO cards are deemed OCI cards. PIO is no longer a live persona; it folds into OCI for every purpose in this document.</p>
+
+<h3>Non-individual entities</h3>
+<table>
+  <thead><tr><th>Persona</th><th>One-line description</th></tr></thead>
+  <tbody>
+    <tr><td><strong>HUF</strong></td><td>A Hindu Undivided Family, a separate tax entity with its own PAN, operated by the Karta.</td></tr>
+    <tr><td><strong>Sole Proprietorship</strong></td><td>Not a separate legal person; transacts on the proprietor's PAN, collapsing into the individual for securities.</td></tr>
+    <tr><td><strong>Partnership Firm</strong></td><td>A registered or unregistered firm with its own PAN, acting through authorised partners.</td></tr>
+    <tr><td><strong>LLP</strong></td><td>A Limited Liability Partnership, a body corporate acting through its designated partners.</td></tr>
+    <tr><td><strong>Company</strong></td><td>A private or public limited company, a body corporate acting through a board-authorised signatory.</td></tr>
+    <tr><td><strong>Private / Family Trust</strong></td><td>A trust investing within the powers granted by its trust deed, acting through its trustees.</td></tr>
+    <tr><td><strong>Public / Charitable Trust</strong></td><td>A religious or charitable trust whose investment universe is constrained by statute.</td></tr>
+    <tr><td><strong>Society / AOP / BOI</strong></td><td>A registered society, association of persons, or body of individuals, acting per its bye-laws.</td></tr>
+  </tbody>
+</table>
+<p style="font-size:.9rem;color:var(--muted);"><strong>An overlay, not a persona: Accredited Investor.</strong> Accreditation is a SEBI qualification status that can attach to several of the personas above and unlocks lighter constraints, including the SIF minimum-ticket exemption. It is treated as a cross-cutting overlay in Part IV, not as a persona of its own.</p>
+
+<div class="part-band" id="p2"><div class="pk">Part II</div><div class="pt">The common spine</div></div>
+<p class="lead" style="margin-top:18px;">Nine facets that behave the same way across most personas are described here once, in depth. Every persona profile in Part III refers back to this spine and states only its deviations.</p>
+
+<h2 id="s4"><span class="num">4.</span>Identifiers and the documentation backbone</h2>
+<p>Every investor record, individual or entity, rests on the same backbone of identifiers and supporting documents. The persona changes which documents establish identity, not the existence of the backbone.</p>
+<h4>PAN is the anchor.</h4>
+<p>A Permanent Account Number is mandatory for every securities-market investment in scope, with only very narrow exceptions. For individual personas the PAN must also be <strong>linked with Aadhaar</strong>; an unlinked PAN is treated as inoperative and drops the KYC record to a blocked state, which stops even redemptions. PAN-Aadhaar linkage is therefore a pre-flight check, not a post-submission failure.</p>
+<h4>The Officially Valid Document (OVD).</h4>
+<p>Identity and address are established by an OVD: passport, voter ID, driving licence, Aadhaar, NREGA job card, or a National Population Register letter. A 2024 tightening removed utility bills and bank statements as acceptable standalone OVDs for primary KYC, which is worth designing around because older records relied on them.</p>
+<h4>FATCA / CRS self-certification.</h4>
+<p>A self-certification of tax residency is universal, for individuals and entities alike. It is the hook on which foreign-reporting and the US/Canada restrictions hang.</p>
+<h4>Ultimate Beneficial Owner (UBO) identification.</h4>
+<p>For every non-individual persona, identity verification does not stop at the entity. Under the PMLA framework the controlling natural persons must be traced and verified: conventionally those holding more than 25 percent for companies, and more than 15 percent for partnerships, trusts, and unincorporated bodies, or control exercised by other means. Layered ownership (an entity owned by an entity owned by a trust) makes this a graph rather than a list.</p>
+<h4>Supporting items.</h4>
+<p>A recent photograph, a bank-account proof for the pay-in and pay-out account, and a signature or e-sign complete the backbone for individuals. Entities add their constitutive documents, an authorising resolution, and the authorised-signatory set.</p>
+
+<h2 id="s5"><span class="num">5.</span>The KYC machinery</h2>
+<p>KYC in India is three things stacked: the <strong>rail</strong> the record lives on, the <strong>method</strong> used to verify, and the <strong>status</strong> that the method earns. All three are described here; persona-specific deviations are in Part III.</p>
+
+<h3>The three rails</h3>
+<p>Securities-market KYC for MF, SIF, Bonds, and Equities runs through the SEBI-registered <strong>KYC Registration Agencies (KRAs)</strong> (CVL, NDML/NSE, CAMS, KFin) and feeds the <strong>Central KYC Registry (CKYC)</strong> maintained by CERSAI, which issues a fourteen-digit identifier and spans banking, insurance, and securities. <strong>Fixed deposits sit on the banking KYC regime under the RBI</strong>, not the KRA securities framework, though CKYC is the shared backbone.</p>
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p>A "validated" securities KYC does not automatically clear a fixed deposit. The FD partner bank runs its own KYC under the RBI regime. The same captured documents can be reused, but FD onboarding is a separate satisfaction, not a free ride on the KRA status. Treat FD as a distinct KYC surface even when the investor is already fully KYC'd for mutual funds.</p>
+</div>
+
+<h3>The status taxonomy (revised through 2024)</h3>
+<p>Effective 1 April 2024, SEBI directed the KRAs to bucket every record into three functional states, with a fourth for rejection.<sup class="fn">1</sup></p>
+<table>
+  <thead><tr><th>Status</th><th>What it permits</th><th>Typical cause</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Validated</strong></td><td>Unrestricted investment, existing and new fund houses alike.</td><td>Record matched against official databases, principally the Income Tax database via PAN and Aadhaar, with mobile and email confirmed.</td></tr>
+    <tr><td><strong>Registered</strong> (also shown as Verified)</td><td>Continued investment with existing AMCs; revalidation needed for a new fund house.</td><td>Documents could not be database-verified, but mobile and email are confirmed.</td></tr>
+    <tr><td><strong>On Hold</strong></td><td>Blocks all new investment and SIPs; in some cases blocks redemptions in existing folios too.</td><td>PAN not linked with Aadhaar, unverified mobile or email, or KYC done on a non-OVD document.</td></tr>
+    <tr><td><strong>Rejected</strong></td><td>No transaction; record must be redone.</td><td>Invalid or mismatched documentation.</td></tr>
+  </tbody>
+</table>
+<p>The distinction between Validated and Registered is the engine of the whole regime: Validated means the record reconciled against government databases, Registered means it did not but is good enough to keep transacting where the relationship already exists.</p>
+
+<h3>The modality menu (the verification method)</h3>
+<table>
+  <thead><tr><th>Modality</th><th>How it works</th><th>Constraint</th></tr></thead>
+  <tbody>
+    <tr><td><strong>OTP-based Aadhaar eKYC</strong></td><td>Fully online; Aadhaar number, OTP to the UIDAI-linked mobile, details fetched.</td><td><strong>Hard ceiling of ₹50,000 per fund house per financial year</strong> for mutual funds where no in-person verification is done.<sup class="fn">2</sup></td></tr>
+    <tr><td><strong>Biometric Aadhaar eKYC</strong></td><td>Fingerprint or iris at an authorised KUA / sub-KUA device.</td><td>Counts as IPV completed; removes the ₹50,000 ceiling.</td></tr>
+    <tr><td><strong>Video IPV (VIPV)</strong></td><td>Live video call; investor presents originals, completes liveness and geotag, e-signs.</td><td>Full KYC, no ceiling, no branch visit. The practical default for affluent and for non-resident onboarding.</td></tr>
+    <tr><td><strong>Physical IPV</strong></td><td>An authorised official verifies originals in person.</td><td>Full KYC.</td></tr>
+    <tr><td><strong>CKYC / KRA fetch</strong></td><td>Reuse of an existing CKYC identifier or KRA record.</td><td>Seamless if the fetched status is Validated; an incremental step may be needed if Registered.</td></tr>
+  </tbody>
+</table>
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p>The ₹50,000-per-AMC ceiling on OTP-only eKYC is the single most consequential modality fact for an affluent book. An affluent investor breaches it almost immediately, so OTP-only is unsuitable as the sole onboarding path for anyone with meaningful ticket sizes. A full-KYC modality (video or biometric) must be used at onboarding for that segment. The ceiling lifts only because the in-person verification is treated as completed, which in turn depends on the agency being a recognised KUA or sub-KUA, not merely on the technology working.</p>
+</div>
+
+<h3>Periodic re-KYC</h3>
+<p>KYC is not a one-time event. Re-verification is risk-based and time-bound: broadly every two years for high-risk clients, eight for medium, and ten for low-risk under the banking regime, with the KRA framework layering its own re-validation triggers (the push from Registered to Validated being the live example). A re-KYC scheduler keyed to a risk classification belongs in the model, not a single onboarding capture.</p>
+
+<h2 id="s6"><span class="num">6.</span>The tax engine</h2>
+<p class="lead">In India, tax is overwhelmingly a function of <strong>instrument category, holding period, and acquisition date</strong>, not persona. Persona applies a smaller set of overlays on top. This section is the base; the overlays are in each persona profile.</p>
+<p>Three pivot dates govern everything below: <strong>1 April 2023</strong> (debt funds lose long-term benefit), <strong>23 July 2024</strong> (the capital-gains overhaul), and <strong>1 April 2025</strong> (the Specified Mutual Fund definition narrows).</p>
+
+<h3>Capital-gains base, transfers on or after 23 July 2024</h3>
+<table>
+  <caption>Resident-individual base. Persona overlays modify withholding and certain exemptions, rarely the headline rate.</caption>
+  <thead><tr><th>Instrument</th><th>Short-term</th><th>Long-term</th><th>LT line</th></tr></thead>
+  <tbody>
+    <tr><td>Equity shares &amp; equity-oriented MF (≥65% domestic listed equity, STT paid)</td><td>20% (Sec 111A)</td><td>12.5% above ₹1.25 lakh/yr (Sec 112A), no indexation</td><td>12 months</td></tr>
+    <tr><td>Specified Mutual Funds (debt)</td><td>Slab</td><td>No LT benefit: always slab (Sec 50AA)</td><td>Always ST</td></tr>
+    <tr><td>Residual MF bucket (gold, international, many FoFs, 35–65% hybrids)</td><td>Slab</td><td>12.5% without indexation</td><td>24 months</td></tr>
+    <tr><td>Listed bonds &amp; G-Secs (capital gains)</td><td>Slab</td><td>12.5% without indexation</td><td>12 months</td></tr>
+    <tr><td>Unlisted bonds, debentures, market-linked debentures</td><td>Slab</td><td>Slab (no LT benefit)</td><td>Always ST</td></tr>
+    <tr><td>Bond / G-Sec coupon &amp; FD interest</td><td colspan="2">Taxed as income at slab; not capital gains.</td><td>n/a</td></tr>
+  </tbody>
+</table>
+<p>The equity regime moved on 23 July 2024: long-term equity rose to 12.5 percent on gains above a raised ₹1.25 lakh exemption, and short-term on STT-paid listed equity and equity funds rose to 20 percent.<sup class="fn">3</sup> Indexation was largely removed across asset classes, with a single exception letting resident individuals and HUFs choose 12.5 percent without indexation or 20 percent with indexation on immovable property acquired before that date.</p>
+
+<h3>The mutual fund buckets</h3>
+<p>This is where the real complexity sits, and where the instrument, not the persona, decides the answer.</p>
+<ul class="tight">
+  <li><strong>Equity-oriented fund.</strong> A scheme with at least 65 percent in domestic listed equity. Taxed as equity above. A fund-of-funds qualifies as equity-oriented only if at least 90 percent is in units of a fund that itself holds at least 90 percent domestic listed equity.</li>
+  <li><strong>Specified Mutual Fund.</strong> Under Section 50AA, units acquired on or after 1 April 2023 are deemed short-term regardless of holding period, so always at slab with no long-term benefit.<sup class="fn">4</sup> The definition narrowed from 1 April 2025 to mean a fund investing more than 65 percent in debt and money-market instruments.</li>
+  <li><strong>Residual bucket.</strong> Funds that are neither equity-oriented nor Specified, including gold funds, international funds, and hybrids between 35 and 65 percent equity. From 1 April 2025 these get 24-month, 12.5-percent-without-indexation long-term treatment, and slab for short-term. The 2025 narrowing is precisely what pulled gold and international funds out of the punitive debt bucket they had been swept into in 2023.</li>
+</ul>
+<div class="callout verify">
+  <p class="ck">Open: verify with Tax counsel</p>
+  <p>Some early reporting placed the effective date for parts of the gold/international reclassification at April 2026 rather than April 2025. If a specific gold-FoF or international-fund treatment becomes load-bearing for a customer, confirm the exact effective date and the fund's current portfolio classification rather than relying on the clean "April 2025" version.</p>
+</div>
+
+<h3>Dividends and surcharge</h3>
+<p>Dividends are taxable in the investor's hands at slab (the dividend distribution tax regime was abolished in 2020), with TDS on the way out. A useful structural nuance for high earners: the surcharge on capital gains under Sections 111A and 112A is capped at 15 percent, so the enhanced 25 and 37 percent surcharge bands do not reach those gains. A 4 percent health-and-education cess sits on top of tax-plus-surcharge throughout.</p>
+
+<h2 id="s7"><span class="num">7.</span>Operating authority and mandates</h2>
+<p>Who may act on an account is a first-class attribute, because the transaction-authorisation path depends on it. The models in scope:</p>
+<table>
+  <thead><tr><th>Model</th><th>Who acts</th><th>Applies to</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Self</strong></td><td>The investor.</td><td>Resident Individual, NRI, OCI, Foreign National.</td></tr>
+    <tr><td><strong>Guardian</strong></td><td>Natural or court-appointed guardian, until the minor's majority.</td><td>Minor.</td></tr>
+    <tr><td><strong>Karta</strong></td><td>The Karta of the family.</td><td>HUF.</td></tr>
+    <tr><td><strong>Authorised signatory + resolution</strong></td><td>Named individuals, empowered by a board or partners' resolution that also defines limits and signing rules.</td><td>Company, LLP, Partnership, Trust, Society/AOP/BOI.</td></tr>
+    <tr><td><strong>Power of Attorney (PoA)</strong></td><td>A PoA holder, often resident in India, acting within registered limits.</td><td>Frequently NRI and OCI.</td></tr>
+    <tr><td><strong>Joint operation</strong></td><td>Two or more holders, per the operation mode (see below).</td><td>Any joint holding.</td></tr>
+  </tbody>
+</table>
+<p>Joint operation has its own modes that change <em>whose</em> authorisation a transaction needs: <strong>Jointly</strong> (all must sign), <strong>Either or Survivor</strong> and <strong>Anyone or Survivor</strong> (any one may act, survivorship on death), and <strong>Former or Survivor</strong> (the first holder acts while alive). The operation mode is therefore not cosmetic; it is an input to the authorisation engine.</p>
+
+<h2 id="s8"><span class="num">8.</span>Holding and ownership modes</h2>
+<p>Three independent dimensions describe how a holding is owned. They combine, and they are attributes of the holding, not of the persona alone.</p>
+<h4>Single or joint.</h4>
+<p>A holding may be in one name or held jointly by two or more natural persons. Joint is covered in full in Part IV; here it is enough to note that the operation mode chosen at the joint level feeds the authorisation engine in Section 7.</p>
+<h4>Statement-of-account (SOA) or demat.</h4>
+<p>Mutual fund units can be held either in SOA form (the registrar's records, no demat needed) or dematerialised in a demat account. Equities require demat. Bonds may be held in demat or, for some government securities, in dedicated gilt accounts. The holding form has downstream consequences for nomination, transmission, and pledging, so it is a modelled attribute rather than an implementation detail.</p>
+<h4>Repatriable or non-repatriable.</h4>
+<div class="callout principle">
+  <p class="ck">Key principle</p>
+  <p>For NRI and OCI holdings, repatriability is not a tax detail; it colours the entire holding. A holding funded from an NRE or FCNR account is repatriable: proceeds can be sent abroad. A holding funded from an NRO account is non-repatriable, with only limited annual remittance permitted. Repatriability follows the money in, dictates where redemption proceeds can be routed, and belongs at the holding level in the model, not as a profile-level flag.</p>
+</div>
+
+<h2 id="s9"><span class="num">9.</span>Banking and payment rails</h2>
+<p>The accounts and rails an investor can use vary sharply by persona, and this is the facet most likely to surprise a team that has built for residents only.</p>
+<table>
+  <thead><tr><th>Persona group</th><th>Accounts</th><th>Rails</th></tr></thead>
+  <tbody>
+    <tr><td>Resident Individual, HUF</td><td>Any resident savings / current account</td><td>UPI, NACH and eNACH, netbanking, IMPS/RTGS/NEFT</td></tr>
+    <tr><td>Minor</td><td>Minor account, or minor-with-guardian account</td><td>As resident, operated by guardian</td></tr>
+    <tr><td>NRI / OCI</td><td>NRE (repatriable), NRO (non-repatriable), FCNR (foreign-currency deposit)</td><td>NACH and eNACH on NRE/NRO; cross-border UPI is widening but uneven; netbanking and remittance</td></tr>
+    <tr><td>Entities</td><td>Current account with mandate controls</td><td>Corporate netbanking, NACH, RTGS/NEFT</td></tr>
+  </tbody>
+</table>
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p>NRI and OCI banking is the trap. The account type is not a preference; it determines repatriability of everything bought through it, and ordinary domestic UPI from a foreign mobile number is generally not available, though cross-border UPI rails are expanding. A flow designed around UPI and a single resident savings account will not extend to a non-resident without rework.</p>
+</div>
+<p>One regulatory constraint sits above all the rails and applies regardless of persona: the SEBI rule against pooling of investor funds and units by mutual fund distributors and platforms. Money and units must flow on a non-pooled basis. This is a fact about the rails, recorded here because it shapes any payment design that touches these personas.</p>
+
+<h2 id="s10"><span class="num">10.</span>Nomination, succession and transmission</h2>
+<p>How a holding passes on differs by persona and by holding mode, and the event is a first-class lifecycle transition, not an edge case.</p>
+<h4>Nomination.</h4>
+<p>For mutual fund folios and demat accounts, nomination is effectively mandatory with an explicit opt-out: the investor must either nominate or consciously decline. The nomination is the instruction that drives transmission on death.</p>
+<h4>Transmission, by holding type.</h4>
+<ul class="tight">
+  <li><strong>Single holding with nominee:</strong> units or securities transmit to the nominee on production of death proof, the nominee then completing their own KYC.</li>
+  <li><strong>Joint holding:</strong> survivorship governs. On the death of one holder, the holding vests in the survivor or survivors per the operation mode, ahead of any nominee.</li>
+  <li><strong>HUF:</strong> on the Karta's death the role devolves to the next senior coparcener; the family continues as the entity rather than the holding being distributed.</li>
+  <li><strong>Trust, company, partnership, LLP, society:</strong> the entity persists through the death of any individual; transmission instead follows the entity's own succession of trustees, directors, or partners, and ultimately its dissolution.</li>
+</ul>
+
+<h2 id="s11"><span class="num">11.</span>Regulatory reporting and attribution</h2>
+<p>Several reporting and attribution obligations attach to the investor and are persona-conditioned. They are listed once here and flagged per persona where they intensify.</p>
+<table>
+  <thead><tr><th>Obligation</th><th>What it is</th><th>Where it intensifies</th></tr></thead>
+  <tbody>
+    <tr><td>FATCA / CRS</td><td>Tax-residency reporting to foreign jurisdictions.</td><td>NRI, OCI, Foreign National; the hook for the US/Canada restriction.</td></tr>
+    <tr><td>UBO / PMLA</td><td>Tracing and verifying controlling natural persons.</td><td>Every non-individual entity; heaviest for layered structures.</td></tr>
+    <tr><td>Distributor attribution</td><td>EUIN of the servicing person and ARN of the distributor tagged to every transaction.</td><td>All personas, on regular-plan transactions.</td></tr>
+    <tr><td>TDS and certificates</td><td>Withholding at source and issuance of certificates.</td><td>Heavy and at-source for NRI/OCI; absent on resident MF redemptions.</td></tr>
+    <tr><td>High-value reporting (SFT)</td><td>Statement of Financial Transactions for large investments and redemptions.</td><td>All personas above prescribed thresholds.</td></tr>
+    <tr><td>Repatriation certification</td><td>Forms 15CA and 15CB for remitting funds abroad.</td><td>NRI/OCI repatriating NRO or sale proceeds.</td></tr>
+  </tbody>
+</table>
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p>Residents face no TDS on mutual fund redemptions; they self-assess through advance tax. For NRIs and OCIs this inverts entirely: tax is withheld at source on each redemption, and a certificate must be issued. The same redemption event therefore produces a fundamentally different obligation depending on a single attribute, residential status. This is not a footnote to a payout flow; it is a fork in it.</p>
+</div>
+
+<h2 id="s12"><span class="num">12.</span>The home-jurisdiction overlay</h2>
+<p>For the cross-border personas, India is not the only taxing and reporting authority. The investor's country of residence is an attribute that changes both what they can hold and how it is taxed and reported.</p>
+<ul class="tight">
+  <li><strong>DTAA.</strong> India's Double Taxation Avoidance Agreements can reduce Indian withholding on interest, dividends, and gains. Claiming the benefit requires a Tax Residency Certificate from the home country and a Form 10F filed with the Indian payor.<sup class="fn">5</sup></li>
+  <li><strong>US PFIC.</strong> For US persons, Indian mutual funds are typically Passive Foreign Investment Companies, whose punitive US tax treatment can make Indian MF investing actively unattractive on the home side, independent of Indian rules.</li>
+  <li><strong>CRS jurisdiction.</strong> The country of tax residence determines where the investor's holdings are reported under the Common Reporting Standard.</li>
+</ul>
+<div class="callout verify">
+  <p class="ck">Open: verify with Compliance and Tax counsel</p>
+  <p>US- and Canada-resident NRIs and OCIs are restricted or refused by several AMCs because of FATCA reporting burden, and the US PFIC overlay compounds it. The exact set of AMCs that accept US/Canada persons, and the operational handling, should be confirmed with Compliance and the relevant AMCs rather than assumed. Country of residence must be a modelled field, not onboarding free text.</p>
+</div>
+
+<div class="part-band" id="p3"><div class="pk">Part III</div><div class="pt">Persona profiles</div></div>
+<p class="lead" style="margin-top:18px;">Each profile states only what the persona changes about the common spine. Facets appear in the same order throughout so the profiles can be read side by side.</p>
+
+<h2 id="nat"><span class="num">13.</span>Natural persons</h2>
+
+<div class="persona">
+  <h3>Resident Individual</h3>
+  <div class="facet"><span class="fl">Definition and attributes</span>An individual resident in India under FEMA and the Income Tax Act, transacting on their own PAN. This is the baseline persona; every other profile is described as a deviation from it.</div>
+  <div class="facet"><span class="fl">Instrument eligibility</span>Eligible for all five: MF, SIF (subject to the ₹10 lakh minimum), Bonds, FD, and Equities. No persona-level eligibility gate.</div>
+  <div class="facet"><span class="fl">KYC</span>The full modality menu is available. Because the OTP-only ceiling of ₹50,000 per AMC per year is breached almost immediately at affluent ticket sizes, a full-KYC modality (video or biometric) must be used at onboarding for this segment.</div>
+  <div class="facet"><span class="fl">Tax overlay</span>The base in Section 6 applies as written. Two privileges are persona-restricted to resident individuals (and HUFs): adjusting long-term gains against any unused basic exemption limit (with the specific exception that Section 112A equity LTCG cannot be so adjusted), and the property indexation option for property bought before 23 July 2024. Crucially, residents face no TDS on MF redemptions and self-assess via advance tax.</div>
+  <div class="facet"><span class="fl">Operating authority</span>Self.</div>
+  <div class="facet"><span class="fl">Holding mode</span>Single or joint; SOA or demat; repatriability not applicable.</div>
+  <div class="facet"><span class="fl">Banking and payment</span>Any resident account; the full rail set including UPI.</div>
+  <div class="facet"><span class="fl">Nomination and transmission</span>Nominate or explicit opt-out; transmission to nominee, or survivorship if joint.</div>
+  <div class="facet"><span class="fl">Reporting</span>FATCA/CRS self-certification; EUIN/ARN attribution; SFT above thresholds. No at-source TDS on MF.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>None unusual. This is the reference case.</div>
+</div>
+
+<div class="persona">
+  <h3>Minor</h3>
+  <div class="facet"><span class="fl">Definition and attributes</span>An individual below eighteen. The holding is in the minor's name but the minor is not the acting party and, for income-tax purposes during minority, not even the tax subject.</div>
+  <div class="facet"><span class="fl">Instrument eligibility</span>MF, Bonds, and FD are available through the guardian. SIF is eligible in principle but unusual given the ₹10 lakh minimum and the risk profile. <strong>Equities are the exception:</strong> a minor may hold a demat operated by the guardian and may receive shares (transmission, gifts, IPO allotment) but may not actively trade the secondary market, and intraday and derivatives are barred. The rule of thumb is hold yes, trade no.</div>
+  <div class="facet"><span class="fl">KYC</span>The minor is not the KYC subject. The <strong>guardian</strong> must hold full, valid KYC. Submitted documents are the minor's date-of-birth proof, the guardian's full KYC, and proof of the guardian-minor relationship (or a court order for a legal guardian). The guardian uses standard adult modalities.</div>
+  <div class="facet"><span class="fl">Tax overlay</span>The minor's investment income is generally clubbed with the income of the parent with the higher income, with only a small per-child exemption, until majority. After eighteen it is taxed in the now-adult's own hands. The tax event therefore does not land on the folio holder during minority.</div>
+  <div class="facet"><span class="fl">Operating authority</span>Guardian, until majority.</div>
+  <div class="facet"><span class="fl">Holding mode</span>Typically single holding in the minor's name; a minor generally cannot be a joint holder. SOA or, for equities, a minor demat.</div>
+  <div class="facet"><span class="fl">Banking and payment</span>Minor or minor-with-guardian account; resident rails, operated by guardian.</div>
+  <div class="facet"><span class="fl">Nomination and transmission</span>Guardian arrangements apply during minority; nomination rules follow the holding form.</div>
+  <div class="facet"><span class="fl">Reporting</span>As resident, with clubbing reflected in the parent's reporting during minority.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span><strong>Minor Attaining Majority (MAM) is a lifecycle event, not an edge case.</strong> On the minor turning eighteen the account is frozen for transactions until the erstwhile minor completes their own KYC, supplies their PAN and a fresh bank mandate, at which point the guardian's authority ceases and the tax subject changes identity. This transition is detailed in Part V.</div>
+</div>
+
+<div class="persona">
+  <h3>NRI: Non-Resident Indian</h3>
+  <div class="facet"><span class="fl">Definition and attributes</span>An Indian passport holder who is non-resident under FEMA. The defining attributes are non-resident FEMA status, a country of residence, and the NRE/NRO/FCNR account framework that determines repatriability.</div>
+  <div class="facet"><span class="fl">Instrument eligibility</span>MF and FD are available, the latter through NRE, NRO, or FCNR. Equities run through the PIS route (repatriable, NRE) or the non-PIS route (non-repatriable, NRO), delivery-based, with sectoral-cap exclusions and restrictions on intraday and certain derivatives. Bonds are mixed: corporate bonds and many government securities are open under the FEMA debt route, but fresh Sovereign Gold Bonds are barred for NRIs. SIF eligibility is genuinely unsettled (see opens).</div>
+  <div class="facet"><span class="fl">KYC</span>PAN is mandatory; Aadhaar is not, and many NRIs lack it, which has a direct status consequence below. Documents add the passport, overseas and any Indian address proof, visa or work permit, and an NRE/NRO bank proof; overseas documents typically need attestation and foreign-language documents a certified English translation. Video IPV is the major enabler, removing the need to fly in.</div>
+  <div class="facet"><span class="fl">Tax overlay</span>The headline rates match a resident's, but the machinery differs. <strong>TDS is withheld at source on every redemption</strong> (equity short-term at 20 percent, equity long-term typically at 12.5 percent, higher for non-equity),<sup class="fn">6</sup> rather than self-assessed. NRE and FCNR deposit interest is exempt with no TDS; NRO deposit interest is fully taxable with 30 percent TDS plus surcharge and cess. DTAA relief can reduce withholding, on production of a TRC and Form 10F. The basic-exemption-absorption privilege is not available to NRIs for Section 112A gains.</div>
+  <div class="facet"><span class="fl">Operating authority</span>Self, frequently through a Power-of-Attorney holder resident in India.</div>
+  <div class="facet"><span class="fl">Holding mode</span>Single or joint; SOA or demat; <strong>repatriable or non-repatriable, following the funding account</strong>, which is the dominant attribute of every NRI holding.</div>
+  <div class="facet"><span class="fl">Banking and payment</span>NRE, NRO, or FCNR only; eNACH on these accounts; ordinary domestic UPI from a foreign number is generally unavailable.</div>
+  <div class="facet"><span class="fl">Nomination and transmission</span>As for residents, with repatriability of transmitted proceeds following the original account classification.</div>
+  <div class="facet"><span class="fl">Reporting</span>Heavy: FATCA/CRS, at-source TDS with certificates, and Forms 15CA/15CB on repatriation. Country of residence drives DTAA and CRS.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>
+    <div class="callout principle" style="margin-top:8px;"><p class="ck">Resolved: the relaxation lapsed; Validated is required (D2)</p><p>Because Validated status needs PAN-Aadhaar database validation and many NRIs lack Aadhaar, NRIs commonly cannot reach Validated and sit at Registered. SEBI's relaxation treating NRI/OCI records in Registered status as Validated for transacting across fund houses ran first to 30 April 2025, was extended to 30 April 2026, and lapsed on that date with no successor notified. NRI and OCI records must therefore reach Validated to transact. Confirmed as D2 in the decisions register and applied across the journey layer: J1 gates non-resident onboarding on it, and J9 carries it on redemption.</p></div>
+    <div class="callout verify"><p class="ck">Open: verify with Legal / Compliance and the AMC</p><p>US- and Canada-resident NRIs face AMC-level FATCA restrictions and the US PFIC overlay. The accepting-AMC set and handling must be confirmed, not assumed.</p></div>
+  </div>
+</div>
+
+<div class="persona">
+  <h3>OCI: Overseas Citizen of India</h3>
+  <div class="facet"><span class="fl">Definition and attributes</span>A foreign passport holder of Indian origin holding an OCI card. Under FEMA, treated on par with an NRI for investment purposes. The divergence from NRI is in identity documents and home jurisdiction, not in the Indian computation.</div>
+  <div class="facet"><span class="fl">Instrument eligibility</span>Mirrors NRI across all five instruments, including the same SIF uncertainty and the same fresh-SGB bar.</div>
+  <div class="facet"><span class="fl">KYC</span>As NRI, but the mandatory identity pair is the <strong>foreign passport and the OCI card</strong>, with overseas address proof. Faces the same Validated-versus-Registered constraint as NRIs.</div>
+  <div class="facet"><span class="fl">Tax overlay</span>Tracks NRI on TDS at source, NRE/NRO/FCNR interest treatment, DTAA, and the lack of basic-exemption absorption.</div>
+  <div class="facet"><span class="fl">Operating authority</span>Self, frequently via PoA.</div>
+  <div class="facet"><span class="fl">Holding mode</span>As NRI; repatriability follows the funding account.</div>
+  <div class="facet"><span class="fl">Banking and payment</span>NRE, NRO, FCNR; same rail constraints as NRI.</div>
+  <div class="facet"><span class="fl">Nomination and transmission</span>As NRI.</div>
+  <div class="facet"><span class="fl">Reporting</span>As NRI; country of residence drives DTAA, CRS, and any US/Canada handling.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>Same NRI opens apply: the Registered-status deadline and the US/Canada handling. The practical reason to keep OCI a distinct persona despite identical investment treatment is documentary: a foreign passport and OCI card flow differently through KYC than an Indian passport.</div>
+</div>
+
+<div class="persona">
+  <h3>Foreign National resident in India</h3>
+  <div class="facet"><span class="fl">Definition and attributes</span>A non-Indian citizen who is a FEMA and tax resident of India, for example an expatriate on assignment. The fiddliest natural-person persona, with narrow eligibility and heavier scrutiny.</div>
+  <div class="facet"><span class="fl">Instrument eligibility</span>Conditional across the board. MF and certain instruments are accessible subject to FEMA conditions, but acceptance is often narrow and refusal at onboarding is common. Equity access in particular should not be assumed.</div>
+  <div class="facet"><span class="fl">KYC</span>PAN, passport, a valid Indian visa or residence permit, Indian address proof, FATCA/CRS, photograph. Video or physical IPV.</div>
+  <div class="facet"><span class="fl">Tax overlay</span>Taxed as a resident on India-source income while resident, with the home-jurisdiction overlay material and treaty-dependent.</div>
+  <div class="facet"><span class="fl">Operating authority</span>Self.</div>
+  <div class="facet"><span class="fl">Holding mode</span>Single or joint; SOA or demat.</div>
+  <div class="facet"><span class="fl">Banking and payment</span>Resident account during the period of Indian residence, with FEMA constraints on what happens when residence ends.</div>
+  <div class="facet"><span class="fl">Nomination and transmission</span>As resident.</div>
+  <div class="facet"><span class="fl">Reporting</span>FATCA/CRS prominent given foreign citizenship.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>
+    <div class="callout verify" style="margin-top:8px;"><p class="ck">Open: verify with Legal / Compliance</p><p>Eligibility specifics for a resident foreign national across MF, equities, and bonds are narrow and condition-dependent, and the treatment when the person ceases to be Indian-resident (a reverse residency change) needs explicit handling. Treat this persona as low-priority and condition-laden until Legal confirms the accepted scope.</p></div>
+  </div>
+</div>
+
+<h2 id="ent"><span class="num">14.</span>Non-individual entities</h2>
+<p>For every entity, the shape is constant: the entity holds its own PAN and KYC record, and separately the authorised signatories are KYC'd and the Ultimate Beneficial Owners are traced and verified. The authorising resolution and the signatory KYC are where onboarding actually slows down. Tax also breaks from the slab structure: capital gains still flow through the Section 111A and 112A special rates, but regular income is taxed at entity rates with no basic exemption and no property indexation option.</p>
+
+<div class="persona">
+  <h3>HUF: Hindu Undivided Family</h3>
+  <div class="facet"><span class="fl">Definition and attributes</span>A Hindu joint family treated as a separate tax entity with its own PAN, operated by the Karta. Behaves, for tax, much like a resident individual with its own return.</div>
+  <div class="facet"><span class="fl">Instrument eligibility</span>All five: MF, SIF (₹10 lakh minimum), Bonds, FD, and Equities via an HUF demat operated by the Karta.</div>
+  <div class="facet"><span class="fl">KYC</span>HUF PAN, the HUF deed or declaration, a list of coparceners, the Karta's full individual KYC, an HUF bank account, and FATCA/CRS for the HUF. The Karta is the IPV subject.</div>
+  <div class="facet"><span class="fl">Tax overlay</span>Mirrors the resident individual, including the ₹1.25 lakh equity exemption, basic-exemption absorption, and the property indexation option, but the income is the HUF's, not the Karta's.</div>
+  <div class="facet"><span class="fl">Operating authority</span>Karta.</div>
+  <div class="facet"><span class="fl">Holding mode</span>In the HUF's name; SOA or demat.</div>
+  <div class="facet"><span class="fl">Banking and payment</span>HUF bank account; resident rails.</div>
+  <div class="facet"><span class="fl">Nomination and transmission</span>On the Karta's death the role devolves to the next senior coparcener; the family persists as the entity.</div>
+  <div class="facet"><span class="fl">Reporting</span>FATCA/CRS for the HUF; EUIN/ARN; SFT.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>HUF partition is a lifecycle event with consequences for the holding (see Part V).</div>
+</div>
+
+<div class="persona">
+  <h3>Sole Proprietorship</h3>
+  <div class="facet"><span class="fl">Definition and attributes</span>Not a separate legal person from the proprietor. For securities it collapses into the proprietor's individual identity and PAN.</div>
+  <div class="facet"><span class="fl">Instrument eligibility</span>Effectively the proprietor's individual eligibility across all five; FDs and some bonds may be held in the firm's name.</div>
+  <div class="facet"><span class="fl">KYC</span>The proprietor's full individual KYC plus proof that the business exists, conventionally two of GST registration, shops-and-establishment licence, or professional licence, plus a bank account in the firm's name. There is no separate firm PAN.</div>
+  <div class="facet"><span class="fl">Tax overlay</span>The proprietor's individual tax position; resident-individual privileges apply to the proprietor.</div>
+  <div class="facet"><span class="fl">Operating authority</span>The proprietor.</div>
+  <div class="facet"><span class="fl">Holding mode</span>Effectively individual; SOA or demat.</div>
+  <div class="facet"><span class="fl">Banking and payment</span>Firm current account or the proprietor's account; resident rails.</div>
+  <div class="facet"><span class="fl">Nomination and transmission</span>As individual.</div>
+  <div class="facet"><span class="fl">Reporting</span>As individual.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>The only real subtlety is recognising that for securities this is an individual wearing a business label, not a distinct legal investor.</div>
+</div>
+
+<div class="persona">
+  <h3>Partnership Firm</h3>
+  <div class="facet"><span class="fl">Definition and attributes</span>A registered or unregistered firm with its own PAN, acting through authorised partners.</div>
+  <div class="facet"><span class="fl">Instrument eligibility</span>MF, SIF (as a non-individual, ₹10 lakh minimum), Bonds, FD, and Equities via a corporate-style demat, all subject to authorisation in the partnership deed.</div>
+  <div class="facet"><span class="fl">KYC</span>Firm PAN, partnership deed, registration certificate where registered, KYC of the authorised partners, an authorised-signatory list, a partners' resolution or authority letter, UBO identification, bank proof, FATCA/CRS.</div>
+  <div class="facet"><span class="fl">Tax overlay</span>Income taxed at a flat 30 percent with no basic exemption; capital gains at the Section 111A and 112A special rates; surcharge per the firm schedule.</div>
+  <div class="facet"><span class="fl">Operating authority</span>Authorised partners, per the resolution.</div>
+  <div class="facet"><span class="fl">Holding mode</span>In the firm's name; SOA or demat.</div>
+  <div class="facet"><span class="fl">Banking and payment</span>Firm current account; corporate rails.</div>
+  <div class="facet"><span class="fl">Nomination and transmission</span>The firm persists; partner succession follows the deed.</div>
+  <div class="facet"><span class="fl">Reporting</span>UBO/PMLA tracing of controlling partners; FATCA/CRS; EUIN/ARN; SFT.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>Equity participation by a firm is delivery-oriented and authorisation-gated; do not assume retail-style trading flexibility.</div>
+</div>
+
+<div class="persona">
+  <h3>LLP: Limited Liability Partnership</h3>
+  <div class="facet"><span class="fl">Definition and attributes</span>A body corporate acting through its designated partners.</div>
+  <div class="facet"><span class="fl">Instrument eligibility</span>All five: MF, SIF (₹10 lakh minimum), Bonds, FD, Equities via corporate demat, subject to authorisation.</div>
+  <div class="facet"><span class="fl">KYC</span>LLP PAN, the LLP agreement, certificate of incorporation, KYC of the designated partners, authorised-signatory list, the authorising resolution, UBO identification, bank proof, FATCA/CRS.</div>
+  <div class="facet"><span class="fl">Tax overlay</span>Taxed like a firm, a flat 30 percent on income with capital gains at the special rates; no basic exemption.</div>
+  <div class="facet"><span class="fl">Operating authority</span>Designated partners, per the resolution.</div>
+  <div class="facet"><span class="fl">Holding mode</span>In the LLP's name; SOA or demat.</div>
+  <div class="facet"><span class="fl">Banking and payment</span>LLP current account; corporate rails.</div>
+  <div class="facet"><span class="fl">Nomination and transmission</span>The LLP persists; partner succession follows the agreement.</div>
+  <div class="facet"><span class="fl">Reporting</span>UBO/PMLA; FATCA/CRS; EUIN/ARN; SFT.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>None beyond the standard entity backbone.</div>
+</div>
+
+<div class="persona">
+  <h3>Company (Private or Public Limited)</h3>
+  <div class="facet"><span class="fl">Definition and attributes</span>A body corporate investing as treasury or core activity, acting through a board-authorised signatory.</div>
+  <div class="facet"><span class="fl">Instrument eligibility</span>All five: MF, SIF (₹10 lakh minimum), Bonds, FD (including corporate deposits), and Equities via corporate demat.</div>
+  <div class="facet"><span class="fl">KYC</span>Company PAN, certificate of incorporation, Memorandum and Articles of Association, a board resolution authorising the investment and naming the authorised signatories, KYC of those signatories, a list of directors, UBO identification of natural persons holding more than 25 percent or otherwise in control, bank proof, FATCA/CRS.</div>
+  <div class="facet"><span class="fl">Tax overlay</span>Income at the elected corporate rate (the 22, 25, or 15 percent regimes), capital gains at the Section 111A and 112A special rates, no basic exemption, no property indexation option, with MAT or AMT considerations and a corporate surcharge schedule. The exact rate depends on the regime elected.</div>
+  <div class="facet"><span class="fl">Operating authority</span>Authorised signatories, per the board resolution and its limits.</div>
+  <div class="facet"><span class="fl">Holding mode</span>In the company's name; SOA or demat.</div>
+  <div class="facet"><span class="fl">Banking and payment</span>Current account with mandate controls; corporate rails.</div>
+  <div class="facet"><span class="fl">Nomination and transmission</span>The company persists; signatory changes follow fresh resolutions; dissolution or merger is the terminal event.</div>
+  <div class="facet"><span class="fl">Reporting</span>UBO/PMLA; FATCA/CRS; EUIN/ARN; SFT.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>The resolution is load-bearing: it both authorises the investment and defines who may act and within what limits, and it must be refreshed when signatories change.</div>
+</div>
+
+<div class="persona">
+  <h3>Private / Family Trust</h3>
+  <div class="facet"><span class="fl">Definition and attributes</span>A trust investing within the powers granted by its trust deed, acting through its trustees.</div>
+  <div class="facet"><span class="fl">Instrument eligibility</span>MF, SIF, Bonds, FD, and Equities, but each is <strong>conditional on the deed permitting it</strong>. If the deed is silent or restrictive, eligibility flips to no, irrespective of the instrument.</div>
+  <div class="facet"><span class="fl">KYC</span>Trust PAN, the trust deed, registration certificate where registered, KYC of the trustees, authorised-signatory list, identification of settlor, trustees, and beneficiaries for UBO purposes, the authorising resolution, bank proof, FATCA/CRS.</div>
+  <div class="facet"><span class="fl">Tax overlay</span>Depends on structure, often at the maximum marginal rate for discretionary trusts or in a representative capacity. This is the most structure-dependent tax position in the document.</div>
+  <div class="facet"><span class="fl">Operating authority</span>Trustees, per the deed and the resolution.</div>
+  <div class="facet"><span class="fl">Holding mode</span>In the trust's name; SOA or demat.</div>
+  <div class="facet"><span class="fl">Banking and payment</span>Trust current account; corporate-style rails.</div>
+  <div class="facet"><span class="fl">Nomination and transmission</span>The trust persists; trustee succession follows the deed.</div>
+  <div class="facet"><span class="fl">Reporting</span>UBO/PMLA tracing of settlor, trustees, and beneficiaries; FATCA/CRS; EUIN/ARN; SFT.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>
+    <div class="callout" style="margin-top:8px;"><p class="ck">Special attention</p><p>The deed must be read at onboarding, not merely filed. It is simultaneously the eligibility gate, the authority document, and an input to the tax position. A trust whose deed does not permit equity cannot hold equity however affluent it is.</p></div>
+  </div>
+</div>
+
+<div class="persona">
+  <h3>Public / Charitable Trust</h3>
+  <div class="facet"><span class="fl">Definition and attributes</span>A religious or charitable trust whose investment universe is constrained by statute, in addition to its deed.</div>
+  <div class="facet"><span class="fl">Instrument eligibility</span>MF, Bonds, and FD are generally available, but <strong>direct equity is restricted</strong> by the permissible investment modes under Section 11(5) of the Income Tax Act and the relevant charity rules. SIF and equities are therefore conditional and statute-bound, not deed-bound alone.</div>
+  <div class="facet"><span class="fl">KYC</span>As for a private trust, plus 12A and where relevant 80G registration.</div>
+  <div class="facet"><span class="fl">Tax overlay</span>Potentially exempt, but only if 12A registered, applying income as required, and keeping investments within the Section 11(5) permissible modes. Step outside those modes and the exemption is at risk.</div>
+  <div class="facet"><span class="fl">Operating authority</span>Trustees, per the deed and resolution.</div>
+  <div class="facet"><span class="fl">Holding mode</span>In the trust's name; SOA or demat.</div>
+  <div class="facet"><span class="fl">Banking and payment</span>Trust current account; corporate-style rails.</div>
+  <div class="facet"><span class="fl">Nomination and transmission</span>The trust persists; trustee succession follows the deed.</div>
+  <div class="facet"><span class="fl">Reporting</span>As private trust, plus the application-of-income and exemption-compliance reporting that the charitable regime requires.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>
+    <div class="callout verify" style="margin-top:8px;"><p class="ck">Open: verify with Legal / Tax counsel</p><p>The precise permissible-mode list under Section 11(5) and its interaction with equity-oriented mutual funds and SIF should be confirmed for any charitable-trust onboarding, because the exemption depends on staying inside it. This is a statute-time eligibility gate, not a post-onboarding rule.</p></div>
+  </div>
+</div>
+
+<div class="persona">
+  <h3>Society / AOP / BOI</h3>
+  <div class="facet"><span class="fl">Definition and attributes</span>A registered cooperative society, club, association of persons, or body of individuals, acting per its bye-laws.</div>
+  <div class="facet"><span class="fl">Instrument eligibility</span>MF, SIF, Bonds, FD, and Equities, subject to the bye-laws permitting the investment and the office bearers being authorised.</div>
+  <div class="facet"><span class="fl">KYC</span>Registration certificate, bye-laws or constitution, PAN, the authorising resolution, KYC of office bearers and authorised signatories, UBO identification.</div>
+  <div class="facet"><span class="fl">Tax overlay</span>Taxed per the AOP/BOI rules, which vary with whether members' shares are determinate and with the rate applicable to members; no individual privileges.</div>
+  <div class="facet"><span class="fl">Operating authority</span>Office bearers and authorised signatories, per the resolution.</div>
+  <div class="facet"><span class="fl">Holding mode</span>In the body's name; SOA or demat.</div>
+  <div class="facet"><span class="fl">Banking and payment</span>The body's current account; corporate-style rails.</div>
+  <div class="facet"><span class="fl">Nomination and transmission</span>The body persists; office-bearer succession follows the bye-laws.</div>
+  <div class="facet"><span class="fl">Reporting</span>UBO/PMLA; FATCA/CRS; EUIN/ARN; SFT.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>The bye-laws play the role the deed plays for a trust: read them at onboarding for both eligibility and authority.</div>
+</div>
+
+<div class="part-band" id="p4"><div class="pk">Part IV</div><div class="pt">Cross-cutting modes and overlays</div></div>
+
+<h2 id="joint"><span class="num">15.</span>Joint holding</h2>
+<p>Joint holding is a mode, not a persona, and conflating the two is a common modelling error. Legally there is no joint investor entity; there are two or more natural-person personas holding one folio or account together. The mode is a configuration layered on top of those personas.</p>
+<div class="callout principle">
+  <p class="ck">Key principle</p>
+  <p>Model joint as a relationship over personas, not as an investor type. The legal identity that matters for KYC, tax attribution, and transmission remains each individual holder. Treating joint as a first-class persona is a defensible operational shortcut given how prevalent joint folios are, but the shortcut must not leak into the places where individual identity is what counts.</p>
+</div>
+<h4>Semantics that must be captured.</h4>
+<ul class="tight">
+  <li><strong>Holder order:</strong> a primary (first) holder and one or more secondary holders. Communications and statements default to the first holder.</li>
+  <li><strong>Operation mode:</strong> Jointly, Either or Survivor, Anyone or Survivor, or Former or Survivor, which feeds the authorisation engine in Section 7.</li>
+  <li><strong>Tax attribution:</strong> income and gains are generally attributed to the first holder, which means the joint mode does not split the tax, it assigns it.</li>
+  <li><strong>Transmission:</strong> survivorship governs and takes precedence over a nominee. On a holder's death the holding vests in the survivors per the operation mode.</li>
+  <li><strong>KYC:</strong> every holder must be individually KYC-valid; a joint folio is only as clear as its least-cleared holder.</li>
+</ul>
+<p>A minor generally cannot be a joint holder, and an NRI joined with a resident raises repatriability and reporting questions that follow the first holder's status. Joint mode therefore interacts with almost every other facet, which is why it earns a section of its own rather than a line in each profile.</p>
+
+<h2 id="ai"><span class="num">16.</span>Accredited Investor status</h2>
+<p>Accreditation is a SEBI qualification status that can attach to an individual, HUF, trust, or body corporate meeting prescribed net-worth or income thresholds. It is an overlay carried as a flag on a persona, not a persona itself. Its most relevant effect in scope is that an accredited investor is exempt from the SIF minimum-ticket floor.</p>
+<div class="callout verify">
+  <p class="ck">Open: verify current thresholds with Compliance</p>
+  <p>The exact net-worth and income thresholds for accreditation, and the accrediting-agency process, are specific figures that move. They are deliberately not quoted here. Confirm the current thresholds and the validity period of an accreditation certificate with Compliance before any flow relies on the status.</p>
+</div>
+
+<div class="part-band" id="p5"><div class="pk">Part V</div><div class="pt">The persona lifecycle state model</div></div>
+<p class="lead" style="margin-top:18px;">A persona is not static. It moves between states, and each transition changes several facets at once. This is the dimension a pure lookup table misses, and the one most likely to become a painful retrofit if it is not modelled as events from the start.</p>
+<p>The transitions below are best emitted as domain events, because each fans out into KYC, banking, tax, authority, and reporting consequences. The table states, for each transition, what triggers it and what changes.</p>
+
+<table>
+  <thead><tr><th>Transition</th><th>Trigger</th><th>What changes</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>Minor → Major (MAM)</strong></td>
+      <td>The minor turns eighteen.</td>
+      <td>Account frozen for transactions until the erstwhile minor completes their own KYC and supplies their PAN and a fresh bank mandate. Guardian authority ceases. The tax subject changes identity, and clubbing with the parent stops. A mid-transition freeze sits in the middle of this, so it is a multi-step state, not an instant flip.</td>
+    </tr>
+    <tr>
+      <td><strong>Resident → Non-Resident</strong></td>
+      <td>FEMA residential status changes on departure and the qualifying-period tests being met.</td>
+      <td>Re-KYC with non-resident documents; resident bank accounts must be redesignated or converted to NRO and new NRE/FCNR opened; existing holdings reclassify; tax treatment and at-source TDS change; FATCA/CRS updates; country of residence becomes a live attribute.</td>
+    </tr>
+    <tr>
+      <td><strong>Non-Resident → Resident</strong></td>
+      <td>Return to India and the residency tests being met.</td>
+      <td>The reverse: account redesignation, removal of at-source TDS on MF, recovery of resident privileges, FATCA/CRS update. Often overlooked because platforms build the outbound case and forget the return.</td>
+    </tr>
+    <tr>
+      <td><strong>Individual death → Transmission</strong></td>
+      <td>Death of a holder.</td>
+      <td>Single holding transmits to the nominee, who must then KYC; joint holding vests in survivors per the operation mode, ahead of any nominee. A lifecycle event, not an exception path.</td>
+    </tr>
+    <tr>
+      <td><strong>HUF partition</strong></td>
+      <td>Partition of the family.</td>
+      <td>The HUF as an entity may cease or split; holdings are apportioned; PAN and tax status of the resulting parties change.</td>
+    </tr>
+    <tr>
+      <td><strong>Entity dissolution / merger</strong></td>
+      <td>Winding up, dissolution, or merger of a company, LLP, firm, trust, or society.</td>
+      <td>Terminal or transformative event for the holding; authority and PAN of the surviving or successor entity govern thereafter.</td>
+    </tr>
+    <tr>
+      <td><strong>KYC status transition</strong></td>
+      <td>Validation, expiry of a relaxation window, or a document lapsing.</td>
+      <td>Movement between On Hold, Registered, and Validated changes what the investor may do right now, including, at the On Hold end, blocking redemptions.</td>
+    </tr>
+    <tr>
+      <td><strong>Accreditation gain / loss</strong></td>
+      <td>Meeting or ceasing to meet thresholds, or certificate expiry.</td>
+      <td>Toggles access to accredited-only treatment such as the SIF minimum-ticket exemption.</td>
+    </tr>
+  </tbody>
+</table>
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p>Two transitions are routinely under-built. The first is the return leg of residency (Non-Resident → Resident), because teams build the departure case and forget the homecoming. The second is the mid-transition freeze inside MAM, where the account is neither fully a minor's nor yet the adult's and must refuse transactions cleanly rather than fail obscurely. Both deserve explicit states, not implicit handling.</p>
+</div>
+
+<div class="part-band" id="p6"><div class="pk">Part VI</div><div class="pt">Instrument eligibility master matrix</div></div>
+<p style="margin-top:18px;">A single-screen quick reference. Read against the footnotes; the per-persona detail in Part III is authoritative where the two seem to differ.</p>
+<table>
+  <thead><tr><th>Persona</th><th class="c">MF</th><th class="c">SIF</th><th class="c">Bonds</th><th class="c">FD</th><th class="c">Equities</th></tr></thead>
+  <tbody>
+    <tr><td>Resident Individual</td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span><sup class="fn">1</sup></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span></td></tr>
+    <tr><td>Minor</td><td class="c"><span class="cond">C</span><sup class="fn">2</sup></td><td class="c"><span class="cond">C</span><sup class="fn">1</sup></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="cond">C</span><sup class="fn">3</sup></td></tr>
+    <tr><td>NRI</td><td class="c"><span class="cond">C</span><sup class="fn">4</sup></td><td class="c"><span class="cond">C</span><sup class="fn">5</sup></td><td class="c"><span class="cond">C</span><sup class="fn">6</sup></td><td class="c"><span class="yes">Y</span><sup class="fn">7</sup></td><td class="c"><span class="cond">C</span><sup class="fn">8</sup></td></tr>
+    <tr><td>OCI</td><td class="c"><span class="cond">C</span><sup class="fn">4</sup></td><td class="c"><span class="cond">C</span><sup class="fn">5</sup></td><td class="c"><span class="cond">C</span><sup class="fn">6</sup></td><td class="c"><span class="yes">Y</span><sup class="fn">7</sup></td><td class="c"><span class="cond">C</span><sup class="fn">8</sup></td></tr>
+    <tr><td>Foreign National resident in India</td><td class="c"><span class="cond">C</span><sup class="fn">9</sup></td><td class="c"><span class="cond">C</span><sup class="fn">9</sup></td><td class="c"><span class="cond">C</span><sup class="fn">9</sup></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="cond">C</span><sup class="fn">9</sup></td></tr>
+    <tr><td>HUF</td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span><sup class="fn">1</sup></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span></td></tr>
+    <tr><td>Sole Proprietorship</td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span><sup class="fn">1</sup></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span></td></tr>
+    <tr><td>Partnership Firm</td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span><sup class="fn">1</sup></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span><sup class="fn">10</sup></td></tr>
+    <tr><td>LLP</td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span><sup class="fn">1</sup></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span><sup class="fn">10</sup></td></tr>
+    <tr><td>Company</td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span><sup class="fn">1</sup></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="yes">Y</span><sup class="fn">10</sup></td></tr>
+    <tr><td>Private / Family Trust</td><td class="c"><span class="cond">C</span><sup class="fn">11</sup></td><td class="c"><span class="cond">C</span><sup class="fn">11</sup></td><td class="c"><span class="cond">C</span><sup class="fn">11</sup></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="cond">C</span><sup class="fn">11</sup></td></tr>
+    <tr><td>Public / Charitable Trust</td><td class="c"><span class="cond">C</span><sup class="fn">12</sup></td><td class="c"><span class="cond">C</span><sup class="fn">12</sup></td><td class="c"><span class="cond">C</span><sup class="fn">12</sup></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="cond">C</span><sup class="fn">12</sup></td></tr>
+    <tr><td>Society / AOP / BOI</td><td class="c"><span class="cond">C</span><sup class="fn">13</sup></td><td class="c"><span class="cond">C</span><sup class="fn">13</sup></td><td class="c"><span class="cond">C</span><sup class="fn">13</sup></td><td class="c"><span class="yes">Y</span></td><td class="c"><span class="cond">C</span><sup class="fn">13</sup></td></tr>
+  </tbody>
+</table>
+<div style="font-size:.82rem;color:var(--muted);line-height:1.6;">
+  <p style="margin:6px 0;"><strong>Footnotes.</strong></p>
+  <p style="margin:4px 0;"><sup class="fn">1</sup> SIF carries a ₹10 lakh minimum aggregated at PAN level across an AMC's strategies, waived for accredited investors.</p>
+  <p style="margin:4px 0;"><sup class="fn">2</sup> Minor MF is held in the minor's name and operated by the guardian.</p>
+  <p style="margin:4px 0;"><sup class="fn">3</sup> A minor may hold a guardian-operated demat and receive shares, but may not actively trade the secondary market; intraday and derivatives are barred.</p>
+  <p style="margin:4px 0;"><sup class="fn">4</sup> NRI/OCI MF is available, but US- and Canada-resident persons face AMC restrictions, and the Registered-status relaxation lapsed on 30 April 2026 with no successor, so Validated is required (D2, confirmed).</p>
+  <p style="margin:4px 0;"><sup class="fn">5</sup> NRI/OCI SIF eligibility is unsettled and the large-ticket rail is awkward; verify with Legal and the AMC.</p>
+  <p style="margin:4px 0;"><sup class="fn">6</sup> Corporate bonds and many government securities are open under the FEMA debt route; fresh Sovereign Gold Bonds are barred for NRIs/OCIs.</p>
+  <p style="margin:4px 0;"><sup class="fn">7</sup> Via NRE (repatriable, interest exempt), NRO (taxable), or FCNR.</p>
+  <p style="margin:4px 0;"><sup class="fn">8</sup> Via PIS (NRE, repatriable) or non-PIS (NRO, non-repatriable); delivery-based, with sectoral caps and restrictions on intraday and certain derivatives.</p>
+  <p style="margin:4px 0;"><sup class="fn">9</sup> Narrow and condition-dependent; verify the accepted scope with Legal and Compliance.</p>
+  <p style="margin:4px 0;"><sup class="fn">10</sup> Via a corporate demat, delivery-oriented and authorisation-gated; not retail-style trading.</p>
+  <p style="margin:4px 0;"><sup class="fn">11</sup> Each instrument is conditional on the trust deed permitting it.</p>
+  <p style="margin:4px 0;"><sup class="fn">12</sup> Constrained by the Section 11(5) permissible investment modes; direct equity is restricted; verify with Legal and Tax counsel.</p>
+  <p style="margin:4px 0;"><sup class="fn">13</sup> Conditional on the bye-laws permitting it and the office bearers being authorised.</p>
+</div>
+
+<div class="part-band" id="p7"><div class="pk">Part VII</div><div class="pt">Open items and verification register</div></div>
+<p style="margin-top:18px;">Every point this document could not establish with confidence, collected in one place with an owner to vet it. Nothing here is invented certainty.</p>
+<table>
+  <thead><tr><th>#</th><th>Open item</th><th>What is uncertain</th><th>Vet with</th><th>Priority</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>NRI/OCI Registered-status relaxation deadline</td><td>Resolved, June 2026: the relaxation lapsed on 30 April 2026 with no successor notified; NRI and OCI records must reach Validated to transact. Confirmed as D2 and applied in J1 and J9.</td><td>Compliance / KRA</td><td>Closed</td></tr>
+    <tr><td>2</td><td>NRI/OCI SIF eligibility</td><td>SEBI's SIF framework does not clearly address non-resident eligibility, and the large-ticket payment rail is operationally awkward.</td><td>Legal / Compliance / AMC</td><td>Medium</td></tr>
+    <tr><td>3</td><td>SIF taxation</td><td>SIF is assumed to inherit MF taxation by underlying orientation; no SIF-specific guidance confirmed, and the product is barely a year old.</td><td>Tax counsel</td><td>Medium</td></tr>
+    <tr><td>4</td><td>Gold / international fund reclassification date</td><td>Early reporting put parts of the correction at April 2026 rather than April 2025.</td><td>Tax counsel</td><td>Low</td></tr>
+    <tr><td>5</td><td>US / Canada NRI/OCI acceptance and PFIC handling</td><td>The accepting-AMC set and operational handling are not confirmed; PFIC compounds the home-side burden.</td><td>Compliance / Tax / AMC</td><td>High</td></tr>
+    <tr><td>6</td><td>Foreign National resident in India</td><td>Eligibility scope across MF, equities, and bonds is narrow and condition-laden, and the reverse-residency exit needs explicit handling.</td><td>Legal / Compliance</td><td>Low–Med</td></tr>
+    <tr><td>7</td><td>Charitable trust Section 11(5) modes</td><td>The precise permissible-mode list and its interaction with equity-oriented MF and SIF must be confirmed; the exemption depends on it.</td><td>Legal / Tax counsel</td><td>Medium</td></tr>
+    <tr><td>8</td><td>Accredited Investor thresholds</td><td>Exact net-worth and income thresholds and certificate validity are specific figures that move; deliberately not quoted.</td><td>Compliance</td><td>Low</td></tr>
+    <tr><td>9</td><td>Minor equity trading contours</td><td>The exact set of permitted actions inside a guardian-operated minor demat should be confirmed.</td><td>Compliance / Depository</td><td>Low</td></tr>
+    <tr><td>10</td><td>NRI cross-border UPI</td><td>Availability is widening but uneven across banks and numbers.</td><td>Banking partner</td><td>Low</td></tr>
+    <tr><td>11</td><td>FD KYC reuse</td><td>Whether captured securities-KYC documents satisfy the FD partner bank's RBI-regime KYC, or a separate satisfaction is required.</td><td>Banking partner / Compliance</td><td>Low</td></tr>
+  </tbody>
+</table>
+
+<div class="part-band" id="p8"><div class="pk">Part VIII</div><div class="pt">The build-scope view for an MFD-only firm</div></div>
+<p class="lead" style="margin-top:18px;">Everything above is persona-neutral: it describes what an investor <em>is</em>, irrespective of who is serving them. This part is the one place the document takes a stance. It answers a narrower question for a wealth-management firm operating under a distributor (MFD) licence, serving the mass-affluent and private-wealth segments: of all the elements catalogued above, which must be built as proper product flows, and which are there to be understood rather than plumbed.</p>
+
+<h2 id="s18"><span class="num">18.</span>The build-scope view</h2>
+
+<div class="callout principle">
+  <p class="ck">The principle that classifies almost everything</p>
+  <p>An MFD-only firm is <strong>not the system of record</strong>. The AMC and its RTA are. Units, money movement, tax withholding, statutory filings, and the legal transfer of holdings all happen on AMC and RTA rails. What the firm owns is the <strong>investor relationship, order origination, and servicing</strong>. The firm's own ledger is a reconciliation and reporting projection of the RTA's truth, not a replacement for it. The test for whether an element needs a real flow is therefore simple: does it sit in onboarding, order construction, mandate and payment orchestration, or servicing? If yes, build it. If it is execution, withholding, or filing that legally belongs to the AMC or RTA, integrate with it, reflect it, and at most facilitate it.</p>
+</div>
+
+<h3>Reading the three buckets</h3>
+<div class="legend">
+  <span><span class="bkt core">Core build</span> Own the flow end to end.</span>
+  <span><span class="bkt fac">Facilitate</span> Build a servicing or initiation flow; the AMC or RTA owns the execution and the record.</span>
+  <span><span class="bkt ref">Referential</span> Understand it, optionally surface it; no plumbing or obligation.</span>
+</div>
+
+<h3>Two questions that anchor the split</h3>
+<p><strong>Is tax something an MFD must build?</strong> No. Because the firm never touches the money, it is never the payer in the withholding sense. For residents there is no TDS on mutual fund redemptions at all; the investor self-assesses. For NRIs there is at-source TDS, but the AMC and RTA withhold it and issue the certificate, not the firm. The firm builds no investor tax-withholding and no tax-filing flow. Tax is referential: needed to understand for suitability and to set NRI expectations, and optionally surfaced as capital-gains and tax-lot reporting as a value-add for the segment, which consumes the RTA's data and is a business decision rather than a compliance obligation. One guardrail given the distributor posture: surfacing tax information is acceptable, charging for tax advice is not.</p>
+<p><strong>Whose job is post-death transfer?</strong> It splits. Capturing the nominee is the firm's to build, registered with the RTA at onboarding or first transaction. The post-death transfer is not the firm's to execute: the units move on the RTA's register against a transmission request and documents from the nominee or heir. The firm's role is to facilitate, by guiding the family, collecting and verifying documents, and routing to the RTA. For private wealth that facilitation is one of the most important relationship moments there is, so it should be built well, but built as a servicing-and-routing flow, not as a transfer engine.</p>
+
+<h3>The classification</h3>
+<table>
+  <thead><tr><th>Element</th><th>Bucket</th><th>Why, and who executes</th></tr></thead>
+  <tbody>
+    <tr><td>KYC capture, modality (video / biometric), status gating</td><td><span class="bkt core">Core build</span></td><td>Onboarding is the firm's. The KRA / CKYC registry and the validation are external, but the firm captures, runs the modality, consumes the status, and blocks On-Hold before letting an order through.</td></tr>
+    <tr><td>Documentation backbone (PAN, Aadhaar, OVD, FATCA/CRS, UBO capture)</td><td><span class="bkt core">Core build</span></td><td>The firm captures and submits. It does not own the registry, but the capture and the entity UBO tracing are its flow.</td></tr>
+    <tr><td>Operating authority and mandates (guardian, Karta, signatory plus resolution, PoA, joint operation modes)</td><td><span class="bkt core">Core build</span></td><td>Order origination depends on knowing who may act. A valid order cannot be constructed without it.</td></tr>
+    <tr><td>Holding mode (single/joint, SOA/demat, repatriability tag)</td><td><span class="bkt core">Core build</span></td><td>Captured and reflected by the firm; the authoritative folio is the RTA's, but it drives the order, communications, and reporting.</td></tr>
+    <tr><td>Payment and mandate orchestration (the FP-RTA payment leg, eNACH and UPI autopay for SIP, NRI account handling, non-pooling)</td><td><span class="bkt core">Core build</span></td><td>The heart of it. The firm orchestrates the instruction from the investor's bank to the AMC / RTA. Money never rests with the firm, which is precisely why this must be built with care.</td></tr>
+    <tr><td>EUIN and ARN attribution on every transaction</td><td><span class="bkt core">Core build</span></td><td>Core distributor compliance and the firm's trail-commission lifeline. Non-negotiable.</td></tr>
+    <tr><td>Nominee capture</td><td><span class="bkt core">Core build</span></td><td>Captured by the firm and registered with the RTA.</td></tr>
+    <tr><td>KYC status lifecycle and re-KYC prompting</td><td><span class="bkt core">Core build</span></td><td>Consume, gate, and prompt. The status is the RTA's; acting on it is the firm's.</td></tr>
+    <tr><td>Minor Attaining Majority (the freeze-and-reverify state)</td><td><span class="bkt core">Core build</span> <span class="bkt fac">Facilitate</span></td><td>The firm must hold the frozen state and drive the re-KYC; the external KYC refresh is facilitated.</td></tr>
+    <tr><td>Internal ledger and reconciliation against RTA feeds</td><td><span class="bkt core">Core build</span></td><td>The firm's own view, household roll-up, and goal tracking. Explicitly not the legal unit register.</td></tr>
+    <tr><td>Suitability and risk profiling</td><td><span class="bkt core">Core build (light)</span></td><td>Distributor suitability, framed carefully as not advice-for-a-fee. This carries the recommendation-boundary risk, so it must be built inside that line.</td></tr>
+    <tr><td>Transmission on death</td><td><span class="bkt fac">Facilitate</span></td><td>The AMC / RTA effects the transfer on its register. The firm guides the family and routes documents.</td></tr>
+    <tr><td>Residency change (resident to NRI and back)</td><td><span class="bkt fac">Facilitate</span></td><td>The bank redesignates the account and the RTA updates the folio. The firm triggers re-KYC, reflects the new status, and routes correctly thereafter.</td></tr>
+    <tr><td>NRI DTAA documents (TRC, Form 10F)</td><td><span class="bkt fac">Facilitate</span></td><td>Collected by the firm and passed to the AMC / RTA so reduced withholding applies.</td></tr>
+    <tr><td>Forms 15CA / 15CB on repatriation</td><td><span class="bkt fac">Facilitate (light)</span></td><td>Sits with the investor, their accountant, and the bank. The firm assists.</td></tr>
+    <tr><td>HUF partition, entity dissolution or merger</td><td><span class="bkt fac">Facilitate (rare)</span></td><td>Low-frequency servicing events.</td></tr>
+    <tr><td>Tax computation, rates, holding periods, capital gains</td><td><span class="bkt ref">Referential</span></td><td>The AMC / RTA computes. The firm may surface CAS-derived views as a differentiator. Never paid tax advice.</td></tr>
+    <tr><td>TDS withholding and certificates, including NRI</td><td><span class="bkt ref">Referential</span></td><td>The AMC / RTA withholds and issues.</td></tr>
+    <tr><td>Statutory filings: FATCA report, SFT high-value reporting</td><td><span class="bkt ref">Referential</span></td><td>The AMC / RTA is the reporting financial institution, not the firm.</td></tr>
+    <tr><td>Home-jurisdiction tax (US PFIC, DTAA rates, CRS)</td><td><span class="bkt ref">Referential</span> <span class="bkt core">except the US/Canada gate</span></td><td>The tax overlay is the investor's and their adviser's. But detecting a US- or Canada-resident person and applying the AMC restriction at onboarding is a real gate the firm must build.</td></tr>
+    <tr><td>Foreign National resident in India persona</td><td><span class="bkt ref">Referential / defer</span></td><td>Narrow and condition-laden.</td></tr>
+    <tr><td>Accredited Investor status</td><td><span class="bkt ref">Referential</span></td><td>Becomes a build flag only if SIF is offered at the accredited lower-ticket.</td></tr>
+    <tr><td>Detailed entity tax positions</td><td><span class="bkt ref">Referential</span></td><td>Understand for the client; do not plumb.</td></tr>
+  </tbody>
+</table>
+
+<h3>Persona scope is segment-dependent</h3>
+<p>Not every persona earns a build, and which ones do splits by segment.</p>
+<p>The <strong>mass-affluent core</strong> is Resident Individual, Minor, NRI, OCI, and Joint holding. That set, plus the core-build rows above, is most of a real platform. NRI and OCI carry the heaviest incremental build (banking, repatriability, the US/Canada gate, attestation-aware KYC), and they are disproportionately present in affluent books, so they are not a later nicety for this segment.</p>
+<p><strong>Private wealth</strong> is what pulls the entities into scope: HUF, Company, LLP, and the Private or Family Trust, because family offices, holding companies, and family trusts are how that money is actually held. Entity onboarding is heavy (UBO graphs, resolutions, deed-reading), so it is a deliberate build, but for the private-wealth book it is meaningful rather than academic.</p>
+<p>The genuinely <strong>deferrable or referential</strong> personas are Foreign National resident in India, Public/Charitable Trust, Society/AOP/BOI, and Sole Proprietorship, the last of which collapses into the individual in any case.</p>
+
+<div class="callout principle">
+  <p class="ck">The stripped-down core</p>
+  <p>Reduced to what an MFD-only firm must bake in, the build is: onboarding and KYC with status gating, the documentation and UBO backbone, operating authority, holding mode, payment and mandate orchestration, ARN and EUIN attribution, nominee capture, the reconciliation ledger, light suitability, and the MAM and residency state-handling. Everything tax, every statutory filing, and the legal execution of transmission and residency changes is integrate-reflect-facilitate, not build. The home-jurisdiction material is referential except for one sharp build, the US/Canada gate.</p>
+</div>
+
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p>The trap is the opposite of over-building. Treating transmission and residency change as pure AMC problems and shipping nothing is a real failure mode, because for private wealth those facilitation flows are exactly where the relationship is won or lost. "Facilitate" must not quietly become "ignore".</p>
+</div>
+
+<div class="callout verify">
+  <p class="ck">Open: verify against the chosen execution rail</p>
+  <p>The precise facilitate-versus-execute line on transmission and residency change can shift depending on whether the firm transacts direct to the RTA, through an exchange platform, or through a unified utility, since each rail hands over a different amount of the servicing. The principle holds across all three; the exact document and routing mechanics should be confirmed against whichever rail is settled on.</p>
+</div>
+
+<h2 id="refs"><span class="num">19.</span>References</h2>
+<p style="font-size:.88rem;color:var(--muted);">Sources for the time-sensitive regulatory and tax figures, current to June 2026. Facts are paraphrased; figures should be re-confirmed against primary circulars before any flow relies on them.</p>
+<ol class="ref-list">
+  <li><sup class="fn">1</sup> SEBI-directed KYC validation regime and the Validated / Registered / On Hold status taxonomy, effective 1 April 2024, as administered by the KYC Registration Agencies. KRA notices and contemporaneous reporting, 2024–2025. Income Tax Department and Business Standard coverage; KRA investor notices.</li>
+  <li><sup class="fn">2</sup> The ₹50,000-per-fund-house-per-year ceiling on OTP-based Aadhaar eKYC, lifted by biometric authentication or in-person verification. SEBI eKYC circulars and AMC/registrar guidance (CAMS, KFin, AMC FAQs).</li>
+  <li><sup class="fn">3</sup> Capital-gains overhaul under the Finance (No. 2) Act, 2024, effective for transfers on or after 23 July 2024: equity LTCG 12.5 percent above ₹1.25 lakh, equity STCG 20 percent, indexation largely removed. Income Tax Department; Business Standard.</li>
+  <li><sup class="fn">4</sup> Section 50AA and the Specified Mutual Fund definition, with the 1 April 2025 narrowing to funds investing more than 65 percent in debt and money-market instruments. AMC tax reckoners; PrimeInvestor; Business Standard.</li>
+  <li><sup class="fn">5</sup> DTAA relief on Indian withholding, conditional on a Tax Residency Certificate and Form 10F. NRI taxation guidance, 2025–2026.</li>
+  <li><sup class="fn">6</sup> NRI at-source TDS on redemptions (equity STCG 20 percent, equity LTCG typically 12.5 percent, higher for non-equity) and the NRE/FCNR exemption versus NRO taxability. NRI taxation guidance and Section 195 commentary, 2025–2026.</li>
+  <li>SIF framework and the ₹10 lakh PAN-level minimum across an AMC's strategies, waived for accredited investors. SEBI circulars, February and April 2025; Business Standard.</li>
+</ol>
+
+<div class="footer">
+  <p><strong>Document control.</strong> The Investor Entity: Master Reference. Version v0.2, draft for review, June 2026. Master reference, not a PRD; Part VIII adds an MFD-only build-scope lens but specifies no flows. Regulatory and tax figures are current to the date shown and move with each Union Budget and SEBI circular. This document is a reference, not legal, tax, or compliance advice; items in Part VII and the open callouts require vetting before reliance. v0.2 adds Part VIII, the build-scope view. v0.3 grounds the NRI and OCI Registered-status relaxation: lapsed 30 April 2026 with no successor, Validated required per D2 and the J1 grounding; the open callout and verification row are marked resolved.</p>
+</div>
+
+</div>
+</body>
+</html>

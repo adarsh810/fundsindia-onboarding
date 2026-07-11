@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FundsIndia: The Key Calls</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 20mm 16mm; }
+  * { box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 11pt; line-height: 1.55; color: #2B2A26; background: #FBFAF6; margin: 0; padding: 0; }
+  .page { max-width: 980px; margin: 0 auto; background: #FFFFFF; padding: 64px 84px 72px; box-shadow: 0 2px 24px rgba(0,0,0,0.05); }
+
+  .doc-title { font-size: 27pt; font-weight: 700; color: #1A1A18; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .doc-sub { font-size: 12.5pt; font-weight: 400; color: #5F5E5A; margin: 0 0 10px; }
+  .doc-meta { font-size: 10pt; color: #888780; margin: 0 0 8px; padding-bottom: 22px; border-bottom: 2px solid #534AB7; }
+
+  h1 { font-size: 14pt; font-weight: 700; color: #6A6873; margin: 38px 0 4px; letter-spacing: 0.04em; text-transform: uppercase; }
+  h1.grp { padding-bottom: 8px; border-bottom: 1px solid #E3E1D8; }
+
+  p { margin: 0 0 12px; }
+  em { font-style: italic; color: #3D3D3A; }
+  strong { font-weight: 700; color: #1A1A18; }
+
+  .lead { font-size: 11.5pt; color: #444441; border-left: 3px solid #534AB7; padding: 4px 0 4px 18px; margin: 0 0 18px; }
+  .note { background: #F1EFE8; border-radius: 6px; padding: 12px 18px; margin: 14px 0; font-size: 10.3pt; color: #444441; }
+  .caveat { background: #FCF6EC; border-left: 3px solid #BA7517; border-radius: 0 6px 6px 0; padding: 12px 18px; margin: 14px 0; font-size: 10.2pt; color: #4A3F2E; }
+  .caveat strong { color: #633806; }
+
+  .genre { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 18px 0 6px; border: 1px solid #E3E1D8; border-radius: 10px; overflow: hidden; }
+  .genre > div { padding: 14px 18px; font-size: 10.2pt; }
+  .genre .is { background: #F4F3FB; }
+  .genre .isnot { background: #FBFAF6; border-left: 1px solid #E3E1D8; }
+  .genre h3 { margin: 0 0 8px; font-size: 9.5pt; letter-spacing: 0.07em; text-transform: uppercase; }
+  .genre .is h3 { color: #3C3489; }
+  .genre .isnot h3 { color: #8A6A2A; }
+  .genre ul { margin: 0; padding-left: 18px; }
+  .genre li { margin: 0 0 7px; }
+
+  .call { border: 1px solid #E3E1D8; border-radius: 11px; padding: 0; margin: 16px 0; overflow: hidden; }
+  .call-head { background: #F7F6FC; border-bottom: 1px solid #E7E4F0; padding: 12px 20px; display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
+  .call-title { font-size: 12pt; font-weight: 700; color: #2B2A26; }
+  .call-title .cn { color: #534AB7; margin-right: 9px; }
+  .pill { display: inline-block; font-size: 7.8pt; font-weight: 700; letter-spacing: 0.04em; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; white-space: nowrap; }
+  .pill.settled { background: #E1F5EE; color: #0A5742; }
+  .pill.cond { background: #FBF2DD; color: #845212; }
+  .pill.open { background: #F8E7E3; color: #8A2F26; }
+  .call-body { padding: 8px 20px 14px; }
+  .frame { margin: 10px 0; }
+  .frame .lbl { font-size: 8.3pt; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #534AB7; display: block; margin-bottom: 2px; }
+  .frame.against .lbl { color: #8A6A2A; }
+  .frame.cost .lbl { color: #9d2f2f; }
+  .frame.reverse .lbl { color: #0A5742; }
+  .frame p { margin: 0; font-size: 10.4pt; color: #36343C; }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; max-width: none; padding: 0; }
+    h1 { page-break-after: avoid; }
+    .call, .note, .caveat, .genre { page-break-inside: avoid; }
+  }
+  @media (max-width: 720px) { .page { padding: 32px 22px; } .genre { grid-template-columns: 1fr; } .genre .isnot { border-left: none; border-top: 1px solid #E3E1D8; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="doc-title">The Key Calls</p>
+  <p class="doc-sub">FundsIndia: the decisions behind the platform, what they cost, and what would reverse them</p>
+  <p class="doc-meta">The why behind the build &middot; companion to the Strategic Blueprint (the vision) and the Investor Playbook (the scope) &middot; V1, June 2026</p>
+
+  <p class="lead">This document records the decisions, not the beliefs. The Blueprint says what FundsIndia intends and the Playbook says what it will build. This says why each hard call went the way it did, what was given up to make it, and what would make us revisit it. It is the document that survives a new hire asking "but why this, and not the obvious alternative."</p>
+
+  <p>One test keeps every entry honest: <strong>a real call names a road not taken and a price paid.</strong> If an entry has no serious alternative and costs nothing, it is a belief wearing a justification, and it belongs in the Blueprint. Beliefs are cheap to assert. Decisions can be wrong, and saying what would make them wrong is the most useful thing this document does.</p>
+
+  <div class="genre">
+    <div class="is">
+      <h3>What each call states</h3>
+      <ul>
+        <li>The alternative we seriously considered and rejected.</li>
+        <li>The concrete price the choice imposes on us.</li>
+        <li>The condition under which we would reverse it.</li>
+      </ul>
+    </div>
+    <div class="isnot">
+      <h3>What it is not</h3>
+      <ul>
+        <li>A principle with no cost ("we put the investor first").</li>
+        <li>A feature, in place of the choice behind it.</li>
+        <li>A rationale that cannot say what would reverse it.</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="note">Each call reads: <strong>The call</strong> (what we chose), <strong>Chosen against</strong> (the road not taken), <strong>What it costs</strong> (the price), and <strong>What would reverse it</strong> (the condition that flips it). A pill marks the call as settled, settled-but-conditional, or carrying an open sub-decision.</p>
+
+  <!-- ===================== POSTURE ===================== -->
+  <h1 class="grp">Posture and thesis</h1>
+
+  <div class="call">
+    <div class="call-head"><span class="call-title"><span class="cn">1</span>MFD now, RIA later, on one stack</span><span class="pill settled">Settled</span></div>
+    <div class="call-body">
+      <div class="frame"><span class="lbl">The call</span><p>V1 is a mutual-fund-distributor business, with no RIA posturing. The RIA opportunity is not rejected, it is sequenced: a subscription-based wealth-advisory line, built on FundsIndia's RIA licence, launched as a new line of business on top of the unified stack only after the new stack is complete, the legacy book is migrated, and the old stack is decommissioned. The whole arc is targeted inside two years.</p></div>
+      <div class="frame against"><span class="lbl">Chosen against</span><p>Launching RIA earlier, in parallel with or close behind the MFD product, on a partly-migrated stack. Rejected because building an advisory line on a half-migrated stack is unstable and would tangle the data migration and the decommissioning. RIA is done properly only once the stack is singular.</p></div>
+      <div class="frame cost"><span class="lbl">What it costs</span><p>Roughly two years of an unused RIA licence and forgone advisory-fee revenue, which we are willing to forgo. The heavier cost is positional: players are already in subscription advice (Scripbox, ET Money), and the category may move materially toward pure-AI-led advisory before we arrive, so we may enter a market someone else has already shaped.</p></div>
+      <div class="frame reverse"><span class="lbl">What would reverse it</span><p>Faster-than-expected migration and decommissioning pulls RIA forward. The gate is stack singularity, not the calendar, so if the stack consolidates early, the RIA line moves up with it. The sequence is firm because RIA-on-a-unified-stack is the architecturally sound version; nothing short of stack singularity changes that.</p></div>
+    </div>
+  </div>
+
+  <div class="call">
+    <div class="call-head"><span class="call-title"><span class="cn">2</span>Goal fulfilment is the scorecard, and goals are the index</span><span class="pill cond">Settled, metric open</span></div>
+    <div class="call-body">
+      <div class="frame"><span class="lbl">The call</span><p>Success is measured by goals fulfilled, not by AUM. A redemption that completes a goal is the defining win, not a churn event. Goal-indexation is the through-line of the whole platform: goals are the organising key that the catalog, the discovery surface, the intelligence engine, and the advisor tooling all reason against. The RM book is valued on goal outcomes, because whatever a book is valued on becomes the career-long optimisation target.</p></div>
+      <div class="frame against"><span class="lbl">Chosen against</span><p>The industry-standard scorecard of AUM growth and redemption avoidance, which every competitor and most comp plans default to.</p></div>
+      <div class="frame cost"><span class="lbl">What it costs</span><p>Goal fulfilment is far harder to instrument than AUM. It fights commercial gravity at every board review and comp conversation, and it requires actively resisting the AUM-extraction behaviour the rest of the industry is built around. The principle is only as real as the metric and the comp plan behind it.</p></div>
+      <div class="frame reverse"><span class="lbl">What would reverse it</span><p>If goal fulfilment cannot be operationalised into a metric a book can be valued on, if it demonstrably fails to drive the AUM and retention it promises, or if a growth crunch forces an AUM-primary scorecard. This is the principle most exposed to quiet erosion, because the reversal can happen one comp cycle at a time without anyone deciding it.</p></div>
+    </div>
+  </div>
+
+  <!-- ===================== INTELLIGENCE ===================== -->
+  <h1 class="grp">Intelligence</h1>
+
+  <div class="call">
+    <div class="call-head"><span class="call-title"><span class="cn">3</span>One brain, not three</span><span class="pill settled">Settled</span></div>
+    <div class="call-body">
+      <div class="frame"><span class="lbl">The call</span><p>A single intelligence engine reasons across the investor, the RM, and the IFA, with hyperpersonalisation built on top of it. The same brain serves all three personas; what differs is the mode of delivery and the prescriptiveness allowed for each, not the underlying intelligence. This is the architectural expression of the unified, singular, lifetime view of the investor.</p></div>
+      <div class="frame against"><span class="lbl">Chosen against</span><p>Building separate intelligence and separate flows per business line (B2C, B2B, Private Wealth), which is the conventional structure and is easier to ship line by line.</p></div>
+      <div class="frame cost"><span class="lbl">What it costs</span><p>More architectural complexity up front: one engine must serve three very different surfaces without forking, persona-appropriate expression has to be enforced centrally rather than per app, and no single line can optimise its own intelligence in isolation. You carry a harder build to avoid three diverging brains later.</p></div>
+      <div class="frame reverse"><span class="lbl">What would reverse it</span><p>If the three lines' needs diverged so far that one shared engine became a compromise serving none of them well, or if a regulatory line forced hard separation between distributor intelligence and advisory intelligence. Short of that, the shared brain is the point, not an implementation detail.</p></div>
+    </div>
+  </div>
+
+  <div class="call">
+    <div class="call-head"><span class="call-title"><span class="cn">4</span>The intelligence we hold back in V1</span><span class="pill settled">Settled</span></div>
+    <div class="call-body">
+      <div class="frame"><span class="lbl">The call</span><p>In V1 the engine captures signals and reads internally, but surfaces only deterministic dissection to investors: the platform states what is true (this holding is eight percent of your equity) and never prescribes (you hold too much). The one-brain architecture is committed from day one; its investor-facing expression is deferred.</p></div>
+      <div class="frame against"><span class="lbl">Chosen against</span><p>Shipping the prescriptive recommendation engine investor-facing in V1, which the vision's diagnostic language implies and which competitors market aggressively.</p></div>
+      <div class="frame cost"><span class="lbl">What it costs</span><p>V1 looks less intelligent than the vision promises. The differentiating capability is invisible to the customer at launch, and the distance between what we are building toward and what ships has to be managed candidly with customers and the board, who can mistake restraint for absence.</p></div>
+      <div class="frame reverse"><span class="lbl">What would reverse it</span><p>When the recommendation surface is compliance-cleared under the MFD boundary and the engine is mature enough that exposing it improves trust rather than eroding it. The trigger is maturity plus clearance, not the calendar; premature exposure of an immature engine is worse than no exposure.</p></div>
+    </div>
+  </div>
+
+  <!-- ===================== RESTRAINT ===================== -->
+  <h1 class="grp">Restraint</h1>
+
+  <div class="call">
+    <div class="call-head"><span class="call-title"><span class="cn">5</span>Celebrate the redemption, do not push a loan against it</span><span class="pill settled">Settled</span></div>
+    <div class="call-body">
+      <div class="frame"><span class="lbl">The call</span><p>When a goal completes, the platform celebrates the redemption as the defining success. It does not push loan-against-mutual-funds to keep the units from being redeemed. The investor's goal being served comes before the platform's interest in retaining the asset.</p></div>
+      <div class="frame against"><span class="lbl">Chosen against</span><p>Pushing loan-against-mutual-funds at the moment of redemption, a lucrative, low-risk, high-margin lending line that competitors promote precisely because it keeps AUM sticky and converts a redemption into a retained, interest-earning balance.</p></div>
+      <div class="frame cost"><span class="lbl">What it costs</span><p>A genuine, high-margin revenue line deliberately left unmonetised at the exact moment it would convert best. We forgo lending income that competitors actively harvest, in order to keep the goal-fulfilment promise intact at the one moment it is most tested.</p></div>
+      <div class="frame reverse"><span class="lbl">What would reverse it</span><p>The call is against <em>pushing</em> the loan as a redemption-blocking retention tactic, not against ever offering it. If loan-against-mutual-funds can be surfaced as a genuine, investor-initiated option that serves a real need without standing between the investor and their fulfilled goal, it can exist as a neutral capability rather than a nudge.</p></div>
+    </div>
+  </div>
+
+  <div class="call">
+    <div class="call-head"><span class="call-title"><span class="cn">6</span>Only instruments that protect the investor</span><span class="pill settled">Settled</span></div>
+    <div class="call-body">
+      <div class="frame"><span class="lbl">The call</span><p>The product universe is shaped by suitability and protection. We participate only in regulated, structurally sound asset classes. We do not offer crypto, digital gold, or other speculative or unregulated classes, regardless of demand or market trend.</p></div>
+      <div class="frame against"><span class="lbl">Chosen against</span><p>Chasing the demand that competitors meet with crypto, digital gold, and similar high-interest unregulated products, which are real acquisition and engagement drivers in the current market.</p></div>
+      <div class="frame cost"><span class="lbl">What it costs</span><p>Real demand and acquisition left on the table. Some customers, particularly younger first-time investors drawn to those classes, will start elsewhere, and we forgo the engagement and top-of-funnel that speculative products generate.</p></div>
+      <div class="frame reverse"><span class="lbl">What would reverse it</span><p>If and when such an instrument becomes properly regulated and structurally protective, it becomes eligible on the same suitability test every other instrument passes. The bar is regulation and protection, not popularity, so the reversal is a change in the instrument's status, not in our appetite.</p></div>
+    </div>
+  </div>
+
+  <!-- ===================== ARCHITECTURE ===================== -->
+  <h1 class="grp">Architecture</h1>
+
+  <div class="call">
+    <div class="call-head"><span class="call-title"><span class="cn">7</span>Buy the rails, build the brain</span><span class="pill settled">Settled, reversible by design</span></div>
+    <div class="call-body">
+      <div class="frame"><span class="lbl">The call</span><p>Buy execution, KYC, payments, and RTA integration from specialists behind clean anti-corruption layers. Build the entity model, the ledger, the intelligence, and the experience in-house. The line is drawn at differentiation, not at cost.</p></div>
+      <div class="frame against"><span class="lbl">Chosen against</span><p>Building the commodity rails in-house for control, or buying an end-to-end platform for speed. Both were live options.</p></div>
+      <div class="frame cost"><span class="lbl">What it costs</span><p>Dependency on vendors who sit on the riskiest external clocks, ACL overhead on every integration, exposure to each vendor's roadmap and field shapes, and a permanent two-clocks reconciliation burden between our domain and theirs.</p></div>
+      <div class="frame reverse"><span class="lbl">What would reverse it</span><p>Per rail: if economics or strategic control later justify insourcing, or if a vendor fails the ACL contract badly enough that the seam stops being worth maintaining. The ACL exists precisely to keep this reversible without a domain rewrite.</p></div>
+    </div>
+  </div>
+
+  <div class="call">
+    <div class="call-head"><span class="call-title"><span class="cn">8</span>We never touch the money</span><span class="pill settled">Settled, near-permanent</span></div>
+    <div class="call-body">
+      <div class="frame"><span class="lbl">The call</span><p>No-pooling as an architectural fact: client money never transits the platform. The internal ledger is double-entry, immutable, and bitemporal, holding record-time and effective-or-NAV-date as two separate axes so the system can always answer both what it knew and when it was true. That ledger is a reconciliation projection of RTA truth, reconciled (batch in V1, microbatch in V2) with discrepancies surfaced rather than silently overwritten. Holdings are derived from it; no rail's return becomes truth without posting through it.</p></div>
+      <div class="frame against"><span class="lbl">Chosen against</span><p>Becoming a custodian or a money-pooling entity that holds and moves client funds, which would make the platform the legal system of record and unlock direct control of money movement.</p></div>
+      <div class="frame cost"><span class="lbl">What it costs</span><p>The platform is not the source of truth for holdings; it reconciles rather than owns. Reconciliation complexity is permanent, the bitemporal model is more demanding to build and reason about than a single-clock ledger, and the platform cannot act on money directly, depending on rails for every movement.</p></div>
+      <div class="frame reverse"><span class="lbl">What would reverse it</span><p>Effectively nothing in the planned horizon. This is downstream of a custody and licensing posture the firm has chosen not to take, which is why it reads as a constraint rather than a preference. It is recorded here so the team understands it was chosen, not merely inherited.</p></div>
+    </div>
+  </div>
+
+  <div class="call">
+    <div class="call-head"><span class="call-title"><span class="cn">9</span>Four things that are not the same thing</span><span class="pill settled">Settled, non-negotiable</span></div>
+    <div class="call-body">
+      <div class="frame"><span class="lbl">The call</span><p>The person (Investor), the login (Identity), the advisory-and-attribution contract (Commercial Relationship), and the kinship-and-referral graph (Relationship graph) are modelled as four distinct entities from day one.</p></div>
+      <div class="frame against"><span class="lbl">Chosen against</span><p>Conflating any two of them, which is meaningfully cheaper and faster to build at the start and is what most platforms do.</p></div>
+      <div class="frame cost"><span class="lbl">What it costs</span><p>More modelling complexity and discipline up front: four objects and their relationships where a naive build has one or two, and more careful work on every flow that touches them.</p></div>
+      <div class="frame reverse"><span class="lbl">What would reverse it</span><p>Nothing. To see why, take one customer: she signs up and runs a self-managed SIP, so there is an Identity (her login) and an Investor (her), and no Commercial Relationship yet. She moves to Wealth and is assigned an RM, which creates a Commercial Relationship, time-bounded and attributed by EUIN and ARN. Two years on she changes RM, closing that contract and opening a new one, while she remains the same Investor on the same Identity throughout, and her spouse and child sit on the Relationship graph as nominee and family edges. One person, one login, two successive advisory contracts, three kinship edges. Collapse any two of those four and that history becomes unrepresentable. This is the single most expensive retrofit in the platform, which is why it is in this document for its cost to be understood, not so it can be reopened.</p></div>
+    </div>
+  </div>
+
+  <div class="call">
+    <div class="call-head"><span class="call-title"><span class="cn">10</span>The financial picture, on a clock we do not own</span><span class="pill cond">Settled, conditional</span></div>
+    <div class="call-body">
+      <div class="frame"><span class="lbl">The call</span><p>Onboard as an FIU and ship the consent-based held-away financial picture in V1, served by three complementary reads: the MF Central pull, the CAS pull, and the Account Aggregator rail.</p></div>
+      <div class="frame against"><span class="lbl">Chosen against</span><p>Deferring the Account Aggregator to a later phase and serving held-away through CAS and MF Central alone in V1, which an earlier version of the plan did.</p></div>
+      <div class="frame cost"><span class="lbl">What it costs</span><p>A hard dependency on Sahamati certification, the longest and least controllable clock on the critical path, and the explicit acceptance that this is the first feature cut if certification slips past go-live, so a marquee surface is built knowing it might not ship on day one.</p></div>
+      <div class="frame reverse"><span class="lbl">What would reverse it</span><p>If certification does not land by go-live, the AA read drops to a later phase without disturbing the rest of the build. The vendor-neutral AA port and the two non-AA reads keep that reversal cheap and keep a degraded version of the picture alive even if the AA read is cut.</p></div>
+    </div>
+  </div>
+
+  <!-- ===================== PHASING ===================== -->
+  <h1 class="grp">Phasing and scope</h1>
+
+  <div class="call">
+    <div class="call-head"><span class="call-title"><span class="cn">11</span>A narrow shelf, expanded on purpose</span><span class="pill settled">Settled, roadmapped</span></div>
+    <div class="call-body">
+      <div class="frame"><span class="lbl">The call</span><p>The transactable shelf is sequenced deliberately rather than launched broad: regular-plan mutual funds and SIFs first, then fixed deposits and bonds, then the RIA subscription line (call 1). Each phase proves on real customers before the next opens. The instrument schema is multi-asset-ready from day one even though the shelf is narrow at launch.</p></div>
+      <div class="frame against"><span class="lbl">Chosen against</span><p>A broad multi-asset launch matching the platform's eventual instrument philosophy, which the Blueprint describes as the full protected-asset shelf.</p></div>
+      <div class="frame cost"><span class="lbl">What it costs</span><p>A thinner launch catalogue than the vision implies, deferred revenue lines, and a visible gap between "we participate in the full protected-asset shelf" and what transacts at launch, which has to be explained rather than left to look like a contradiction.</p></div>
+      <div class="frame reverse"><span class="lbl">What would reverse it</span><p>The roadmap reverses it deliberately and incrementally. The multi-asset-ready schema is the mechanism that makes each addition cheap to execute rather than a reshape, so the sequence can compress if a phase proves out faster than expected.</p></div>
+    </div>
+  </div>
+
+  <div class="call">
+    <div class="call-head"><span class="call-title"><span class="cn">12</span>Equity is its own discipline, and it comes last</span><span class="pill settled">Settled, deliberately last</span></div>
+    <div class="call-body">
+      <div class="frame"><span class="lbl">The call</span><p>Direct equity is not the next instrument on the shelf, it is a separate phase placed after the RIA subscription line. It is an order-of-magnitude step in complexity, derivatives flows, far higher scale, real-time settlement, and a field of extremely accomplished incumbents in Zerodha, Groww, and AngelOne. It is attempted only with single-minded, well-funded focus, or not attempted at all.</p></div>
+      <div class="frame against"><span class="lbl">Chosen against</span><p>Treating equity as one more addition to the shelf alongside FDs and bonds, or launching it under-resourced to check the box, either of which would put a half-built equity product against the best execution platforms in the country.</p></div>
+      <div class="frame cost"><span class="lbl">What it costs</span><p>Deferring a large, high-frequency, high-engagement segment for years, and ceding direct-equity acquisition to the incumbents in the meantime. The cost is real precisely because equity is where a lot of the daily-active behaviour and younger-investor acquisition lives.</p></div>
+      <div class="frame reverse"><span class="lbl">What would reverse it</span><p>Only the thing the call demands: a dedicated, well-funded equity effort with its own focus and its own team. Equity is gated on that organisational and funding readiness, not on the rest of the roadmap finishing, so it moves only when it can be done at the level the competition demands, never as a side quest.</p></div>
+    </div>
+  </div>
+
+  <div class="call">
+    <div class="call-head"><span class="call-title"><span class="cn">13</span>Natural persons in V1, entities later</span><span class="pill settled">Settled, roadmapped</span></div>
+    <div class="call-body">
+      <div class="frame"><span class="lbl">The call</span><p>V1 personas are the natural persons: Resident Individual, Minor (guardian-operated), and NRI or OCI. HUF and non-individual entity personas are deferred, as they are more relevant to the Private Wealth and B2B lines than to the mass-affluent V1.</p></div>
+      <div class="frame against"><span class="lbl">Chosen against</span><p>Carrying the full persona set, including HUF and entities, in V1.</p></div>
+      <div class="frame cost"><span class="lbl">What it costs</span><p>Some wealth and B2B segments are deferred; HUF investors, who are a meaningful slice of Indian wealth, cannot be served at launch and wait for a later phase.</p></div>
+      <div class="frame reverse"><span class="lbl">What would reverse it</span><p>The Private Wealth and B2B phase brings the entity personas in. They are deferred by relevance to the V1 segment, not by difficulty, so they arrive when the line that needs them does.</p></div>
+    </div>
+  </div>
+
+  <!-- ===================== PRODUCT ===================== -->
+  <h1 class="grp">Product posture</h1>
+
+  <div class="call">
+    <div class="call-head"><span class="call-title"><span class="cn">14</span>A consumer-internet product, not a wealth-management one</span><span class="pill settled">Settled, foundational</span></div>
+    <div class="call-body">
+      <div class="frame"><span class="lbl">The call</span><p>Build an investor-first product with the craft and operational posture of consumer internet (think Myntra, Amazon, Flipkart, Groww), not the AUM-and-transaction posture most wealth-management firms default to. Concretely: equal weight to delight and to the transaction; rich discovery with real filtering, sorting, metadata, and explainability; competitive non-functional bars (latency, availability) on the KYC, transaction, and order flows; goal-indexation deeply embedded; redemption and hold nudges that respect the investor (a hold nudge when volatility is temporary); and a service model where the investor can request an inbound call for P2 and P3 issues while the RM reaches out actively on P0 and P1.</p></div>
+      <div class="frame against"><span class="lbl">Chosen against</span><p>The AUM-and-transaction product posture most Indian wealth firms have taken, where the app is a means to gather assets rather than a crafted product, and where reliability, discovery, and delight are secondary to distribution and relationship.</p></div>
+      <div class="frame cost"><span class="lbl">What it costs</span><p>Consumer-internet-grade reliability and craft are expensive to build and to hold. You pay engineering cost most wealth firms do not (hard NFR bars on the money-moving flows), design and data cost for genuine discovery and explainability, and operational cost for the proactive service model. It is a standing investment, not a one-time build.</p></div>
+      <div class="frame reverse"><span class="lbl">What would reverse it</span><p>Hard to reverse, because it is the foundational product posture rather than a feature. It would only weaken if the segment proved insensitive to product craft and bought purely on distribution and relationship, in which case the consumer-internet investment would be over-serving the market. Nothing in the thesis expects that.</p></div>
+    </div>
+  </div>
+
+  <div class="caveat"><strong>One reconciliation to hold.</strong> The redemption and hold nudges in call 14 sit directly on the MFD dissection-not-prescription boundary from call 4. A hold nudge that says "this dip looks temporary" is close to advice. These surfaces are in V1 scope, but they must be governed by the same recommendation-policing rule the intelligence calls are, so the nudge states and informs without crossing into prescription. This is the one place calls 4 and 14 must be reconciled in the PRDs rather than left to each surface.</div>
+
+</div>
+</body>
+</html>

@@ -256,23 +256,28 @@ export const TOPICS: L1Track[] = [
     ],
   },
   {
-    id: 'l3', label: 'FundsIndia 101', hours: 30, color: '#6B3FA0', accent: '#D7BDE2',
+    id: 'l3', label: 'FundsIndia 101', hours: 50, color: '#6B3FA0', accent: '#D7BDE2',
     categories: [
       {
         name: 'Domain', topics: [
           {
-            id: '3.1', title: 'FI Business Model', desc: 'B2C, B2B IFA, private wealth RM — revenue per tier', hours: 3, week: 'W9',
-            done: 'Explain FI\'s business model to a new hire in 5 minutes',
+            id: '3.1', title: 'Wealthtech Overview + FI Business Model', desc: 'India wealthtech context, SEBI/RBI structure, PMS/AIF space, and FI\'s B2C / IFA / private-wealth business model — revenue per tier', hours: 6, week: 'W9',
+            done: 'Explain both the India wealthtech landscape AND FI\'s business model to a new hire in 5 minutes',
             resources: [
               { label: 'FundsIndia — website (all product pages)', url: 'https://www.fundsindia.com/' },
               { label: 'FundsIndia — LinkedIn (recent posts)', url: 'https://www.linkedin.com/company/fundsindia/' },
               { label: 'Tracxn — FundsIndia profile', url: 'https://tracxn.com/d/companies/fundsindia/__bCcETYLf8eH0gIqLz_xByqiO-6cZQ3BVEM4_WcSXO-M' },
+              { label: 'WealthTech Primer', url: '/reading-material/A-WealthTech-Primer.html' },
+              { label: 'SEBI Survey — FundsIndia Brief', url: '/reading-material/C-sebi_survey_fundsindia_brief.html' },
+              { label: 'India Wealthtech Landscape', url: '/reading-material/B-India_wealthtech_landscape.html' },
+              { label: 'PMS & AIF Landscape (India)', url: '/reading-material/E-india_pms_aif_landscape.html' },
+              { label: 'FundsIndia Strategy Deck (high level)', url: '/reading-material/4_FundsIndia_Strategy_Deck.html' },
             ],
-            artifact: 'FI business model one-pager: 3 tiers, revenue per tier, growth lever per tier',
+            artifact: 'Two-part one-pager: (1) India wealthtech landscape — key players, regulators, PMS/AIF space; (2) FI business model — 3 tiers, revenue per tier, growth lever per tier',
           },
           {
-            id: '3.2', title: 'Competitive Landscape', desc: 'Groww, Zerodha, NJ, Prudent, Anand Rathi, IIFL Wealth', hours: 3, week: 'W9',
-            done: 'Draw a competitive positioning map with conviction',
+            id: '3.2', title: 'Competitive Landscape', desc: 'Indian competitors + global robo-UX for contrast + SEBI suitability rules + investor lifecycle view', hours: 6, week: 'W9',
+            done: 'Draw a competitive positioning map with conviction AND identify product-UX + compliance patterns',
             resources: [
               { label: 'Groww — app/website', url: 'https://groww.in/' },
               { label: 'Kuvera — goal-based investing platform', url: 'https://kuvera.in/' },
@@ -280,8 +285,13 @@ export const TOPICS: L1Track[] = [
               { label: 'Anand Rathi Wealth', url: 'https://www.anandrathiwealth.in/' },
               { label: 'IIFL Wealth', url: 'https://www.iiflwealth.com/' },
               { label: 'Crunchbase — India wealthtech', url: 'https://www.crunchbase.com/hub/india-financial-services-companies' },
+              { label: 'Wealthfront — US robo UX (for contrast)', url: 'https://www.wealthfront.com/' },
+              { label: 'Betterment — US robo UX (for contrast)', url: 'https://www.betterment.com/' },
+              { label: 'Scripbox — Indian goal-based UX', url: 'https://scripbox.com/' },
+              { label: 'SEBI — Suitability guidelines for advisers', url: 'https://www.sebi.gov.in/legal/regulations/nov-2020/securities-and-exchange-board-of-india-investment-advisers-regulations-2013-last-amended-on-november-06-2020-_48220.html' },
+              { label: 'Investor Playbook — Product View of Investor Lifecycle', url: '/reading-material/Investor-Playbook-FundsIndia-Product-View-of-Investor-Lifecycle.docx' },
             ],
-            artifact: 'Competitive 2x2 matrix: self-serve vs advised × mass market vs HNI',
+            artifact: 'Competitive 2x2 matrix (self-serve vs advised × mass vs HNI) + product-UX comparison table + compliance checklist',
           },
           {
             id: '3.3', title: 'WestBridge Thesis', desc: 'Acquisition story, AUM growth, private wealth launch, exit thesis', hours: 3, week: 'W9',
@@ -318,6 +328,18 @@ export const TOPICS: L1Track[] = [
             ],
             artifact: 'Transaction lifecycle diagram: ₹10K SIP from bank to units — every step, every system',
           },
+          {
+            id: '3.9', title: 'FI Entities (E1–E5)', desc: 'Investor, Instruments, Order, Folio, Rails — the 5 core domain nouns every downstream doc references', hours: 5, week: 'W10',
+            done: 'Draw the entity model from memory: relationships between Investor, Instruments, Order, Folio, Rails',
+            resources: [
+              { label: 'E1 — Investor', url: '/reading-material/E1-Investor.html' },
+              { label: 'E2 — Instruments', url: '/reading-material/E2-Instruments.html' },
+              { label: 'E3 — Order', url: '/reading-material/E3-Order.html' },
+              { label: 'E4 — Folio', url: '/reading-material/E4-Folio.html' },
+              { label: 'E5 — Rails', url: '/reading-material/E5-Rails.html' },
+            ],
+            artifact: 'Entity relationship diagram: all 5 entities + their relationships redrawn in your own words',
+          },
         ],
       },
       {
@@ -328,20 +350,9 @@ export const TOPICS: L1Track[] = [
             resources: [
               { label: 'Blueprint original + revised (internal)' },
               { label: 'Blueprint diff analysis (internal)' },
+              { label: 'Blueprint Executive Summary v2.1', url: '/reading-material/1.1_FundsIndia_Blueprint_Executive_Summary_v2_1.html' },
             ],
             artifact: 'Pass 1: strategy one-pager | Pass 2: entity diagram | Pass 3: 20 Day-1 questions',
-          },
-          {
-            id: '3.6', title: 'Wealth-Tech Product Sense', desc: 'Compliance as design constraint, user trust in financial products', hours: 4, week: 'W10',
-            done: 'Make product calls that don\'t get vetoed by compliance',
-            resources: [
-              { label: 'Wealthfront — US robo UX (for contrast)', url: 'https://www.wealthfront.com/' },
-              { label: 'Betterment — US robo UX (for contrast)', url: 'https://www.betterment.com/' },
-              { label: 'Scripbox — Indian goal-based UX', url: 'https://scripbox.com/' },
-              { label: 'Kuvera — Indian goal-based UX', url: 'https://kuvera.in/' },
-              { label: 'SEBI — Suitability guidelines for advisers', url: 'https://www.sebi.gov.in/legal/regulations/nov-2020/securities-and-exchange-board-of-india-investment-advisers-regulations-2013-last-amended-on-november-06-2020-_48220.html' },
-            ],
-            artifact: 'Product decision framework: compliance + trust checklist for any FI feature',
           },
           {
             id: '3.7', title: 'User Personas', desc: 'B2C investor, IFA, RM, ops — pain points, workflows, what they wish existed', hours: 3, week: 'W10',
@@ -353,6 +364,43 @@ export const TOPICS: L1Track[] = [
               { label: 'FundsIndia — LinkedIn (RM posts)', url: 'https://www.linkedin.com/company/fundsindia/' },
             ],
             artifact: 'Persona cards: 4 personas with goals, pain points, current tools, wish list',
+          },
+          {
+            id: '3.10', title: 'Investor Journeys (J0–J14)', desc: '15 end-to-end flows: onboarding, KYC, folio, mandates, orders, SIP, redemption, transmission', hours: 8, week: 'W10–11',
+            done: 'Explain how a first-time investor goes from signup to first settled order — every step, every system',
+            resources: [
+              { label: 'J0 — Journey Index', url: '/reading-material/J0-A-Journey-Index.html' },
+              { label: 'J1 — Investor Onboarding & KYC', url: '/reading-material/J1-Investor-Onboarding-and-KYC.html' },
+              { label: 'J2 — KYC Lifecycle Events', url: '/reading-material/J2-KYC-Lifecycle-Events.html' },
+              { label: 'J3 — Folio Creation', url: '/reading-material/J3-Folio-Creation.html' },
+              { label: 'J4 — Nomination Capture & Update', url: '/reading-material/J4-Nomination-Capture-and-Update.html' },
+              { label: 'J5 — Mandate Registration', url: '/reading-material/J5-Mandate-Registration.html' },
+              { label: 'J6 — Order Lifecycle Spine', url: '/reading-material/J6-Order-Lifecycle-Spine.html' },
+              { label: 'J7 — Onboard → First Settled Order', url: '/reading-material/J7-Onboard-to-First-Settled-Order.html' },
+              { label: 'J8 — Systematic Investment Plan', url: '/reading-material/J8-Systematic-Investment-Plan.html' },
+              { label: 'J9 — Redemption', url: '/reading-material/J9-Redemption.html' },
+              { label: 'J10 — Switch & STP', url: '/reading-material/J10-Switch-and-STP.html' },
+              { label: 'J11 — Systematic Withdrawal Plan', url: '/reading-material/J11-Systematic-Withdrawal-Plan.html' },
+              { label: 'J12 — Transmission', url: '/reading-material/J12-Transmission.html' },
+              { label: 'J13 — Financial Picture Aggregation', url: '/reading-material/J13-Financial-Picture-Aggregation.html' },
+              { label: 'J14 — V1 Journey Flowcharts (rendered)', url: '/reading-material/J14-FundsIndia-V1-Journey-Flowcharts-RENDERED.html' },
+            ],
+            artifact: 'Journey map: 15 flows summarised — happy path + top 2 edge cases per flow',
+          },
+          {
+            id: '3.11', title: 'V1 Build Strategy & Open Decisions', desc: 'The Key Calls, lock list, build strategy, block map, tech strategy view, open decisions register', hours: 5, week: 'W10–11',
+            done: 'Know what FI is building in V1, what\'s locked, what\'s still open — questions ready for Day 1',
+            resources: [
+              { label: 'V1-0 — The Key Calls', url: '/reading-material/V1-0-FundsIndia_The_Key_Calls_V1.html' },
+              { label: 'V1-1 — Stage 0 Lock List', url: '/reading-material/V1-1-FundsIndia_V1_Stage0_LockList.html' },
+              { label: 'V1-2 — Build Strategy', url: '/reading-material/V1-2-FundsIndia_V1_Build_Strategy_v2_1.html' },
+              { label: 'V1-3 — Big Block Map', url: '/reading-material/V1-3-FundsIndia-V1-Big-Block-Map-v2.html' },
+              { label: 'V1-4 — Documentation Index', url: '/reading-material/V1-4-FundsIndia_V1_Documentation_Index.html' },
+              { label: 'V1-5 — Technical Strategy View', url: '/reading-material/V1-5-FundsIndia-V1-Technical-Strategy-View.html' },
+              { label: 'V1-6 — Technical Architecture View', url: '/reading-material/V1-6-FundsIndia-V1-Technical-Architecture-View.html' },
+              { label: 'V1-8 — Open Decisions Register', url: '/reading-material/V1-8-Open-Decisions-Register-v0_16.html' },
+            ],
+            artifact: 'V1 open-decisions one-pager: your take on 3–5 decisions ready to discuss with Avijit',
           },
         ],
       },
@@ -621,9 +669,15 @@ export const WEEKS: Week[] = [
   },
   {
     week: 'W10',
-    weekday: 'Blueprint Passes 2 & 3 (3.4) + Tech Stack & Vendors (3.5) + Transaction Lifecycle (3.8)',
-    weekend: 'Wealth-Tech Product Sense (3.6) + User Personas (3.7)',
-    artifacts: 'FI entity diagram, 20 Day-1 questions for Avijit, Build vs buy map, Transaction lifecycle diagram, Persona cards, Product decision framework',
+    weekday: 'Blueprint Passes 2 & 3 (3.4) + Tech Stack & Vendors (3.5) + Transaction Lifecycle (3.8) + FI Entities E1–E5 (3.9)',
+    weekend: 'User Personas (3.7) + V1 Build Strategy start (3.11)',
+    artifacts: 'FI entity diagram, 20 Day-1 questions for Avijit, Build vs buy map, Transaction lifecycle diagram, Entity relationship diagram, Persona cards, V1 open-decisions notes',
+  },
+  {
+    week: 'W11',
+    weekday: 'Investor Journeys J0–J14 (3.10)',
+    weekend: 'V1 Build Strategy complete (3.11)',
+    artifacts: 'Journey map — 15 flows summarised, V1 open-decisions one-pager ready for Day 1',
   },
 ];
 

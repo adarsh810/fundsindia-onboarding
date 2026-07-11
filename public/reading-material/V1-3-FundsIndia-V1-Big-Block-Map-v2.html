@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FundsIndia V1: The Big-Block Map (v2)</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--teal-line:#bfe0db;--red:#9d2f2f;--red-soft:#f8e7e3;--red-line:#e8c4bc;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1040px;margin:0 auto;padding:56px 56px 92px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+
+.cover{border-bottom:3px solid var(--accent);padding-bottom:30px;margin-bottom:24px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.45rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.12rem;color:var(--muted);font-weight:400;margin:0 0 24px;max-width:760px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:22px 44px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.92rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+
+p{margin:12px 0;}
+strong{font-weight:700;color:var(--ink);}
+
+.callout{border-radius:8px;padding:16px 20px;margin:18px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;font-size:.94rem;}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.persona{border-left-color:var(--accent-dark);background:#f3eefa;}
+.callout.persona .ck{color:var(--accent-dark);}
+.callout ul{margin:6px 0 4px;padding-left:20px;}
+.callout li{margin:5px 0;font-size:.93rem;}
+
+.legend{display:flex;flex-wrap:wrap;gap:10px 18px;margin:22px 0 4px;font-size:.82rem;color:var(--muted);align-items:center;}
+.legend .ll{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--soft-muted);margin-right:2px;}
+.legend span.k{display:inline-flex;align-items:center;gap:7px;}
+.swatch{width:13px;height:13px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.08);}
+.sw-home{background:var(--accent-soft);border-color:var(--accent-line);}
+.sw-sens{background:var(--red-soft);border-color:var(--red-line);}
+.sw-seam{background:var(--teal-soft);border-color:var(--teal-line);}
+.sw-rail{background:var(--amber-soft);border-color:var(--amber-line);}
+.sw-cross{background:#efeae2;border-color:var(--line-strong);}
+
+.band{margin:30px 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--paper);}
+.band-head{padding:13px 20px;background:var(--accent-soft);border-bottom:1px solid var(--accent-line);}
+.band-layer{font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--accent);}
+.band-name{font-size:1.14rem;font-weight:700;color:var(--accent-dark);margin:1px 0 0;}
+.band-note{font-size:.86rem;color:var(--muted);margin:3px 0 0;}
+.band-commentary{padding:16px 20px 0;font-size:.92rem;color:#43404a;line-height:1.58;}
+.band-commentary .lead-tag{font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:5px;}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:14px;padding:16px 20px 22px;}
+
+.card{border:1px solid var(--line);border-left:4px solid var(--accent-line);border-radius:9px;padding:13px 15px;background:var(--cream);}
+.card .ct{font-weight:700;color:var(--accent-dark);font-size:.99rem;line-height:1.25;}
+.card .cd{font-size:.84rem;color:var(--muted);margin-top:5px;line-height:1.5;}
+.card .tag{display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:20px;margin-top:9px;}
+.card.home{border-left-color:var(--accent);}
+.card.home .tag{background:var(--accent-soft);color:var(--accent-dark);}
+.card.sens{border-left-color:var(--red);background:var(--red-soft);}
+.card.sens .tag{background:#fff;color:var(--red);border:1px solid var(--red-line);}
+.card.seam{border-left-color:var(--teal);background:var(--teal-soft);}
+.card.seam .tag{background:#fff;color:var(--teal);border:1px solid var(--teal-line);}
+.card.rail{border-left-color:var(--amber);background:var(--amber-soft);}
+.card.rail .tag{background:#fff;color:var(--amber);border:1px solid var(--amber-line);}
+.card.cross{border-left-color:var(--soft-muted);background:#f4f1ea;}
+.card.cross .tag{background:#fff;color:var(--soft-muted);border:1px solid var(--line-strong);}
+.card .note{font-size:.76rem;color:var(--soft-muted);font-style:italic;margin-top:8px;display:block;}
+
+.band.deferred{background:#f4f2ed;border-style:dashed;border-color:var(--line-strong);}
+.band.deferred .band-head{background:#ece8df;border-bottom-color:var(--line-strong);}
+.band.deferred .band-layer{color:var(--soft-muted);}
+.band.deferred .band-name{color:var(--muted);}
+.defer-rows{padding:16px 20px 20px;}
+.defer-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 10px;margin:9px 0;}
+.defer-when{font-size:.68rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:3px 10px;border-radius:6px;min-width:74px;text-align:center;}
+.defer-items{font-size:.88rem;color:var(--muted);flex:1;min-width:240px;}
+
+.footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+
+@media print{
+  @page{size:A4 landscape;margin:14mm 12mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .band-head,.callout,.card.sens,.card.seam,.card.rail,.card.cross,.defer-when{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .band,.callout{page-break-inside:avoid;}
+}
+@media(max-width:760px){.wrap{padding:34px 20px 56px;}h1.title{font-size:1.95rem;}.cards{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.cards{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; V1 Scope Map &middot; v2</p>
+  <h1 class="title">FundsIndia V1: The Big-Block Map</h1>
+  <p class="subtitle">The load-bearing build blocks of V1, grouped by architectural layer, with per-layer commentary, as a single grounding surface for competitive research. This is the block map, not the pillar-and-phase skeleton.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>Working draft v2 for grounding</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>New Platform leadership</b></div>
+    <div><span class="label">Type</span><b>Scope map (not a PRD)</b></div>
+    <div><span class="label">Segment</span><b>Mass affluent, Tier 2, MFD</b></div>
+  </div>
+</header>
+
+<div class="callout verify">
+  <p class="ck">How to read this, and what it supersedes</p>
+  <p>This map reflects the live working decisions as of this session. It deliberately departs from the now-stale Build Strategy and Blueprint on three points, reconciled in a single later pass: portfolio review is <strong>dissection plus a separate allocation-guidance block</strong> rather than an "Ideal Portfolio recommendation"; <strong>Fixed Deposits move to V1.5/V2</strong>; <strong>Account Aggregator is in V1</strong>. Bands are stacked experience-to-substrate; the order is architectural, not a build sequence. v2 adds the persona-scope marker, a Servicing block, the cost-basis deferral, and per-layer commentary.</p>
+</div>
+
+<div class="callout persona">
+  <p class="ck">V1 persona scope, the governing boundary</p>
+  <p>V1 serves <strong>natural personas only</strong>: Resident Individual, NRI, OCI, and Minor (guardian-operated), with <strong>Joint as a holding-mode overlay</strong> rather than a persona. Foreign National resident is recommended out of the initial set, pending confirmation. <strong>HUF and the non-individual entities are deferred to the Private Wealth phase.</strong> NRI is not just an onboarding branch: it threads TDS, FATCA, and repatriability through Transactions, Catalog, and the Ledger.</p>
+</div>
+
+<div class="callout principle">
+  <p class="ck">Five constraints that shape every block below</p>
+  <ul>
+    <li><strong>Goal is the organising lens.</strong> Holdings are a view under goals, not a peer container.</li>
+    <li><strong>Signals are capture and internal-read only in V1.</strong> No investor-facing read, no action or write-back.</li>
+    <li><strong>Dissection surfaces state, never judge.</strong> "Stock is 8% of equity", not "too much weightage".</li>
+    <li><strong>Allocation guidance is MFD-incidental.</strong> The MFD-RIA boundary is under live SEBI review, so it is built for the conservative case and passes a strict Compliance gate.</li>
+    <li><strong>The experience layer is throughput-bound to two UI devs</strong> through all of V1.</li>
+  </ul>
+</div>
+
+<div class="legend">
+  <span class="ll">Block type</span>
+  <span class="k"><span class="swatch sw-home"></span>Entity home / substrate</span>
+  <span class="k"><span class="swatch sw-sens"></span>Compliance-sensitive surface</span>
+  <span class="k"><span class="swatch sw-seam"></span>Intelligence seam</span>
+  <span class="k"><span class="swatch sw-rail"></span>Integration / rail</span>
+  <span class="k"><span class="swatch sw-cross"></span>Cross-cutting platform</span>
+</div>
+
+<!-- BAND 1 -->
+<section class="band">
+  <div class="band-head">
+    <div class="band-layer">Layer 1</div>
+    <div class="band-name">Investor Experience</div>
+    <div class="band-note">The surfaces the investor touches.</div>
+  </div>
+  <div class="band-commentary">
+    <span class="lead-tag">Commentary</span>
+    The thinnest layer by headcount and the most constrained. Three surfaces, one web codebase and one Flutter codebase covering both mobile platforms, each fronted by its own BFF so the experience can evolve independently of the services beneath it. The two-UI-dev ceiling is the single hardest constraint on V1 sequencing: experience work cannot be parallelised the way the nine-strong backend can, so the plan bends around it rather than wishing it away. For competitive research the sharper question is not which screens a rival has, but how much of the goal lens actually reaches the surface, because most platforms bolt goals on as a tab rather than making them the home.
+  </div>
+  <div class="cards">
+    <div class="card">
+      <div class="ct">Experience Surfaces</div>
+      <div class="cd">Web portal, plus iOS and Android via Flutter, each fronted by its own BFF.</div>
+      <span class="note">Throughput-bound to two UI devs through all of V1.</span>
+    </div>
+  </div>
+</section>
+
+<!-- BAND 2 -->
+<section class="band">
+  <div class="band-head">
+    <div class="band-layer">Layer 2</div>
+    <div class="band-name">Goal-Led Product</div>
+    <div class="band-note">The V1 investor proposition, organised around the goal.</div>
+  </div>
+  <div class="band-commentary">
+    <span class="lead-tag">Commentary</span>
+    The differentiating layer, and the one carrying the load-bearing bet. Goal is not a feature here; it is the organising entity, with a full lifecycle of creation, articulation, modification, and a fulfillment moment, and holdings rendered as a view beneath it. The allocation-guidance block is the bridge that makes the goal actionable for a mass-affluent user who needs help getting from intent to instrument, and it is also the most compliance-loaded surface in V1, which is why it sits inside the MFD-incidental envelope and clears the Compliance gate. The thing to watch competitively is goal-adoption depth: not whether a rival has goals, but whether users personalise and fund them, because that is the variable the whole thesis rests on.
+  </div>
+  <div class="cards">
+    <div class="card home">
+      <div class="ct">Goals</div>
+      <div class="cd">The primary, mandatory entity and the organising lens, with a full lifecycle: creation, articulation, modification, fulfillment. Holdings hang under goals; a default goal is auto-created so no one is blocked.</div>
+      <span class="tag">Entity home</span>
+    </div>
+    <div class="card sens">
+      <div class="ct">Goal Allocation Guidance + What-if Calculator</div>
+      <div class="cd">Research-driven, cohortised allocation guidance with genuine alternatives, paired with a what-if calculator. The bridge from goal to instrument.</div>
+      <span class="tag">Compliance-sensitive</span>
+      <span class="note">MFD-incidental, not advice-for-fee. Compliance-gated.</span>
+    </div>
+    <div class="card home">
+      <div class="ct">Investor Account ("My Account")</div>
+      <div class="cd">The Investor entity home: profile, identity metadata, preferences, and linked mandates and holdings carried as projections.</div>
+      <span class="tag">Entity home</span>
+    </div>
+    <div class="card">
+      <div class="ct">Identity &amp; KYC Journey</div>
+      <div class="cd">KYC, Re-KYC, Check-KYC, and the periodic re-check logic. Identity verification, distinct from authentication.</div>
+      <span class="note">HyperVerge as the identity rail.</span>
+    </div>
+    <div class="card">
+      <div class="ct">Referral</div>
+      <div class="cd">Existing-investor referral, built on the relationship graph and the event spine.</div>
+    </div>
+    <div class="card">
+      <div class="ct">Financial Picture (Account Aggregator)</div>
+      <div class="cd">MFD-generic financial-picture aggregation via AA, consent-bound, with indicative and clearly disclaimed tax treatment.</div>
+    </div>
+  </div>
+</section>
+
+<!-- BAND 3 -->
+<section class="band">
+  <div class="band-head">
+    <div class="band-layer">Layer 3</div>
+    <div class="band-name">Catalog, Transact, Portfolio &amp; Servicing</div>
+    <div class="band-note">Finding an instrument, moving money, seeing what you hold, and keeping the account current.</div>
+  </div>
+  <div class="band-commentary">
+    <span class="lead-tag">Commentary</span>
+    The transactional spine of the investor's day, plus the long tail that earns trust. The catalog is the strongly-typed home that carries type, classification and tax tagging from day one. Discovery is deliberately split: objective browse, filter and sort is safe, while the governed ranking console is where business intervention is allowed but supervised. Transactions own the Order entity and route through the rails. Portfolio is dissection only, stating facts and never prescribing, with benchmark comparison disclaimed and category-appropriate. Servicing and account-lifecycle flows live here too, and they carry several of the decisions still open with Legal and Compliance. Competitive research should look hard at how rivals handle the servicing long tail, since most under-invest there and it is precisely where trust is won or lost.
+  </div>
+  <div class="cards">
+    <div class="card home">
+      <div class="ct">Instrument Catalog</div>
+      <div class="cd">The strongly-typed instrument home: scheme, AMC, type, classification, tenure, commission, exit load, and tax tagging.</div>
+      <span class="tag">Entity home</span>
+    </div>
+    <div class="card sens">
+      <div class="ct">Discovery (Governed)</div>
+      <div class="cd">Goal-anchored browse, filter and sort, plus a governed business-intervention ranking console. Browse is safe; curated merchandising carries weight.</div>
+      <span class="tag">Compliance-sensitive</span>
+    </div>
+    <div class="card home">
+      <div class="ct">Transactions &amp; Order Management</div>
+      <div class="cd">The Order entity home: purchase, redeem, switch, SIP and SWP, routed through the rails.</div>
+      <span class="tag">Entity home</span>
+    </div>
+    <div class="card home">
+      <div class="ct">Mandates</div>
+      <div class="cd">Mandate registry and execution: e-mandate and autopay setup, lifecycle, and linkage to recurring orders.</div>
+      <span class="tag">Entity home</span>
+      <span class="note">Registry sits with the investor; execution with the order.</span>
+    </div>
+    <div class="card sens">
+      <div class="ct">Folio &amp; Portfolio Dissection</div>
+      <div class="cd">The Folio home, carrying ownership modes, repatriability and nomination, with the portfolio view under goals. Deterministic decomposition only: holdings, value, XIRR, overlap, sectoral, concentration, cap split, benchmark with disclaimer.</div>
+      <span class="tag">Compliance-sensitive</span>
+      <span class="note">States, never judges or prescribes.</span>
+    </div>
+    <div class="card home">
+      <div class="ct">Servicing &amp; Account Lifecycle</div>
+      <div class="cd">Post-onboarding lifecycle: periodic re-KYC, attaining majority, residency change, nomination management, transmission on death, and heir claim.</div>
+      <span class="tag">Entity home</span>
+      <span class="note">Carries open decisions still with Legal and Compliance.</span>
+    </div>
+  </div>
+</section>
+
+<!-- BAND 4 -->
+<section class="band">
+  <div class="band-head">
+    <div class="band-layer">Layer 4</div>
+    <div class="band-name">Canonical Substrate</div>
+    <div class="band-note">The invisible core everything else depends on.</div>
+  </div>
+  <div class="band-commentary">
+    <span class="lead-tag">Commentary</span>
+    The unglamorous core that earns its place in retrospect. One canonical entity model, an immutable event spine that everything downstream derives from, and a double-entry bitemporal ledger that is a reconciliation projection of RTA truth rather than a replacement for it. The relationship substrate sits here because the commercial-relationship and nominee-and-family graphs are V1 even though the RM-facing surface is not; in V1 they ingest to the legacy CRM. This layer is invisible to the customer and is exactly what most competitors did not build, which is why they cannot answer arbitrary questions about past state or reconcile cleanly. It is the moat that never shows up in a feature comparison.
+  </div>
+  <div class="cards">
+    <div class="card home">
+      <div class="ct">Domain Entity Model</div>
+      <div class="cd">The homes for Investor, Instrument, Order, Folio, Goal, Mandate, and the Commercial Relationship, on one canonical model.</div>
+      <span class="tag">Substrate</span>
+    </div>
+    <div class="card home">
+      <div class="ct">Domain Event Spine</div>
+      <div class="cd">The canonical, immutable spine of domain and transactional events. Everything downstream derives from it.</div>
+      <span class="tag">Substrate</span>
+    </div>
+    <div class="card home">
+      <div class="ct">Canonical Ledger + Reconciliation</div>
+      <div class="cd">Double-entry, bitemporal ledger as a reconciliation projection of RTA truth, never a replacement. Batch reconciliation in V1.</div>
+      <span class="tag">Substrate</span>
+    </div>
+    <div class="card home">
+      <div class="ct">Relationship Substrate</div>
+      <div class="cd">The Commercial Relationship entity for attribution, plus the nominee and inferred family graph, modelled as two distinct things. Ingested to the legacy CRM in V1.</div>
+      <span class="tag">Substrate</span>
+    </div>
+  </div>
+</section>
+
+<!-- BAND 5 -->
+<section class="band">
+  <div class="band-head">
+    <div class="band-layer">Layer 5</div>
+    <div class="band-name">Intelligence Seam</div>
+    <div class="band-note">Thin in V1: the seam the future engine plugs into, built so it never needs a retrofit.</div>
+  </div>
+  <div class="band-commentary">
+    <span class="lead-tag">Commentary</span>
+    Thin on purpose. Two planes: a behavioural clickstream plane kept separate from the domain event spine, and the signal-capture substrate built against a constraint-spec so V1 modelling decisions are testable against what the future engine will need. The discipline is the four-flow boundary: capture and internal read are on, investor-facing read and any actioning are off. This is the seam, not the engine. The only reason it is in V1 is that the entity and event shape the engine will reason over is expensive to retrofit, so the cheap thing is to get the shape right and capture the signals now, and the expensive thing is deferred. Capture carries a consent and purpose-limitation shadow even when nothing surfaces, which is why it leans on the consent ledger below.
+  </div>
+  <div class="cards">
+    <div class="card seam">
+      <div class="ct">Clickstream / Behavioural Plane</div>
+      <div class="cd">A separate behavioural-analytics plane for clickstream events, distinct from the domain event spine.</div>
+      <span class="tag">Intelligence seam</span>
+    </div>
+    <div class="card seam">
+      <div class="ct">Thin Intelligence Substrate</div>
+      <div class="cd">Signal definition and capture against a thin constraint-spec that makes V1 modelling decisions testable.</div>
+      <span class="tag">Intelligence seam</span>
+      <span class="note">Capture and internal-read on; investor-facing read and action off.</span>
+    </div>
+  </div>
+</section>
+
+<!-- BAND 6 -->
+<section class="band">
+  <div class="band-head">
+    <div class="band-layer">Layer 6</div>
+    <div class="band-name">Integration &amp; Rails</div>
+    <div class="band-note">Every third party behind the anti-corruption layer. Rail-agnostic, vendor-neutral.</div>
+  </div>
+  <div class="band-commentary">
+    <span class="lead-tag">Commentary</span>
+    Every third party behind one anti-corruption layer, one adapter per domain, so the core never takes a vendor's shape even when a single vendor spans two domains. FP/Cybrilla with Razorpay carries the MF and payment path, HyperVerge the identity path, and an AA rail the financial picture, all left vendor-neutral in the governing docs because the market moves and naming implies endorsement. A platform constraint shapes this whole layer: under the MFD posture the platform never pools client money, so money moves through the rails while the platform reconciles rather than holds. Competitively the rail choices are table stakes; the real differentiator is the ACL discipline that keeps the core swappable when a rail changes.
+  </div>
+  <div class="cards">
+    <div class="card rail">
+      <div class="ct">Anti-Corruption Layer</div>
+      <div class="cd">One adapter per domain. The core never depends on a vendor's shape, even when a single vendor spans two domains.</div>
+      <span class="tag">Integration</span>
+    </div>
+    <div class="card rail">
+      <div class="ct">Transaction Rail</div>
+      <div class="cd">FP/Cybrilla middleware with Razorpay as the payment provider, via the RTA gateway path.</div>
+      <span class="tag">Rail</span>
+    </div>
+    <div class="card rail">
+      <div class="ct">Identity Rail</div>
+      <div class="cd">HyperVerge for identity verification, kept separate from the transaction rail.</div>
+      <span class="tag">Rail</span>
+    </div>
+    <div class="card rail">
+      <div class="ct">Account Aggregator Rail</div>
+      <div class="cd">AA connectivity for the financial picture, left vendor-neutral in the governing docs.</div>
+      <span class="tag">Rail</span>
+    </div>
+  </div>
+</section>
+
+<!-- BAND 7 -->
+<section class="band">
+  <div class="band-head">
+    <div class="band-layer">Layer 7</div>
+    <div class="band-name">Cross-Cutting Platform</div>
+    <div class="band-note">Spans every layer above. Built from day one, not bolted on.</div>
+  </div>
+  <div class="band-commentary">
+    <span class="lead-tag">Commentary</span>
+    Spans every layer and is built from day one rather than bolted on. The compliance and identity infrastructure is the part no vendor provides and the part most easily underestimated: authentication and access control, the consent ledger, PII tokenisation, and DPDP rights tooling, all of which the signal-capture work depends on for its lawful basis. MarTech is instrumentation and hooks only; running campaigns is a growth function, not a platform block, and is covered by the experienced dev and PM. The reason this layer is cross-cutting rather than a phase is that retrofitting consent and access control after the fact is how platforms acquire their most expensive debt.
+  </div>
+  <div class="cards">
+    <div class="card cross">
+      <div class="ct">Compliance &amp; Identity Infrastructure</div>
+      <div class="cd">AuthN and AuthZ, session and device binding, RBAC and ABAC, the consent ledger, PII tokenisation, and DPDP rights tooling.</div>
+      <span class="tag">Cross-cutting</span>
+      <span class="note">No vendor provides this; it is a core build.</span>
+    </div>
+    <div class="card cross">
+      <div class="ct">MarTech Instrumentation</div>
+      <div class="cd">Attribution, deep links, ASO metadata, and ad-platform hooks for Meta, Google and LinkedIn.</div>
+      <span class="tag">Cross-cutting</span>
+      <span class="note">Instrumentation only; campaign execution is a growth function.</span>
+    </div>
+    <div class="card cross">
+      <div class="ct">Observability &amp; Ops</div>
+      <div class="cd">Observability, reconciliation tooling, and ops and DR, independent of any vendor.</div>
+      <span class="tag">Cross-cutting</span>
+    </div>
+  </div>
+</section>
+
+<!-- DEFERRED -->
+<section class="band deferred">
+  <div class="band-head">
+    <div class="band-layer">Out of V1</div>
+    <div class="band-name">Deferred, named so the seams are shaped right</div>
+    <div class="band-note">Held with explicit triggers, not forgotten. The substrate above is built so these slot in without rework.</div>
+  </div>
+  <div class="band-commentary">
+    <span class="lead-tag">Commentary</span>
+    Naming the deferred set precisely is what lets the team say no with confidence now. The substrate above is shaped so each of these slots in without a rewrite: the AMC modelled as an entity so an in-house AMC is clean later, the event spine carrying what the intelligence engine will need, the rails behind an ACL so a new rail is an adapter not a rebuild. The cost-basis and capital-gains-statement work is out of V1 by decision and reconstructable later via the shared entry ID.
+  </div>
+  <div class="defer-rows">
+    <div class="defer-row">
+      <span class="defer-when">V1.5</span>
+      <span class="defer-items">BSE StAR MF direct rail &middot; Fixed Deposits &middot; bonds and OBPP &middot; NPS as a transactable instrument (contingent on the POP model) &middot; multi-AA gateway (Finarkein or Setu) behind the AA port.</span>
+    </div>
+    <div class="defer-row">
+      <span class="defer-when">V2</span>
+      <span class="defer-items">PMS and AIF &middot; Voice intelligence (transcribe, summarise) &middot; RM and IFA workstation and the new CRM surface &middot; microbatch reconciliation &middot; capital-gains statement and cost-basis lot accounting.</span>
+    </div>
+    <div class="defer-row">
+      <span class="defer-when">Post-V1</span>
+      <span class="defer-items">Intelligence and recommendation engine &middot; agentic surfaces &middot; richer experience builds and an added UI hire &middot; direct equities and ETFs &middot; HUF and entity personas (Private Wealth).</span>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  <p>FundsIndia New Platform &middot; V1 big-block map v2 for competitive-research grounding. Compliance-sensitive blocks are subject to the strict Compliance gate and a later copy pass. Next artifact: the regenerated pillar-and-phase skeleton, drawn against this corrected scope.</p>
+</div>
+
+</div>
+</body>
+</html>

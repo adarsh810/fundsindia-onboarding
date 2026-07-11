@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J5: Mandate Registration</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Journey Layer</p>
+  <h1 class="title">J5: Mandate Registration</h1>
+  <p class="subtitle">How the recurring-debit instruction comes into existence: a standing instruction captured against a bank account, authenticated once, and registered with the rail so a plan can be debited many times within a ceiling. The mandate J8's SIP depends on, registered before any instalment moves.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.1: Decision-surfacing draft</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Journey document (not a reference, not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>The governing view of <strong>how a payment mandate is registered</strong>. A mandate is a standing instruction the investor sets up once, on a bank account, with a per-debit ceiling and a validity window, that lets the collecting party debit on schedule. It is the entity a recurring plan leans on: a SIP cannot run until a live mandate backs it. J5 draws how that instruction is captured, authenticated, and registered with the rail, and how it resolves to a live mandate or a rejection. It draws on Order for the mandate machinery and on Rails for the eNACH, NACH, and UPI Autopay rails at the level of which party acts.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a reference and not a PRD. It does not restate the mandate facets, it sequences them. It is <strong>not the debit</strong>: what happens when a registered mandate is debited cycle after cycle, the pre-debit notification before each instalment, and the handling of a single failed instalment, is the plan lifecycle that <strong>J8 owns</strong>. J5 stops at a live mandate. Per the settled D4 the firm supports <strong>both eNACH and UPI Autopay</strong> and keeps default amounts within the enhanced no-authentication ceiling. This is a decision-surfacing pass: it draws the skeleton to expose the decisions registration forces, then surfaces them.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong, where the default intuition is likely to mislead.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a point the firm must actively design around, where a registered mandate can be wrong, stuck, or unintended.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not yet settled, or one turning on a decision still open in the register; each names its owner.</p></div>
+  <p>State names are shown in <span class="mono">monospace</span> when they refer to a specific lifecycle state the Order reference owns. The altitude follows the draw-or-bullet test: a fork that reroutes the path is drawn, a captured value or an added check is bulleted. The fast-moving thresholds in this document were reconfirmed against the RBI e-mandate framework in force in mid-2026 before drawing.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">The spine</a></li>
+    <li><a href="#s2">Decision points</a></li>
+    <li><a href="#s3">Failure taxonomy</a></li>
+    <li><a href="#s4">Special cases</a></li>
+    <li><a href="#s5">Entities and states exercised</a></li>
+    <li><a href="#s6">Decisions surfaced</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1"><span class="num">1.</span>The spine</h2>
+<p class="lead">A mandate is created once and debited many times, so its registration is a setup journey, not a money journey: no funds move while a mandate is being registered. The spine starts with the intent to set up a recurring debit, captures the instruction and its ceiling, takes the one-time authentication the rail requires, and registers it. It ends when the rail confirms the mandate is live and debitable. A registration that the bank or the rail declines lands in a rejected terminal, drawn here and detailed in Section 3.</p>
+<pre class="mermaid">
+flowchart TD
+  A([Recurring debit intent, rail and bank account and ceiling and validity]) --> B[Capture to Created, instruction and ceiling expressed]
+  B --> C[One-time additional-factor authentication]
+  C --> D[Authenticated, the one-time factor is complete]
+  D --> E{Registered with the rail by NPCI or the bank}
+  E -->|accepted| F([Active, debitable within ceiling and validity])
+  E -->|declined or unverified| X1([Rejected, registration did not complete])
+</pre>
+<p>Three things in this spine carry weight. The authentication is a one-time event at setup, not a per-debit one: once the mandate is <span class="mono">Active</span>, debits within the ceiling proceed automatically, which is the whole point of a mandate. The ceiling captured at the start is the maximum per-debit value the mandate is registered for, not the instalment amount, a distinction Section 2 returns to because getting it wrong is a common and costly error. And the <span class="mono">Rejected</span> terminal is now a first-class state in the Order reference, added at v0.2 while this journey was drawn, as Section 5 records.</p>
+
+<h3>Who acts at each step</h3>
+<table>
+  <thead><tr><th>Step</th><th>Acting party (by role)</th><th>What the firm does</th></tr></thead>
+  <tbody>
+    <tr><td>Capture the mandate</td><td>The firm.</td><td>Captures the rail, the bank account, the per-debit ceiling, and the validity. Nothing is registered yet and no money is touched.</td></tr>
+    <tr><td>Authenticate</td><td>The investor, through the bank or NPCI.</td><td>Completes the one-time additional-factor authentication that registration requires. The firm initiates and relays; it does not authenticate on the investor's behalf.</td></tr>
+    <tr><td>Register and go <span class="mono">Active</span></td><td>NPCI, or the bank, on the relevant rail.</td><td>Registers the mandate and confirms it is debitable. The firm reflects the live mandate and reconciles against the rail; it is not the system of record for the mandate, and the money it later moves never rests with the firm.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: registration sets the lock, it does not pull the funds</p>
+  <p>The mandate registration is the one-time act of setting a lock between the investor's bank account and the collecting party. Once the lock is set, smaller debits pass through automatically and only a change to the lock or a debit above the ceiling needs the factor again. J5 is the setting of the lock. Every later pull against it, and the notification and failure handling around each pull, belongs to J8.</p>
+</div>
+
+<h2 id="s2"><span class="num">2.</span>Decision points</h2>
+<p>Two genuine forks, both settled in <strong>D4</strong>: which rail carries the mandate, and what ceiling it is registered for. Both are applied here as decisions already taken, drawn so the branches are explicit.</p>
+
+<h3>The mandate rail (D4)</h3>
+<p>The firm supports two recurring-debit rails, and the investor's setup runs on one of them. Both are NPCI rails; they differ in how the standing instruction is anchored, on the bank account for eNACH, on the UPI identity for UPI Autopay.</p>
+<pre class="mermaid">
+flowchart TD
+  P[Recurring debit needed for a plan] --> Q{Mandate rail}
+  Q -->|eNACH or NACH| M1[Standing instruction on the bank account<br/>the SIP workhorse, anchored to the account]
+  Q -->|UPI Autopay| M2[UPI-native recurring mandate<br/>anchored to the UPI identity]
+</pre>
+<p>The choice is the investor's, offered at setup, and D4 settles that both are supported rather than the firm picking one. eNACH is the established SIP workhorse and handles the bulk of recurring debits; UPI Autopay is the faster-to-register, UPI-native path. NACH, the older paper-or-bank-led mandate, is mechanically the predecessor and behaves the same way from the plan's point of view. The rail is fixed at registration and travels with the mandate.</p>
+
+<h3>The ceiling and the authentication threshold (D4)</h3>
+<p>A mandate is registered for a maximum per-debit value, and the recurring-debit rules set where automatic debiting stops and per-cycle authentication begins. The thresholds below were reconfirmed against the RBI e-mandate framework in force in mid-2026.</p>
+<table>
+  <thead><tr><th>Per-debit band</th><th>Authentication each cycle</th><th>Consequence for setup</th></tr></thead>
+  <tbody>
+    <tr><td>Up to &#8377;15,000</td><td>None. Automatic debit after the one-time registration.</td><td>The general no-authentication band for any recurring debit.</td></tr>
+    <tr><td>Above &#8377;15,000 and up to &#8377;1,00,000, for a mutual fund subscription</td><td>None. Automatic debit within this enhanced band.</td><td>The band V1 keeps default SIP amounts and mandate ceilings inside, so the common case needs no per-cycle factor.</td></tr>
+    <tr><td>Above &#8377;1,00,000</td><td>An additional factor on every debit cycle.</td><td>A large SIP becomes a materially different experience, with the investor authenticating each instalment. Flagged at setup.</td></tr>
+  </tbody>
+</table>
+<div class="callout">
+  <p class="ck">Special attention: the mandate ceiling is not the SIP amount</p>
+  <p>A mandate is registered for a ceiling, and the plan debits some amount at or below it. Registering the ceiling equal to the current instalment is a common error, because it forces a brand-new mandate, and a fresh authentication, the moment the investor steps the SIP up by a rupee. The recommended setup registers a headroom ceiling above the intended instalment, kept within the &#8377;1 lakh enhanced band, so step-ups inside that headroom need no re-registration. The exact default headroom is a Product detail the PRD sets; the principle is fixed here.</p>
+</div>
+
+<h2 id="s3"><span class="num">3.</span>Failure taxonomy</h2>
+<p>Mandate registration breaks in a small number of clean ways, and all of them share one property: a registration failure stops a plan from going live but moves no money, because no debit has been attempted yet. The terminal for the hard failures is the <span class="mono">Rejected</span> state drawn in the spine.</p>
+<table>
+  <thead><tr><th>How it breaks</th><th>Cause</th><th>Where it lands, and recovery</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Bank or rail decline</strong></td><td>The bank or NPCI declines the mandate at registration, for an account-side reason such as account type, status, or a bank-level restriction on the rail.</td><td>Lands <span class="mono">Rejected</span>. Re-attempt on a corrected account or, where supported, the alternative rail.</td></tr>
+    <tr><td><strong>Invalid or unverified account</strong></td><td>An account-number or name-to-account mismatch, or an account not enabled for e-mandate, that the verification step catches.</td><td>Lands <span class="mono">Rejected</span> at verification. Correct the account detail and re-submit.</td></tr>
+    <tr><td><strong>Authentication not completed</strong></td><td>The investor abandons or fails the one-time additional-factor authentication, so the mandate never leaves <span class="mono">Created</span>.</td><td>Sits short of <span class="mono">Authenticated</span>. Prompt the investor to complete the factor; the setup lapses if it is not finished within its window.</td></tr>
+    <tr><td><strong>Stuck pending past the window</strong></td><td>The rail returns no confirmation within the registration window, leaving the mandate neither <span class="mono">Active</span> nor cleanly declined.</td><td>Times out to a rejected or expired terminal. Re-initiate registration; do not leave a half-registered mandate that a plan might attach to.</td></tr>
+  </tbody>
+</table>
+<div class="callout flag">
+  <p class="ck">Red flag: a mandate rejection is not an instalment failure</p>
+  <p>These two are easy to conflate and need different handling. A <strong>mandate rejection</strong> is a setup failure: the standing instruction could not be registered, so the plan cannot start, and the fix is to re-register. A <strong>failed instalment</strong> is a debit-time event on an already-live mandate, handled by the plan lifecycle in J8, where the open question of how many failures pause a plan (D9) lives. J5 owns the first and must not absorb the second; designing one recovery path for both blurs a real boundary.</p>
+</div>
+
+<h2 id="s4"><span class="num">4.</span>Special cases</h2>
+<p>Variants that change a value or add a check without rerouting the registration spine. Listed, never drawn.</p>
+<ul class="tight">
+  <li><strong>One-time mandate versus recurring.</strong> J5 owns the mandate entity in both its forms: the recurring mandate that backs a plan, and the one-time mandate, a single scheduled debit registered as a standing instruction. What J5 does <strong>not</strong> own is an immediate one-time payment with no registered instruction, a direct UPI or netbanking pull for a lump-sum purchase, which is the money leg of the order in J6. The line is whether an instruction is registered to be debited later, which is J5, or money is pulled now, which is J6. This boundary is stated as an assumption and is a candidate register row, noted in Section 6.</li>
+  <li><strong>A pending mandate an order attaches to before it is live.</strong> A plan or order can be captured against a mandate that is still in registration, so the order is held and activates when the mandate reaches <span class="mono">Active</span>, or is unwound if the mandate is <span class="mono">Rejected</span>. The exact state in which an order may attach, <span class="mono">Created</span>, <span class="mono">Authenticated</span>, or only once <span class="mono">Active</span>, is not settled and is surfaced as a new decision in Section 6.</li>
+  <li><strong>The headroom ceiling.</strong> The mandate is registered for a per-debit ceiling above the intended instalment, within the &#8377;1 lakh enhanced band, so a later step-up inside that headroom needs no fresh registration. A step-up above the registered ceiling does need a new mandate and a fresh authentication.</li>
+  <li><strong>A large SIP above the enhanced band.</strong> An instalment above &#8377;1,00,000 requires an additional factor on every debit cycle, so the setup must flag the recurring-authentication experience rather than present it as a set-and-forget mandate.</li>
+  <li><strong>Mandate continuity on account or card reissue.</strong> The framework carries a mandate over when the underlying card is reissued, so the firm reflects the continued mandate and does not force a re-registration for that reason alone.</li>
+  <li><strong>Skip a single debit.</strong> The mandatory pre-debit notification lets the investor skip one scheduled debit without cancelling the mandate. This is a property of the registered mandate that J5 sets up, but the skip itself is exercised per instalment in J8.</li>
+  <li><strong>Bank-level ceiling and rail variance (D31).</strong> Not every bank supports the full enhanced ceiling or every rail, so the ceiling and the rail set offered at setup may be narrowed by the specific bank. J5 draws rail-agnostic; the bank-level variance is a parallel banking-partner confirmation, carried as D31.</li>
+</ul>
+
+<h2 id="s5"><span class="num">5.</span>Entities and states exercised</h2>
+<p>The references J5 draws on, and the one terminal it needed that the Order reference did not previously carry. Per the precedence rule J5 invents no state; it sequences the ones the Order reference owns, and the one gap it found was closed in the reference itself rather than absorbed here.</p>
+<table>
+  <thead><tr><th>Reference</th><th>What J5 exercises</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Order</strong></td><td>The mandate as a stateful entity distinct from the plan and the order, through <span class="mono">Created</span>, <span class="mono">Authenticated</span>, and <span class="mono">Active</span>; the per-debit ceiling and the rule that it is not the instalment amount; and the recurring-debit machinery, the one-time authentication at registration and the enhanced threshold for mutual fund subscriptions.</td></tr>
+    <tr><td><strong>Rails</strong></td><td>NPCI as the owner of UPI Autopay and of NACH and eNACH; the firm's relationship to the money leg as initiate-and-track, never hold; and the no-pooling constraint that keeps the firm out of the flow of funds whichever rail carries the debit.</td></tr>
+    <tr><td><strong>Investor</strong></td><td>By reference: the bank account the mandate is anchored to and its account class, since a mandate is set up on a bank account, and the operating authority that determines who may set up a mandate on a jointly operated account.</td></tr>
+    <tr><td><strong>Order (plan and transaction)</strong></td><td>By reference: the plan that the mandate backs and whose instalments debit against it, owned by J8; J5 produces the mandate the plan requires and stops there.</td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Resolved: a state added to the Order reference, not left as a flag</p>
+  <p>The Order reference mandate lifecycle previously ran <span class="mono">Created</span>, <span class="mono">Authenticated</span>, <span class="mono">Active</span>, <span class="mono">Paused or On-hold</span>, and <span class="mono">Cancelled or Expired</span>, with no terminal for a registration the bank or rail <strong>declines</strong>. J5's failure taxonomy needs that terminal, so rather than carry it as a flag the way the Allotted sub-state J6 raised remains carried, the <span class="mono">Rejected</span> state was added directly to the Order reference at v0.2, as a first-class registration-time terminal distinct from <span class="mono">Cancelled or Expired</span>. The distinction is deliberate: a declined registration is an uncontested completeness gap, where the Allotted provisional-versus-confirmed split is a genuine modelling decision that stays with the architect. The related modelling seam, the cardinality between a mandate and the plans it backs, was not settled by edit; it is surfaced as register row D44 for Engineering, since it is a design choice rather than a missing terminal.</p>
+</div>
+
+<h2 id="s6"><span class="num">6.</span>Decisions surfaced</h2>
+<p>The decisions J5 applies, brushes, or adds, routed to owners and written back to the register.</p>
+<table>
+  <thead><tr><th>#</th><th>Decision and what J5 needs</th><th>Owner</th><th>Status after J5</th></tr></thead>
+  <tbody>
+    <tr><td>D4</td><td>Mandate rail and the authentication threshold, the decision J5 rests on. Applied as settled: both eNACH and UPI Autopay supported, default amounts and ceilings kept within the &#8377;1 lakh enhanced no-authentication band, instalments above it flagged as needing a factor each cycle. Thresholds reconfirmed against the mid-2026 framework.</td><td>Banking / Compliance</td><td>Applied.</td></tr>
+    <tr><td>D31</td><td>Bank-level UPI and e-mandate caps. Brushed: J5 draws rail-agnostic and notes that the offered ceiling and rail set may be narrowed by the specific bank's support.</td><td>Banking</td><td>Brushed; confirm bank-level support with the banking partner.</td></tr>
+    <tr><td>D9</td><td>SIP pause-on-failure. Noted as out of J5's scope: it governs a failed instalment on a live mandate, not registration. Left to J8.</td><td>Product</td><td>Out of scope here; J8 owns it.</td></tr>
+    <tr><td><strong>D43</strong> <span class="bkt core" style="margin-left:4px;">new</span></td><td>The order-to-mandate attachment state. In what state may an order or plan attach to a mandate still in registration, <span class="mono">Created</span>, <span class="mono">Authenticated</span>, or only once <span class="mono">Active</span>, and how is an attached order unwound if the mandate is <span class="mono">Rejected</span>.</td><td>Internal / Engineering</td><td>New row, to define with Engineering.</td></tr>
+    <tr><td><strong>D44</strong> <span class="bkt core" style="margin-left:4px;">new</span></td><td>The mandate-to-plan cardinality and the one-time-versus-registered boundary. Whether one registered mandate may back several plans or is one-to-one, and confirmation that an immediate one-time direct payment is J6's money leg rather than a J5 mandate.</td><td>Internal / Engineering</td><td>New row, to define with Engineering.</td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Open: what hardens J5</p>
+  <p>J5 is drawn against a settled D4, so its decision points are stable. The reference gap it found is already closed: the <span class="mono">Rejected</span> registration terminal is now first-class in the Order reference at v0.2. What still moves J5 from decision-surfacing to governing is the two new rows D43 and D44 closing on the attachment state and the mandate-to-plan cardinality and one-time boundary, and the banking partner confirming bank-level rail and ceiling support under D31. None of these blocks J8 from being drawn next against this mandate; they refine the registration journey rather than gate the plan that depends on it.</p>
+</div>
+
+<div class="footer">
+  <p><strong>Document control.</strong> J5: Mandate Registration. Version v0.1, decision-surfacing draft, June 2026. The fifth journey document and the second of Wave 2, drawing how a recurring-debit mandate is captured, authenticated once, and registered with the rail so a plan can be debited within a ceiling, ending at a live mandate. Applies D4 as settled, brushes the bank-level caps (D31), leaves the failed-instalment policy (D9) to J8, and adds two rows, the order-to-mandate attachment state (D43) and the mandate-to-plan cardinality and one-time boundary (D44). Closed one reference gap by direct edit rather than a flag: a first-class <span class="mono">Rejected</span> registration terminal was added to the Order reference at v0.2, distinct from <span class="mono">Cancelled or Expired</span>. Draws on Order for the mandate machinery and Rails for the rail-party mapping; depends on the bank account from the Investor reference; hands the live mandate to J8, which owns the plan that debits against it. The recurring-debit thresholds it builds to, the &#8377;15,000 general and &#8377;1,00,000 mutual-fund no-authentication bands, the one-time authentication at registration, and the mandatory pre-debit notification, were reconfirmed against the RBI Digital Payments E-mandate Framework, 2026, in force in mid-2026. Not a reference and not a PRD.</p>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  try {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      themeVariables: {
+        fontFamily: "'Source Sans 3', sans-serif",
+        primaryColor: '#efe9f7',
+        primaryBorderColor: '#6a4a9c',
+        primaryTextColor: '#26222e',
+        lineColor: '#6a4a9c',
+        secondaryColor: '#fbf2dd',
+        tertiaryColor: '#fffdf8',
+        fontSize: '15px'
+      }
+    });
+  } catch (e) { /* if the CDN is unreachable, the Mermaid source remains legible as text */ }
+</script>
+</body>
+</html>

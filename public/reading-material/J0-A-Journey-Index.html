@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Journey Index: Orienting Artefact</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Journey Layer</p>
+  <h1 class="title">The Journey Index</h1>
+  <p class="subtitle">The orienting artefact for the journey layer: the catalogue of end-to-end journeys, sequenced by readiness, the template every journey document follows, and the decisions the drafting must surface. The map that sits between the entity references and the PRDs.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.3: All 13 journeys drawn; J13 moved into V1, cert-gated</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Orienting index (not a journey, not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>The index and drafting guide for the <strong>journey layer</strong>. Where the five entity references describe what things are and what states they can be in, the journey documents will describe how an investor actually moves through the platform: the canonical sequence of steps, the points where the path branches, and the ways it fails. This artefact does not draw any of those journeys. It catalogues them, decides the order to draft them in by mapping each to the open decisions blocking it, fixes the template every journey document will share, and gathers the decisions that drafting will force into the open. It is the analogue, for the journey layer, of the document index that earlier mapped the references and PRDs.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a journey. No flow is drawn to completion here; the two small diagrams are a structural illustration and a template specimen, not journeys. Not a PRD and not a build plan. And not a fixed contract: the sequence and readiness below are a starting position that the first drafts will revise as they surface what is genuinely blocked.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks a point about the journey layer that is easy to get wrong or that governs how the documents are drafted.</p></div>
+  <div class="callout principle"><p class="ck">Key principle</p><p>Marks a load-bearing rule that every journey document must hold to.</p></div>
+  <p>Readiness is shown as <span class="bkt core">High</span> ready to draft as governing now, <span class="bkt fac">Medium</span> draftable but will surface or wait on a decision, <span class="bkt ref">Low</span> blocked or deferred to a later phase.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#p1">Part I: Where the journey layer sits</a></li>
+    <li><a href="#p2">Part II: The journey catalogue</a></li>
+    <li><a href="#p3">Part III: The drafting sequence</a></li>
+    <li><a href="#p4">Part IV: The journey-document template</a></li>
+    <li><a href="#p5">Part V: The decisions to surface and close</a></li>
+  </ol>
+</nav>
+
+<div class="part-band" id="p1"><div class="pk">Part I</div><div class="pt">Where the journey layer sits</div></div>
+
+<h2><span class="num">1.</span>The three layers</h2>
+<p class="lead">The journey layer is the connective tissue between the static entity model and the buildable feature specs. The references define the nouns and their states. The PRDs define what one feature must do. The journeys, in between, define how a whole flow runs end to end, which is exactly what neither neighbour captures on its own.</p>
+<pre class="mermaid">
+flowchart LR
+  R["References<br/>entity and state ontology"] --> J["Journeys<br/>governing end-to-end flows"]
+  J --> P["PRDs<br/>buildable feature specs"]
+</pre>
+<p>The arrows are decomposition. A PRD decomposes a slice of a journey into something the team can build; a journey draws on the entities and states the references own. The flow of authority runs the other way for ontology and the same way for sequence, which the next two principles make precise.</p>
+
+<div class="callout principle">
+  <p class="ck">Key principle: the precedence rule</p>
+  <p>The reference owns the entity and its states. The journey owns the sequence and the transitions between those states. Neither silently overrides the other. When a journey needs a state or a transition the reference does not carry, that is a signal to update the reference, not to invent the state inside the journey and let the two drift. The journey is where gaps in the ontology are discovered; the reference is where they are fixed.</p>
+</div>
+
+<h2><span class="num">2.</span>The altitude every journey holds to</h2>
+<p>A journey document is a <strong>governing view</strong>, not an exhaustive one. It draws three things and bullets a fourth. Getting this altitude right is what keeps the layer useful rather than a sprawl of flowcharts that go stale before the team arrives and over-constrain the product-engineers once they do.</p>
+<ul class="tight">
+  <li><strong>The canonical spine</strong>, drawn. The happy path from start to finish, as a single clear flow.</li>
+  <li><strong>The decision-point branches</strong>, drawn. Where the path genuinely forks, a persona that takes a different route, a rail that changes the steps, the decision and its branches are part of the spine.</li>
+  <li><strong>The failure taxonomy</strong>, drawn or tabled. The canonical ways the journey breaks and how each is handled, because the exception paths are where the build is judged.</li>
+  <li><strong>The special cases</strong>, bulleted. The rare, within-path edge conditions that change a value or add a check but not the sequence. These are listed as text, never drawn.</li>
+</ul>
+<div class="callout">
+  <p class="ck">Special attention: the draw-or-bullet test</p>
+  <p>The line between a decision-point branch and a special case is the single judgment that keeps a journey document at the right altitude. The test: if it changes the path or the order of steps, draw it; if it only changes a value or adds a check on an existing step, bullet it. A persona divergence that reroutes the flow is a branch and belongs in the diagram. A rare condition that just adds a verification on a step already drawn is a special case and belongs in a bullet. Applied honestly, this keeps persona and rail divergence visible while killing the combinatorial sprawl.</p>
+</div>
+
+<h2><span class="num">3.</span>Draft to surface decisions first, govern second</h2>
+<p>A drawn flow is a commitment to specific branches, and several of those branches depend on decisions still open in the reference registers. A journey cannot be governing while it rests on an unmade decision, because that bakes in exactly the rework the reference discipline was built to avoid. So the first pass of each journey is a decision-extraction tool. It draws the skeleton, lets the skeleton expose precisely which decisions it forces, and sends those to the business. Only once those are closed does the flow harden into something the team builds against. Pass one finds the questions; a later pass becomes the contract. Part V collects the questions the catalogue can already see coming.</p>
+
+<div class="part-band" id="p2"><div class="pk">Part II</div><div class="pt">The journey catalogue</div></div>
+<p class="lead" style="margin-top:18px;">Every journey in scope, grouped into four families, keyed by the verb rather than the entity. Scope marks whether a journey lives mostly within one entity or threads several. The references column names the entity documents each journey draws on.</p>
+
+<h3>A. Onboarding and identity</h3>
+<table>
+  <thead><tr><th>Journey</th><th>Scope</th><th>Draws on</th><th>What it covers</th></tr></thead>
+  <tbody>
+    <tr><td><strong>J1. Investor onboarding and KYC</strong></td><td>Cross-entity (light)</td><td>Investor, Rails</td><td>The front door. Capture, KYC modality, and status resolution, with persona branches for Resident Individual, NRI, OCI, Minor, Joint, HUF, and non-individual entities, ending at a transactable identity.</td></tr>
+    <tr><td><strong>J2. KYC lifecycle events</strong></td><td>Entity-local (Investor)</td><td>Investor, Rails</td><td>Periodic re-KYC, Minor Attaining Majority, and residency change, each moving an existing identity between states.</td></tr>
+  </tbody>
+</table>
+
+<h3>B. Account and instruction setup</h3>
+<table>
+  <thead><tr><th>Journey</th><th>Scope</th><th>Draws on</th><th>What it covers</th></tr></thead>
+  <tbody>
+    <tr><td><strong>J3. Folio creation</strong></td><td>Entity-local (Folio)</td><td>Folio, Rails</td><td>Opening the container, the SOA versus demat fork, ownership mode, and the repatriability tag, often bundled with the first purchase.</td></tr>
+    <tr><td><strong>J4. Nomination capture and update</strong></td><td>Entity-local (Folio)</td><td>Folio</td><td>Registering or changing the nominee, against a nomination framework currently in regulatory flux.</td></tr>
+    <tr><td><strong>J5. Mandate registration</strong></td><td>Cross-entity</td><td>Order, Rails</td><td>Setting up the eNACH or UPI autopay standing instruction that funds recurring purchases, with its own authentication and lifecycle.</td></tr>
+  </tbody>
+</table>
+
+<h3>C. Transacting</h3>
+<table>
+  <thead><tr><th>Journey</th><th>Scope</th><th>Draws on</th><th>What it covers</th></tr></thead>
+  <tbody>
+    <tr><td><strong>J6. The order lifecycle spine</strong></td><td>Entity-local (Order)</td><td>Order, Rails</td><td>The shared sub-journey every transaction instantiates: Placed to Routed to Acknowledged to Allotted to Settled, with the Failed and Reversed exits. The most reused flow in the platform.</td></tr>
+    <tr><td><strong>J7. Onboard to first settled order</strong></td><td>Cross-entity (all)</td><td>Investor, Folio, Order, Instrument, Rails</td><td>The marquee end-to-end: a new investor from KYC through folio creation through a first lumpsum purchase to a settled holding. The day-one north star that threads every entity.</td></tr>
+    <tr><td><strong>J8. SIP setup and instalment lifecycle</strong></td><td>Cross-entity</td><td>Order, Folio, Rails</td><td>The standing plan that spawns child instalment orders, each running the order spine, funded by a mandate, with pause-on-failure behaviour.</td></tr>
+    <tr><td><strong>J9. Redemption</strong></td><td>Cross-entity</td><td>Order, Folio, Investor, Rails</td><td>Money out: the unencumbered-units check, the order spine in the redemption direction, TDS at source for some personas, and payout to the registered bank.</td></tr>
+    <tr><td><strong>J10. Switch and STP</strong></td><td>Entity-local (Order, heavy)</td><td>Order, Folio</td><td>The two-leg sell-then-buy instruction and its recurring form, where the buy leg waits on the sell leg settling.</td></tr>
+    <tr><td><strong>J11. SWP</strong></td><td>Cross-entity (light)</td><td>Order, Folio</td><td>Recurring redemption: the withdrawal-side standing plan, needing available units rather than a payment mandate.</td></tr>
+  </tbody>
+</table>
+
+<h3>D. Servicing and lifecycle</h3>
+<table>
+  <thead><tr><th>Journey</th><th>Scope</th><th>Draws on</th><th>What it covers</th></tr></thead>
+  <tbody>
+    <tr><td><strong>J12. Transmission</strong></td><td>Entity-local (Folio)</td><td>Folio, Investor</td><td>Passing a holding on death, by holding type: joint survivorship, single with nominee, no-nomination legal heir, HUF devolution, and entity persistence. A defining relationship moment.</td></tr>
+    <tr><td><strong>J13. Financial-picture aggregation</strong></td><td>Cross-entity</td><td>Rails, Folio, Investor</td><td>The consent-based held-away view behind a "Your Financial Picture" feature, drawing cross-institution data through the Account Aggregator rail. In V1, gated on Sahamati certification timing; the designated drop-if-slips element.</td></tr>
+  </tbody>
+</table>
+<div class="callout">
+  <p class="ck">Special attention: failure handling is not its own journey</p>
+  <p>There is deliberately no standalone "failure and reversal" journey. Per the altitude rule, failure is the third thing each journey draws for itself: every journey carries its own failure taxonomy, because how a redemption fails is not how onboarding fails. A single cross-cutting failure flow would either be too abstract to govern or would duplicate what each journey already owns. The order spine, J6, is the one shared exception, since its Failed and Reversed exits are inherited wholesale by every transaction that instantiates it.</p>
+</div>
+
+<div class="part-band" id="p3"><div class="pk">Part III</div><div class="pt">The drafting sequence</div></div>
+<p style="margin-top:18px;">The order to draft in, set by readiness against the open decisions and by how much each journey is reused. Three waves before and around the team joining in August, all thirteen journeys now drawn. This is a starting position, not a fixed plan; the first drafts will move things as they surface what is blocked.</p>
+
+<div class="callout principle">
+  <p class="ck">State of play, June 2026 (v0.3 status pass)</p>
+  <p>All thirteen journeys are drawn: J6, J7, and J1 (Wave 1); J3, J5, J8, and J9 (Wave 2); and J10, J4, J11, J2, J12, and J13 (Wave 3). J13 (financial-picture aggregation) has moved into V1 following the Account Aggregator decision; it is drawn, gated on Sahamati certification timing, and is the designated drop-if-slips element rather than a deferred journey. The decisions this part anticipated have largely closed or surfaced: the four Tier 1 decisions are taken (D1 rail and money path, D2 Validated for NRI and OCI, D3 SOA-only, D4 both mandate rails within the enhanced ceiling), the pause-on-failure policy is surfaced as D9 with a proposed default awaiting Product, and the full standing log now lives in the Open Decisions Register (v0.9, forty-five decisions). The wave tables below carry per-journey status notes; their original readiness reasoning is kept for the record.</p>
+</div>
+
+<h3>Wave 1: the north star and the most-reused spine</h3>
+<table>
+  <thead><tr><th>Order</th><th>Journey</th><th>Readiness</th><th>Why first, and what it surfaces</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>J6. Order lifecycle spine</td><td><span class="bkt core">High</span></td><td><strong>Drawn.</strong> Most reused and least blocked; every transaction journey instantiates it. It raised the holding-visibility and freshness rows (D36, D37) and the Allotted provisional-versus-confirmed sub-state flag still carried on the Order reference.</td></tr>
+    <tr><td>2</td><td>J7. Onboard to first settled order</td><td><span class="bkt fac">Medium</span></td><td><strong>Drawn.</strong> The marquee north star that threads every entity. It surfaced the order-routing and payment-rail choice, since settled as D1: FP middleware with Razorpay, keeping the firm out of the flow of funds by design.</td></tr>
+    <tr><td>3</td><td>J1. Investor onboarding and KYC</td><td><span class="bkt fac">Medium</span></td><td><strong>Drawn.</strong> The front half of J7 in depth. It grounded the lapsed Registered-status position (D2: Validated required, the relaxation lapsed 30 April 2026 with no successor), set the V1 persona scope to natural personas (D41), and deferred UBO-tracing with the entity personas (D19).</td></tr>
+  </tbody>
+</table>
+
+<h3>Wave 2: the recurring and money-out flows, as decisions close</h3>
+<table>
+  <thead><tr><th>Order</th><th>Journey</th><th>Readiness</th><th>Why here, and what it waits on</th></tr></thead>
+  <tbody>
+    <tr><td>4</td><td>J5. Mandate registration</td><td><span class="bkt fac">Medium</span></td><td><strong>Drawn.</strong> Prerequisite for J8, drawn against the settled D4: both eNACH and UPI Autopay, ceilings within the enhanced no-authentication band. Added the attachment-state and cardinality rows (D43, D44) and the Rejected mandate terminal to the Order reference.</td></tr>
+    <tr><td>5</td><td>J8. SIP setup and instalment lifecycle</td><td><span class="bkt fac">Medium</span></td><td><strong>Drawn.</strong> The highest-volume recurring flow, built on J5 and J6. It surfaced the pause-on-failure policy as D9 with a proposed three-consecutive-failures default awaiting Product, and exercised D43 and D44, whose recommended positions held.</td></tr>
+    <tr><td>6</td><td>J3. Folio creation</td><td><span class="bkt core">High</span></td><td><strong>Drawn.</strong> D3 applied as SOA-only, so the container has no demat fork in V1. It owns folio-creation timing (D38, fused as the marquee) and added the folio-reuse matching rule (D42). At v0.2 after the nominee-count correction.</td></tr>
+    <tr><td>7</td><td>J9. Redemption</td><td><span class="bkt fac">Medium</span></td><td><strong>Drawn.</strong> The money-out flow, with the residential-status TDS fork and repatriability routing drawn as the signature decision point. It added the NRI pre-trade net-visibility row (D45), rooted in the cost-basis-out-of-V1 decision.</td></tr>
+  </tbody>
+</table>
+
+<h3>Wave 3: the remaining transaction and servicing flows</h3>
+<table>
+  <thead><tr><th>Order</th><th>Journey</th><th>Readiness</th><th>Why here</th></tr></thead>
+  <tbody>
+    <tr><td>8</td><td>J10. Switch and STP</td><td><span class="bkt fac">Medium</span></td><td><strong>Drawn.</strong> The sell-drives-buy dependency drawn, with the gap between legs as the red flag. It surfaced the STP correction applied to the Order reference (v0.3, no payment mandate on the STP), and the cross-AMC convenience flow is decided out of V1 scope.</td></tr>
+    <tr><td>9</td><td>J4. Nomination capture and update</td><td><span class="bkt fac">Medium</span></td><td>Held until the SEBI nomination consultation resolves, or drawn deliberately flexible to absorb either outcome.</td></tr>
+    <tr><td>10</td><td>J11. SWP</td><td><span class="bkt fac">Medium</span></td><td>The withdrawal-side mirror of J8, lighter because it needs no mandate.</td></tr>
+    <tr><td>11</td><td>J2. KYC lifecycle events</td><td><span class="bkt fac">Medium</span></td><td>MAM is ready; residency change carries its own opens.</td></tr>
+    <tr><td>12</td><td>J12. Transmission</td><td><span class="bkt fac">Medium</span></td><td>A relationship-critical flow; waits on the nominee-versus-heir precedence question with Legal.</td></tr>
+  </tbody>
+</table>
+
+<h3>In V1, gated on certification</h3>
+<table>
+  <thead><tr><th>Order</th><th>Journey</th><th>Status</th><th>Dependency</th></tr></thead>
+  <tbody>
+    <tr><td>13</td><td>J13. Financial-picture aggregation</td><td><span class="bkt ref">In V1, gated</span></td><td>Moved into V1 following the Account Aggregator decision, and drawn. Gated on Sahamati certification timing, and the designated drop-if-slips element if certification does not land by go-live. Downstream of the core transactional flows being in place.</td></tr>
+  </tbody>
+</table>
+
+<div class="part-band" id="p4"><div class="pk">Part IV</div><div class="pt">The journey-document template</div></div>
+<p style="margin-top:18px;">Every journey document follows the same shape, so they read as a set and so the altitude holds by construction. Six sections, in this order.</p>
+<table>
+  <thead><tr><th>Section</th><th>What it holds</th></tr></thead>
+  <tbody>
+    <tr><td><strong>1. The spine</strong></td><td>The canonical happy path, drawn as a single flow. The start state, the end state, and the steps between.</td></tr>
+    <tr><td><strong>2. Decision points</strong></td><td>Each genuine fork in the spine: the decision, the rule that decides it, and the branches. Drawn into or beside the spine.</td></tr>
+    <tr><td><strong>3. Failure taxonomy</strong></td><td>The canonical ways the journey breaks and how each is handled, mapped to the terminal states the relevant reference owns.</td></tr>
+    <tr><td><strong>4. Special cases</strong></td><td>The bulleted tail: rare, within-path conditions that change a value or add a check, never the sequence.</td></tr>
+    <tr><td><strong>5. Entities and states exercised</strong></td><td>The references this journey draws on, and any state or transition it implies that a reference does not yet carry, flagged for propagation back per the precedence rule.</td></tr>
+    <tr><td><strong>6. Decisions surfaced</strong></td><td>The open decisions this journey's drafting forced into the open, each routed to an owner, feeding the register in Part V.</td></tr>
+  </tbody>
+</table>
+
+<h3>The notation</h3>
+<p>Journey spines are drawn in <strong>Mermaid</strong>, embedded in the same HTML house style as everything else. The choice is deliberate: Mermaid source is plain text, so a journey document is diff-able and version-controllable as it evolves with the team, and the diagram lives next to the prose that explains it rather than in a separate tool. A visual tool is fine for a presentation, but the source of truth stays here. The specimen below is the skeleton of J6, the order spine, drawn at the governing altitude: the happy path, the decision-driven exits, and nothing more.</p>
+<pre class="mermaid">
+flowchart TD
+  A([Placed]) -->|pre-flight pass| B[RoutedToRail]
+  A -->|pre-flight fail| F([Failed])
+  B -->|rail accepts; money initiated| C[Acknowledged]
+  B -->|payment or rail failure| F
+  C -->|AMC or RTA accepts| D[Allotted]
+  C -->|rejection| F
+  D -->|money and units reconciled| S([Settled])
+  D -->|dishonour or error| R([Reversed])
+</pre>
+<p>That is the whole altitude in one picture. The persona and rail branches would attach as decision points, the rejection causes would be enumerated in the failure taxonomy, and a rarity like a partial allotment would be a bulleted special case. The diagram never tries to hold all of it.</p>
+
+<div class="part-band" id="p5"><div class="pk">Part V</div><div class="pt">The decisions to surface and close</div></div>
+<p style="margin-top:18px;">The open decisions the catalogue could see the journeys depending on at v0.1, gathered so they could be closed with the business rather than discovered mid-draft. <strong>This list is now superseded by the Open Decisions Register</strong> (v0.9, forty-five decisions across three tiers), which is the standing log the journeys surface into and harden against; the table below is kept as the original anticipation for the record. Of the decisions it anticipated, the four Tier 1 calls are taken and the pause-on-failure policy is surfaced as D9, awaiting Product.</p>
+<table>
+  <thead><tr><th>#</th><th>Decision</th><th>Blocks</th><th>Owner</th><th>Traces to</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Order-routing and payment-rail choice (RTA-direct, exchange platform, or unified utility, and the money path that meets no-pooling)</td><td>J7, J5, J8, J9</td><td>Internal / Compliance</td><td>Rails register 1, 2</td></tr>
+    <tr><td>2</td><td>NRI and OCI Registered-status position, now that the relaxation has lapsed</td><td>J1, J9</td><td>Compliance / KRA</td><td>Investor open; Rails register 3</td></tr>
+    <tr><td>3</td><td>Operative nomination rule (nominee count and mandatory fields, pending the SEBI consultation)</td><td>J4, J1</td><td>Compliance</td><td>Folio register 1</td></tr>
+    <tr><td>4</td><td>Mandate-rail choice and the above-threshold authentication handling</td><td>J5, J8</td><td>Banking / Compliance</td><td>Order register; Rails register 2</td></tr>
+    <tr><td>5</td><td>SIP pause-on-failure policy and instalment retry behaviour</td><td>J8</td><td>Product</td><td>Order (systematic plans)</td></tr>
+    <tr><td>6</td><td>Demat-held mutual fund scope, SOA-only first or demat from the start</td><td>J3, J7</td><td>Internal</td><td>Folio register 3; Rails register 5</td></tr>
+    <tr><td>7</td><td>Nominee-versus-survivor-versus-heir precedence handling</td><td>J12</td><td>Legal</td><td>Folio register 4</td></tr>
+    <tr><td>8</td><td>UBO-tracing depth and the non-individual entity onboarding set</td><td>J1</td><td>Compliance</td><td>Investor (entity personas)</td></tr>
+    <tr><td>9</td><td>Account Aggregator integration scope and timing</td><td>J13</td><td>Internal / Compliance</td><td>Rails register 7</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: this register is the point of the artefact</p>
+  <p>The catalogue and the sequence are useful, but the work that turns the journey layer from drawing into governing is closing these decisions. The ones blocking Wave 1, the rail choice and the Registered-status position, are the ones to take to the business now, before or alongside drawing J7. Everything else can be drawn decision-surfacing and hardened as its row clears.</p>
+</div>
+
+<div class="footer">
+  <p><strong>Document control.</strong> The Journey Index. Version v0.3, status pass, June 2026. This pass records all thirteen journeys as drawn and moves J13 into V1 (the Account Aggregator is now in V1; J13 is cert-gated on Sahamati timing and is the designated drop-if-slips element). The orienting artefact for the journey layer that sits between the five entity references (Investor, Instrument, Order, Folio, Rails) and the PRDs. Catalogues thirteen journeys across four families, sequences them into three drafting waves with all thirteen now drawn, and fixes the six-section journey-document template and the Mermaid notation. The v0.3 pass records the state of play: all thirteen journeys drawn, with J13 moved into V1 (gated on Sahamati certification timing) following the Account Aggregator decision; the wave tables carry per-journey status notes, and the Part V decision list is superseded by the Open Decisions Register (v0.9), now the standing log. Not a journey and not a PRD. Journeys are keyed by verb, drawn at a governing altitude of spine, decision points, and failure taxonomy with special cases bulleted, and harden from decision-surfacing drafts into governing documents as the register clears. The reference owns entity and state; the journey owns sequence and transition.</p>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  try {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      themeVariables: {
+        fontFamily: "'Source Sans 3', sans-serif",
+        primaryColor: '#efe9f7',
+        primaryBorderColor: '#6a4a9c',
+        primaryTextColor: '#26222e',
+        lineColor: '#6a4a9c',
+        secondaryColor: '#fbf2dd',
+        tertiaryColor: '#fffdf8',
+        fontSize: '15px'
+      }
+    });
+  } catch (e) { /* if the CDN is unreachable, the Mermaid source remains legible as text */ }
+</script>
+</body>
+</html>

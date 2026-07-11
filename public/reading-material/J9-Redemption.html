@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J9: Redemption</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Journey Layer</p>
+  <h1 class="title">J9: Redemption</h1>
+  <p class="subtitle">The money-out flow in depth: the redemption branch of the order spine drawn fully, gated by unencumbered units and lock-in, reduced by exit load, and tailed by a payout that a single attribute, residential status, forks into a withheld-at-source obligation for an NRI and a clean payout for a resident.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.1: Decision-surfacing draft</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Journey document (not a reference, not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>The governing view of <strong>how a redemption runs</strong>. A redemption is a sale of units back to the fund at the applicable NAV, money out, one scheme, and unlike a purchase it needs no payment mandate. J9 draws the pre-flight gates that money-out alone carries, unencumbered units, lock-in, and the exit-load haircut, the spine through to a payout measured in working days after the NAV, and the persona fork the Investor reference calls a fork in the payout rather than a footnote: an NRI or OCI redemption is withheld at source while a resident's is not, with proceeds routed by repatriability to an NRE or NRO account. It draws on Order for the redemption lifecycle, Folio for encumbrance and repatriability, and Investor for the TDS overlay.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a reference and not a PRD. It is the <strong>one-scheme, one-time</strong> money-out flow. The recurring money-out, the SWP, is J11 and reuses this spine on a schedule; the two-scheme money-out, the switch and STP, is J10 and carries a buy leg driven off this sell leg. Both are out of scope here. It brushes D2, the requirement that an NRI or OCI be Validated to transact, applied as settled. One architectural boundary shapes the payout and is surfaced here: because cost-basis lot accounting is out of V1, the platform reflects the gain and the TDS the AMC and RTA compute rather than computing them itself.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong, where the default intuition is likely to mislead.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a point the firm must actively design around, where a redemption can pay the wrong amount, to the wrong account, or against units that should be blocked.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not yet settled, or one turning on a decision still open in the register; each names its owner.</p></div>
+  <p>State names are shown in <span class="mono">monospace</span> when they refer to a specific lifecycle state the Order reference owns: the redemption runs the common order spine, <span class="mono">Placed</span> through <span class="mono">Settled</span>, with the <span class="mono">Failed</span> and <span class="mono">Reversed</span> edges. The altitude follows the draw-or-bullet test: a fork that reroutes the path is drawn, a captured value or an added check is bulleted. Tax and TDS figures defer to the Investor reference, which owns the rates.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">The spine</a></li>
+    <li><a href="#s2">Decision points</a></li>
+    <li><a href="#s3">Failure taxonomy</a></li>
+    <li><a href="#s4">Special cases</a></li>
+    <li><a href="#s5">Entities and states exercised</a></li>
+    <li><a href="#s6">Decisions surfaced</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1"><span class="num">1.</span>The spine</h2>
+<p class="lead">Redemption is the simplest order to price and the richest to pay out. It is simple to price because there is no incoming money to clear first: a redemption registered before the cut-off takes the same day's NAV, with none of the funds-realisation dependency a purchase carries. It is rich to pay out because the tail, the proceeds landing in a bank account some working days later, is where the gates bite and where residential status forks the whole thing. The spine below runs the gates, then the common order states, ending when proceeds reach the registered bank account.</p>
+<pre class="mermaid">
+flowchart TD
+  A([Redemption intent, units or amount, a scheme in a folio]) --> B{Pre-flight gates}
+  B -->|units encumbered, lock-in not elapsed, or KYC not valid| X1([Blocked, see failure taxonomy])
+  B -->|unencumbered units, lock-in elapsed, KYC valid| C([Placed])
+  C --> D[RoutedToRail, handed to the rail, no funding leg to clear]
+  D --> E([Acknowledged, applicable NAV determinable from the cut-off])
+  E --> F([Allotted, redemption value computed at NAV, exit load applied])
+  F --> G([Settled, proceeds reach the registered bank account, T plus working days])
+</pre>
+<p>Two things separate this from the purchase spine. At <span class="mono">RoutedToRail</span> there is no inbound money leg to initiate, so the order is simply handed to the rail; the money movement is the outbound payout at settlement. And between <span class="mono">Allotted</span> and <span class="mono">Settled</span> sits the persona fork: for an NRI or OCI the redemption value is reduced by capital-gains TDS withheld at source before the net reaches the account, while a resident receives the full proceeds. That fork is drawn in Section 2. The <span class="mono">Failed</span> and <span class="mono">Reversed</span> edges are the J6 edges, with redemption-specific failure modes in Section 3.</p>
+
+<h3>Who acts at each step</h3>
+<table>
+  <thead><tr><th>Step</th><th>Acting party (by role)</th><th>What the firm does</th></tr></thead>
+  <tbody>
+    <tr><td>Pre-flight gates</td><td>The firm.</td><td>Checks unencumbered units against the folio and RTA record, lock-in against the scheme attributes, and KYC status. The cheapest place to catch a redemption that cannot complete.</td></tr>
+    <tr><td>Place and route</td><td>The firm originates; the RTA and AMC register and price.</td><td>Constructs and places the redemption, then hands it to the rail and waits. No money leaves the investor; units leave the register.</td></tr>
+    <tr><td>Compute value and TDS</td><td>The AMC and RTA.</td><td>Strike the NAV, compute the redemption value, apply the exit load, and for an NRI or OCI compute and withhold the capital-gains TDS. The firm reflects these; in V1 it does not compute the gain, because it holds no cost basis.</td></tr>
+    <tr><td>Pay out and settle</td><td>The AMC, through the RTA and the rail.</td><td>Pays the proceeds to the registered bank account, routed by repatriability for a non-resident. The firm reconciles against the RTA feed; money never rests with the firm.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="s2"><span class="num">2.</span>Decision points</h2>
+<p>One genuine fork that reroutes the payout, drawn, and one gate cluster that decides whether the redemption proceeds at all, tabled.</p>
+
+<h3>The residential-status fork: TDS and repatriability</h3>
+<p>This is the signature of the journey. The same redemption event produces a fundamentally different obligation depending on a single attribute, residential status, and then a second attribute, repatriability, decides where the proceeds land. The Investor reference is emphatic that this is a fork in the payout flow, not a footnote, so it is drawn.</p>
+<pre class="mermaid">
+flowchart TD
+  P([Allotted, redemption value computed]) --> Q{Residential status of the holder}
+  Q -->|resident| M1([Full proceeds paid out, no TDS, self-assessed via advance tax])
+  Q -->|NRI or OCI| M2[Capital-gains TDS withheld at source, certificate issued]
+  M2 --> R{Repatriability of the folio}
+  R -->|NRE or FCNR funded, repatriable| N1([Net proceeds to an NRE account, remittable abroad])
+  R -->|NRO funded, non-repatriable| N2([Net proceeds to an NRO account, limited remittance])
+</pre>
+<p>For a resident there is no TDS on a mutual fund redemption; the investor self-assesses through advance tax, and the proceeds land whole. For an NRI or OCI, tax is withheld at source on each redemption and a certificate is issued, and the net is routed by the folio's repatriability tag, which follows the account that funded the holding: NRE or FCNR funding is repatriable and the proceeds can be remitted abroad, NRO funding is non-repatriable subject to the limited remittance allowance. A DTAA can reduce the Indian withholding where the investor furnishes a Tax Residency Certificate and a Form 10F, which is a value change on the withholding rather than a reroute, so it is bulleted in Section 4.</p>
+
+<h3>The pre-flight gate cluster</h3>
+<p>Money-out is gated where money-in is not, because a redemption depends on units being available and unencumbered. The three gates differ in effect: two can block the redemption outright, one only reduces the proceeds.</p>
+<table>
+  <thead><tr><th>Gate</th><th>What it checks</th><th>Effect</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Unencumbered units</strong></td><td>Whether the units are free, or lien-marked or pledged. Only unencumbered units can be redeemed; the encumbrance is marked on the folio by the RTA.</td><td>Blocks the encumbered portion. The free balance can still redeem.</td></tr>
+    <tr><td><strong>Lock-in</strong></td><td>Whether a lock-in has elapsed, for example the three-year ELSS lock-in, applied per investment tranche.</td><td>Blocks the locked tranche until it matures. Other tranches are unaffected.</td></tr>
+    <tr><td><strong>Exit load</strong></td><td>Whether the holding period falls inside an exit-load band defined by the scheme.</td><td>Does not block; reduces the proceeds by the load. A haircut, not a stop.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="s3"><span class="num">3.</span>Failure taxonomy</h2>
+<p>Redemption breaks at two points: at the pre-flight gate, before anything is priced, and at the payout tail, after the value is fixed but before the money lands. The second kind is the dangerous one, because units have already left the register.</p>
+<table>
+  <thead><tr><th>How it breaks</th><th>Cause</th><th>Where it lands, and recovery</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Insufficient unencumbered units</strong></td><td>The free balance is less than the requested redemption, because units are pledged, lien-marked, or simply fewer than asked.</td><td>Blocked at pre-flight, before <span class="mono">Placed</span>. Redeem the available free balance, or release the encumbrance first.</td></tr>
+    <tr><td><strong>Lock-in not elapsed</strong></td><td>A redemption against a tranche still inside its lock-in.</td><td>Blocked at pre-flight. The tranche becomes redeemable when the lock-in matures; other tranches are unaffected.</td></tr>
+    <tr><td><strong>Below-minimum residual</strong></td><td>A partial redemption that would leave a balance below the scheme's minimum.</td><td>Handled per scheme rule, commonly by forcing the redemption to full rather than leaving an unviable residual. Surface the choice rather than silently converting it.</td></tr>
+    <tr><td><strong>Cut-off missed</strong></td><td>The redemption is registered after the redemption cut-off.</td><td>Not a failure: it takes the next applicable NAV. A timing shift the investor should see, not an error.</td></tr>
+    <tr><td><strong>Payout cannot land</strong></td><td>The registered bank account is closed, frozen, or invalid when the proceeds are paid, after <span class="mono">Allotted</span>.</td><td>A post-allotment failure: units are gone but money cannot land. Resolves by correcting the bank mandate and re-paying; if it has to be unwound it is a <span class="mono">Reversed</span>, not a <span class="mono">Failed</span>, because allotment already happened.</td></tr>
+    <tr><td><strong>Erroneous redemption backed out</strong></td><td>A redemption that progressed to or past allotment and must be undone.</td><td>Lands as <span class="mono">Reversed</span>, a compensating transaction on the books, not a deletion. Owned by the J6 spine.</td></tr>
+  </tbody>
+</table>
+<div class="callout flag">
+  <p class="ck">Red flag: the payout tail is where redemption is most exposed</p>
+  <p>The gates are cheap and the pricing is simple, but the tail is not. Once units are redeemed, the obligation to pay exists, so a bad bank account, a wrong repatriability route sending an NRI's proceeds to the wrong account class, or a misapplied TDS are all errors after the point of no easy return. Sending repatriable proceeds to an NRO account, or paying gross where TDS was due, are the two that carry real regulatory and remittance consequences. The tail deserves the design attention, not the pricing.</p>
+</div>
+
+<h2 id="s4"><span class="num">4.</span>Special cases</h2>
+<p>Variants that change a value or add a check without rerouting the redemption spine. Listed, never drawn.</p>
+<ul class="tight">
+  <li><strong>Full versus partial redemption.</strong> A full redemption closes the position and may empty the folio; a partial leaves a residual that must clear the scheme minimum, which is the below-minimum case in Section 3.</li>
+  <li><strong>By units versus by amount.</strong> A redemption can be expressed in units or in rupees; an amount request is converted to units at the applicable NAV, so the exact units leaving are known only once the NAV is struck. A rounding and residual detail, not a lifecycle change.</li>
+  <li><strong>Exit-load bands.</strong> The load depends on the holding period of the specific units being redeemed, so the order of units matters and follows the scheme's convention. The band reduces proceeds; it never blocks.</li>
+  <li><strong>ELSS and other lock-ins.</strong> Applied per investment tranche, so a folio can hold redeemable and locked units at once. The gate blocks only the locked tranche.</li>
+  <li><strong>DTAA relief for a non-resident.</strong> A Tax Residency Certificate plus a Form 10F can reduce the Indian withholding on an NRI redemption. It changes the withholding rate, not the flow, and depends on the investor furnishing the documents.</li>
+  <li><strong>Gross-to-net representation.</strong> For an NRI the investor should see the gross redemption value, the exit load, the TDS withheld, and the net, as distinct figures. The platform displays these; it does not compute the gain in V1, so the TDS figure is the one the RTA and AMC return, not one the platform derives.</li>
+  <li><strong>Repatriation certification.</strong> Remitting NRO or sale proceeds abroad uses Forms 15CA and 15CB. This is a downstream servicing step that follows a redemption, not a step inside the redemption spine.</li>
+  <li><strong>Persona authority.</strong> A minor's redemption is operated by the guardian until majority; a joint folio redeems per its operation mode. These set who may place the redemption, not how it runs.</li>
+  <li><strong>High-value reporting.</strong> A redemption above the prescribed threshold feeds SFT reporting. A reporting consequence on the side, not a gate.</li>
+  <li><strong>SWP reuse.</strong> The recurring money-out plan, J11, emits a redemption instalment on a schedule that runs this exact spine, needing only available unencumbered units on each date and no mandate.</li>
+</ul>
+
+<h2 id="s5"><span class="num">5.</span>Entities and states exercised</h2>
+<p>The references J9 draws on. Per the precedence rule J9 invents no state; it sequences the redemption branch of the spine the Order reference owns and applies the gates and overlays the Folio and Investor references carry. Like J8, it finds no missing state.</p>
+<table>
+  <thead><tr><th>Reference</th><th>What J9 exercises</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Order</strong></td><td>The redemption transaction, money out, one scheme, no mandate; the common spine <span class="mono">Placed</span> through <span class="mono">Settled</span> with the <span class="mono">Failed</span> and <span class="mono">Reversed</span> edges; the same-day NAV before the redemption cut-off; and the settlement timing, proceeds landing T plus a scheme-dependent number of working days.</td></tr>
+    <tr><td><strong>Folio</strong></td><td>Encumbrance, the unencumbered-units gate and the lien-or-pledge marking on the folio; and repatriability, the NRE-or-FCNR-versus-NRO tag that follows the funding account and routes the proceeds.</td></tr>
+    <tr><td><strong>Investor</strong></td><td>The TDS overlay, residents untaxed at source and self-assessing while NRI and OCI redemptions are withheld at source with a certificate; the residential-status attribute that forks the payout; and the DTAA relief path.</td></tr>
+    <tr><td><strong>Instrument</strong></td><td>The scheme attributes the gates read: the lock-in, the exit-load bands, and the cut-off and NAV mechanics each redemption inherits.</td></tr>
+    <tr><td><strong>J6 (order spine)</strong></td><td>By reference: the common order lifecycle each redemption runs, including the <span class="mono">Failed</span>-versus-<span class="mono">Reversed</span> distinction at the allotment line.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: in V1 the platform reflects the gain, it does not compute it</p>
+  <p>Cost-basis lot accounting is scoped out of V1, so the platform does not hold the purchase cost of the units being redeemed. The capital gain, and therefore the NRI or OCI capital-gains TDS, is computed by the AMC and RTA, who hold the unit register and the cost basis, and the platform reflects the net proceeds it receives. This is the cost-basis decision meeting the redemption payout, and it bounds what the platform can show before a redemption is confirmed, which is the open call in Section 6.</p>
+</div>
+
+<h2 id="s6"><span class="num">6.</span>Decisions surfaced</h2>
+<p>The decisions J9 applies, exercises, or adds, routed to owners and written back to the register.</p>
+<table>
+  <thead><tr><th>#</th><th>Decision and what J9 needs</th><th>Owner</th><th>Status after J9</th></tr></thead>
+  <tbody>
+    <tr><td>D2</td><td>The NRI and OCI Validated requirement. Applied as settled: a non-resident must be Validated to redeem, the same gate as for any transaction.</td><td>Compliance</td><td>Applied.</td></tr>
+    <tr><td>D6</td><td>Settlement cycles. Applied as the payout timing: proceeds land T plus a scheme-dependent number of working days, around T+1 for liquid and T+2 for equity-oriented schemes.</td><td>Internal</td><td>Applied.</td></tr>
+    <tr><td>D27</td><td>Repatriability routing. Exercised: the folio's NRE-or-FCNR-versus-NRO tag routes the net proceeds, and the recommended separate-folio-by-repatriability position holds when the payout is drawn.</td><td>Internal / Engineering</td><td>Exercised; position holds.</td></tr>
+    <tr><td>D28</td><td>Encumbrance. Brushed: the unencumbered-units gate is clear and drawn; the deeper lien-versus-pledge mechanics remain the Tier 3 detail, not needed to draw the gate.</td><td>Internal / Engineering</td><td>Brushed; gate is clear.</td></tr>
+    <tr><td><strong>D45</strong> <span class="bkt core" style="margin-left:4px;">new</span></td><td>NRI redemption pre-trade TDS and net-proceeds visibility, given cost-basis is out of V1. Whether and how the platform shows a non-resident an expected TDS and net payout before they confirm, when it holds no cost basis and the gain is computed by the RTA and AMC.</td><td>Product / Architect</td><td>New row, rooted in the cost-basis-out-of-V1 decision. To define with Product and the architect.</td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Open: what hardens J9</p>
+  <p>J9 is drawn against settled or applied decisions, D2, D6, D27, and D28, so its spine and gates are stable. The one new call it forces is D45: in V1 the platform cannot derive an NRI's capital-gains TDS itself, so the product question is what it shows before a redemption is confirmed, an exact net from an RTA pre-trade computation if one is available, a clear gross-only view with the net revealed at settlement, or an estimate the platform is honest about not being able to compute. Closing D45 with Product and the architect, against the cost-basis-out-of-V1 boundary, is what moves J9 from decision-surfacing to governing. None of this blocks Wave 3, where J10 switch and STP carry this sell leg with a buy leg driven off it, and J11 SWP repeats this spine on a schedule.</p>
+</div>
+
+<div class="footer">
+  <p><strong>Document control.</strong> J9: Redemption. Version v0.1, decision-surfacing draft, June 2026. The seventh journey document and the last of Wave 2, drawing the money-out flow in depth: the pre-flight gates of unencumbered units and lock-in, the exit-load haircut, the spine to a payout measured in working days after the NAV, and the residential-status fork that withholds TDS at source for an NRI or OCI and routes proceeds by repatriability. Applies D2 and D6, exercises D27, brushes D28, and adds one row, the NRI pre-trade TDS visibility given cost-basis is out of V1 (D45), rooted in the Spec 2 cost-basis decision. Draws on Order for the redemption lifecycle, Folio for encumbrance and repatriability, and Investor for the TDS overlay; references the J6 spine each redemption runs. Adds no reference gap: the platform reflects the gain and TDS the AMC and RTA compute, holding no cost basis in V1. Tax and TDS figures defer to the Investor reference, which owns the rates. Not a reference and not a PRD.</p>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  try {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      themeVariables: {
+        fontFamily: "'Source Sans 3', sans-serif",
+        primaryColor: '#efe9f7',
+        primaryBorderColor: '#6a4a9c',
+        primaryTextColor: '#26222e',
+        lineColor: '#6a4a9c',
+        secondaryColor: '#fbf2dd',
+        tertiaryColor: '#fffdf8',
+        fontSize: '15px'
+      }
+    });
+  } catch (e) { /* if the CDN is unreachable, the Mermaid source remains legible as text */ }
+</script>
+</body>
+</html>

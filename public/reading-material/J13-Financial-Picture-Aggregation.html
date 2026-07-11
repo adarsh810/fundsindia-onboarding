@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J13: Financial-Picture Aggregation</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Journey Layer</p>
+  <h1 class="title">J13: Financial-Picture Aggregation</h1>
+  <p class="subtitle">The consent-based held-away view behind a "Your Financial Picture" feature, drawing cross-institution data through the Account Aggregator rail with the firm acting as a Financial Information User. Read-only by design, generic by regulatory posture, and honest about what it does not yet know.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.1: Decision-surfacing draft</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Journey document (not a reference, not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>The governing view of <strong>how the platform shows an investor their whole financial picture</strong>, the firm's own book plus the assets they hold away at other institutions, drawn together with the investor's consent. The rail is the RBI-regulated Account Aggregator framework: the firm onboards as a Financial Information User, the investor consents at an Account Aggregator to share specific categories of held-away data, the holding institutions return that data through the aggregator, and the platform composes a net-worth view with a generic comparison against a benchmark and the firm's own strategy. J13 draws the consent-to-picture spine, the refresh-and-revoke life of a consent, the failure modes of a consent-driven rail, and the two decisions that give this feature its shape: what the picture is allowed to say, and how honestly it can talk about tax. It draws on Rails for the consent rail, Folio for the held-within versus held-away distinction, and Investor for identity and consent authority.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a reference and not a PRD, and not a transaction. Nothing in J13 buys, sells, or moves a held-away asset; the view is strictly read-only, and the only writes are the consent and its withdrawal. Two boundaries govern the whole journey. The advice it carries is <strong>generic and delivered under the MFD proposition</strong>: education, a net-worth view, and a benchmark comparison, with no advisory fee and no personalised, tailored buy-or-sell recommendation, which would be RIA territory and is out of V1 scope. And the tax it shows is <strong>indicative and clearly disclaimed</strong> in V1, because the platform holds no cost basis, with the precise treatment recorded separately as the target state. The Account Aggregator provider is left unnamed on purpose, consistent with the Rails reference: which partner wraps the rail is a vendor decision the suite keeps out.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong, where the default intuition is likely to mislead.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a point the firm must actively design around, where the picture can overstep into regulated advice, mislead on tax, or show stale data as if it were fresh.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not yet settled, or one turning on a decision still open in the register; each names its owner.</p></div>
+  <p>State names are shown in <span class="mono">monospace</span> where they refer to a specific state a reference owns. A consent has its own short lifecycle, granted, active, refreshed, expired or revoked, which J13 sequences; the held-away data it returns is reflected, never owned, and the firm's own book is its own reconciliation truth. The altitude follows the draw-or-bullet test: a path the consent or the data forks into is drawn, a data category or a display variant is bulleted. Tax and cost figures defer to the Investor reference and the Spec 2 cost-basis decision.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">The spine</a></li>
+    <li><a href="#s2">Decision points</a></li>
+    <li><a href="#s3">Failure taxonomy</a></li>
+    <li><a href="#s4">Special cases</a></li>
+    <li><a href="#s5">Entities and states exercised</a></li>
+    <li><a href="#s6">Decisions surfaced</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1"><span class="num">1.</span>The spine</h2>
+<p class="lead">J13 has two altitudes, like the standing plans. There is the first composition, where the investor consents and the platform assembles the picture for the first time, and there is the standing life of that consent, where the picture refreshes on a schedule and eventually expires or is revoked. The first is a consent flow with a blind pipe in the middle: the Account Aggregator carries the data but cannot read or store it, so trust sits with the consent, not the conduit. The second is a cadence: a monthly scheduled pull, an on-demand refresh when the consent and latency allow, and an honest as-of stamp when neither does. Through both, the firm's own book is always present from its own records, and the held-away layer is the part that depends on consent.</p>
+
+<h3>The first picture, consent to composition</h3>
+<pre class="mermaid">
+flowchart TD
+  A([Investor opts into the financial picture]) --> B[Firm, as a Financial Information User, raises a consent request, purpose and FI types and duration and fetch frequency and data range]
+  B --> C[Investor authenticates at their chosen Account Aggregator and links accounts, discovered by PAN or mobile]
+  C --> D{Consent granted}
+  D -->|declined, or only some accounts linked| E([Picture shows the own book and whatever was consented, the held-away gap called out honestly])
+  D -->|granted| F[Firm requests financial information per the consent, the Account Aggregator orchestrates the pull from the holding institutions]
+  F --> G[Institutions return digitally signed, encrypted data through the aggregator, which cannot read or store it]
+  G --> H([Picture composed, own book plus held-away, with the generic benchmark comparison])
+</pre>
+<p>The consent request is where the scope is set, and the scope is everything: the purpose the data may be used for, the financial-information types requested, the duration of the consent, the fetch frequency, and the data range. The investor grants it at their own chosen aggregator, where their accounts are discovered by an identifier such as PAN or mobile and verified, and the consent that returns is the artefact that bounds every later pull. A declined or partial consent does not break the picture; it narrows it, and the honest design shows the own book plus whatever was shared and names the gap rather than implying completeness. Past the grant, the firm requests data per the consent, the aggregator orchestrates the pull, and the holding institutions return signed, encrypted data the aggregator itself cannot see. The platform then composes the view.</p>
+
+<h3>The standing life of a consent</h3>
+<pre class="mermaid">
+flowchart TD
+  A([Active consent, picture composed]) --> B{Refresh trigger}
+  B -->|monthly scheduled pull| C[Re-pull within the consent fetch frequency, recompose the picture]
+  B -->|on-demand, when the frequency cap and latency both allow| C
+  B -->|frequency cap reached or latency too high| D([Serve the last pull, stamped with its as-of time, honestly])
+  C --> A
+  A --> E{Consent ends}
+  E -->|expired or revoked by the investor| F([Held-away view withdrawn, re-consent prompted, the own book remains])
+</pre>
+<p>The cadence is deliberately modest. A monthly scheduled pull keeps the picture current at a cost the feature can bear, and an on-demand refresh is offered when the consent's declared fetch frequency has room and the round-trip latency is acceptable. When neither holds, the platform does not fake freshness; it serves the last pull with its as-of timestamp shown plainly, which is the honest-staleness posture. A consent is finite: it expires at its duration or the investor revokes it, and at that point the held-away layer is withdrawn and a re-consent is prompted, while the firm's own book, which never depended on the consent, remains. Revocation is a first-class path, not an error.</p>
+
+<h3>Who acts at each step</h3>
+<table>
+  <thead><tr><th>Step</th><th>Acting party (by role)</th><th>What the firm does</th></tr></thead>
+  <tbody>
+    <tr><td>Request consent</td><td>The firm, as a Financial Information User.</td><td>Raises a purpose-limited, time-bound consent request with the FI types, duration, and fetch frequency. The firm declares why it wants the data and is bound to that purpose.</td></tr>
+    <tr><td>Grant and link</td><td>The investor, at their chosen Account Aggregator.</td><td>The investor links accounts and grants or declines. The firm never sees credentials; the aggregator mediates, and the investor stays in control of scope.</td></tr>
+    <tr><td>Carry the data</td><td>The Account Aggregator and the holding institutions.</td><td>The institutions return signed, encrypted data; the aggregator carries it and cannot read or store it. The firm receives only what the consent permits.</td></tr>
+    <tr><td>Compose and refresh</td><td>The firm.</td><td>Composes the own-book-plus-held-away view, applies the generic comparison, refreshes monthly or on demand within the consent, and stamps staleness honestly. Stores only per the consent terms and the declared purpose.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: consent is the gate, the aggregator is a blind pipe, and the picture is read-only</p>
+  <p>Three rules hold across the journey. The consent and its declared scope bound everything the firm may pull and how often, so the artefact, not the interface, is the source of authority. The Account Aggregator is a blind conduit that cannot read, store, or sell the data it carries, which is what makes the rail trustworthy. And the picture is strictly read-only: it informs, it never transacts on a held-away asset. Data is the investor's, shared for a declared purpose, used only for that purpose, and surrendered when the consent ends. These are not product preferences; they are the framework's design, and the platform's job is to honour them visibly.</p>
+</div>
+
+<h2 id="s2"><span class="num">2.</span>Decision points</h2>
+<p>Two decisions give this feature its shape. The first is drawn, because it decides what the picture may say. The second is a treatment choice, recorded with its V1 answer and, separately, its target state.</p>
+
+<h3>What the picture is allowed to say, the MFD line</h3>
+<p>The picture is a surface that talks to the investor, and the moment it talks it touches the boundary between distribution and advice. The V1 platform is the MFD proposition, so the picture may carry generic guidance, education, and a benchmark comparison, but not personalised, for-a-fee investment advice. The line is drawn, and the firm builds to the left side of it.</p>
+<pre class="mermaid">
+flowchart TD
+  P([The financial picture wants to say something to the investor]) --> Q{What kind of statement}
+  Q -->|generic guidance, education, a benchmark or strategy comparison| R([Permitted under the MFD proposition, no advisory fee])
+  Q -->|personalised, tailored, for-a-fee buy-or-sell advice| S([Out of V1 scope, that is RIA territory, not built here])
+</pre>
+<div class="callout flag">
+  <p class="ck">Red flag: the wording is where the MFD line is crossed, not the data</p>
+  <p>A net-worth view and a benchmark comparison are squarely within the MFD proposition. The risk is in the narration: a sentence that tells a specific investor to move a specific holding, or that frames the comparison as a personalised recommendation, drifts from generic distribution guidance into the regulated advice an MFD cannot give for a fee. The feature must present comparison and generic guidance, never tailored advice, and the firm also holds an RIA licence, so the temptation to lean on it is real and must be resisted in V1. Every piece of advice copy and narration on this surface is built to the MFD posture and signed off by the Compliance Officer before it ships. This constraint is the same one the Catalog and recommendation-surface work carries, applied here.</p>
+</div>
+
+<h3>How honestly the picture can talk about tax and cost</h3>
+<p>The investor wants an after-cost, after-tax view, and the comparison against the benchmark and the firm's own strategy is most useful net of both. The cost side is largely derivable. The tax side is not, because a precise after-tax figure needs cost basis, the acquisition cost and holding period that split a gain into long and short term, and the platform holds no cost basis in V1, least of all for held-away assets, where the aggregator returns holdings and often transactions but not a dependable basis for a capital-gains computation. The V1 answer and the target state are therefore recorded separately.</p>
+<div class="callout verify">
+  <p class="ck">V1: indicative and clearly disclaimed (D49)</p>
+  <p>In V1 the picture shows an after-cost view where cost is derivable, and an <strong>indicative</strong> tax view that is clearly labelled as an estimate, not a computed liability, with a visible disclaimer that it is not tax advice and that actual tax depends on records the platform does not hold. The benchmark and strategy comparison is presented on a consistent basis, point to point over the same period for the investor, the benchmark, and the firm's strategy, the strategy shown only from its live inception in 2020 with no backtest, and the standard past-performance disclosures attached. This is the easiest honest route and is recorded as D49.</p>
+</div>
+<div class="callout principle">
+  <p class="ck">The ideal treatment, highlighted separately, for when cost basis lands</p>
+  <p>The target state, recorded deliberately so it is not lost: a <strong>precise</strong> after-tax view that computes each holding's gain from its actual cost basis and holding period, applies the correct long or short capital-gains treatment, and nets the comparison against a real, not indicative, tax figure. This depends on the platform acquiring cost basis, which is the Spec 2 cost-basis-out-of-V1 decision and the same root as D45's NRI pre-trade TDS gap. When cost basis lands, for the own book first and for held-away assets as far as the aggregator's transaction data allows, the indicative tax view is upgraded to the precise one. J13 should be built so that swap is a treatment change, not a re-architecture.</p>
+</div>
+
+<h2 id="s3"><span class="num">3.</span>Failure taxonomy</h2>
+<p>A consent-driven rail breaks in ways a transaction does not, and almost all of them resolve to the same honest posture: show what is known, name what is missing, never imply completeness or freshness that is not there.</p>
+<table>
+  <thead><tr><th>How it breaks</th><th>Cause</th><th>Where it lands, and recovery</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Consent declined or partial</strong></td><td>The investor declines, or links only some accounts.</td><td>Not a failure: the picture shows the own book and whatever was consented, and names the gap. A re-consent or additional linking is offered, never forced.</td></tr>
+    <tr><td><strong>Consent expired or revoked</strong></td><td>The consent reaches its duration, or the investor withdraws it.</td><td>The held-away layer is withdrawn and a re-consent is prompted; the own book remains. A normal, expected end-of-life, handled as a first-class path.</td></tr>
+    <tr><td><strong>Holding institution unavailable</strong></td><td>A linked institution does not respond, or returns nothing, on a pull.</td><td>A partial picture: the available holdings show, the missing source is flagged as unavailable with its last-known as-of time, and the next scheduled pull retries.</td></tr>
+    <tr><td><strong>Stale within the frequency cap</strong></td><td>An on-demand refresh is requested but the consent's fetch frequency is exhausted, or latency is too high.</td><td>The last pull is served with its as-of timestamp shown plainly. The platform does not fake a fresh number; staleness is disclosed, not hidden.</td></tr>
+    <tr><td><strong>Account discovery fails</strong></td><td>The identifier does not match at an institution, so an account cannot be linked.</td><td>That account stays outside the picture; the investor is guided to the correct identifier. The rest of the picture composes normally.</td></tr>
+    <tr><td><strong>Malformed or inconsistent data</strong></td><td>An institution returns data that does not map cleanly to a holding.</td><td>That holding is excluded or flagged rather than shown wrong. A wrong number in a net-worth view is worse than an acknowledged gap.</td></tr>
+  </tbody>
+</table>
+<div class="callout flag">
+  <p class="ck">Red flag: a net-worth view that looks complete when it is not, or fresh when it is not, is the core harm</p>
+  <p>The defining danger of this journey is false confidence. An investor reading a single net-worth number trusts it as whole and current, so a picture that silently omits an unavailable institution, or shows last month's pull as if it were today's, can drive a real financial decision on a false premise. Every partial state must name what is missing, and every figure must carry the freshness it actually has. The honest version is sometimes less impressive and always more trustworthy, and for a private-wealth relationship trust is the entire product.</p>
+</div>
+
+<h2 id="s4"><span class="num">4.</span>Special cases</h2>
+<p>Variants that change a category, a coverage edge, or a display without rerouting the consent spine. Listed, never drawn.</p>
+<ul class="tight">
+  <li><strong>The V1 data categories.</strong> Bank and deposit accounts, mutual funds held away, and NPS are in scope for V1, with fixed deposits as a likely addition through the term-deposit category. Insurance, equities and demat, and the wider set the framework supports are deferred. The category set is the consent scope, so adding one later is a consent-and-mapping change, not a new spine.</li>
+  <li><strong>Own book versus held-away.</strong> The firm's own mutual-fund book is shown from the firm's own reconciliation records and needs no consent; the Account Aggregator is only for the held-away layer. The picture composes the two, and must not double-count an own-book holding that also surfaces through the aggregator.</li>
+  <li><strong>The existing-book migration.</strong> The picture launches for new users and becomes available to existing investors as their migration begins, so the consent-and-identity linkage for the existing book is plumbing to provision ahead rather than retrofit. This sits with the customer-migration scope, D40.</li>
+  <li><strong>The interim and complementary rail.</strong> For mutual funds held away, MF Central and the Consolidated Account Statement give a consolidated view that can serve ahead of, or alongside, Account Aggregator coverage where it is thin. The held-away MF layer can draw on this as a complement, which is the scope of D35.</li>
+  <li><strong>Non-resident coverage.</strong> A non-resident's held-away accounts may have thinner institution coverage on the rail, and an NRE or NRO account's discovery and consent can differ. The picture shows what is reachable and names the coverage gap, rather than presenting a non-resident's partial picture as whole.</li>
+  <li><strong>Consent granularity.</strong> An investor can link some accounts and not others, and can choose the duration and frequency within what the firm requests, so partial and short-duration consents are normal and the picture is built to degrade gracefully across them.</li>
+  <li><strong>Data minimisation and privacy.</strong> The firm requests only the categories the picture needs, uses the data only for the declared purpose, stores it only per the consent terms, and stops on revocation. The aggregator cannot read the data, and the firm does not repurpose it for anything the consent did not cover.</li>
+  <li><strong>The comparison surface discipline.</strong> The benchmark and strategy comparison uses point-to-point returns over the same period for the investor, the benchmark, and the strategy, treats cost consistently, shows the strategy only from its 2020 live inception with no backtest, and carries the standard past-performance disclosures. A display discipline the Compliance Officer signs off, not a spine change.</li>
+</ul>
+
+<h2 id="s5"><span class="num">5.</span>Entities and states exercised</h2>
+<p>The references and journeys J13 draws on. Per the precedence rule J13 invents no transactional state; it sequences a consent and reflects held-away data the firm never owns.</p>
+<table>
+  <thead><tr><th>Reference or journey</th><th>What J13 exercises</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Rails</strong></td><td>The consent-based financial-data rail, the Account Aggregator framework with the firm as a Financial Information User, consent that is explicit, purpose-limited, time-bound, and revocable, and the aggregator as a blind conduit; and MF Central and the Consolidated Account Statement as the complementary held-away rail for mutual funds.</td></tr>
+    <tr><td><strong>Folio</strong></td><td>The held-within versus held-away distinction: the firm's own book from its own reconciliation truth, and the held-away holdings the consent rail returns, composed into one view without double-counting.</td></tr>
+    <tr><td><strong>Investor</strong></td><td>Identity and the authority to consent, the persona overlays that affect reachability such as the non-resident case, and the tax-residency context the indicative tax view sits within.</td></tr>
+    <tr><td><strong>J1 and J2 (identity)</strong></td><td>By reference: the consent is tied to a KYC-identified investor, so the picture sits on the identity J1 produced and J2 maintains.</td></tr>
+    <tr><td><strong>Catalog and recommendation-surface framing (MFD-not-RIA)</strong></td><td>By reference: the generic-guidance, no-advisory-fee constraint the picture's advice inherits, the same posture that governs the recommendation surfaces, applied to the financial-picture narration.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: J13 is read-only and consent-bounded, scopes two register rows, and inherits one constraint</p>
+  <p>J13 introduces no transactional state and writes nothing to a held-away asset. It scopes the Account Aggregator integration into V1 for the financial picture (D34) and confirms MF Central and the Consolidated Account Statement as the complementary held-away rail (D35), and it adds one row for the tax-and-cost display treatment (D49). It inherits the MFD-not-RIA constraint as a documented limit on its narration rather than a register decision, the way J3 carried the nomination constraint, and it ties its target tax state to the Spec 2 cost-basis decision. It flags no reference gap; the rail and the held-within-versus-held-away distinction are the Rails and Folio references' already.</p>
+</div>
+
+<h2 id="s6"><span class="num">6.</span>Decisions surfaced</h2>
+<p>The decisions J13 scopes or adds, routed to owners and written back to the register.</p>
+<table>
+  <thead><tr><th>#</th><th>Decision and what J13 needs</th><th>Owner</th><th>Status after J13</th></tr></thead>
+  <tbody>
+    <tr><td>D34</td><td>Account Aggregator integration scope and timing. Scoped into V1 for the financial picture: the firm is onboarded as a Financial Information User through its chosen technology partner, the V1 categories are bank, mutual funds, and NPS with fixed deposits a likely addition, and the cadence is a monthly scheduled pull plus on-demand refresh within the consent's fetch frequency. Residuals: confirm the live FIU implementation stage and the fixed-deposit category.</td><td>Internal / Compliance</td><td>Scoped for V1; the financial picture moves from deferred to in-scope, residuals on FIU stage and FD.</td></tr>
+    <tr><td>D35</td><td>MF Central and the Consolidated Account Statement as the held-away rail. Scoped as the complementary and interim held-away rail for mutual funds, drawn on alongside or ahead of Account Aggregator coverage where it is thin.</td><td>Internal</td><td>Scoped as complementary held-away rail for the MF layer.</td></tr>
+    <tr><td><strong>D49</strong> <span class="bkt core" style="margin-left:4px;">new</span></td><td>Financial-picture tax and cost display treatment. V1 shows an after-cost view where derivable and an indicative, clearly disclaimed tax view, since the platform holds no cost basis. The target state is a precise after-tax view computed from cost basis, dependent on the Spec 2 cost-basis decision and sharing D45's root. Build the swap as a treatment change, not a re-architecture.</td><td>Product / Architect</td><td>New row. V1 treatment set; target state recorded and tied to the cost-basis decision.</td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Open: what hardens J13</p>
+  <p>J13's spine is stable, because the consent rail and the held-away distinction are the references' and the scope is now set. Three things keep it provisional. D34 carries two residuals, confirming the live FIU implementation stage so the rollout is drawn against reality rather than near-readiness, and confirming whether fixed deposits join the V1 categories. D49's target tax state waits on the Spec 2 cost-basis decision, the same dependency D45 carries. And the MFD-not-RIA narration, while decided as generic-only, needs the Compliance Officer's sign-off on the actual advice and comparison copy before it ships, which is an execution gate recorded in this document rather than an open register decision. None blocks the feature; with the FIU stage confirmed, J13 is buildable, and it completes the thirteen-journey layer.</p>
+</div>
+
+<div class="footer">
+  <p><strong>Document control.</strong> J13: Financial-Picture Aggregation. Version v0.1, decision-surfacing draft, June 2026. The thirteenth and final journey document, drawing the consent-based held-away view behind a "Your Financial Picture" feature: the firm as a Financial Information User raising a purpose-limited, time-bound consent, the Account Aggregator carrying signed, encrypted data it cannot read, and the platform composing an own-book-plus-held-away net-worth view with a generic benchmark and strategy comparison, refreshed monthly and on demand within the consent. Strictly read-only. Scopes D34, the Account Aggregator integration, into V1 for the financial picture, with the V1 categories of bank, mutual funds, and NPS and a monthly-plus-on-demand cadence, and residuals on the live FIU stage and fixed deposits; confirms D35, MF Central and the Consolidated Account Statement, as the complementary held-away rail for mutual funds; and adds D49, the tax-and-cost display treatment, indicative and disclaimed in V1 with a precise after-tax target state tied to the Spec 2 cost-basis decision and D45's root. Carries the MFD-not-RIA constraint as a documented limit on its narration, generic guidance and comparison only, no advisory fee, with Compliance Officer sign-off on the copy, the same posture the Catalog and recommendation-surface work holds. The Account Aggregator provider is left unnamed, consistent with the Rails reference's vendor-neutrality. Draws on Rails, Folio, and Investor, and references J1 and J2 for the identity the consent binds to. Flags no reference gap. Not a reference and not a PRD.</p>
+</div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  try {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      themeVariables: {
+        fontFamily: "'Source Sans 3', sans-serif",
+        primaryColor: '#efe9f7',
+        primaryBorderColor: '#6a4a9c',
+        primaryTextColor: '#26222e',
+        lineColor: '#6a4a9c',
+        secondaryColor: '#fbf2dd',
+        tertiaryColor: '#fffdf8',
+        fontSize: '15px'
+      }
+    });
+  } catch (e) { /* if the CDN is unreachable, the Mermaid source remains legible as text */ }
+</script>
+</body>
+</html>

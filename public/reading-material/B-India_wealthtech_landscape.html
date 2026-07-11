@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>India Wealth-Tech Landscape</title>
+<style>
+:root {
+  --fi-text-primary: #2C2C2A;
+  --fi-text-secondary: #5F5E5A;
+  --fi-text-tertiary: #888780;
+  --fi-bg-page: #FFFFFF;
+  --fi-border: #D3D1C7;
+  --fi-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+html, body { margin: 0; padding: 0; background: var(--fi-bg-page); color: var(--fi-text-primary);
+  font-family: var(--fi-font-sans); font-size: 14px; line-height: 1.5; }
+body { padding: 24px; max-width: 1820px; margin: 0 auto; box-sizing: border-box; }
+h1 { font-size: 22px; font-weight: 500; margin: 0 0 4px 0; }
+p.meta { font-size: 14px; color: var(--fi-text-secondary); margin: 0 0 16px 0; max-width: 1100px; }
+.legend { font-size: 12px; color: var(--fi-text-secondary); margin: 0 0 20px 0; display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.diagram-wrap { width: 100%; overflow-x: auto; padding: 8px 0; }
+svg { font-family: var(--fi-font-sans); display: block; }
+svg text.t  { font-size: 14px; font-weight: 400; fill: var(--fi-text-primary); }
+svg text.ts { font-size: 13px; font-weight: 400; fill: var(--fi-text-secondary); }
+svg text.th { font-size: 15px; font-weight: 500; fill: var(--fi-text-primary); }
+svg .c-blue > rect { fill: #E6F1FB; stroke: #185FA5; stroke-width: 0.5; }
+svg .c-blue > text.t, svg .c-blue > text.th { fill: #0C447C; }
+svg .c-blue > text.ts { fill: #185FA5; }
+svg .c-purple > rect { fill: #EEEDFE; stroke: #534AB7; stroke-width: 0.5; }
+svg .c-purple > text.t, svg .c-purple > text.th { fill: #3C3489; }
+svg .c-purple > text.ts { fill: #534AB7; }
+svg .c-teal > rect { fill: #E1F5EE; stroke: #0F6E56; stroke-width: 0.5; }
+svg .c-teal > text.t, svg .c-teal > text.th { fill: #085041; }
+svg .c-teal > text.ts { fill: #0F6E56; }
+svg .c-coral > rect { fill: #FAECE7; stroke: #993C1D; stroke-width: 0.5; }
+svg .c-coral > text.t, svg .c-coral > text.th { fill: #712B13; }
+svg .c-coral > text.ts { fill: #993C1D; }
+svg .c-pink > rect { fill: #FBEAF0; stroke: #993556; stroke-width: 0.5; }
+svg .c-pink > text.t, svg .c-pink > text.th { fill: #72243E; }
+svg .c-pink > text.ts { fill: #993556; }
+svg .c-amber > rect { fill: #FAEEDA; stroke: #854F0B; stroke-width: 0.5; }
+svg .c-amber > text.t, svg .c-amber > text.th { fill: #633806; }
+svg .c-amber > text.ts { fill: #854F0B; }
+svg .c-green > rect { fill: #EAF3DE; stroke: #3B6D11; stroke-width: 0.5; }
+svg .c-green > text.t, svg .c-green > text.th { fill: #27500A; }
+svg .c-green > text.ts { fill: #3B6D11; }
+svg .c-gray > rect { fill: #F1EFE8; stroke: #5F5E5A; stroke-width: 0.5; }
+svg .c-gray > text.t, svg .c-gray > text.th { fill: #2C2C2A; }
+svg .c-gray > text.ts { fill: #5F5E5A; }
+svg .c-slate > rect { fill: #EBEEF4; stroke: #3E4C63; stroke-width: 0.5; }
+svg .c-slate > text.t, svg .c-slate > text.th { fill: #2A3442; }
+svg .c-slate > text.ts { fill: #3E4C63; }
+svg .c-sand > rect { fill: #F3EEE4; stroke: #6E5D43; stroke-width: 0.5; }
+svg .c-sand > text.t, svg .c-sand > text.th { fill: #4A3F2E; }
+svg .c-sand > text.ts { fill: #6E5D43; }
+</style>
+</head>
+<body>
+<h1>India wealth-tech service-provider landscape</h1>
+<p class="meta">The technical and service-provider stack underneath a wealth platform, read top-to-bottom: from the licensed actors who serve the investor and the verification tech they integrate, down through the regulated identity and consent rails, the investor-persona branching that forks them, payment infrastructure, the API-primitive layer that abstracts it all, the direct rails where orders actually execute, the data feeds, and the regulators governing each layer. Players that wear several hats appear where they are most load-bearing.</p>
+<div class="legend">
+  <span><i style="background:#EBEEF4;border:0.5px solid #3E4C63"></i>Distribution actors &amp; licensing</span>
+  <span><i style="background:#E6F1FB;border:0.5px solid #185FA5"></i>Verification tech</span>
+  <span><i style="background:#FAEEDA;border:0.5px solid #854F0B"></i>Regulated identity infra</span>
+  <span><i style="background:#F3EEE4;border:0.5px solid #6E5D43"></i>Investor personas</span>
+  <span><i style="background:#E1F5EE;border:0.5px solid #0F6E56"></i>Account Aggregator</span>
+  <span><i style="background:#FAECE7;border:0.5px solid #993C1D"></i>Payment rails</span>
+  <span><i style="background:#EEEDFE;border:0.5px solid #534AB7"></i>Abstract / API primitives</span>
+  <span><i style="background:#EAF3DE;border:0.5px solid #3B6D11"></i>Direct rails &amp; record</span>
+  <span><i style="background:#F1EFE8;border:0.5px solid #5F5E5A"></i>Data &amp; aggregation</span>
+  <span><i style="background:#FBEAF0;border:0.5px solid #993556"></i>Regulators &amp; SROs</span>
+</div>
+<div class="diagram-wrap">
+<svg viewBox="0 0 1760 3370" style="min-width:1200px" role="img">
+<title>India wealth-tech service-provider landscape</title>
+<desc>Layered map of the technical and service-provider stack underpinning wealth management in India: identity and verification technology, regulated identity and KYC infrastructure, the Account Aggregator framework, payment rails, the abstract transaction / fintech-primitive layer, direct execution rails and systems of record, market and reference data, and the regulators that govern each layer.</desc>
+<g class="c-slate"><rect x="40" y="40" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="65" font-size="16">Distribution actors &amp; advisory licensing</text>
+<text class="ts" x="454" y="65" font-size="13">The licensed entity types that sit between the investor and the rails</text>
+</g>
+<g class="c-slate"><rect x="40.0" y="94" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="243.2" y="126" text-anchor="middle" font-size="15">RIA (SEBI)</text>
+<text class="ts" x="243.2" y="148" text-anchor="middle" font-size="13">Fee-only advice,</text>
+<text class="ts" x="243.2" y="166" text-anchor="middle" font-size="13">fiduciary; no commissions</text>
+</g>
+<g class="c-slate"><rect x="464.5" y="94" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="667.8" y="126" text-anchor="middle" font-size="15">MFD / ARN holder</text>
+<text class="ts" x="667.8" y="148" text-anchor="middle" font-size="13">Commission distribution,</text>
+<text class="ts" x="667.8" y="166" text-anchor="middle" font-size="13">ARN + EUIN tagging</text>
+</g>
+<g class="c-slate"><rect x="889.0" y="94" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1092.2" y="126" text-anchor="middle" font-size="15">Stockbroker</text>
+<text class="ts" x="1092.2" y="148" text-anchor="middle" font-size="13">Demat + exchange execution,</text>
+<text class="ts" x="1092.2" y="166" text-anchor="middle" font-size="13">SEBI broking registration</text>
+</g>
+<g class="c-slate"><rect x="1313.5" y="94" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1516.8" y="126" text-anchor="middle" font-size="15">Authorised Person</text>
+<text class="ts" x="1516.8" y="148" text-anchor="middle" font-size="13">Sub-broker operating under</text>
+<text class="ts" x="1516.8" y="166" text-anchor="middle" font-size="13">a registered stockbroker</text>
+</g>
+<g class="c-slate"><rect x="40.0" y="200" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="314.0" y="232" text-anchor="middle" font-size="15">EOP Category 1 (AMFI)</text>
+<text class="ts" x="314.0" y="254" text-anchor="middle" font-size="13">Execution-only MF platform,</text>
+<text class="ts" x="314.0" y="272" text-anchor="middle" font-size="13">registered with AMFI</text>
+</g>
+<g class="c-slate"><rect x="606.0" y="200" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="232" text-anchor="middle" font-size="15">EOP Category 2 (exchange)</text>
+<text class="ts" x="880.0" y="254" text-anchor="middle" font-size="13">Execution-only platform,</text>
+<text class="ts" x="880.0" y="272" text-anchor="middle" font-size="13">registered via the stock exchange</text>
+</g>
+<g class="c-slate"><rect x="1172.0" y="200" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1446.0" y="232" text-anchor="middle" font-size="15">Distributor identity</text>
+<text class="ts" x="1446.0" y="254" text-anchor="middle" font-size="13">ARN / EUIN (AMFI), KYD,</text>
+<text class="ts" x="1446.0" y="272" text-anchor="middle" font-size="13">NISM certification</text>
+</g>
+<g class="c-blue"><rect x="40" y="316" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="341" font-size="16">Identity &amp; verification technology</text>
+<text class="ts" x="398" y="341" font-size="13">Vendor SDKs/APIs a platform calls for onboarding — sit on top of the regulated rails below</text>
+</g>
+<g class="c-blue"><rect x="40.0" y="370" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="200.8" y="402" text-anchor="middle" font-size="15">HyperVerge</text>
+<text class="ts" x="200.8" y="424" text-anchor="middle" font-size="13">Selfie / face match, liveness,</text>
+<text class="ts" x="200.8" y="442" text-anchor="middle" font-size="13">video KYC, bank a/c verify, OCR</text>
+</g>
+<g class="c-blue"><rect x="379.6" y="370" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="540.4" y="402" text-anchor="middle" font-size="15">Signzy</text>
+<text class="ts" x="540.4" y="424" text-anchor="middle" font-size="13">No-code onboarding (GO),</text>
+<text class="ts" x="540.4" y="442" text-anchor="middle" font-size="13">240+ APIs, VCIP, banking infra</text>
+</g>
+<g class="c-blue"><rect x="719.2" y="370" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="402" text-anchor="middle" font-size="15">IDfy</text>
+<text class="ts" x="880.0" y="424" text-anchor="middle" font-size="13">OCR + video KYC at scale,</text>
+<text class="ts" x="880.0" y="442" text-anchor="middle" font-size="13">ID + employee bg verification</text>
+</g>
+<g class="c-blue"><rect x="1058.8" y="370" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1219.6" y="402" text-anchor="middle" font-size="15">Perfios (Karza)</text>
+<text class="ts" x="1219.6" y="424" text-anchor="middle" font-size="13">Bank-statement analysis,</text>
+<text class="ts" x="1219.6" y="442" text-anchor="middle" font-size="13">TotalKYC, 700+ data sources</text>
+</g>
+<g class="c-blue"><rect x="1398.4" y="370" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1559.2" y="402" text-anchor="middle" font-size="15">Digio</text>
+<text class="ts" x="1559.2" y="424" text-anchor="middle" font-size="13">eSign, eMandate, KRA submit,</text>
+<text class="ts" x="1559.2" y="442" text-anchor="middle" font-size="13">self + assisted video KYC</text>
+</g>
+<g class="c-blue"><rect x="40.0" y="476" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="200.8" y="508" text-anchor="middle" font-size="15">Decentro</text>
+<text class="ts" x="200.8" y="530" text-anchor="middle" font-size="13">Full-stack KYC + banking API,</text>
+<text class="ts" x="200.8" y="548" text-anchor="middle" font-size="13">DigiLocker, penny-drop, mandates</text>
+</g>
+<g class="c-blue"><rect x="379.6" y="476" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="540.4" y="508" text-anchor="middle" font-size="15">Bureau</text>
+<text class="ts" x="540.4" y="530" text-anchor="middle" font-size="13">Identity + fraud / risk,</text>
+<text class="ts" x="540.4" y="548" text-anchor="middle" font-size="13">device &amp; behavioural signals</text>
+</g>
+<g class="c-blue"><rect x="719.2" y="476" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="508" text-anchor="middle" font-size="15">Cashfree (Verify)</text>
+<text class="ts" x="880.0" y="530" text-anchor="middle" font-size="13">Bank a/c &amp; UPI verify,</text>
+<text class="ts" x="880.0" y="548" text-anchor="middle" font-size="13">PAN, Aadhaar, GST checks</text>
+</g>
+<g class="c-blue"><rect x="1058.8" y="476" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1219.6" y="508" text-anchor="middle" font-size="15">AuthBridge</text>
+<text class="ts" x="1219.6" y="530" text-anchor="middle" font-size="13">Background verification,</text>
+<text class="ts" x="1219.6" y="548" text-anchor="middle" font-size="13">KYC, business verification</text>
+</g>
+<g class="c-blue"><rect x="1398.4" y="476" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1559.2" y="508" text-anchor="middle" font-size="15">Others</text>
+<text class="ts" x="1559.2" y="530" text-anchor="middle" font-size="13">Gridlines, IDcentral, Veri5,</text>
+<text class="ts" x="1559.2" y="548" text-anchor="middle" font-size="13">Jukshio, AuthBridge, KYC Hub</text>
+</g>
+<g class="c-amber"><rect x="40" y="592" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="617" font-size="16">Regulated identity &amp; KYC infrastructure</text>
+<text class="ts" x="444" y="617" font-size="13">Government / SEBI rails the verification tech ultimately resolves against</text>
+</g>
+<g class="c-amber"><rect x="40.0" y="646" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="314.0" y="678" text-anchor="middle" font-size="15">UIDAI / Aadhaar</text>
+<text class="ts" x="314.0" y="700" text-anchor="middle" font-size="13">eKYC, offline XML, auth</text>
+<text class="ts" x="314.0" y="718" text-anchor="middle" font-size="13">via AUA/KUA + Sub-KUA model</text>
+</g>
+<g class="c-amber"><rect x="606.0" y="646" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="678" text-anchor="middle" font-size="15">DigiLocker</text>
+<text class="ts" x="880.0" y="700" text-anchor="middle" font-size="13">MeitY / NeGD</text>
+<text class="ts" x="880.0" y="718" text-anchor="middle" font-size="13">issued docs, Aadhaar XML, eSign</text>
+</g>
+<g class="c-amber"><rect x="1172.0" y="646" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1446.0" y="678" text-anchor="middle" font-size="15">PAN ecosystem</text>
+<text class="ts" x="1446.0" y="700" text-anchor="middle" font-size="13">Protean (ex-NSDL), UTIITSL</text>
+<text class="ts" x="1446.0" y="718" text-anchor="middle" font-size="13">PAN validate, PAN-Aadhaar link</text>
+</g>
+<g class="c-amber"><rect x="40.0" y="752" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="314.0" y="784" text-anchor="middle" font-size="15">eSign ESPs</text>
+<text class="ts" x="314.0" y="806" text-anchor="middle" font-size="13">Protean, eMudhra, (n)Code,</text>
+<text class="ts" x="314.0" y="824" text-anchor="middle" font-size="13">Capricorn — Aadhaar eSign</text>
+</g>
+<g class="c-amber"><rect x="606.0" y="752" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="784" text-anchor="middle" font-size="15">KRAs (5, SEBI)</text>
+<text class="ts" x="880.0" y="806" text-anchor="middle" font-size="13">CVL (CDSL), NDML, DotEx (NSE),</text>
+<text class="ts" x="880.0" y="824" text-anchor="middle" font-size="13">CAMS KRA, Karvy/KFin KRA</text>
+</g>
+<g class="c-amber"><rect x="1172.0" y="752" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1446.0" y="784" text-anchor="middle" font-size="15">CKYCR (CERSAI)</text>
+<text class="ts" x="1446.0" y="806" text-anchor="middle" font-size="13">Central KYC Registry,</text>
+<text class="ts" x="1446.0" y="824" text-anchor="middle" font-size="13">14-digit CKYC identifier</text>
+</g>
+<g class="c-sand"><rect x="40" y="868" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="893" font-size="16">Investor personas &amp; entity-type handling</text>
+<text class="ts" x="454" y="893" font-size="13">Not vendors — branching logic that forks KYC, substitutes rails, and gates products</text>
+</g>
+<g class="c-sand"><rect x="40.0" y="922" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="314.0" y="954" text-anchor="middle" font-size="15">Resident individual</text>
+<text class="ts" x="314.0" y="976" text-anchor="middle" font-size="13">Aadhaar eKYC + DigiLocker, UPI AutoPay</text>
+<text class="ts" x="314.0" y="994" text-anchor="middle" font-size="13">— the standard, fully-digital path</text>
+</g>
+<g class="c-sand"><rect x="606.0" y="922" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="954" text-anchor="middle" font-size="15">NRI / OCI / PIO</text>
+<text class="ts" x="880.0" y="976" text-anchor="middle" font-size="13">NRE/NRO/FCNR routing, FEMA; limited Aadhaar;</text>
+<text class="ts" x="880.0" y="994" text-anchor="middle" font-size="13">FATCA gating (US/Canada); TDS at source, DTAA</text>
+</g>
+<g class="c-sand"><rect x="1172.0" y="922" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1446.0" y="954" text-anchor="middle" font-size="15">Minor + guardian</text>
+<text class="ts" x="1446.0" y="976" text-anchor="middle" font-size="13">Single holding, guardian operates; DOB proof;</text>
+<text class="ts" x="1446.0" y="994" text-anchor="middle" font-size="13">minor-attaining-majority freeze + re-KYC</text>
+</g>
+<g class="c-sand"><rect x="40.0" y="1028" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="314.0" y="1060" text-anchor="middle" font-size="15">HUF</text>
+<text class="ts" x="314.0" y="1082" text-anchor="middle" font-size="13">Own PAN, Karta operates; non-individual</text>
+<text class="ts" x="314.0" y="1100" text-anchor="middle" font-size="13">KYC path; gated out of NPS and the like</text>
+</g>
+<g class="c-sand"><rect x="606.0" y="1028" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="1060" text-anchor="middle" font-size="15">Other non-individuals</text>
+<text class="ts" x="880.0" y="1082" text-anchor="middle" font-size="13">Trusts, partnerships, companies, LLPs;</text>
+<text class="ts" x="880.0" y="1100" text-anchor="middle" font-size="13">entity KYC, CKYC legal-entity record</text>
+</g>
+<g class="c-sand"><rect x="1172.0" y="1028" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1446.0" y="1060" text-anchor="middle" font-size="15">Cross-cutting handling</text>
+<text class="ts" x="1446.0" y="1082" text-anchor="middle" font-size="13">Forks the KYC orchestrator; disables / substitutes</text>
+<text class="ts" x="1446.0" y="1100" text-anchor="middle" font-size="13">Aadhaar, eSign, AutoPay; product + lifecycle gating</text>
+</g>
+<g class="c-teal"><rect x="40" y="1144" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="1169" font-size="16">Account Aggregator framework  (RBI NBFC-AA)</text>
+<text class="ts" x="481" y="1169" font-size="13">Consent-based financial-data sharing:  FIP  →  AA  →  FIU</text>
+</g>
+<g class="c-teal"><rect x="40.0" y="1198" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="200.8" y="1230" text-anchor="middle" font-size="15">Anumati (Perfios)</text>
+<text class="ts" x="200.8" y="1252" text-anchor="middle" font-size="13">Broadest live FIP coverage,</text>
+<text class="ts" x="200.8" y="1270" text-anchor="middle" font-size="13">underwriting-led heritage</text>
+</g>
+<g class="c-teal"><rect x="379.6" y="1198" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="540.4" y="1230" text-anchor="middle" font-size="15">CAMS Finserv</text>
+<text class="ts" x="540.4" y="1252" text-anchor="middle" font-size="13">Deepest mutual-fund coverage,</text>
+<text class="ts" x="540.4" y="1270" text-anchor="middle" font-size="13">registrar heritage</text>
+</g>
+<g class="c-teal"><rect x="719.2" y="1198" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="1230" text-anchor="middle" font-size="15">OneMoney (FinSec)</text>
+<text class="ts" x="880.0" y="1252" text-anchor="middle" font-size="13">First licensed AA,</text>
+<text class="ts" x="880.0" y="1270" text-anchor="middle" font-size="13">broad lending + wealth</text>
+</g>
+<g class="c-teal"><rect x="1058.8" y="1198" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1219.6" y="1230" text-anchor="middle" font-size="15">Finvu (Cookiejar)</text>
+<text class="ts" x="1219.6" y="1252" text-anchor="middle" font-size="13">AA pure-play,</text>
+<text class="ts" x="1219.6" y="1270" text-anchor="middle" font-size="13">consent-layer focus</text>
+</g>
+<g class="c-teal"><rect x="1398.4" y="1198" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1559.2" y="1230" text-anchor="middle" font-size="15">NADL (NESL)</text>
+<text class="ts" x="1559.2" y="1252" text-anchor="middle" font-size="13">Institutional backing,</text>
+<text class="ts" x="1559.2" y="1270" text-anchor="middle" font-size="13">wide FIP footprint</text>
+</g>
+<g class="c-teal"><rect x="40.0" y="1304" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="200.8" y="1336" text-anchor="middle" font-size="15">Protean SurakshAA</text>
+<text class="ts" x="200.8" y="1358" text-anchor="middle" font-size="13">Protean (ex-NSDL eGov),</text>
+<text class="ts" x="200.8" y="1376" text-anchor="middle" font-size="13">governance-backed</text>
+</g>
+<g class="c-teal"><rect x="379.6" y="1304" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="540.4" y="1336" text-anchor="middle" font-size="15">Other licensed AAs</text>
+<text class="ts" x="540.4" y="1358" text-anchor="middle" font-size="13">Setu AA (Agya), Saafe, CRIF,</text>
+<text class="ts" x="540.4" y="1376" text-anchor="middle" font-size="13">PhonePe, Tally, Digio, Yodlee</text>
+</g>
+<g class="c-teal"><rect x="719.2" y="1304" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="1336" text-anchor="middle" font-size="15">TSPs</text>
+<text class="ts" x="880.0" y="1358" text-anchor="middle" font-size="13">Technical Service Providers:</text>
+<text class="ts" x="880.0" y="1376" text-anchor="middle" font-size="13">Setu, Finvu, Perfios, FinBox</text>
+</g>
+<g class="c-teal"><rect x="1058.8" y="1304" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1219.6" y="1336" text-anchor="middle" font-size="15">Roles</text>
+<text class="ts" x="1219.6" y="1358" text-anchor="middle" font-size="13">FIP / FIU / AA</text>
+<text class="ts" x="1219.6" y="1376" text-anchor="middle" font-size="13">banks, AMCs, NBFCs as FIP/FIU</text>
+</g>
+<g class="c-teal"><rect x="1398.4" y="1304" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1559.2" y="1336" text-anchor="middle" font-size="15">Sahamati</text>
+<text class="ts" x="1559.2" y="1358" text-anchor="middle" font-size="13">AA collective / SRB-in-making,</text>
+<text class="ts" x="1559.2" y="1376" text-anchor="middle" font-size="13">DigiSahamati standards</text>
+</g>
+<g class="c-coral"><rect x="40" y="1420" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="1445" font-size="16">Payment rails &amp; collection</text>
+<text class="ts" x="325" y="1445" font-size="13">Money movement: NPCI rails, gateways, and recurring mandates for SIPs</text>
+</g>
+<g class="c-coral"><rect x="40" y="1474" width="1680" height="30" rx="4" stroke-width="0.5"/>
+<text class="th" x="58" y="1494" font-size="14">NPCI rails</text>
+<text class="ts" x="168" y="1494" font-size="13">the underlying public payment infrastructure</text>
+</g>
+<g class="c-coral"><rect x="40.0" y="1514" width="406.5" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="243.2" y="1546" text-anchor="middle" font-size="15">UPI / UPI AutoPay</text>
+<text class="ts" x="243.2" y="1568" text-anchor="middle" font-size="13">Real-time; e-mandate for SIP</text>
+</g>
+<g class="c-coral"><rect x="464.5" y="1514" width="406.5" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="667.8" y="1546" text-anchor="middle" font-size="15">NACH / eNACH</text>
+<text class="ts" x="667.8" y="1568" text-anchor="middle" font-size="13">Recurring debit mandates</text>
+</g>
+<g class="c-coral"><rect x="889.0" y="1514" width="406.5" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="1092.2" y="1546" text-anchor="middle" font-size="15">BBPS (Bharat BillPay)</text>
+<text class="ts" x="1092.2" y="1568" text-anchor="middle" font-size="13">Bill &amp; collection rail</text>
+</g>
+<g class="c-coral"><rect x="1313.5" y="1514" width="406.5" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="1516.8" y="1546" text-anchor="middle" font-size="15">Cards SI / net-banking</text>
+<text class="ts" x="1516.8" y="1568" text-anchor="middle" font-size="13">Standing instructions</text>
+</g>
+<g class="c-coral"><rect x="40" y="1598" width="1680" height="30" rx="4" stroke-width="0.5"/>
+<text class="th" x="58" y="1618" font-size="14">Gateways, orchestration &amp; mandate providers</text>
+</g>
+<g class="c-coral"><rect x="40.0" y="1638" width="321.6" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="200.8" y="1670" text-anchor="middle" font-size="15">Razorpay</text>
+<text class="ts" x="200.8" y="1692" text-anchor="middle" font-size="13">PG + RazorpayX banking</text>
+</g>
+<g class="c-coral"><rect x="379.6" y="1638" width="321.6" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="540.4" y="1670" text-anchor="middle" font-size="15">Cashfree</text>
+<text class="ts" x="540.4" y="1692" text-anchor="middle" font-size="13">PG, payouts, verification</text>
+</g>
+<g class="c-coral"><rect x="719.2" y="1638" width="321.6" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="1670" text-anchor="middle" font-size="15">PayU</text>
+<text class="ts" x="880.0" y="1692" text-anchor="middle" font-size="13">PG, enterprise scale</text>
+</g>
+<g class="c-coral"><rect x="1058.8" y="1638" width="321.6" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="1219.6" y="1670" text-anchor="middle" font-size="15">BillDesk</text>
+<text class="ts" x="1219.6" y="1692" text-anchor="middle" font-size="13">Bank-grade PG, mandates</text>
+</g>
+<g class="c-coral"><rect x="1398.4" y="1638" width="321.6" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="1559.2" y="1670" text-anchor="middle" font-size="15">CCAvenue (Infibeam)</text>
+<text class="ts" x="1559.2" y="1692" text-anchor="middle" font-size="13">PG, multi-currency</text>
+</g>
+<g class="c-coral"><rect x="40.0" y="1726" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="200.8" y="1758" text-anchor="middle" font-size="15">Juspay</text>
+<text class="ts" x="200.8" y="1780" text-anchor="middle" font-size="13">Payment orchestration</text>
+</g>
+<g class="c-coral"><rect x="379.6" y="1726" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="540.4" y="1758" text-anchor="middle" font-size="15">Pine Labs (Plural)</text>
+<text class="ts" x="540.4" y="1780" text-anchor="middle" font-size="13">PG + orchestration</text>
+</g>
+<g class="c-coral"><rect x="719.2" y="1726" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="1758" text-anchor="middle" font-size="15">Mandate specialists</text>
+<text class="ts" x="880.0" y="1780" text-anchor="middle" font-size="13">Digio, Decentro,</text>
+<text class="ts" x="880.0" y="1798" text-anchor="middle" font-size="13">NPCI sponsor banks</text>
+</g>
+<g class="c-coral"><rect x="1058.8" y="1726" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1219.6" y="1758" text-anchor="middle" font-size="15">Penny-drop / RPD</text>
+<text class="ts" x="1219.6" y="1780" text-anchor="middle" font-size="13">Bank a/c verification</text>
+</g>
+<g class="c-coral"><rect x="1398.4" y="1726" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1559.2" y="1758" text-anchor="middle" font-size="15">Paytm / PhonePe PG</text>
+<text class="ts" x="1559.2" y="1780" text-anchor="middle" font-size="13">Wallet + UPI rails</text>
+</g>
+<g class="c-purple"><rect x="40" y="1842" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="1867" font-size="16">Abstract transaction layer  (fintech primitives)</text>
+<text class="ts" x="527" y="1867" font-size="13">API PaaS that hides the rails behind clean building blocks</text>
+</g>
+<g class="c-purple"><rect x="40" y="1896" width="1680" height="30" rx="4" stroke-width="0.5"/>
+<text class="th" x="58" y="1916" font-size="14">Wealth &amp; mutual-fund API layer</text>
+</g>
+<g class="c-purple"><rect x="40.0" y="1936" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="243.2" y="1968" text-anchor="middle" font-size="15">FintechPrimitives (Cybrilla)</text>
+<text class="ts" x="243.2" y="1990" text-anchor="middle" font-size="13">'MF-in-a-box' PaaS — abstracts AMCs,</text>
+<text class="ts" x="243.2" y="2008" text-anchor="middle" font-size="13">RTAs &amp; BSE StAR MF; cybrillapoa gateway</text>
+</g>
+<g class="c-purple"><rect x="464.5" y="1936" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="667.8" y="1968" text-anchor="middle" font-size="15">MFAPIs.in</text>
+<text class="ts" x="667.8" y="1990" text-anchor="middle" font-size="13">BSE StarMF APIs, RTA feeds,</text>
+<text class="ts" x="667.8" y="2008" text-anchor="middle" font-size="13">MF Central sync, CAS parsing</text>
+</g>
+<g class="c-purple"><rect x="889.0" y="1936" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1092.2" y="1968" text-anchor="middle" font-size="15">Valuefy</text>
+<text class="ts" x="1092.2" y="1990" text-anchor="middle" font-size="13">Wealth / PMS tech,</text>
+<text class="ts" x="1092.2" y="2008" text-anchor="middle" font-size="13">portfolio &amp; analytics engine</text>
+</g>
+<g class="c-purple"><rect x="1313.5" y="1936" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1516.8" y="1968" text-anchor="middle" font-size="15">Distributor stacks</text>
+<text class="ts" x="1516.8" y="1990" text-anchor="middle" font-size="13">Wealthy, AssetPlus, InvestWell,</text>
+<text class="ts" x="1516.8" y="2008" text-anchor="middle" font-size="13">IFA-Planet — build on the rails</text>
+</g>
+<g class="c-purple"><rect x="40" y="2038" width="1680" height="30" rx="4" stroke-width="0.5"/>
+<text class="th" x="58" y="2058" font-size="14">Broking &amp; baskets</text>
+</g>
+<g class="c-purple"><rect x="40.0" y="2078" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="314.0" y="2110" text-anchor="middle" font-size="15">smallcase gateway</text>
+<text class="ts" x="314.0" y="2132" text-anchor="middle" font-size="13">Broker-agnostic basket txns,</text>
+<text class="ts" x="314.0" y="2150" text-anchor="middle" font-size="13">sits over broker order APIs</text>
+</g>
+<g class="c-purple"><rect x="606.0" y="2078" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="2110" text-anchor="middle" font-size="15">Sensibull</text>
+<text class="ts" x="880.0" y="2132" text-anchor="middle" font-size="13">Options analytics &amp; execution</text>
+</g>
+<g class="c-purple"><rect x="1172.0" y="2078" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1446.0" y="2110" text-anchor="middle" font-size="15">Broker APIs</text>
+<text class="ts" x="1446.0" y="2132" text-anchor="middle" font-size="13">Kite Connect (Zerodha), Angel One</text>
+<text class="ts" x="1446.0" y="2150" text-anchor="middle" font-size="13">SmartAPI, Upstox, ICICI Direct, 5paisa</text>
+</g>
+<g class="c-purple"><rect x="40" y="2180" width="1680" height="30" rx="4" stroke-width="0.5"/>
+<text class="th" x="58" y="2200" font-size="14">General banking primitives  (used by wealth too)</text>
+</g>
+<g class="c-purple"><rect x="40.0" y="2220" width="406.5" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="243.2" y="2252" text-anchor="middle" font-size="15">Setu (Pine Labs)</text>
+<text class="ts" x="243.2" y="2274" text-anchor="middle" font-size="13">BBPS, UPI, AA, data APIs</text>
+</g>
+<g class="c-purple"><rect x="464.5" y="2220" width="406.5" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="667.8" y="2252" text-anchor="middle" font-size="15">M2P Fintech</text>
+<text class="ts" x="667.8" y="2274" text-anchor="middle" font-size="13">Card issuing, BaaS, lending APIs</text>
+</g>
+<g class="c-purple"><rect x="889.0" y="2220" width="406.5" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="1092.2" y="2252" text-anchor="middle" font-size="15">Decentro</text>
+<text class="ts" x="1092.2" y="2274" text-anchor="middle" font-size="13">Full-stack banking APIs</text>
+</g>
+<g class="c-purple"><rect x="1313.5" y="2220" width="406.5" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="1516.8" y="2252" text-anchor="middle" font-size="15">Zwitch (Open)</text>
+<text class="ts" x="1516.8" y="2274" text-anchor="middle" font-size="13">BaaS / neobanking APIs</text>
+</g>
+<g class="c-green"><rect x="40" y="2318" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="2343" font-size="16">Direct rails &amp; system-of-record</text>
+<text class="ts" x="371" y="2343" font-size="13">Where orders actually execute and units / securities are recorded</text>
+</g>
+<g class="c-green"><rect x="40" y="2372" width="1680" height="30" rx="4" stroke-width="0.5"/>
+<text class="th" x="58" y="2392" font-size="14">Mutual funds</text>
+<text class="ts" x="185" y="2392" font-size="13">order rails sit between the platform and the RTAs</text>
+</g>
+<g class="c-green"><rect x="40.0" y="2412" width="265.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="172.5" y="2444" text-anchor="middle" font-size="15">BSE StAR MF</text>
+<text class="ts" x="172.5" y="2466" text-anchor="middle" font-size="13">Dominant MF order rail;</text>
+<text class="ts" x="172.5" y="2484" text-anchor="middle" font-size="13">6cr+ txns/month FY26</text>
+</g>
+<g class="c-green"><rect x="323.0" y="2412" width="265.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="455.5" y="2444" text-anchor="middle" font-size="15">NSE NMF II</text>
+<text class="ts" x="455.5" y="2466" text-anchor="middle" font-size="13">NSE MF order rail,</text>
+<text class="ts" x="455.5" y="2484" text-anchor="middle" font-size="13">distributor transactions</text>
+</g>
+<g class="c-green"><rect x="606.0" y="2412" width="265.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="738.5" y="2444" text-anchor="middle" font-size="15">MF Utility (MFU)</text>
+<text class="ts" x="738.5" y="2466" text-anchor="middle" font-size="13">AMFI-owned utility,</text>
+<text class="ts" x="738.5" y="2484" text-anchor="middle" font-size="13">CAN-based; direct + regular</text>
+</g>
+<g class="c-green"><rect x="889.0" y="2412" width="265.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1021.5" y="2444" text-anchor="middle" font-size="15">MF Central</text>
+<text class="ts" x="1021.5" y="2466" text-anchor="middle" font-size="13">CAMS + KFin investor hub,</text>
+<text class="ts" x="1021.5" y="2484" text-anchor="middle" font-size="13">service requests &amp; holdings</text>
+</g>
+<g class="c-green"><rect x="1172.0" y="2412" width="265.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1304.5" y="2444" text-anchor="middle" font-size="15">RTAs: CAMS &amp; KFin</text>
+<text class="ts" x="1304.5" y="2466" text-anchor="middle" font-size="13">System of record for all AMCs;</text>
+<text class="ts" x="1304.5" y="2484" text-anchor="middle" font-size="13">allot units, daily mailback files</text>
+</g>
+<g class="c-green"><rect x="1455.0" y="2412" width="265.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1587.5" y="2444" text-anchor="middle" font-size="15">AMCs</text>
+<text class="ts" x="1587.5" y="2466" text-anchor="middle" font-size="13">The fund houses (40+);</text>
+<text class="ts" x="1587.5" y="2484" text-anchor="middle" font-size="13">NAV &amp; scheme master</text>
+</g>
+<g class="c-green"><rect x="40" y="2514" width="1680" height="30" rx="4" stroke-width="0.5"/>
+<text class="th" x="58" y="2534" font-size="14">Equity / ETF / demat</text>
+</g>
+<g class="c-green"><rect x="40.0" y="2554" width="548.0" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="314.0" y="2586" text-anchor="middle" font-size="15">Exchanges: NSE / BSE</text>
+<text class="ts" x="314.0" y="2608" text-anchor="middle" font-size="13">Order matching</text>
+</g>
+<g class="c-green"><rect x="606.0" y="2554" width="548.0" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="2586" text-anchor="middle" font-size="15">Depositories: NSDL / CDSL</text>
+<text class="ts" x="880.0" y="2608" text-anchor="middle" font-size="13">Demat holdings, e-DIS</text>
+</g>
+<g class="c-green"><rect x="1172.0" y="2554" width="548.0" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="1446.0" y="2586" text-anchor="middle" font-size="15">Clearing: NSE Clearing / ICCL</text>
+<text class="ts" x="1446.0" y="2608" text-anchor="middle" font-size="13">Settlement &amp; risk</text>
+</g>
+<g class="c-green"><rect x="40" y="2638" width="1680" height="30" rx="4" stroke-width="0.5"/>
+<text class="th" x="58" y="2658" font-size="14">Fixed income &amp; retirement</text>
+</g>
+<g class="c-green"><rect x="40.0" y="2678" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="314.0" y="2710" text-anchor="middle" font-size="15">OBPP platforms</text>
+<text class="ts" x="314.0" y="2732" text-anchor="middle" font-size="13">GoldenPi, Wint Wealth, IndiaBonds,</text>
+<text class="ts" x="314.0" y="2750" text-anchor="middle" font-size="13">Jiraaf, Grip, Aspero, Bondbazaar (SEBI debt brokers)</text>
+</g>
+<g class="c-green"><rect x="606.0" y="2678" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="2710" text-anchor="middle" font-size="15">RBI Retail Direct</text>
+<text class="ts" x="880.0" y="2732" text-anchor="middle" font-size="13">G-Sec / T-bill / SGB,</text>
+<text class="ts" x="880.0" y="2750" text-anchor="middle" font-size="13">direct retail gilt account</text>
+</g>
+<g class="c-green"><rect x="1172.0" y="2678" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1446.0" y="2710" text-anchor="middle" font-size="15">NPS CRAs</text>
+<text class="ts" x="1446.0" y="2732" text-anchor="middle" font-size="13">Protean, KFin, CAMS CRA</text>
+<text class="ts" x="1446.0" y="2750" text-anchor="middle" font-size="13">under PFRDA; PoPs, Trustee Bank</text>
+</g>
+<g class="c-green"><rect x="40" y="2780" width="1680" height="30" rx="4" stroke-width="0.5"/>
+<text class="th" x="58" y="2800" font-size="14">Gold, deposits &amp; global</text>
+</g>
+<g class="c-green"><rect x="40.0" y="2820" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="243.2" y="2852" text-anchor="middle" font-size="15">Digital gold</text>
+<text class="ts" x="243.2" y="2874" text-anchor="middle" font-size="13">Augmont, MMTC-PAMP, SafeGold;</text>
+<text class="ts" x="243.2" y="2892" text-anchor="middle" font-size="13">vaulted 24K, buy / sell / convert</text>
+</g>
+<g class="c-green"><rect x="464.5" y="2820" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="667.8" y="2852" text-anchor="middle" font-size="15">Gold ETF / SGB</text>
+<text class="ts" x="667.8" y="2874" text-anchor="middle" font-size="13">Gold ETFs via the exchanges;</text>
+<text class="ts" x="667.8" y="2892" text-anchor="middle" font-size="13">SGB via RBI Retail Direct (above)</text>
+</g>
+<g class="c-green"><rect x="889.0" y="2820" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1092.2" y="2852" text-anchor="middle" font-size="15">FD / deposit aggregation</text>
+<text class="ts" x="1092.2" y="2874" text-anchor="middle" font-size="13">Stable Money &amp; similar;</text>
+<text class="ts" x="1092.2" y="2892" text-anchor="middle" font-size="13">bank &amp; BaaS APIs, DICGC-covered</text>
+</g>
+<g class="c-green"><rect x="1313.5" y="2820" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1516.8" y="2852" text-anchor="middle" font-size="15">Global equities</text>
+<text class="ts" x="1516.8" y="2874" text-anchor="middle" font-size="13">LRS via AD bank; offshore broker</text>
+<text class="ts" x="1516.8" y="2892" text-anchor="middle" font-size="13">(DriveWealth, Alpaca, IBKR) + custody</text>
+</g>
+<g class="c-gray"><rect x="40" y="2936" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="2961" font-size="16">Market data, reference &amp; portfolio aggregation</text>
+<text class="ts" x="509" y="2961" font-size="13">Prices, scheme/reference data, and consolidated holdings</text>
+</g>
+<g class="c-gray"><rect x="40.0" y="2990" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="243.2" y="3022" text-anchor="middle" font-size="15">NAV &amp; scheme data</text>
+<text class="ts" x="243.2" y="3044" text-anchor="middle" font-size="13">AMFI feeds, ICRA Analytics (MFI),</text>
+<text class="ts" x="243.2" y="3062" text-anchor="middle" font-size="13">Accord Fintech, Morningstar, Value Research</text>
+</g>
+<g class="c-gray"><rect x="464.5" y="2990" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="667.8" y="3022" text-anchor="middle" font-size="15">Pricing / analytics</text>
+<text class="ts" x="667.8" y="3044" text-anchor="middle" font-size="13">Cogencis, Refinitiv,</text>
+<text class="ts" x="667.8" y="3062" text-anchor="middle" font-size="13">benchmarks, factsheets</text>
+</g>
+<g class="c-gray"><rect x="889.0" y="2990" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1092.2" y="3022" text-anchor="middle" font-size="15">CAS</text>
+<text class="ts" x="1092.2" y="3044" text-anchor="middle" font-size="13">NSDL/CDSL CAS, CAMS/KFin CAS,</text>
+<text class="ts" x="1092.2" y="3062" text-anchor="middle" font-size="13">cross-AMC + demat holdings</text>
+</g>
+<g class="c-gray"><rect x="1313.5" y="2990" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1516.8" y="3022" text-anchor="middle" font-size="15">Portfolio aggregation</text>
+<text class="ts" x="1516.8" y="3044" text-anchor="middle" font-size="13">MF Central, AA, CAS parsing,</text>
+<text class="ts" x="1516.8" y="3062" text-anchor="middle" font-size="13">holdings stitch &amp; reconciliation</text>
+</g>
+<g class="c-pink"><rect x="40" y="3106" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="3131" font-size="16">Regulators, standards &amp; SROs</text>
+<text class="ts" x="343" y="3131" font-size="13">Who governs each layer above</text>
+</g>
+<g class="c-pink"><rect x="40.0" y="3160" width="321.6" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="200.8" y="3192" text-anchor="middle" font-size="15">RBI</text>
+<text class="ts" x="200.8" y="3214" text-anchor="middle" font-size="13">AA, payment systems, NBFCs</text>
+</g>
+<g class="c-pink"><rect x="379.6" y="3160" width="321.6" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="540.4" y="3192" text-anchor="middle" font-size="15">SEBI</text>
+<text class="ts" x="540.4" y="3214" text-anchor="middle" font-size="13">MF, OBPP, RIA, broking, depositories</text>
+</g>
+<g class="c-pink"><rect x="719.2" y="3160" width="321.6" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="3192" text-anchor="middle" font-size="15">PFRDA</text>
+<text class="ts" x="880.0" y="3214" text-anchor="middle" font-size="13">NPS / pensions</text>
+</g>
+<g class="c-pink"><rect x="1058.8" y="3160" width="321.6" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="1219.6" y="3192" text-anchor="middle" font-size="15">IRDAI</text>
+<text class="ts" x="1219.6" y="3214" text-anchor="middle" font-size="13">Insurance</text>
+</g>
+<g class="c-pink"><rect x="1398.4" y="3160" width="321.6" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="1559.2" y="3192" text-anchor="middle" font-size="15">UIDAI</text>
+<text class="ts" x="1559.2" y="3214" text-anchor="middle" font-size="13">Aadhaar / eKYC</text>
+</g>
+<g class="c-pink"><rect x="40.0" y="3248" width="321.6" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="200.8" y="3280" text-anchor="middle" font-size="15">MeitY / NeGD</text>
+<text class="ts" x="200.8" y="3302" text-anchor="middle" font-size="13">DigiLocker, eSign framework</text>
+</g>
+<g class="c-pink"><rect x="379.6" y="3248" width="321.6" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="540.4" y="3280" text-anchor="middle" font-size="15">NPCI</text>
+<text class="ts" x="540.4" y="3302" text-anchor="middle" font-size="13">UPI, NACH, BBPS rails</text>
+</g>
+<g class="c-pink"><rect x="719.2" y="3248" width="321.6" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="3280" text-anchor="middle" font-size="15">AMFI</text>
+<text class="ts" x="880.0" y="3302" text-anchor="middle" font-size="13">MF industry SRO</text>
+</g>
+<g class="c-pink"><rect x="1058.8" y="3248" width="321.6" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="1219.6" y="3280" text-anchor="middle" font-size="15">CERSAI</text>
+<text class="ts" x="1219.6" y="3302" text-anchor="middle" font-size="13">CKYC registry operator</text>
+</g>
+<g class="c-pink"><rect x="1398.4" y="3248" width="321.6" height="74" rx="8" stroke-width="0.5"/>
+<text class="th" x="1559.2" y="3280" text-anchor="middle" font-size="15">DPDP / data</text>
+<text class="ts" x="1559.2" y="3302" text-anchor="middle" font-size="13">Consent, purpose-binding regime</text>
+</g>
+</svg>
+</div>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J8: Systematic Investment Plan</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Journey Layer</p>
+  <h1 class="title">J8: Systematic Investment Plan</h1>
+  <p class="subtitle">How a SIP runs: a standing instruction, backed by a J5 mandate, that emits a child order on each scheduled date, each running the J6 order spine. The plan and the instalment keep separate lifecycles, so a single failed debit is an instalment event, never a plan stop.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.1: Decision-surfacing draft</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Journey document (not a reference, not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>The governing view of <strong>how a Systematic Investment Plan runs</strong>. A SIP is not an order. It is a long-lived standing instruction with its own lifecycle that, on each scheduled date, debits a registered mandate and emits a child order that runs the full J6 spine on its own. J8 draws that plan lifecycle, <span class="mono">Registered</span> through <span class="mono">Active</span> to <span class="mono">Completed</span> or <span class="mono">Cancelled</span>, the per-instalment cycle with its pre-debit notification, and the rule that holds the whole design together: the plan and the instalment fail, pause, and terminate on separate clocks. It draws on Order for the plan and transaction family, on J5 for the mandate, and on J6 for the per-instalment spine.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a reference and not a PRD. It does not redraw the per-instalment order, which is J6 instantiated each cycle, and it does not redraw mandate registration, which is J5. It is the <strong>money-in</strong> systematic plan specifically; the money-out plans, the SWP in J11 and the STP sell leg and switch in J10, reuse this plan-lifecycle pattern but need no mandate, so they are out of scope here. Per the settled D4 the mandate and its ceiling are taken as given. This is a decision-surfacing pass, and it centres the one genuinely open call it forces, <strong>the pause-on-failure policy (D9)</strong>, which is a Product decision, not a default any source fixes.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong, where the default intuition is likely to mislead.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a point the firm must actively design around, where a plan can over-invest, stall, or unwind something it should not.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not yet settled, or one turning on a decision still open in the register; each names its owner.</p></div>
+  <p>State names are shown in <span class="mono">monospace</span> when they refer to a specific lifecycle state the Order reference owns. The plan states are <span class="mono">Registered</span>, <span class="mono">Active</span>, <span class="mono">Paused</span>, <span class="mono">Completed</span>, and <span class="mono">Cancelled</span>; the instalment runs the J6 order states. The altitude follows the draw-or-bullet test: a fork that reroutes the path is drawn, a captured value or an added check is bulleted.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">The spine</a></li>
+    <li><a href="#s2">Decision points</a></li>
+    <li><a href="#s3">Failure taxonomy</a></li>
+    <li><a href="#s4">Special cases</a></li>
+    <li><a href="#s5">Entities and states exercised</a></li>
+    <li><a href="#s6">Decisions surfaced</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1"><span class="num">1.</span>The spine</h2>
+<p class="lead">A SIP has two altitudes, and keeping them apart is the whole craft of the journey. There is the plan, a long-lived instruction that is registered once and then lives until its tenure ends or the investor stops it. And there is the instalment, a fresh child order minted on each scheduled date that prices, allots, and settles on its own. The first diagram draws the plan lifecycle. The second draws what one scheduled date does. Neither redraws the J6 order spine, which each instalment runs in full.</p>
+
+<h3>The plan lifecycle</h3>
+<pre class="mermaid">
+flowchart TD
+  A([New SIP intent, scheme and amount and schedule]) --> B{A live mandate backs the plan}
+  B -->|yes, from J5| C[Register the plan, schedule and amount and mandate and tenure]
+  B -->|no live mandate| X1([Blocked, register a mandate first via J5])
+  C --> D([Active, instalments generate on schedule])
+  D -->|on each scheduled date| E[Emit a child order that runs the J6 spine]
+  E -->|outcome recorded, plan unchanged by one result| D
+  D -->|tenure or instalment count reached| G([Completed])
+</pre>
+<p>The plan is <span class="mono">Registered</span> once its schedule, amount, mandate link, and tenure are set, and it turns <span class="mono">Active</span> when instalments begin generating. From <span class="mono">Active</span> it loops, emitting an instalment each scheduled date and returning to <span class="mono">Active</span> regardless of how any single instalment turned out, until it reaches <span class="mono">Completed</span> at the end of its tenure or instalment count. Two states sit off this happy path and are reached deliberately: <span class="mono">Paused</span>, drawn in Section 2 as the failure-threshold fork and bulleted in Section 4 as the investor-initiated suspend, and <span class="mono">Cancelled</span>, the investor stopping the plan before its natural end. Cancelling stops future instalments only; it never reaches back to unwind instalments that already settled.</p>
+
+<h3>What one scheduled date does</h3>
+<pre class="mermaid">
+flowchart TD
+  A([Scheduled date reached]) --> B[Pre-debit notification to the investor, at least 24 hours ahead]
+  B --> C{Investor skips this instalment}
+  C -->|yes, via the notification| K([Skipped, plan and mandate untouched])
+  C -->|no| D[Debit the mandate within its ceiling]
+  D --> E[Emit a child order that runs the J6 spine, Placed through Settled]
+  E --> F{Instalment outcome}
+  F -->|settled| G([Instalment Settled, plan continues])
+  F -->|debit or order fails| H([Instalment Failed, plan continues])
+</pre>
+<p>Every instalment opens with the mandatory pre-debit notification the e-mandate framework requires, at least twenty-four hours ahead, carrying the amount, the date, and an opt-out. That opt-out is the clean skip path: an investor can drop a single instalment without touching the plan or the mandate. If the instalment proceeds, the mandate is debited within its ceiling and a child order is emitted to run the J6 spine. Both outcomes, a settled instalment and a failed one, return the plan to <span class="mono">Active</span>. That symmetry is the point: the plan does not flinch at one result either way.</p>
+
+<h3>Who acts at each step</h3>
+<table>
+  <thead><tr><th>Step</th><th>Acting party (by role)</th><th>What the firm does</th></tr></thead>
+  <tbody>
+    <tr><td>Register the plan</td><td>The firm.</td><td>Captures the schedule, the amount, the mandate link, and the tenure. The plan is the firm's own entity; nothing is debited yet.</td></tr>
+    <tr><td>Pre-debit notification</td><td>The firm, as the collecting party.</td><td>Notifies the investor at least twenty-four hours before each debit, with an opt-out. A hard requirement under the e-mandate framework, not a courtesy.</td></tr>
+    <tr><td>Debit and emit the instalment</td><td>NPCI or the bank debits; the AMC and RTA price, allot, and settle.</td><td>The firm emits the child order, initiates the debit, and tracks it through the J6 spine. Money never rests with the firm.</td></tr>
+    <tr><td>Record the outcome</td><td>The firm.</td><td>Reconciles each instalment against the RTA feed and records its result on the plan. The plan does not change state on a single instalment outcome.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: two entities, two clocks</p>
+  <p>The plan and the instalment are separate entities with separate lifecycles, and almost every systematic-plan defect traces back to collapsing them. The plan carries the schedule, the mandate, and the start and end conditions; each instalment carries a price, an allotment, and a settlement. A failed instalment must not fail the plan, and a cancelled plan must not unwind instalments that already settled. J8 owns the plan clock and the discipline of not letting one instalment move it.</p>
+</div>
+
+<h2 id="s2"><span class="num">2.</span>Decision points</h2>
+<p>Two genuine forks J8 owns. The first is the open call this journey exists to surface; the second exercises a row J5 added and confirms it holds when a real flow leans on it.</p>
+
+<h3>The pause-on-failure threshold (D9)</h3>
+<p>This is the decision J8 centres, and it is genuinely open: no external rule fixes how many failures should pause a plan, so it is a Product policy. A single failed debit marks that instalment <span class="mono">Failed</span> and leaves the plan <span class="mono">Active</span>; the plan pauses only once a threshold of consecutive failures is crossed.</p>
+<pre class="mermaid">
+flowchart TD
+  P([Instalment fails to debit or the order is rejected]) --> Q[Mark this instalment Failed, plan stays Active]
+  Q --> R{Consecutive-failure threshold reached}
+  R -->|no| S([Plan continues, next instalment generates on schedule])
+  R -->|yes| T([Plan Paused, investor prompted to restore funding])
+</pre>
+<div class="callout verify">
+  <p class="ck">Open: the threshold and the retry behaviour are a Product call (D9)</p>
+  <p>Two parts need Product to settle. The <strong>threshold</strong>, how many consecutive failures pause the plan, is recommended at three consecutive failures, but that figure is a proposed default this journey puts forward, not a fact from any source. The <strong>retry behaviour</strong>, whether and how a failed instalment is re-attempted, must be defined alongside it and must never re-attempt in a way that double-invests. The recommended position is to mark the instalment <span class="mono">Failed</span>, not retry the same instalment within its cycle, and pause the plan after three consecutive failures with a prompt to restore funding. Owner: Product.</p>
+</div>
+
+<h3>Reuse a mandate or register a new one (D44)</h3>
+<p>When a plan is registered, it needs a live mandate to debit. It can attach to an existing mandate already registered on the funding account, or trigger a fresh registration via J5. This fork is where the mandate-to-plan cardinality from D44 is exercised.</p>
+<pre class="mermaid">
+flowchart TD
+  P([New SIP, funding account chosen]) --> Q{A live mandate on this account covers the instalment within its ceiling}
+  Q -->|yes| M1([Attach the existing mandate, one mandate backing several plans])
+  Q -->|no, or the amount exceeds the ceiling| M2([Register a new mandate via J5, then attach])
+</pre>
+<p>The recommended position from D44 holds when drawn here: a single mandate registered on a bank account, within its per-debit ceiling, can back more than one SIP, so the plan attaches an existing mandate where one covers it and registers a new one only when none does or the instalment exceeds the ceiling. The ceiling logic is D4's, already settled: keep the instalment inside the &#8377;1 lakh enhanced no-authentication band so the common case needs no per-cycle factor.</p>
+
+<h2 id="s3"><span class="num">3.</span>Failure taxonomy</h2>
+<p>The ways a SIP breaks separate cleanly into instalment-level events, which the plan absorbs, and plan-level conditions, which change the plan's state. The dividing rule is the two-clocks principle: a single instalment outcome never moves the plan by itself.</p>
+<table>
+  <thead><tr><th>How it breaks</th><th>Cause</th><th>Where it lands, and recovery</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Single instalment debit failure</strong></td><td>Insufficient funds, or a mandate momentarily not debitable, on one scheduled date.</td><td>That instalment lands <span class="mono">Failed</span>; the plan stays <span class="mono">Active</span> and may count the failure toward the pause threshold (D9). Recovers on the next cycle, or sooner if the investor restores funding.</td></tr>
+    <tr><td><strong>Repeated failures past the threshold</strong></td><td>Consecutive failed debits crossing the D9 threshold.</td><td>The plan moves to <span class="mono">Paused</span>. Recovers when the investor restores funding and resumes; settled instalments are untouched.</td></tr>
+    <tr><td><strong>Mandate cancelled or expired under a live plan</strong></td><td>The backing mandate reaches its own terminal while the plan is still <span class="mono">Active</span>.</td><td>The plan can no longer debit. It pauses pending a fresh mandate via J5; this is the mandate clock and the plan clock meeting, and the plan does not silently die.</td></tr>
+    <tr><td><strong>Post-debit instalment failure</strong></td><td>A debit succeeds but the child order fails or reverses downstream, on the J6 <span class="mono">Failed</span> or <span class="mono">Reversed</span> edges.</td><td>The instalment lands <span class="mono">Failed</span> or <span class="mono">Reversed</span> in J6, which owns the money-return; the plan continues. The plan must not re-emit a replacement instalment that double-invests.</td></tr>
+    <tr><td><strong>Insufficient units on a money-out plan</strong></td><td>Out of scope here, noted for the pattern: an SWP or STP sell leg with too few unencumbered units.</td><td>The instalment simply does not generate; no mandate is involved. Owned by J11 and J10, which reuse this plan-lifecycle shape.</td></tr>
+  </tbody>
+</table>
+<div class="callout flag">
+  <p class="ck">Red flag: a failed instalment is not a failed plan, and a retry must not double-invest</p>
+  <p>These are the two errors that do real harm. Treating one bounced debit as a reason to stop the plan strands an investor's long-term instruction over a transient funding gap. Re-attempting a failed instalment carelessly, or emitting a make-up instalment on top of one that actually went through, double-invests the investor's money. The plan absorbs a single failure, counts it toward a threshold, and never retries in a way that can invest twice. This rule is the reason the plan and the instalment are modelled as separate entities in the first place.</p>
+</div>
+
+<h2 id="s4"><span class="num">4.</span>Special cases</h2>
+<p>Variants that change a value or add a check without rerouting the plan lifecycle. Listed, never drawn.</p>
+<ul class="tight">
+  <li><strong>Step-up SIP.</strong> The instalment amount rises on a schedule. As long as each stepped amount stays within the mandate's per-debit ceiling, no re-registration is needed, which is exactly why the mandate is registered with headroom above the starting instalment (D4 and J5). A step above the ceiling needs a fresh mandate.</li>
+  <li><strong>Investor-initiated pause and resume.</strong> Distinct from the failure-threshold pause: the investor suspends the plan deliberately and resumes it later. Same <span class="mono">Paused</span> state, different trigger, no instalments generate while paused.</li>
+  <li><strong>Skip a single instalment.</strong> Through the pre-debit notification's opt-out, the investor drops one scheduled debit without pausing or cancelling. The plan and the mandate are untouched and the next instalment generates normally.</li>
+  <li><strong>First instalment on a still-registering mandate (D43).</strong> When a SIP is set up alongside a mandate that is not yet <span class="mono">Active</span>, the plan sits in <span class="mono">Registered</span> and its first instalment does not generate until the mandate goes <span class="mono">Active</span>, or the setup unwinds if the mandate is <span class="mono">Rejected</span>. The existing <span class="mono">Registered</span> state absorbs this wait, so J8 needs no new plan state for it.</li>
+  <li><strong>Cut-off and NAV per instalment.</strong> Each instalment is an order subject to the same cut-off and NAV-applicability rules as a lumpsum, so a debit landing close to the cut-off may catch the next day's NAV. This is the J6 spine's concern, inherited unchanged per instalment.</li>
+  <li><strong>Non-business-day scheduling.</strong> An instalment date falling on a holiday or non-settlement day shifts per the scheme and rail calendar. A value-and-timing detail on the schedule, not a change to the lifecycle.</li>
+  <li><strong>Attribution on every instalment.</strong> Each child order carries its ARN and EUIN attribution, so the trail-commission and compliance trail is per instalment, not just per plan. Inherited from the Order reference build scope.</li>
+  <li><strong>Persona overlays.</strong> A minor's SIP is operated by the guardian until majority, when the lifecycle freeze (owned by J2) interrupts it; an NRI SIP funds from an NRE or NRO account whose class the mandate and folio already carry. These change the funding and authority context, not the plan spine.</li>
+</ul>
+
+<h2 id="s5"><span class="num">5.</span>Entities and states exercised</h2>
+<p>The references and journeys J8 draws on. Per the precedence rule J8 invents no state, and unlike J5 it finds no gap: the plan states it needs are all carried by the Order reference, and the pending-mandate wait is absorbed by the existing <span class="mono">Registered</span> state.</p>
+<table>
+  <thead><tr><th>Reference or journey</th><th>What J8 exercises</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Order</strong></td><td>The systematic-plan entity and its lifecycle, <span class="mono">Registered</span>, <span class="mono">Active</span>, <span class="mono">Paused</span>, <span class="mono">Completed</span>, <span class="mono">Cancelled</span>; the plan-spawns-child-order separation and the one-plan-to-many-orders relationship; and the rule that a failed instalment is an instalment event, not a plan event.</td></tr>
+    <tr><td><strong>J5 (mandate)</strong></td><td>By reference: the live mandate the plan attaches to and debits against, including its per-debit ceiling and the pre-debit notification the framework requires before each debit.</td></tr>
+    <tr><td><strong>J6 (order spine)</strong></td><td>By reference: the full order lifecycle, <span class="mono">Placed</span> through <span class="mono">Settled</span> with the <span class="mono">Failed</span> and <span class="mono">Reversed</span> edges, that every instalment runs as a child order.</td></tr>
+    <tr><td><strong>Investor</strong></td><td>By reference: the funding bank account and its class, and the operating authority, which set who may register and run the plan and where it draws from.</td></tr>
+    <tr><td><strong>Instrument</strong></td><td>By reference: the scheme the SIP accumulates into, and its cut-off and NAV mechanics that each instalment inherits.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: J8 confirms the rows it exercises rather than adding new ones</p>
+  <p>J8 was the natural exerciser of three open rows, and drawing it tested whether their recommended positions hold. D9, the pause policy, stays genuinely open and is routed to Product with a proposed threshold. D43, the order-to-mandate attachment, holds: a plan whose mandate is still registering sits in <span class="mono">Registered</span> until the mandate is <span class="mono">Active</span>, with no new state needed. D44, the mandate-to-plan cardinality, holds: a single mandate backing several SIPs on one account is the path the reuse fork draws. J8 adds no register row and flags no reference gap.</p>
+</div>
+
+<h2 id="s6"><span class="num">6.</span>Decisions surfaced</h2>
+<p>The decisions J8 centres, applies, or exercises, routed to owners and written back to the register.</p>
+<table>
+  <thead><tr><th>#</th><th>Decision and what J8 needs</th><th>Owner</th><th>Status after J8</th></tr></thead>
+  <tbody>
+    <tr><td><strong>D9</strong></td><td>The pause-on-failure threshold and retry behaviour, the decision J8 centres. How many consecutive failures pause a plan, and whether and how a failed instalment is retried without double-investing.</td><td>Product</td><td>Recommended: mark <span class="mono">Failed</span>, no within-cycle retry, pause after three consecutive failures. The threshold is a proposed default, to confirm with Product.</td></tr>
+    <tr><td>D4</td><td>Mandate rail and the authentication threshold. Applied as settled: instalments and mandate ceilings kept within the &#8377;1 lakh enhanced no-authentication band, with the ceiling carrying headroom above the instalment for step-ups.</td><td>Banking / Compliance</td><td>Applied.</td></tr>
+    <tr><td>D43</td><td>The order-to-mandate attachment state. Exercised from the plan side: a plan whose mandate is still registering sits in <span class="mono">Registered</span> and generates its first instalment only once the mandate is <span class="mono">Active</span>.</td><td>Internal / Engineering</td><td>Exercised; recommended position holds. Confirm with Engineering.</td></tr>
+    <tr><td>D44</td><td>Mandate-to-plan cardinality. Exercised by the reuse fork: a single mandate within its ceiling backs more than one SIP on the same account, and a new mandate is registered only when none covers the plan.</td><td>Internal / Engineering</td><td>Exercised; recommended position holds. Confirm with Engineering.</td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Open: what hardens J8</p>
+  <p>J8 is drawn against a settled D4 and exercises D43 and D44, both of which held when a real flow leaned on them, so they need confirmation with Engineering rather than rework. The one genuinely open call is D9, the pause threshold and retry behaviour, which is a Product decision and the part of this journey that lands as a proposal rather than a settled rule. Closing D9 with Product is what moves J8 from decision-surfacing to governing. None of this blocks the money-out journeys, J9 redemption next, then the J10 and J11 plans that reuse this lifecycle shape.</p>
+</div>
+
+<div class="footer">
+  <p><strong>Document control.</strong> J8: Systematic Investment Plan. Version v0.1, decision-surfacing draft, June 2026. The sixth journey document and the third of Wave 2, drawing how a SIP runs as a standing instruction that emits a child order each scheduled date, each running the J6 spine, with the plan and the instalment kept on separate lifecycles. Centres the pause-on-failure policy (D9) as a Product call, applies D4 as settled, and exercises D43 and D44 from J5, both of which held when drawn. Draws on Order for the systematic-plan entity, J5 for the mandate, and J6 for the per-instalment spine; depends on the funding account from the Investor reference. Adds no register row and flags no reference gap. The recurring-debit machinery it builds to, the pre-debit notification and the &#8377;1 lakh enhanced no-authentication band, was reconfirmed against the RBI Digital Payments E-mandate Framework, 2026, in force in mid-2026. Not a reference and not a PRD.</p>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  try {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      themeVariables: {
+        fontFamily: "'Source Sans 3', sans-serif",
+        primaryColor: '#efe9f7',
+        primaryBorderColor: '#6a4a9c',
+        primaryTextColor: '#26222e',
+        lineColor: '#6a4a9c',
+        secondaryColor: '#fbf2dd',
+        tertiaryColor: '#fffdf8',
+        fontSize: '15px'
+      }
+    });
+  } catch (e) { /* if the CDN is unreachable, the Mermaid source remains legible as text */ }
+</script>
+</body>
+</html>

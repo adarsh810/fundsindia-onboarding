@@ -1,0 +1,232 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FundsIndia V1: Technical Architecture View</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap');
+*{box-sizing:border-box;}
+body{margin:0;background:#faf6ec;color:#26222e;font-family:'Source Sans 3',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1320px;margin:0 auto;padding:48px 40px 80px;background:#fffdf8;}
+.cover{border-bottom:3px solid #6a4a9c;padding-bottom:26px;margin-bottom:22px;}
+.eyebrow{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:#6a4a9c;font-weight:700;margin:0 0 12px;}
+h1{font-size:2.3rem;line-height:1.1;font-weight:700;margin:0 0 8px;color:#473073;letter-spacing:-.01em;}
+.subtitle{font-size:1.06rem;color:#6f6878;margin:0 0 20px;max-width:820px;}
+.meta{display:flex;flex-wrap:wrap;gap:18px 0;font-size:.84rem;color:#6f6878;}
+.meta>div{margin-right:40px;}
+.meta .label{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:#8a8494;font-weight:700;}
+.meta b{display:block;color:#26222e;font-weight:600;font-size:.9rem;margin-top:2px;}
+.legend{display:flex;flex-wrap:wrap;gap:9px 0;margin:20px 0 8px;font-size:.8rem;color:#6f6878;align-items:center;}
+.legend .ll{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#8a8494;margin-right:14px;}
+.legend .k{display:inline-flex;align-items:center;gap:6px;margin-right:16px;}
+.sw{width:13px;height:13px;border-radius:3px;border:1px solid rgba(0,0,0,.1);display:inline-block;}
+.diagram{margin:14px 0 6px;border:1px solid #e6ddcd;border-radius:14px;padding:20px 16px;background:#fffdf8;overflow-x:auto;}
+.note{border-left:4px solid #9a6a16;background:#fbf2dd;border-radius:8px;padding:14px 18px;margin:18px 0;}
+.note .ck{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#9a6a16;margin:0 0 6px;}
+.note p{margin:5px 0;font-size:.92rem;color:#4a4036;}
+.rk{display:flex;flex-wrap:wrap;gap:8px 22px;margin:10px 0 2px;font-size:.78rem;color:#6f6878;}
+.rk span{display:inline-flex;align-items:center;gap:7px;}
+.rk i{width:26px;height:0;border-top-width:2px;border-top-style:solid;display:inline-block;}
+.foot{margin-top:26px;padding-top:16px;border-top:1px solid #e6ddcd;font-size:.8rem;color:#8a8494;}
+@media print{body{background:#fff;}.wrap{max-width:none;padding:0;}.diagram{border:none;padding:0;}@page{size:A3 landscape;margin:10mm;}}
+</style></head><body><div class="wrap">
+<div class="cover">
+  <p class="eyebrow">FundsIndia V1 &middot; Engineering</p>
+  <h1>Technical Architecture View</h1>
+  <p class="subtitle">The big-block component picture for V1 through an MFD lens, with seams held open for V2 and beyond. Component-and-altitude companion to the strategic Big-Block Map v2. Orthogonal routing: wires run only in gutters and band gaps, never through a box.</p>
+  <div class="meta">
+    <div><span class="label">Lens</span><b>Component & module boundaries</b></div>
+    <div><span class="label">Reads</span><b>Top down only</b></div>
+    <div><span class="label">Status</span><b>v0.3 &middot; A3 diagram</b></div>
+    <div><span class="label">Authority</span><b>Spec 1 &middot; Spec 2</b></div>
+  </div>
+</div>
+<div class="legend">
+  <span class="ll">Blocks</span>
+  <span class="k"><span class="sw" style="background:#efe9f7;border-color:#d8cae9"></span>Domain home</span>
+  <span class="k"><span class="sw" style="background:#eef3f7;border-color:#c9d8e4"></span>Read layer</span>
+  <span class="k"><span class="sw" style="background:#fbf2dd;border-color:#e8d2a0"></span>Rail ACL</span>
+  <span class="k"><span class="sw" style="background:#f8e7e3;border-color:#e8c4bc"></span>Legally operative</span>
+  <span class="k"><span class="sw" style="background:#e3f0ee;border-color:#bfe0db"></span>Seam for V2+</span>
+  <span class="k"><span class="sw" style="background:#f1ede4;border-color:#d8cdb8"></span>Cross-cutting</span>
+  <span class="k"><b style="color:#9a6a16">RECO</b>&nbsp;recommendation-shaped</span>
+</div>
+<div class="rk">
+  <span><i style="border-color:#406a8f"></i>read path</span>
+  <span><i style="border-color:#6a4a9c"></i>event spine (pub/sub)</span>
+  <span><i style="border-color:#9a6a16;border-top-style:dashed"></i>synchronous rail call</span>
+  <span><i style="border-color:#1f6f6a;border-top-style:dashed"></i>recon / hook</span>
+  <span><i style="border-color:#8a8494;border-top-style:dashed"></i>consume / clickstream</span>
+</div>
+<div class="diagram">
+<svg viewBox="0 0 1380 980" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3', sans-serif" style="width:100%;height:auto;display:block;">
+<defs>
+<marker id="ah" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#26222e"/></marker>
+<marker id="ah_s" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M9,1 L0,5 L9,9 z" fill="#26222e"/></marker>
+<marker id="ah_a" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#9a6a16"/></marker>
+<marker id="ah_a_s" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M9,1 L0,5 L9,9 z" fill="#9a6a16"/></marker>
+<marker id="ah_t" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#1f6f6a"/></marker>
+<marker id="ah_t_s" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M9,1 L0,5 L9,9 z" fill="#1f6f6a"/></marker>
+<marker id="ah_f" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#8a8494"/></marker>
+<marker id="ah_f_s" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M9,1 L0,5 L9,9 z" fill="#8a8494"/></marker>
+<marker id="ah_r" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#406a8f"/></marker>
+<marker id="ah_r_s" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M9,1 L0,5 L9,9 z" fill="#406a8f"/></marker>
+<marker id="ah_p" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#6a4a9c"/></marker>
+<marker id="ah_p_s" viewBox="0 0 10 10" refX="1.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M9,1 L0,5 L9,9 z" fill="#6a4a9c"/></marker>
+</defs>
+<rect x="30" y="48" width="22" height="708" rx="7" fill="#f1ede4" stroke="#d8cdb8"/>
+<text x="41" y="402.0" transform="rotate(-90 41 402.0)" text-anchor="middle" font-size="10.3" font-weight="700" fill="#8a8494" letter-spacing="0.12em">CRYPTO  /  PII  /  DPDP</text>
+<rect x="1328" y="48" width="22" height="708" rx="7" fill="#f1ede4" stroke="#d8cdb8"/>
+<text x="1339" y="402.0" transform="rotate(-90 1339 402.0)" text-anchor="middle" font-size="10.3" font-weight="700" fill="#8a8494" letter-spacing="0.12em">AUDIT  &  ATTRIBUTION</text>
+<text x="41" y="770" text-anchor="middle" font-size="8" fill="#8a8494" font-weight="400" letter-spacing="0">cross-cutting</text>
+<text x="1339" y="770" text-anchor="middle" font-size="8" fill="#8a8494" font-weight="400" letter-spacing="0">cross-cutting</text>
+<text x="84" y="40" font-size="10" font-weight="700" fill="#6a4a9c" letter-spacing="0.16em">SURFACE LAYER  ·  CLIENT EDGE</text>
+<rect x="84" y="48" width="708" height="66" rx="9" fill="#efe9f7" stroke="#e6ddcd" stroke-width="1"/>
+<rect x="84" y="48" width="4" height="66" rx="2" fill="#6a4a9c"/>
+<text x="438.0" y="77.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Investor Surface</text>
+<text x="438.0" y="96.0" text-anchor="middle" font-size="10.7" fill="#6f6878">Web  ·  MSite  ·  Android  ·  iOS  (Flutter / Next.js)</text>
+<rect x="828" y="48" width="460" height="66" rx="9" fill="#efe9f7" stroke="#e6ddcd" stroke-width="1"/>
+<rect x="828" y="48" width="4" height="66" rx="2" fill="#6a4a9c"/>
+<text x="1058.0" y="77.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Martech Layer</text>
+<text x="1058.0" y="96.0" text-anchor="middle" font-size="10.7" fill="#6f6878">acquisition  ·  attribution  ·  lifecycle</text>
+<text x="84" y="144" font-size="10" font-weight="700" fill="#6a4a9c" letter-spacing="0.16em">READ & COMPOSITION  ·  QUERY / BFF</text>
+<rect x="580" y="152" width="708" height="64" rx="9" fill="#eef3f7" stroke="#c9d8e4" stroke-width="1"/>
+<rect x="580" y="152" width="4" height="64" rx="2" fill="#406a8f"/>
+<text x="934.0" y="180.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#406a8f">Discovery</text>
+<text x="934.0" y="199.0" text-anchor="middle" font-size="10.7" fill="#6f6878">browse  ·  filter  ·  sort  ·  pills    (read-only, owns no state)</text>
+<rect x="1235" y="159" width="46" height="15" rx="7.5" fill="#fff" stroke="#e8d2a0"/>
+<text x="1258.0" y="170" text-anchor="middle" font-size="8.3" font-weight="700" fill="#9a6a16" letter-spacing="0.04em">RECO</text>
+<text x="84" y="242" font-size="10" font-weight="700" fill="#6a4a9c" letter-spacing="0.16em">DOMAIN HOMES  ·  BOUNDED CONTEXTS  (own state, emit events)</text>
+<rect x="84" y="250" width="212" height="86" rx="9" fill="#faf6ec" stroke="#e6ddcd" stroke-width="1"/>
+<rect x="84" y="250" width="4" height="86" rx="2" fill="#6a4a9c"/>
+<text x="190.0" y="289.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Identity</text>
+<text x="190.0" y="308.0" text-anchor="middle" font-size="10.7" fill="#6f6878">login  ·  KYC ladder</text>
+<rect x="332" y="250" width="212" height="86" rx="9" fill="#f8e7e3" stroke="#e8c4bc" stroke-width="1"/>
+<rect x="332" y="250" width="4" height="86" rx="2" fill="#9d2f2f"/>
+<text x="438.0" y="289.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#9d2f2f">Consent &amp; Auth</text>
+<text x="438.0" y="308.0" text-anchor="middle" font-size="10.7" fill="#7a4a45">binding artifacts</text>
+<rect x="580" y="250" width="212" height="86" rx="9" fill="#faf6ec" stroke="#e6ddcd" stroke-width="1"/>
+<rect x="580" y="250" width="4" height="86" rx="2" fill="#6a4a9c"/>
+<text x="686.0" y="289.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Catalog</text>
+<text x="686.0" y="308.0" text-anchor="middle" font-size="10.7" fill="#6f6878">scheme facts  ·  MF/SIF</text>
+<rect x="828" y="250" width="212" height="86" rx="9" fill="#faf6ec" stroke="#e6ddcd" stroke-width="1"/>
+<rect x="828" y="250" width="4" height="86" rx="2" fill="#6a4a9c"/>
+<text x="934.0" y="289.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Scheme Intel</text>
+<text x="934.0" y="308.0" text-anchor="middle" font-size="10.7" fill="#6f6878">constituents  ·  weights</text>
+<rect x="1076" y="250" width="212" height="86" rx="9" fill="#faf6ec" stroke="#e6ddcd" stroke-width="1"/>
+<rect x="1076" y="250" width="4" height="86" rx="2" fill="#6a4a9c"/>
+<text x="1182.0" y="289.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Portfolio Service</text>
+<text x="1182.0" y="308.0" text-anchor="middle" font-size="10.7" fill="#6f6878">overlay  ·  dissection-only</text>
+<rect x="1235" y="257" width="46" height="15" rx="7.5" fill="#fff" stroke="#e8d2a0"/>
+<text x="1258.0" y="268" text-anchor="middle" font-size="8.3" font-weight="700" fill="#9a6a16" letter-spacing="0.04em">RECO</text>
+<rect x="84" y="352" width="212" height="86" rx="9" fill="#faf6ec" stroke="#e6ddcd" stroke-width="1"/>
+<rect x="84" y="352" width="4" height="86" rx="2" fill="#6a4a9c"/>
+<text x="190.0" y="391.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Goal Engine</text>
+<text x="190.0" y="410.0" text-anchor="middle" font-size="10.7" fill="#6f6878">goal to allocation</text>
+<rect x="243" y="359" width="46" height="15" rx="7.5" fill="#fff" stroke="#e8d2a0"/>
+<text x="266.0" y="370" text-anchor="middle" font-size="8.3" font-weight="700" fill="#9a6a16" letter-spacing="0.04em">RECO</text>
+<rect x="332" y="352" width="212" height="86" rx="9" fill="#faf6ec" stroke="#e6ddcd" stroke-width="1"/>
+<rect x="332" y="352" width="4" height="86" rx="2" fill="#6a4a9c"/>
+<text x="438.0" y="391.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Order</text>
+<text x="438.0" y="410.0" text-anchor="middle" font-size="10.7" fill="#6f6878">J6 lifecycle  ·  EUIN</text>
+<rect x="580" y="352" width="212" height="86" rx="9" fill="#faf6ec" stroke="#e6ddcd" stroke-width="1"/>
+<rect x="580" y="352" width="4" height="86" rx="2" fill="#6a4a9c"/>
+<text x="686.0" y="391.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Mandate</text>
+<text x="686.0" y="410.0" text-anchor="middle" font-size="10.7" fill="#6f6878">NACH  ·  SIP/SWP/STP</text>
+<rect x="828" y="352" width="212" height="86" rx="9" fill="#f8e7e3" stroke="#e8c4bc" stroke-width="1"/>
+<rect x="828" y="352" width="4" height="86" rx="2" fill="#9d2f2f"/>
+<text x="934.0" y="391.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#9d2f2f">Folio</text>
+<text x="934.0" y="410.0" text-anchor="middle" font-size="10.7" fill="#7a4a45">units  ·  nominee/guardian</text>
+<rect x="1076" y="352" width="212" height="86" rx="9" fill="#faf6ec" stroke="#e6ddcd" stroke-width="1"/>
+<rect x="1076" y="352" width="4" height="86" rx="2" fill="#6a4a9c"/>
+<text x="1182.0" y="391.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Relationships</text>
+<text x="1182.0" y="410.0" text-anchor="middle" font-size="10.7" fill="#6f6878">soft graph</text>
+<rect x="84" y="468" width="1204" height="42" rx="9" fill="#efe7f8" stroke="#d8cae9" stroke-width="1.5"/>
+<line x1="98" y1="489.0" x2="1274" y2="489.0" stroke="#d8cae9" stroke-dasharray="3 5"/>
+<text x="100" y="485" text-anchor="start" font-size="12" fill="#473073" font-weight="700" letter-spacing="0.1em">DOMAIN EVENT SPINE</text>
+<text x="100" y="501" text-anchor="start" font-size="9.5" fill="#6f6878" font-weight="400" letter-spacing="0">typed bitemporal Kafka  ·  every domain home publishes &amp; subscribes  ·  clickstream kept permanently separate</text>
+<text x="1274" y="493.0" text-anchor="end" font-size="9" fill="#8a8494" font-style="italic">pipe, not a block</text>
+<text x="84" y="548" font-size="10" font-weight="700" fill="#6a4a9c" letter-spacing="0.16em">OFF THE SPINE  ·  PROJECTION & SINK</text>
+<rect x="84" y="556" width="460" height="80" rx="9" fill="#faf6ec" stroke="#e6ddcd" stroke-width="1"/>
+<rect x="84" y="556" width="4" height="80" rx="2" fill="#6a4a9c"/>
+<text x="314.0" y="587.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Ledger &amp; Recon</text>
+<text x="314.0" y="604.0" text-anchor="middle" font-size="10.7" fill="#6f6878">bitemporal double-entry</text>
+<text x="314.0" y="618.0" text-anchor="middle" font-size="10.7" fill="#6f6878">projection of RTA truth, not SoR</text>
+<rect x="828" y="556" width="460" height="80" rx="9" fill="#faf6ec" stroke="#e6ddcd" stroke-width="1"/>
+<rect x="828" y="556" width="4" height="80" rx="2" fill="#6a4a9c"/>
+<text x="1058.0" y="587.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Data Lake</text>
+<text x="1058.0" y="604.0" text-anchor="middle" font-size="10.7" fill="#6f6878">analytical sink  ·  consumes events</text>
+<text x="1058.0" y="618.0" text-anchor="middle" font-size="10.7" fill="#6f6878">+ clickstream (kept separate)</text>
+<rect x="580" y="570" width="212" height="52" rx="8" fill="#f4f1ea" stroke="#d8cdb8" stroke-dasharray="5 4"/>
+<text x="686.0" y="591" text-anchor="middle" font-size="11" fill="#8a8494" font-weight="700" letter-spacing="0">RTA  (external)</text>
+<text x="686.0" y="608" text-anchor="middle" font-size="10" fill="#8a8494" font-weight="400" letter-spacing="0">CAMS  ·  KFin</text>
+<text x="84" y="668" font-size="10" font-weight="700" fill="#6a4a9c" letter-spacing="0.16em">RAIL ACLs  ·  ANTI-CORRUPTION LAYER  (vendor-neutral, system of record is external)</text>
+<rect x="84" y="676" width="212" height="80" rx="9" fill="#fbf2dd" stroke="#e8d2a0" stroke-width="1"/>
+<rect x="84" y="676" width="4" height="80" rx="2" fill="#9a6a16"/>
+<text x="190.0" y="707.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#9a6a16">Identity Rail</text>
+<text x="190.0" y="724.0" text-anchor="middle" font-size="10.7" fill="#7a5a20">HyperVerge · CKYC</text>
+<text x="190.0" y="738.0" text-anchor="middle" font-size="10.7" fill="#7a5a20">UIDAI</text>
+<rect x="332" y="676" width="212" height="80" rx="9" fill="#fbf2dd" stroke="#e8d2a0" stroke-width="1"/>
+<rect x="332" y="676" width="4" height="80" rx="2" fill="#9a6a16"/>
+<text x="438.0" y="707.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#9a6a16">AA Rail</text>
+<text x="438.0" y="724.0" text-anchor="middle" font-size="10.7" fill="#7a5a20">Finvu</text>
+<text x="438.0" y="738.0" text-anchor="middle" font-size="10.7" fill="#7a5a20">(vendor-neutral)</text>
+<rect x="491" y="683" width="46" height="15" rx="7.5" fill="#fff" stroke="#e8d2a0"/>
+<text x="514.0" y="694" text-anchor="middle" font-size="8.3" font-weight="700" fill="#9a6a16" letter-spacing="0.04em">SEAM</text>
+<rect x="580" y="676" width="212" height="80" rx="9" fill="#fbf2dd" stroke="#e8d2a0" stroke-width="1"/>
+<rect x="580" y="676" width="4" height="80" rx="2" fill="#9a6a16"/>
+<text x="686.0" y="707.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#9a6a16">Execution Rail</text>
+<text x="686.0" y="724.0" text-anchor="middle" font-size="10.7" fill="#7a5a20">FP · BSE StAR</text>
+<text x="686.0" y="738.0" text-anchor="middle" font-size="10.7" fill="#7a5a20">PG (Razorpay)</text>
+<rect x="1076" y="676" width="212" height="80" rx="9" fill="#fbf2dd" stroke="#e8d2a0" stroke-width="1"/>
+<rect x="1076" y="676" width="4" height="80" rx="2" fill="#9a6a16"/>
+<text x="1182.0" y="712.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#9a6a16">Legacy CRM Sync</text>
+<text x="1182.0" y="731.0" text-anchor="middle" font-size="10.7" fill="#7a5a20">outbound edge</text>
+<polyline points="686,114 686,152" fill="none" stroke="#406a8f" stroke-width="1.6" stroke-linejoin="round" marker-end="url(#ah_r)"/>
+<polyline points="686.0,216 686.0,250" fill="none" stroke="#406a8f" stroke-width="1.4" stroke-linejoin="round" marker-end="url(#ah_r)"/>
+<polyline points="934.0,216 934.0,250" fill="none" stroke="#406a8f" stroke-width="1.4" stroke-linejoin="round" marker-end="url(#ah_r)"/>
+<polyline points="1182.0,216 1182.0,250" fill="none" stroke="#406a8f" stroke-width="1.4" stroke-linejoin="round" marker-end="url(#ah_r)"/>
+<polyline points="438,114 438,234 314.0,234 314.0,344 438,344 438,352" fill="none" stroke="#8a8494" stroke-width="1.05" stroke-linejoin="round" marker-end="url(#ah_f)" stroke-dasharray="4 5"/>
+<text x="308.0" y="289.0" text-anchor="end" font-size="8" fill="#8a8494" font-weight="400" letter-spacing="0">commands</text>
+<polyline points="190.0,438 190.0,468" fill="none" stroke="#6a4a9c" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#ah_p)" marker-start="url(#ah_p_s)"/>
+<polyline points="438.0,438 438.0,468" fill="none" stroke="#6a4a9c" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#ah_p)" marker-start="url(#ah_p_s)"/>
+<polyline points="686.0,438 686.0,468" fill="none" stroke="#6a4a9c" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#ah_p)" marker-start="url(#ah_p_s)"/>
+<polyline points="934.0,438 934.0,468" fill="none" stroke="#6a4a9c" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#ah_p)" marker-start="url(#ah_p_s)"/>
+<polyline points="1182.0,438 1182.0,468" fill="none" stroke="#6a4a9c" stroke-width="1.2" stroke-linejoin="round" marker-end="url(#ah_p)" marker-start="url(#ah_p_s)"/>
+<polyline points="1040,395.0 1076,395.0" fill="none" stroke="#1f6f6a" stroke-width="1.4" stroke-linejoin="round" marker-end="url(#ah_t)"/>
+<text x="1058.0" y="389.0" text-anchor="middle" font-size="8" fill="#1f6f6a" font-weight="400" letter-spacing="0">hook</text>
+<polyline points="190,336 190,344 68,344 68,656 190,656 190,676" fill="none" stroke="#9a6a16" stroke-width="1.1" stroke-linejoin="round" marker-end="url(#ah_a)" stroke-dasharray="5 5"/>
+<polyline points="438,336 438,344 562.0,344 562.0,656 438,656 438,676" fill="none" stroke="#9a6a16" stroke-width="1.1" stroke-linejoin="round" marker-end="url(#ah_a)" stroke-dasharray="5 5"/>
+<polyline points="438,438 438,453 810.0,453 810.0,656 686,656 686,676" fill="none" stroke="#9a6a16" stroke-width="1.1" stroke-linejoin="round" marker-end="url(#ah_a)" stroke-dasharray="5 5"/>
+<polyline points="190,510 190,556" fill="none" stroke="#6a4a9c" stroke-width="1.3" stroke-linejoin="round" marker-end="url(#ah_p)"/>
+<polyline points="1058.0,510 1058.0,556" fill="none" stroke="#6a4a9c" stroke-width="1.3" stroke-linejoin="round" marker-end="url(#ah_p)"/>
+<polyline points="544,596 580,596" fill="none" stroke="#1f6f6a" stroke-width="1.3" stroke-linejoin="round" marker-end="url(#ah_t)" marker-start="url(#ah_t_s)" stroke-dasharray="4 4"/>
+<text x="562.0" y="590" text-anchor="middle" font-size="8" fill="#1f6f6a" font-weight="400" letter-spacing="0">recon</text>
+<polyline points="1288,489.0 1300,489.0 1300,656 1182,656 1182,676" fill="none" stroke="#8a8494" stroke-width="1.05" stroke-linejoin="round" marker-end="url(#ah_f)" stroke-dasharray="4 5"/>
+<text x="1296" y="520" text-anchor="end" font-size="8" fill="#8a8494" font-weight="400" letter-spacing="0">consumes</text>
+<polyline points="1182,114 1182,132 1314,132 1314,533 1182,533 1182,556" fill="none" stroke="#8a8494" stroke-width="1.05" stroke-linejoin="round" marker-end="url(#ah_f)" stroke-dasharray="4 5"/>
+<text x="1317" y="300" text-anchor="start" font-size="8" fill="#8a8494" font-weight="400" letter-spacing="0">clickstream</text>
+<text x="84" y="816" font-size="10" font-weight="700" fill="#6a4a9c" letter-spacing="0.16em">SEAMS HELD FOR V2 AND BEYOND  ·  BOLT-ON POINTS  (not built in V1)</text>
+<rect x="84.0" y="828" width="274.0" height="72" rx="9" fill="#e3f0ee" stroke="#bfe0db" stroke-width="1" stroke-dasharray="6 4"/>
+<rect x="84.0" y="828" width="4" height="72" rx="2" fill="#1f6f6a"/>
+<text x="221.0" y="860.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1f6f6a">Internal Research</text>
+<text x="221.0" y="879.0" text-anchor="middle" font-size="10.7" fill="#3a6360">off Scheme Intel + Portfolio</text>
+<rect x="394.0" y="828" width="274.0" height="72" rx="9" fill="#e3f0ee" stroke="#bfe0db" stroke-width="1" stroke-dasharray="6 4"/>
+<rect x="394.0" y="828" width="4" height="72" rx="2" fill="#1f6f6a"/>
+<text x="531.0" y="860.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1f6f6a">Multi-AA Gateway</text>
+<text x="531.0" y="879.0" text-anchor="middle" font-size="10.7" fill="#3a6360">Finarkein / Setu</text>
+<rect x="704.0" y="828" width="274.0" height="72" rx="9" fill="#e3f0ee" stroke="#bfe0db" stroke-width="1" stroke-dasharray="6 4"/>
+<rect x="704.0" y="828" width="4" height="72" rx="2" fill="#1f6f6a"/>
+<text x="841.0" y="860.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1f6f6a">Relationship Graph</text>
+<text x="841.0" y="879.0" text-anchor="middle" font-size="10.7" fill="#3a6360">referral · children · household</text>
+<rect x="1014.0" y="828" width="274.0" height="72" rx="9" fill="#e3f0ee" stroke="#bfe0db" stroke-width="1" stroke-dasharray="6 4"/>
+<rect x="1014.0" y="828" width="4" height="72" rx="2" fill="#1f6f6a"/>
+<text x="1151.0" y="860.0" text-anchor="middle" font-size="14.5" font-weight="700" fill="#1f6f6a">Reco / Agentic</text>
+<text x="1151.0" y="879.0" text-anchor="middle" font-size="10.7" fill="#3a6360">engine · agentic · voice</text>
+</svg>
+</div>
+<div class="note">
+  <p class="ck">Open decision &middot; flagged on the artifact</p>
+  <p><strong>Recommendation-surface policing.</strong> The three RECO-tagged surfaces (Goal Engine, Portfolio Service overlay, Discovery pills) can each read as recommendation-shaped. Open: do they police the MFD dissection-not-prescription boundary independently, or route through one shared enforcement chokepoint? Structural decision, not copy. Wording is a separate Compliance-in-the-loop exercise and is parked. Unresolved as of v0.3.</p>
+</div>
+<div class="foot">
+  <p><b>FundsIndia V1 &middot; Technical Architecture View &middot; v0.3.</b> Companion to Big-Block Map v2, not a replacement. Governed by Spec 1 (entities + event spine) and Spec 2 (canonical ledger). Read direction is top-down. Amber dashed rail calls are synchronous and bypass the async spine; they cross the bus perpendicular by design, never a box. Crypto/PII/DPDP and Audit/Attribution wrap every layer as cross-cutting capabilities, not nodes. No money transits the platform (no-pooling); the ledger is a projection of RTA truth.</p>
+</div>
+</div></body></html>

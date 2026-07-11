@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J12: Transmission</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Journey Layer</p>
+  <h1 class="title">J12: Transmission</h1>
+  <p class="subtitle">The post-death transfer of units: classifying the folio, assembling the documentation the value demands, and letting the RTA effect the transfer folio by folio, while the firm facilitates and tracks but never adjudicates. The heaviest journey, drawn last, and the one place the contested nominee-versus-survivor-versus-heir boundary is exercised.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.1: Decision-surfacing draft</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Journey document (not a reference, not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>The governing view of <strong>how a holding passes on the death of its holder</strong>. Transmission is not a sale and not an order; it is the transfer of a deceased investor's units to the surviving holder, the nominee, or the legal heirs, effected by the RTA on its register while the firm facilitates the paperwork and tracks the claim. J12 draws the spine, a death intimation, the classification of the folio into one of three paths, the documentation each path and value demands, and the RTA's folio-by-folio execution, then maps the ways it breaks and the cases that complicate it. It is the consumer of the nomination J4 captured and the freeze J4 hands over the moment a death is intimated. It draws on Folio for the transmission mechanics by holding type, on Investor for succession and authority, on Rails for the RTA as executor, and on J2 for the claimant's own KYC.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a reference and not a PRD, and emphatically not an adjudicator. The firm facilitates and tracks; the RTA executes on its register; disputes between claimants are settled between them or in court, never by the platform. J12 carries the one genuinely contested decision in the suite, D12, the precedence between a nominee, a surviving holder, and the legal heirs, and it is drawn here against the register's recommended position with a Legal-pending callout, because the opinion has not yet landed. The persona set is the locked V1 four, so the undivided-family devolution is out of scope. One framing governs everything: a nominee or a surviving holder receives in trust, not as the final owner, so transmission is the moment the platform must be most careful never to present nomination as estate planning.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong, where the default intuition is likely to mislead.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a point the firm must actively design around, where transmission can route units to the wrong person, trap a claimant, or let the platform stray into adjudicating a dispute.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not yet settled, or one turning on a decision still open in the register; each names its owner.</p></div>
+  <p>State names are shown in <span class="mono">monospace</span> where they refer to a specific state a reference owns. Transmission is a facilitated transfer the RTA executes, not a lifecycle the firm owns, so J12 sequences the steps around it and reflects the RTA's outcome. The altitude follows the draw-or-bullet test: a path the holding type forks into is drawn, a documentation tier or a persona variant is tabled or bulleted. Tax treatment defers to the Investor reference; transmission itself is not a taxable event.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">The spine</a></li>
+    <li><a href="#s2">Decision points</a></li>
+    <li><a href="#s3">Failure taxonomy</a></li>
+    <li><a href="#s4">Special cases</a></li>
+    <li><a href="#s5">Entities and states exercised</a></li>
+    <li><a href="#s6">Decisions surfaced</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1"><span class="num">1.</span>The spine</h2>
+<p class="lead">Transmission begins with an intimation, not a request, and it forks immediately on a single question: how was the folio held. A jointly held folio passes by survivorship and barely touches the nominee at all. A sole folio with a nominee passes to that nominee as a trustee. A sole folio with no nominee passes to the legal heirs on succession documentation, the heaviest path of the three. Whichever path it takes, the documentation steps up with the value, the RTA effects the transfer on its register folio by folio, and the new holder is free to set a fresh nomination on what they now hold. The firm's role across all of it is to capture, guide, and track, and never to decide who is entitled.</p>
+<pre class="mermaid">
+flowchart TD
+  A([Death intimation received, folios where the deceased is the first holder are stop-marked]) --> B{Classify the folio by how it was held}
+  B -->|jointly held with a survivor| C([Survivorship, the deceased is removed and the folio continues with the survivor, ahead of any nominee])
+  B -->|sole holder with a registered nominee| D([Transmit to the nominee, who receives as a trustee for the legal heirs])
+  B -->|sole holder with no nominee| E([Legal-heir path on succession documentation])
+  C --> F[Assemble documentation per path and per the PAN-level value threshold]
+  D --> F
+  E --> F
+  F --> G[The RTA effects the transmission on its register, folio by folio in SOA form]
+  G --> H([Units transmit, the new holder may set a fresh nomination on the resulting holding])
+</pre>
+<p>The three paths differ sharply in weight. Survivorship is the lightest: the surviving holder submits a death certificate and the deceased is removed, with the folio continuing, and under the current framework no KYC, indemnity, or undertaking is sought from the surviving holder. The nominee path is moderate: the nominee submits a transmission request form, the death certificate, their own KYC, and a bank proof, with the documentation stepping up above the value threshold. The legal-heir path is the heaviest: with no nominee, succession documentation is required, and it escalates with value through affidavits, indemnities, and no-objections to, at the top band, a probated will or a letter of administration. The threshold that governs the step-up is computed at the PAN level, on the aggregate value of all the folios in the claim, not folio by folio, even though the RTA then executes each folio separately. That split, one threshold computed in aggregate but execution done per folio, is the structural subtlety of transmission.</p>
+
+<h3>Who acts at each step</h3>
+<table>
+  <thead><tr><th>Step</th><th>Acting party (by role)</th><th>What the firm does</th></tr></thead>
+  <tbody>
+    <tr><td>Intimate and stop-mark</td><td>The family or claimant intimates; the RTA stop-marks.</td><td>Receives the death intimation and reflects the stop-marking of folios where the deceased is the first holder, so no redemption runs against them while the claim is open. A fraud control, not a convenience.</td></tr>
+    <tr><td>Classify and guide</td><td>The firm.</td><td>Determines the path from the holding type and tells the claimant exactly which documents the path and the PAN-level value require. The cheapest place to prevent a claim that will bounce for missing paperwork.</td></tr>
+    <tr><td>Submit and verify KYC</td><td>The claimant; the KRA.</td><td>The claimant submits the documents and their own KYC; transmission completes only once the claimant is KYC compliant. The firm captures and routes; it does not verify identity itself.</td></tr>
+    <tr><td>Effect the transfer</td><td>The RTA, with AMC oversight.</td><td>Executes the transmission on the unit register, folio by folio, after the cooling-off period during which no redemption is allowed. The firm reconciles and tracks the claim to completion; it never effects the transfer and never adjudicates a contest.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: the firm facilitates and tracks, the RTA executes, and neither the platform nor the firm decides who is entitled</p>
+  <p>Every part of transmission that looks like a decision is either the RTA's execution or a legal question between claimants. The firm's contribution is to make the path obvious, collect the right documents the first time, track a claim that can stretch across many folios and several fund houses, and hand a dispute to legal escalation rather than resolving it. The Folio reference names the trap precisely: letting facilitate quietly become ignore. Transmission is where a private-wealth relationship is most tested, so the firm must build the tracking and the guidance even though it builds no register, and it must never cross the line into adjudicating who should receive.</p>
+</div>
+
+<h2 id="s2"><span class="num">2.</span>Decision points</h2>
+<p>One contested legal boundary, drawn against the register's recommended position with the opinion still pending, and one documentation gate that steps up with value, tabled.</p>
+
+<h3>The nominee, survivor, and heir precedence (D12)</h3>
+<p>This is the signature decision of the journey and the one genuinely unsettled question in the suite. A nominee receives units on death so the family can reach them quickly, but holds them as a trustee, not as the final owner; the legal heirs under a will or succession law remain the rightful owners, and their claim can prevail where the two differ. On a joint folio, survivorship comes first and the nominee does not enter until the last holder dies. The fork below is drawn against the recommended position, not a settled rule.</p>
+<pre class="mermaid">
+flowchart TD
+  P([A holding to transmit on death]) --> Q{Holding type and whether a claim is contested}
+  Q -->|joint folio with a survivor| R([Survivor takes the holding ahead of any nominee, by survivorship])
+  Q -->|nominee, no competing heir claim| S([Nominee receives as a trustee for the legal heirs])
+  Q -->|nominee and heirs differ, or heirs contest| T([Heir-claim servicing path, beneficial rights can prevail, a dispute escalates to legal])
+</pre>
+<div class="callout verify">
+  <p class="ck">Open: the precedence is a Legal judgment still in flight (D12)</p>
+  <p>The recommended position J12 is drawn against is that the surviving holder and the nominee receive in trust, that the heirs' beneficial rights can prevail where they differ, and that the platform must therefore design for a heir-claim servicing path rather than treating the nominee as the final owner. This is the register's recommendation, not a settled rule: the Folio reference itself calls the boundary contested, and a Legal opinion is being sought from the week of 15 June and has not yet landed. Until it does, J12's precedence fork is provisional, and the firm's safe posture is the one drawn: receive to the nominee or survivor, never represent that as final ownership, and route any heir contest to legal escalation rather than resolving it. Owner: Legal.</p>
+</div>
+
+<h3>The documentation gate, stepping up with value (D11)</h3>
+<p>The documents a transmission needs step up across value bands, computed at the PAN level on the aggregate of all folios in the claim. The bands govern the no-nominee legal-heir path most heavily, but the attestation step-up applies to a nominee claim too. The figures are confirmed against the AMFI Best Practices Guidelines, now consolidated into the 2026 master circulars.</p>
+<table>
+  <thead><tr><th>PAN-level value</th><th>What the documentation requires</th><th>Effect</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Up to &#8377;5 lakh</strong></td><td>Simplified documentation: the transmission request form, the death certificate, the claimant's KYC and bank proof, and a bank-manager attestation of the claimant's signature. For a no-nominee claim, relationship proof.</td><td>The light path. Most retail claims sit here and complete in working days, not months.</td></tr>
+    <tr><td><strong>More than &#8377;5 lakh, less than &#8377;10 lakh</strong></td><td>Signature attested by a Notary Public or a Judicial Magistrate; individual affidavits from each legal heir; and for a no-nominee claim, either a notarised registered will with an indemnity bond, or a notarised no-objection from all the other legal heirs.</td><td>The middle band. Heavier attestation and heir coordination, but still short of court process.</td></tr>
+    <tr><td><strong>More than &#8377;10 lakh</strong></td><td>A probated will, or a letter of administration or court decree in the case of intestate succession.</td><td>The court-process band. The slowest and most expensive, and the strongest argument for nominating in the first place.</td></tr>
+  </tbody>
+</table>
+<p>An indemnity bond and the minor-guardian attestation rules layer on top of these bands, and a minimum cooling-off period, commonly ten business days and longer at some fund houses, runs after the transmission is processed, during which no redemption is permitted on the folio. These are value-and-timing details on the gate, not changes to the spine, so they are bulleted in Section 4.</p>
+
+<h2 id="s3"><span class="num">3.</span>Failure taxonomy</h2>
+<p>Transmission breaks in four characteristic ways, and the dangerous ones are not the missing-document cases but the contested and the multi-folio cases, where the firm is tempted to do more than facilitate.</p>
+<table>
+  <thead><tr><th>How it breaks</th><th>Cause</th><th>Where it lands, and recovery</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Incomplete or mismatched documentation</strong></td><td>A document missing for the value band, a name or relationship that does not match, or an attestation in the wrong form.</td><td>The claim is held, not failed: the RTA cannot effect the transfer until the paperwork is in order. The firm guides the claimant to the exact correction; this is the most common and most preventable failure.</td></tr>
+    <tr><td><strong>Claim contested between nominee and heirs</strong></td><td>A nominee and the legal heirs, or heirs among themselves, disagree on who is entitled.</td><td>An escalation, not a flow. The platform does not adjudicate; it routes the dispute to legal resolution between the parties and holds the transmission until it is resolved or a court directs. This is the D12 boundary in practice.</td></tr>
+    <tr><td><strong>Transmission across many folios and AMCs</strong></td><td>One deceased investor held across several folios and several fund houses, so the claim is not one event.</td><td>Per-folio progress, not one atomic transmission: the PAN-level threshold is computed in aggregate, but each folio transmits on its own RTA, at its own pace. The firm tracks the whole as a set of claims and surfaces partial progress honestly.</td></tr>
+    <tr><td><strong>Claimant not KYC compliant</strong></td><td>The nominee or heir who is to receive the units does not hold a transactable identity.</td><td>Transmission completes only once the claimant is KYC compliant, so the claimant is routed through their own onboarding (J1) or status restoration (J2) first. The transferee must be able to transact in their own right before the units can land with them.</td></tr>
+  </tbody>
+</table>
+<div class="callout flag">
+  <p class="ck">Red flag: the platform must not adjudicate, and must not let a partial multi-folio transmission look complete</p>
+  <p>Two errors do real harm here. The first is the platform straying into deciding a contested claim, which it has no standing to do and which can route a holding away from its rightful owner; a contest is always an escalation to legal resolution, never a platform decision. The second is presenting a multi-folio, multi-AMC transmission as a single event that is either done or not done, when in reality each folio progresses separately and a family may be waiting on the slowest RTA while others have completed. The honest design tracks each folio's claim distinctly and never shows a grieving family a green checkmark that is only partly true.</p>
+</div>
+
+<h2 id="s4"><span class="num">4.</span>Special cases</h2>
+<p>Variants that change a value, add a document, or layer a persona without rerouting the three paths. Listed, never drawn.</p>
+<ul class="tight">
+  <li><strong>Minor nominee or heir, operated by a guardian.</strong> The guardian operates the transmitted holding until the minor attains majority, when J2's minor-to-major reroute takes over. An indemnity is obtained from the guardian, and the guardian's signature is attested against the minor's bank account or the minor's joint account with the guardian. The minor does not act in their own right until majority.</li>
+  <li><strong>NRI nominee or heir.</strong> Permitted, with consequences that arrive later, not at transmission: repatriability follows the account class the units land in, and capital-gains TDS applies on a later redemption by the non-resident, not on the transmission itself. The death certificate may need apostille or consularisation, and a claimant who lacks an Indian PAN, KYC, or bank account follows the specific non-resident claimant path the AMFI guidelines provide. The repatriation and TDS overlays sit with J9 and the Investor reference when the NRI later redeems.</li>
+  <li><strong>All holders deceased on a joint folio.</strong> Survivorship is exhausted, so the folio falls to the nominee, or to the legal heirs where there is no nominee, by the same paths as a sole folio. The joint structure no longer helps once there is no survivor.</li>
+  <li><strong>Encumbered units.</strong> A lien or pledge survives transmission: the units transmit to the new holder still encumbered, and the encumbrance must be released by its holder before those units can be redeemed. Transmission moves ownership, not the charge on it.</li>
+  <li><strong>No nomination changes after intimation, the J4 interplay.</strong> The moment a death is intimated, J4's nomination flow is frozen on the folio, so a nomination cannot be added, changed, or removed during transmission. The new holder sets nomination afresh only after the units have transmitted to them.</li>
+  <li><strong>Cooling-off and stop-marking.</strong> Folios where the deceased is the first holder are stop-marked on intimation, and a cooling-off period runs after the transmission is processed, during which no redemption is permitted. A fraud and verification control, with a formal communication sent to the deceased's registered address.</li>
+  <li><strong>Transmission is not a taxable event.</strong> India levies no inheritance tax and a transmission is not a sale, so no capital-gains arises on the transfer itself. A SEBI reason code introduced in September 2025 ensures the transfer is reported to the tax authority as a transmission rather than wrongly assessed as a capital-gains transfer. The gain, and any TDS, arise only when the new holder later redeems.</li>
+  <li><strong>Demat holdings.</strong> Where the deceased held in demat rather than SOA form, transmission runs through the depository on the account rather than folio by folio on each RTA, which is the lighter operational path the Folio reference notes; V1's SOA-first scope means the per-folio path is the common one.</li>
+</ul>
+
+<h2 id="s5"><span class="num">5.</span>Entities and states exercised</h2>
+<p>The references and journeys J12 draws on. Per the precedence rule J12 invents no state; it sequences the transmission mechanics the Folio reference owns and reflects the RTA's execution.</p>
+<table>
+  <thead><tr><th>Reference or journey</th><th>What J12 exercises</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Folio</strong></td><td>The transmission mechanics by holding type, the three paths and their documentation, the PAN-level value threshold, the survivorship-over-nominee rule, encumbrance surviving transmission, and the per-folio grain of SOA execution. Authoritative for everything structural in this journey.</td></tr>
+    <tr><td><strong>J4 (nomination)</strong></td><td>By reference: the nomination J12 consumes, and the freeze J4 applies the moment a death is intimated, which is the clean seam between the living investor's changes and transmission.</td></tr>
+    <tr><td><strong>Investor</strong></td><td>By reference: succession and operating authority, the guardian for a minor, and the tax-residency overlay that decides an NRI heir's later redemption consequences. Transmission itself is not taxed; the Investor reference owns what happens after.</td></tr>
+    <tr><td><strong>Rails</strong></td><td>By reference: the RTA as the executor that effects the transfer on its register, and the AMC oversight; the firm reconciles to the RTA and never executes.</td></tr>
+    <tr><td><strong>J2 and J1 (claimant identity)</strong></td><td>By reference: the claimant's own KYC, which must be compliant before the units can land, routing a non-compliant claimant through onboarding or status restoration first.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: J12 confirms one external figure, exercises the contested boundary, and adds the servicing-path row the references could not settle</p>
+  <p>Drawing transmission confirmed the D11 threshold figures against the AMFI guidelines, now consolidated into the 2026 master circulars, so D11 moves from to-confirm to confirmed with a residual check against the current master circular. It exercised D12, the precedence, but could not close it, since the Legal opinion is still in flight, so the fork is drawn provisionally. And it surfaced one genuinely new product call the references gesture at but do not own: how the platform builds and tracks the heir-claim and contested-claim servicing path, given that it facilitates but never adjudicates. That is a build decision, not a reference fact, so it is a new register row.</p>
+</div>
+
+<h2 id="s6"><span class="num">6.</span>Decisions surfaced</h2>
+<p>The decisions J12 confirms, exercises, or adds, routed to owners and written back to the register.</p>
+<table>
+  <thead><tr><th>#</th><th>Decision and what J12 needs</th><th>Owner</th><th>Status after J12</th></tr></thead>
+  <tbody>
+    <tr><td>D11</td><td>The transmission documentation threshold. Confirmed: the PAN-level bands are up to &#8377;5 lakh simplified, &#8377;5 to &#8377;10 lakh with notarised attestation and affidavits or a will-or-no-objection, and above &#8377;10 lakh a probated will or letter of administration, aggregated across the folios in the claim. The figures hold against the AMFI guidelines as consolidated into the 2026 master circulars.</td><td>AMFI / AMC</td><td>Confirmed; residual check against the current master circular before build.</td></tr>
+    <tr><td>D12</td><td>The nominee, survivor, and heir precedence. Exercised but not closed: drawn against the recommended position that the nominee and survivor receive in trust and the heirs' beneficial rights can prevail, with the precedence fork provisional pending the Legal opinion sought from the week of 15 June.</td><td>Legal</td><td>Exercised; opinion pending, fork drawn provisionally.</td></tr>
+    <tr><td><strong>D48</strong> <span class="bkt core" style="margin-left:4px;">new</span></td><td>The heir-claim and contested-claim servicing path. How the platform builds, tracks, and escalates a legal-heir or contested claim, given it facilitates but never adjudicates: what it captures, how it shows multi-folio progress, where it routes a dispute, and how far it builds rather than treating it as a pure RTA matter. Recommended: build the tracking and guidance, escalate contests, never adjudicate.</td><td>Product / Operations</td><td>New row. To define with Product and Operations, with a Compliance view on escalation.</td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Open: what hardens J12</p>
+  <p>J12's structure is stable, because the three paths and the documentation bands are the Folio reference's and are confirmed against current guidance. Two things keep it provisional. D12, the precedence, is the contested legal judgment the whole journey is built to give runway to; until the opinion lands, the precedence fork and the heir-claim posture are drawn against the recommendation, not a rule. D48, the heir-claim servicing path, is the new product call this journey forces, since the references flag the heir-claim path as something the design must allow for but do not specify how far the platform builds it. A lighter residual is to confirm the threshold bands against the current SEBI and AMFI master circulars before build, since they were recently consolidated. None of this blocks the wave; J12 completes the journey layer with these two items routed to Legal and to Product and Operations.</p>
+</div>
+
+<div class="footer">
+  <p><strong>Document control.</strong> J12: Transmission. Version v0.1, decision-surfacing draft, June 2026. The twelfth journey document and the last of Wave 3, drawing the post-death transfer of units: the intimation and stop-marking, the classification into survivorship, nominee, or legal-heir paths, the documentation that steps up across the PAN-level value bands, and the RTA's folio-by-folio execution, with the firm facilitating and tracking but never adjudicating. Confirms the D11 threshold bands (up to &#8377;5 lakh, &#8377;5 to &#8377;10 lakh, and above &#8377;10 lakh) against the AMFI guidelines as consolidated into the 2026 master circulars; exercises D12, the contested nominee-survivor-heir precedence, drawn against the recommended position with a Legal-pending callout since the opinion sought from the week of 15 June has not landed; and adds one row, the heir-claim and contested-claim servicing path (D48), routed to Product and Operations. Draws on Folio for the transmission mechanics, Investor for succession and authority, Rails for the RTA as executor, and J2 and J1 for claimant KYC; consumes the nomination J4 captured and the freeze J4 hands over. Carries the Folio red flag that a nominee receives in trust, not as the final owner, and the firm must never present transmission as estate planning. Not a reference and not a PRD.</p>
+</div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  try {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      themeVariables: {
+        fontFamily: "'Source Sans 3', sans-serif",
+        primaryColor: '#efe9f7',
+        primaryBorderColor: '#6a4a9c',
+        primaryTextColor: '#26222e',
+        lineColor: '#6a4a9c',
+        secondaryColor: '#fbf2dd',
+        tertiaryColor: '#fffdf8',
+        fontSize: '15px'
+      }
+    });
+  } catch (e) { /* if the CDN is unreachable, the Mermaid source remains legible as text */ }
+</script>
+</body>
+</html>

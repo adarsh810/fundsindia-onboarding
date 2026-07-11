@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEBI Investor Survey 2025 — FundsIndia Launch Strategy Brief</title>
+<style>
+  :root{
+    --ink:#13212e;        /* deep slate ink */
+    --ink-soft:#3a4d5c;
+    --paper:#f6f3ec;      /* warm document paper */
+    --paper-2:#fbf9f4;
+    --line:#d8d0c0;
+    --rule:#c4b8a0;
+    --teal:#0f6e6e;       /* FundsIndia-ish accent */
+    --teal-deep:#0a4f4f;
+    --amber:#c2731a;      /* strategic-read accent */
+    --amber-soft:#f3e6d2;
+    --crimson:#9c3b34;    /* caution / gap accent */
+    --green:#2f7d4f;
+    --chip:#eef0ec;
+    --shadow:0 1px 0 rgba(19,33,46,.04), 0 8px 24px -16px rgba(19,33,46,.35);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    font-size:17px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  /* ---------- typography ---------- */
+  h1,h2,h3,h4{font-family:"Helvetica Neue",Arial,sans-serif;line-height:1.15;letter-spacing:-.01em}
+  .label{font-family:"Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:.18em;font-size:11.5px;font-weight:700}
+  .mono{font-family:"SF Mono",ui-monospace,"Roboto Mono",Menlo,monospace}
+
+  /* ---------- hero ---------- */
+  header.hero{
+    background:linear-gradient(165deg,#0c1c27 0%,#10303a 60%,#0d3b3b 100%);
+    color:#eef3f0;
+    padding:62px 0 46px;
+    border-bottom:3px solid var(--amber);
+  }
+  header.hero .wrap{position:relative}
+  .hero .eyebrow{color:#7fd6cf;margin-bottom:22px}
+  .hero h1{font-size:40px;font-weight:800;margin:0 0 14px;color:#fff;max-width:18ch}
+  .hero .sub{font-size:18px;color:#b9cdc9;max-width:62ch;margin:0 0 26px}
+  .hero .meta{display:flex;flex-wrap:wrap;gap:10px 26px;font-family:"Helvetica Neue",Arial,sans-serif;font-size:12.5px;color:#9fc0bb;border-top:1px solid rgba(255,255,255,.13);padding-top:18px}
+  .hero .meta b{color:#dcefe9;font-weight:600}
+
+  /* ---------- legend ---------- */
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin:26px 0 4px}
+  .legend .key{display:flex;align-items:center;gap:9px;font-family:"Helvetica Neue",Arial,sans-serif;font-size:12.5px;color:var(--ink-soft)}
+  .swatch{width:30px;height:16px;border-radius:3px;flex:none}
+  .sw-data{background:#fff;border:1px solid var(--line)}
+  .sw-read{background:var(--amber-soft);border:1px solid #e3c79a}
+  .sw-gap{background:#f4e2e0;border:1px solid #e0bdb9}
+
+  /* ---------- section scaffolding ---------- */
+  section{padding:46px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;gap:18px;align-items:baseline;margin-bottom:8px}
+  .sec-num{font-family:"Helvetica Neue",Arial,sans-serif;font-weight:800;font-size:13px;color:var(--teal);padding-top:6px;flex:none;width:34px}
+  .sec-head h2{font-size:27px;font-weight:800;margin:0;color:var(--ink)}
+  .sec-sub{color:var(--ink-soft);font-size:16px;margin:2px 0 26px 52px;max-width:74ch}
+  @media(max-width:640px){.sec-sub{margin-left:0}}
+
+  p{margin:0 0 16px}
+  .body{max-width:74ch}
+  strong{font-weight:700}
+  em.term{font-style:normal;background:#e7efed;border-bottom:1px solid var(--teal)}
+
+  /* ---------- stat band ---------- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:8px 0 30px}
+  .stat{background:var(--paper-2);padding:20px 18px}
+  .stat .n{font-family:"Helvetica Neue",Arial,sans-serif;font-size:30px;font-weight:800;color:var(--teal-deep);line-height:1;letter-spacing:-.02em}
+  .stat .n small{font-size:15px;font-weight:700;color:var(--teal)}
+  .stat .t{font-family:"Helvetica Neue",Arial,sans-serif;font-size:12px;color:var(--ink-soft);margin-top:9px;line-height:1.35}
+  @media(max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:430px){.stats{grid-template-columns:1fr}}
+
+  /* ---------- tables ---------- */
+  .tbl-wrap{overflow-x:auto;margin:6px 0 26px;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}
+  table{border-collapse:collapse;width:100%;font-family:"Helvetica Neue",Arial,sans-serif;font-size:13.5px;background:var(--paper-2)}
+  caption{caption-side:top;text-align:left;font-family:"Helvetica Neue",Arial,sans-serif;font-size:12px;color:var(--ink-soft);padding:12px 16px 10px;font-style:normal}
+  th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line)}
+  thead th{background:#eceae2;color:var(--ink);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.04em;border-bottom:2px solid var(--rule)}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#f0ede4}
+  .bar{display:inline-block;height:9px;border-radius:2px;background:var(--teal);vertical-align:middle;margin-right:7px}
+  .bar.lo{background:#bcae90}
+  .pct{font-weight:700;color:var(--teal-deep)}
+  .hl{color:var(--crimson);font-weight:700}
+
+  /* ---------- strategic read callouts ---------- */
+  .read{background:var(--amber-soft);border:1px solid #e3c79a;border-left:4px solid var(--amber);border-radius:8px;padding:18px 22px;margin:8px 0 26px}
+  .read .label{color:#8a4f12;display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .read .label::before{content:"▸";font-size:14px}
+  .read p{margin:0 0 10px;font-size:16px}
+  .read p:last-child{margin-bottom:0}
+  .read.gap{background:#f7e7e5;border-color:#e0bdb9;border-left-color:var(--crimson)}
+  .read.gap .label{color:var(--crimson)}
+
+  /* ---------- pull figure ---------- */
+  .figure{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px 22px;margin:6px 0 26px;box-shadow:var(--shadow)}
+  .figure h4{margin:0 0 14px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft)}
+  .funnel{display:flex;flex-direction:column;gap:8px}
+  .frow{display:flex;align-items:center;gap:14px}
+  .fbar{height:38px;border-radius:5px;display:flex;align-items:center;padding:0 14px;color:#fff;font-family:"Helvetica Neue",Arial,sans-serif;font-weight:700;font-size:14px;white-space:nowrap}
+  .flabel{font-family:"Helvetica Neue",Arial,sans-serif;font-size:13px;color:var(--ink-soft);flex:1}
+
+  /* ---------- two-col ---------- */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:6px 0 22px}
+  @media(max-width:720px){.cols{grid-template-columns:1fr}}
+  .card{background:var(--paper-2);border:1px solid var(--line);border-radius:10px;padding:18px 20px}
+  .card h4{margin:0 0 10px;font-size:14px;color:var(--teal-deep)}
+  .card ul{margin:0;padding-left:18px}
+  .card li{font-family:"Helvetica Neue",Arial,sans-serif;font-size:14px;margin-bottom:7px;color:var(--ink-soft)}
+
+  /* ---------- TOC ---------- */
+  nav.toc{background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:24px 26px;margin:38px 0 6px}
+  nav.toc .label{color:var(--teal);margin-bottom:16px}
+  nav.toc ol{margin:0;padding:0;list-style:none;counter-reset:toc;columns:2;column-gap:40px}
+  @media(max-width:640px){nav.toc ol{columns:1}}
+  nav.toc li{counter-increment:toc;font-family:"Helvetica Neue",Arial,sans-serif;font-size:14.5px;margin-bottom:11px;break-inside:avoid;padding-left:34px;position:relative}
+  nav.toc li::before{content:counter(toc,decimal-leading-zero);position:absolute;left:0;top:1px;font-size:12px;font-weight:800;color:var(--amber)}
+  nav.toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent}
+  nav.toc a:hover{border-bottom-color:var(--teal)}
+
+  /* ---------- layer chips ---------- */
+  .layers{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 24px}
+  .chip{font-family:"Helvetica Neue",Arial,sans-serif;font-size:12px;font-weight:600;padding:5px 12px;border-radius:20px;background:var(--chip);color:var(--ink-soft);border:1px solid var(--line)}
+  .chip.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+
+  /* ---------- priority matrix ---------- */
+  .matrix{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:8px 0 10px}
+  @media(max-width:720px){.matrix{grid-template-columns:1fr}}
+  .pcard{border-radius:10px;padding:18px 20px;border:1px solid var(--line);background:var(--paper-2)}
+  .pcard .tier{font-family:"Helvetica Neue",Arial,sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;padding:3px 10px;border-radius:5px;display:inline-block;margin-bottom:12px}
+  .t1{background:#dff0e7;color:#1d6b41}
+  .t2{background:#fdeecf;color:#9a6212}
+  .t3{background:#e6e3f0;color:#4b4179}
+  .pcard h4{margin:0 0 10px;font-size:15px}
+  .pcard p{font-family:"Helvetica Neue",Arial,sans-serif;font-size:13.5px;color:var(--ink-soft);margin:0}
+
+  footer{padding:40px 0 60px;color:var(--ink-soft);font-family:"Helvetica Neue",Arial,sans-serif;font-size:12.5px}
+  footer .wrap{border-top:2px solid var(--rule);padding-top:22px}
+  .disc{font-size:12px;color:#7d7560;max-width:80ch}
+  a.up{color:var(--teal);text-decoration:none;font-size:12px}
+
+  .note{font-family:"Helvetica Neue",Arial,sans-serif;font-size:13px;color:var(--ink-soft);background:#eef0ec;border-radius:7px;padding:10px 14px;margin:0 0 22px;border-left:3px solid var(--rule)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow label">SEBI Investor Survey 2025 · Strategy Distillation</div>
+    <h1>What 90,000 households tell us about where to aim the next launch</h1>
+    <p class="sub">A working brief for FundsIndia product strategy — reading the survey across the MFD / SIF / PMS / AIF / ETF stack, through the investor, RM and IFA lens, for both MFD and RIA models.</p>
+    <div class="meta">
+      <span><b>Source</b> SEBI Investor Survey 2025 (110 pp., Jan 2026)</span>
+      <span><b>Base</b> 91,950 listing HH · 53,357 main · 1,313 intermediaries</span>
+      <span><b>Universe</b> 33.72 cr households</span>
+      <span><b>Prepared for</b> FundsIndia launch planning</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="legend">
+    <div class="key"><span class="swatch sw-data"></span> Survey data — what the report says</div>
+    <div class="key"><span class="swatch sw-read"></span> Strategic read — interpretation for FundsIndia</div>
+    <div class="key"><span class="swatch sw-gap"></span> Data gap / caution flag</div>
+  </div>
+
+  <nav class="toc">
+    <div class="label">In this brief</div>
+    <ol>
+      <li><a href="#tldr">The one-screen version</a></li>
+      <li><a href="#market">Market structure &amp; the participation gap</a></li>
+      <li><a href="#funnel">The investor funnel &amp; conversion math</a></li>
+      <li><a href="#investor">Investor behaviour: triggers, fears, risk appetite</a></li>
+      <li><a href="#channel">Channel &amp; information dynamics (finfluencers, social, RM)</a></li>
+      <li><a href="#intermediary">The IFA / RM / RIA layer — supply-side view</a></li>
+      <li><a href="#instruments">Instrument-by-instrument read (MFD/SIF/PMS/AIF/ETF)</a></li>
+      <li><a href="#disengagement">Dormancy, lapsing &amp; retention</a></li>
+      <li><a href="#implications">Consolidated launch implications</a></li>
+    </ol>
+  </nav>
+</div>
+
+<!-- ============ TLDR ============ -->
+<section id="tldr">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">00</div><h2>The one-screen version</h2></div>
+    <p class="sec-sub">If you read nothing else: India's securities problem in 2025 is not awareness — it's conversion, trust, and knowledge depth. The whitespace is the affluent, advice-dependent, vernacular, non-metro household that already knows mutual funds exist but hasn't been walked across the line.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="n">63<small>%</small></div><div class="t">households aware of ≥1 securities product (21.3 cr)</div></div>
+      <div class="stat"><div class="n">9.5<small>%</small></div><div class="t">households actually invested (3.21 cr) — the conversion cliff</div></div>
+      <div class="stat"><div class="n">62<small>%</small></div><div class="t">of investors act on finfluencer recommendations</div></div>
+      <div class="stat"><div class="n">~55<small>%</small></div><div class="t">of clients are <em>fully</em> dependent on intermediaries to invest</div></div>
+    </div>
+
+    <div class="body">
+      <p>Seven things drive everything downstream in this report, and each maps to a product or GTM lever:</p>
+      <ol style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;color:var(--ink-soft);max-width:80ch">
+        <li><strong>Awareness is solved; conversion isn't.</strong> 63% aware → 9.5% invested. The funnel leaks at "I don't know how to start," not "I've never heard of this."</li>
+        <li><strong>Knowledge is shallow even among investors.</strong> Only ~36% of <em>investors</em> have high/medium knowledge; ~50% are low-knowledge. This is a guided-journey opportunity, not a self-serve one.</li>
+        <li><strong>The intender pool is rural and affluent.</strong> ~50% of intenders are rural; NCCS A/B = ~72% of intenders; Gen Z + Millennials dominate. Non-metro affluent is the growth frontier.</li>
+        <li><strong>Trust is intermediated and social.</strong> Friends/family (59%) and finfluencers (56%) are the top information sources; ~55% of clients fully depend on an intermediary.</li>
+        <li><strong>Risk aversion is structural.</strong> 80% of households prioritise capital preservation; even 71–74% of equity/MF investors prefer low risk. Products must lead with safety framing.</li>
+        <li><strong>Friction is the silent killer.</strong> "Easy process/access" is the #1 motivator (73%); post-investment, complexity/inconvenience hits 66–84%. Onboarding and ongoing UX are conversion levers, not hygiene.</li>
+        <li><strong>The premium stack (PMS/AIF/SIF) barely registers.</strong> AIF awareness 6%, penetration &lt;1%, concentrated in NCCS A metros. It's a relationship-led, narrow-funnel game — not a mass-acquisition one.</li>
+      </ol>
+    </div>
+
+    <div class="read">
+      <div class="label">Strategic read · the headline for FundsIndia</div>
+      <p>FundsIndia's structural position — an advice-led MFD/RIA platform with RM relationships — is aimed squarely at the single biggest gap the survey exposes: the <strong>aware-but-not-invested, low-knowledge, advice-dependent household.</strong> The pure-execution discount players have harvested the self-directed metro investor. The survey says that cohort is small and already converted. The unconverted majority explicitly asks for "trusted financial advice and guidance" and "someone to show me how to start" — which is a human-plus-digital wedge, not a zero-touch app wedge.</p>
+      <p>The launch question is therefore less "which instrument" and more "which <strong>guided journey</strong> for which <strong>cohort</strong>, delivered through which <strong>blend of RM, content and platform</strong>." The instrument layers slot into that.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MARKET ============ -->
+<section id="market">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">01</div><h2>Market structure &amp; the participation gap</h2></div>
+    <p class="sec-sub">The macro backdrop is genuinely favourable — but the survey's defining finding is the chasm between a country that <em>knows</em> about markets and one that <em>invests</em> in them.</p>
+
+    <div class="layers">
+      <span class="chip on">Market lens</span><span class="chip">Investor lens</span><span class="chip">RM/IFA lens</span>
+    </div>
+
+    <div class="body">
+      <p><strong>The decade of formalisation is real.</strong> Nominal GDP went ₹124.7L cr → ₹330.7L cr (2015–25); MF AUM ₹12L cr → ₹79L cr; BSE market cap ₹101L cr → ~₹470L cr. Adult account ownership hit 89% (2024); UPI runs ~18,587 cr transactions/yr; Aadhaar e-KYC has made digital onboarding the default. Video KYC, CAS, micro-SIPs, and execution-only MF platforms have structurally lowered the entry barrier.</p>
+      <p><strong>And yet penetration is 9.5%.</strong> Of 33.72 cr households, only ~3.21 cr hold any securities product. Only 8.5% hold a demat account at all — and 38% of those are dormant. Awareness is broad and shallow; participation is narrow and concentrated.</p>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption>Awareness vs. household penetration by product — the conversion cliff (Table 4.1 / 5.1)</caption>
+        <thead><tr><th>Securities product</th><th class="num">Aware %</th><th class="num">Invested %</th><th>Conversion</th></tr></thead>
+        <tbody>
+          <tr><td>Mutual Funds / ETFs</td><td class="num">53</td><td class="num pct">6.7</td><td><span class="bar" style="width:60px"></span>~13% of aware</td></tr>
+          <tr><td>Stocks / Shares</td><td class="num">49</td><td class="num pct">5.3</td><td><span class="bar" style="width:48px"></span>~11% of aware</td></tr>
+          <tr><td>Futures &amp; Options</td><td class="num">13</td><td class="num hl">&lt;1</td><td><span class="bar lo" style="width:8px"></span>niche</td></tr>
+          <tr><td>REITs / InvITs</td><td class="num">10</td><td class="num hl">&lt;1</td><td><span class="bar lo" style="width:8px"></span>niche</td></tr>
+          <tr><td>Corporate Bonds</td><td class="num">10</td><td class="num hl">&lt;1</td><td><span class="bar lo" style="width:8px"></span>niche</td></tr>
+          <tr><td>AIFs</td><td class="num">6</td><td class="num hl">&lt;1</td><td><span class="bar lo" style="width:6px"></span>ultra-niche</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="body"><strong>Where penetration concentrates.</strong> Urban 15% vs rural 6%. Top-9 metros 23%; 10–40L towns 16%; 5–10L towns 14%. NCCS A 24% vs NCCS C/D/E 2%. Postgraduates 27% vs ≤10th-grade 3%. Salaried 23% vs agri 4%. Men 11% vs women 7%. Delhi (21%) and Maharashtra (17%) lead states. <strong>Participation mirrors India's socio-economic geography almost perfectly</strong> — which means the addressable premium market is small, identifiable, and already contested.</p>
+
+    <div class="read">
+      <div class="label">Strategic read · where the market actually is</div>
+      <p>Two distinct games sit inside this data. <strong>Game A (depth):</strong> the metro NCCS-A household is already invested and over-served — here the contest is share-of-wallet, premium products (PMS/AIF/SIF) and advice quality, not acquisition. <strong>Game B (breadth):</strong> the 10–40L and 5–10L town, NCCS A/B household at 14–16% penetration is the genuine expansion frontier — high enough income to invest, low enough penetration to grow, and critically <em>under-served by advice</em>.</p>
+      <p>For FundsIndia, Game B is the structurally attractive launch target: it rewards a trusted, advice-led brand and a vernacular, guided-onboarding product more than it rewards a price war. The metros are where you defend; the 5–40L towns are where you grow.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FUNNEL ============ -->
+<section id="funnel">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">02</div><h2>The investor funnel &amp; conversion math</h2></div>
+    <p class="sec-sub">The survey segments the entire 33.72 cr household universe into a clean funnel. Reading it as a funnel — rather than as separate chapters — is where the GTM targeting comes from.</p>
+
+    <div class="figure">
+      <h4>National household funnel (Figure 6.1, recomposed)</h4>
+      <div class="funnel">
+        <div class="frow"><div class="fbar" style="width:100%;background:#0a4f4f">All households · 100% · 33.72 cr</div></div>
+        <div class="frow"><div class="fbar" style="width:63%;background:#0f6e6e">Aware of securities · 63% · 21.3 cr</div><div class="flabel">awareness is <em>not</em> the bottleneck</div></div>
+        <div class="frow"><div class="fbar" style="width:46%;background:#3f8f7e">Aware non-investors · 53.5%</div><div class="flabel">the prize pool</div></div>
+        <div class="frow"><div class="fbar" style="width:22%;background:#c2731a">Intenders (of aware non-inv) · 22%</div><div class="flabel">ready in next 12 months</div></div>
+        <div class="frow"><div class="fbar" style="width:14%;background:#2f7d4f">Investors · 9.5% · 3.21 cr</div><div class="flabel">60% active / 40% dormant</div></div>
+      </div>
+    </div>
+
+    <div class="body">
+      <p><strong>The intender cohort is the single most actionable segment in the report.</strong> Among aware non-investors, 22% intend to invest within 12 months. Their profile inverts the usual assumption:</p>
+      <ul style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;color:var(--ink-soft);max-width:80ch">
+        <li><strong>~50% are rural</strong>; top-9 metros are only ~12% of intenders.</li>
+        <li><strong>NCCS A + B = ~72%</strong> of the intender base — affluent, not mass-bottom.</li>
+        <li><strong>~70% male</strong> (a large, explicit female whitespace).</li>
+        <li><strong>Gen Z 56% + Millennials 35%</strong> — young, digital, aspirational.</li>
+        <li>Top intender states: UP (11%), Maharashtra (10%), Tamil Nadu (9%), West Bengal &amp; Bihar (8% each).</li>
+      </ul>
+      <p>The catch, and it's a big one: <span class="hl">only 17.2% of non-investors have high/medium knowledge.</span> Even in the highest-intent segments, &lt;25% are knowledgeable. Intent is running well ahead of understanding — these are people about to make "blind bets" unless someone guides them.</p>
+    </div>
+
+    <div class="read">
+      <div class="label">Strategic read · the launch beachhead</div>
+      <p>This is the most important slide for targeting. The intender is <strong>affluent + young + non-metro + advice-hungry + knowledge-poor</strong>. That is almost a literal spec sheet for an advice-led platform's ideal acquisition target. A discount app converts the knowledgeable self-starter; it cannot serve someone who is about to make a blind bet and is actively asking to be shown how.</p>
+      <p>Concretely for a launch: a <strong>guided first-investment journey</strong> — vernacular, low-ticket (micro-SIP), with a human RM or a high-trust assisted layer at the "how do I start" moment — is pointed directly at converting the 22% intender pool. The female intender gap (~30% of the pool) is a defensible, under-contested sub-segment worth an explicit play.</p>
+    </div>
+
+    <div class="read gap">
+      <div class="label">Caution flag · don't over-read rurality</div>
+      <p>"50% of intenders are rural" is a share-of-intenders figure, not a penetration or revenue figure. Rural intenders are numerous but lower-ticket and costlier to serve. The commercially sharp cut is <strong>NCCS A/B intenders in 5–40L towns</strong> — the report repeatedly notes most intenders cluster in cities of 10L+. Treat "rural affluent" as a brand/funnel-top signal, and "tier-2/3 town affluent" as the revenue target.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INVESTOR ============ -->
+<section id="investor">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">03</div><h2>Investor behaviour: triggers, fears, risk appetite</h2></div>
+    <p class="sec-sub">What pulls people in, what blocks them, and the deep risk-aversion that constrains every product framing decision.</p>
+
+    <div class="cols">
+      <div class="card">
+        <h4>Why non-investors stay out (barriers)</h4>
+        <ul>
+          <li><strong>Complexity &amp; information gaps — 74%</strong> ("don't know how products work / how to start")</li>
+          <li><strong>Risk &amp; return concerns — 73%</strong> (fear of losing money tops every product)</li>
+          <li><strong>Trust &amp; transparency — 51%</strong> (acute for F&amp;O / derivatives)</li>
+          <li>Cost — 26% · External influence — 18%</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>What would pull them in (motivators)</h4>
+        <ul>
+          <li><strong>Easy process / access — 73%</strong> (simple onboarding, friendly platform)</li>
+          <li><strong>Education &amp; information — 62%</strong> (how it works + success stories)</li>
+          <li><strong>Cost efficiency — 61%</strong> (lower minimums, lower fees)</li>
+          <li><strong>Trust &amp; assurance — 58%</strong> (recommendations + trusted advice)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="body">
+      <p><strong>Triggers that convert investors:</strong> high growth potential (72%), income generation (58%), diversification/risk mitigation (51%), and convenience/ease (37%). Notably, behaviour <em>drifts toward discipline after entry</em> — goal-based reasoning rises from 18% → 23% once people are in. People enter on aspiration and stay on structure. F&amp;O investors are the exception: disproportionately motivated by quick gains.</p>
+    </div>
+
+    <div class="figure">
+      <h4>The risk-aversion ceiling — % preferring low risk</h4>
+      <div class="funnel">
+        <div class="frow"><div class="fbar" style="width:80%;background:#9c3b34">All households · 80%</div></div>
+        <div class="frow"><div class="fbar" style="width:85%;background:#b5564f;max-width:85%">Silver Gen · 85%</div></div>
+        <div class="frow"><div class="fbar" style="width:74%;background:#c2731a">MF/ETF investors · 74%</div></div>
+        <div class="frow"><div class="fbar" style="width:71%;background:#c2731a">Stock investors · 71%</div></div>
+        <div class="frow"><div class="fbar" style="width:79%;background:#7a99a0">Gen Z (most risk-open) · 79% still low-risk</div></div>
+      </div>
+    </div>
+
+    <p class="body">The risk story is the most under-appreciated constraint in the report. <strong>Even people who already own equities and mutual funds overwhelmingly self-describe as low-risk.</strong> Only ~9–10% of MF/equity investors are comfortable with high risk. A homemaker quote captures the funnel-top emotion precisely: "I've heard about stocks and mutual funds… but I don't know how to start. The process seems complicated, and I'm afraid of losing my savings."</p>
+
+    <div class="read">
+      <div class="label">Strategic read · product framing &amp; sequencing</div>
+      <p>Three direct consequences for launch design. <strong>(1) Lead with safety, not upside.</strong> Even your equity buyers are loss-averse — "managed risk," "professional management," "goal-based" framing converts better than return-maximisation messaging. The report shows MFs are perceived as the "balanced middle" and are the natural entry product; that perception is an asset to lean on.</p>
+      <p><strong>(2) The motivator stack <em>is</em> a product roadmap:</strong> easy process (onboarding UX) → education (guided content) → low minimums (micro-SIP) → trusted advice (RM/RIA layer). FundsIndia can credibly own all four; a discount broker can only own one.</p>
+      <p><strong>(3) Sequence the ladder.</strong> Entry via MF/SIP (safety + low ticket), graduate to direct equity/ETF, and reserve PMS/AIF/SIF for the demonstrated-affluence, advice-deep tail. Don't launch a premium product into a cohort that hasn't crossed the trust threshold.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHANNEL ============ -->
+<section id="channel">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">04</div><h2>Channel &amp; information dynamics</h2></div>
+    <p class="sec-sub">Where trust actually lives: in people and social feeds, not on regulator websites. This is the acquisition and content map.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption>Where investors get their information (Figure 9.1)</caption>
+        <thead><tr><th>Source</th><th class="num">% of investors</th></tr></thead>
+        <tbody>
+          <tr><td>Friends, family &amp; colleagues</td><td class="num"><span class="bar" style="width:118px"></span><span class="pct">59</span></td></tr>
+          <tr><td>Finfluencers on social media</td><td class="num"><span class="bar" style="width:112px"></span><span class="pct">56</span></td></tr>
+          <tr><td>Online investment communities (Telegram/WhatsApp/Reddit)</td><td class="num"><span class="bar" style="width:68px"></span>34</td></tr>
+          <tr><td>Financial news &amp; blogs</td><td class="num"><span class="bar" style="width:56px"></span>28</td></tr>
+          <tr><td>Financial professionals (advisors, CA, bank)</td><td class="num"><span class="bar" style="width:50px"></span>25</td></tr>
+          <tr><td>Brokerage / analysis reports</td><td class="num"><span class="bar" style="width:50px"></span>25</td></tr>
+          <tr><td>SEBI / NISM / AMFI / exchange websites</td><td class="num"><span class="bar lo" style="width:42px"></span>21</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="body">
+      <p><strong>The finfluencer finding is striking and double-edged.</strong> 93% of investors rate finfluencers moderately-to-highly credible; <strong>62% make at least some investment decisions on their recommendations.</strong> YouTube (91%), Instagram (64%), Facebook (61%) lead. Among non-investors, social media is the #1 awareness channel (56%), with TV still strong (40%) for credibility, especially for MFs.</p>
+      <p>Meanwhile <strong>official/regulator channels sit at the bottom</strong> (21%), and only 6% of households know SEBI's grievance mechanism exists. There's a trust vacuum between "social media hype" and "official-but-invisible."</p>
+    </div>
+
+    <div class="read">
+      <div class="label">Strategic read · content as an acquisition channel</div>
+      <p>This is where a regulated, advice-led brand has an unusual opening. Investors trust finfluencers but the report's subtext (and SEBI's whole regulatory thrust) is that this trust is fragile and partly misplaced. FundsIndia can occupy the <strong>"credible finfluencer-grade content, but accountable and advice-backed"</strong> position: vernacular YouTube/Instagram explainers, success-story formats (explicitly requested by non-investors), and short-form video — which the survey names as the single most-preferred education format (videos 80%, social posts 69%).</p>
+      <p>Two concrete levers: (1) build the top-of-funnel on <strong>YouTube/IG education in Hindi + regional languages</strong>, not English (only 5% prefer English content); (2) treat the RM/IFA as the "trusted human" the survey says 58% of non-investors want — the conversion layer beneath the content layer. Content earns attention; the RM closes the trust gap that social media can't.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INTERMEDIARY ============ -->
+<section id="intermediary">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">05</div><h2>The IFA / RM / RIA layer — supply-side view</h2></div>
+    <p class="sec-sub">Chapter 14 surveyed 1,313 intermediaries (81% MFDs, 18% brokers, 10% RIAs, plus PMS/AIF/DP). This is the most directly relevant chapter for FundsIndia's distribution and RM model — and it confirms how advice-dependent Indian investing really is.</p>
+
+    <div class="layers">
+      <span class="chip">Market lens</span><span class="chip">Investor lens</span><span class="chip on">RM/IFA lens</span><span class="chip on">RIA vs MFD</span>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption>Client dependence on intermediaries, by intermediary type (Figure 14.1)</caption>
+        <thead><tr><th>Intermediary type</th><th class="num">Come with some options</th><th class="num">Fully dependent on advice</th></tr></thead>
+        <tbody>
+          <tr><td>Mutual Fund Distributor / Agent</td><td class="num">39</td><td class="num pct">61</td></tr>
+          <tr><td>RIA (Registered Investment Advisor)</td><td class="num">39</td><td class="num pct">61</td></tr>
+          <tr><td>Brokers</td><td class="num">51</td><td class="num">49</td></tr>
+          <tr><td>Depository Participants</td><td class="num">51</td><td class="num">49</td></tr>
+          <tr><td>Authorised Persons</td><td class="num">50</td><td class="num">50</td></tr>
+          <tr><td>Portfolio Managers (PMS)</td><td class="num">54</td><td class="num">46</td></tr>
+          <tr><td>AIF Distributors / Funds</td><td class="num">48</td><td class="num">52</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="body"><strong>For MFDs and RIAs alike, 61% of clients are fully dependent on the intermediary for advice and execution.</strong> Even at the PMS/AIF end, roughly half the clients hand over comprehensive consultation. This is the empirical backbone of the advice-led thesis: the Indian investor, across the wealth spectrum, is not a self-directed actor.</p>
+
+    <div class="cols">
+      <div class="card">
+        <h4>What clients ask intermediaries for (operational)</h4>
+        <ul>
+          <li>SEBI-mandated KYC guidance — 64%</li>
+          <li>Linking PAN/Aadhaar/bank — 58%</li>
+          <li>Updating personal details — 58%</li>
+          <li>Online account opening / digital onboarding — 56%</li>
+          <li>Risk profiling &amp; investor categorisation — 44%</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Top investor complaints (intermediary-reported)</h4>
+        <ul>
+          <li>Technical issues with platforms/apps — 47%</li>
+          <li><strong>Mis-selling / poor product suitability — 41%</strong></li>
+          <li>Non-updation of client details — 38%</li>
+          <li>Poor/no response from intermediaries — 34%</li>
+          <li>Grievance redressal delays — 30%</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="body">
+      <p><strong>How intermediaries actually reach clients:</strong> for <em>acquisition</em>, WhatsApp (54%) → tele-calling (35%) → door-to-door (25%). For <em>servicing existing clients</em>, WhatsApp (78%), phone (74%), in-person meetings (69%), email (54%). This is a high-touch, relationship-heavy, WhatsApp-native distribution reality — not a self-serve one.</p>
+      <p><strong>Intermediary profile skews experienced:</strong> 70% have 9+ years' tenure; 22% manage 1,000+ clients. They handle MF/ETF (91%), stocks (51%), F&amp;O (25%), corp bonds (23%), AIF (13%), REITs (11%). The newer asset classes barely feature in the distribution base.</p>
+    </div>
+
+    <div class="read">
+      <div class="label">Strategic read · the RM model is the moat</div>
+      <p>This chapter is, in effect, a validation of FundsIndia's core model. When 61% of even RIA clients are fully advice-dependent, the platform that wins is the one that makes the <strong>RM/advisor more productive</strong>, not the one that removes them. Three product implications:</p>
+      <p><strong>(1) Build for the assisted journey.</strong> The most-requested client help is operational (KYC, onboarding, account ops). Tooling that lets an RM resolve these in-flow — co-browse onboarding, pre-filled KYC, status visibility — directly attacks the #1 complaint (technical/platform friction) and the #1 motivator (easy process).</p>
+      <p><strong>(2) Mis-selling at 41% is both a risk and a wedge.</strong> A suitability-first, RIA-grade advice layer (fee-based, fiduciary framing) is a differentiator precisely because the market is full of suitability complaints. This is where the <em>RIA</em> side of FundsIndia's licence becomes a brand asset, not just a compliance box.</p>
+      <p><strong>(3) WhatsApp is the channel, not an afterthought.</strong> 78% servicing / 54% acquisition. Any RM enablement or client-comms feature that isn't WhatsApp-first is mis-aligned with how this market actually transacts.</p>
+    </div>
+
+    <div class="read gap">
+      <div class="label">Caution flag · RIA/PMS/AIF sample is thin &amp; self-selected</div>
+      <p>The intermediary base is 81% MFD and explicitly "not indicative of overall market incidence." RIA (10%), PMS (5%) and AIF (7%) cells are small (e.g. PMS n=69, AIF n=89). Read PMS/AIF/RIA findings as directional, not precise. The MFD signal is robust; the premium-tier signal is suggestive.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INSTRUMENTS ============ -->
+<section id="instruments">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">06</div><h2>Instrument-by-instrument read</h2></div>
+    <p class="sec-sub">You asked for the MFD / SIF / PMS / AIF / ETF layers explicitly. Here's what the survey actually supports for each — including, importantly, where it goes quiet.</p>
+
+    <div class="note">Honesty up front: this is a <strong>retail household</strong> survey. It is rich on MF/ETF and equities, sparse on PMS/AIF, and <strong>silent on SIF</strong> (Specialised Investment Funds — the new SEBI category between MF and PMS — is not a surveyed instrument). Where the report has no signal, that absence is itself a strategic data point and is flagged below.</div>
+
+    <div class="tbl-wrap">
+      <table>
+        <caption>Instrument layers mapped to survey signal &amp; launch posture</caption>
+        <thead><tr><th>Layer</th><th class="num">Aware</th><th class="num">Penetration</th><th>Survey depth</th><th>Posture for FundsIndia</th></tr></thead>
+        <tbody>
+          <tr><td><strong>MF / ETF (MFD core)</strong></td><td class="num">53%</td><td class="num pct">6.7%</td><td>Deep</td><td>Mass acquisition engine &amp; entry product</td></tr>
+          <tr><td><strong>ETF (within above)</strong></td><td class="num">53%*</td><td class="num">~6.7%*</td><td>Bundled w/ MF</td><td>Low-cost passive on-ramp; not separated in data</td></tr>
+          <tr><td><strong>PMS</strong></td><td class="num">n/a</td><td class="num hl">&lt;1%†</td><td>Thin (n=69)</td><td>Affluent-tail, RM-led, share-of-wallet</td></tr>
+          <tr><td><strong>AIF</strong></td><td class="num">6%</td><td class="num hl">&lt;1%</td><td>Thin (n=89)</td><td>Ultra-niche; NCCS-A metro relationship play</td></tr>
+          <tr><td><strong>SIF</strong></td><td class="num hl">absent</td><td class="num hl">absent</td><td>Not surveyed</td><td>Greenfield — define the category, don't chase demand</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="body" style="font-size:13px;color:var(--ink-soft)">*ETF is surveyed bundled inside "Mutual Funds / ETF" and not separable. †PMS has no household-awareness line; it surfaces only in the intermediary chapter. AIF awareness 6% / penetration &lt;1%, "almost exclusively NCCS A in metros."</p>
+
+    <h3 style="font-size:18px;margin:30px 0 6px;color:var(--teal-deep)">MF / ETF — the engine room</h3>
+    <p class="body">Highest awareness (53%) and penetration (6.7%) of any securities product; perceived as the "balanced middle" on the risk-return map; the natural first product. 67% of those aware of MF or stocks are aware of both. Metro MF penetration 18% vs rural 4%. MFs are explicitly the product investors research most deeply (fund types, AUM, manager track record). <strong>This is the acquisition workhorse</strong> — every entry journey should start here, ideally via micro-SIP to clear the cost barrier.</p>
+    <div class="read">
+      <div class="label">Strategic read · MF/ETF</div>
+      <p>Own the entry. A vernacular, guided SIP onboarding aimed at intenders is the highest-volume, lowest-risk launch. ETFs are a cost-efficiency answer to the 61% who cite fees/minimums — but the survey gives no evidence of independent ETF <em>demand</em>; position ETF as a low-cost passive on-ramp <em>inside</em> the MF journey, not a standalone hero product.</p>
+    </div>
+
+    <h3 style="font-size:18px;margin:30px 0 6px;color:var(--teal-deep)">PMS &amp; AIF — the affluent tail</h3>
+    <p class="body">Both sit below 1% penetration. AIF awareness is just 6%, concentrated almost entirely in NCCS A metro households — the report calls them "premium, high-ticket… highly niche and largely inaccessible." In the intermediary chapter, PMS and AIF clients are ~50% fully advice-dependent, and only 5–13% of intermediaries even deal in them. There is no mass-market signal here, and the report doesn't pretend there is.</p>
+    <div class="read">
+      <div class="label">Strategic read · PMS/AIF</div>
+      <p>Do not treat these as launch-acquisition products. They are <strong>retention and share-of-wallet</strong> instruments for the already-affluent, already-trusting client — the graduation tier of an existing relationship. The economics work through RM depth and ticket size, not funnel volume. For FundsIndia, the right posture is a <em>curated, advice-gated</em> PMS/AIF shelf offered to the top of the existing book, not a marketed top-of-funnel launch. The thin survey base reinforces this: there's no demand wave to ride, only relationships to deepen.</p>
+    </div>
+
+    <h3 style="font-size:18px;margin:30px 0 6px;color:var(--teal-deep)">SIF — the greenfield the survey can't see</h3>
+    <p class="body">SIF does not appear anywhere in the survey instrument set — it post-dates the survey's product taxonomy. So there's no awareness, penetration, or demand data to lean on.</p>
+    <div class="read gap">
+      <div class="label">Strategic read &amp; caution · SIF</div>
+      <p>Treat SIF as <strong>category-creation, not demand-capture.</strong> The survey's adjacent signals are the relevant ones: (a) there's a real "mass-affluent between MF and PMS" cohort (NCCS A/B in 5–40L towns) that is under-served by both ends; (b) that cohort is deeply advice-dependent and risk-averse. SIF's strategic fit is as the <em>graduation product</em> for the maturing MF investor who has outgrown plain mutual funds but isn't a PMS-ticket client — exactly FundsIndia's Game-B cohort a few years on. But because there's zero demand evidence, a SIF launch must be RM-led and education-first, and should be sequenced <em>after</em> the MF acquisition engine is proven, not alongside it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DISENGAGEMENT ============ -->
+<section id="disengagement">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">07</div><h2>Dormancy, lapsing &amp; retention</h2></div>
+    <p class="sec-sub">40% of investors are dormant. Acquisition without retention design leaks the funnel you just filled — and the survey is unusually specific about why people disengage.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="n">40<small>%</small></div><div class="t">of investors are dormant (no fresh investment in 12 months)</div></div>
+      <div class="stat"><div class="n">87<small>%</small></div><div class="t">cite poor performance as the dormancy driver</div></div>
+      <div class="stat"><div class="n">84<small>%</small></div><div class="t">cite poor performance as the lapsing driver</div></div>
+      <div class="stat"><div class="n">6<small>/8</small></div><div class="t">lapsers still intend to re-invest — re-activation is winnable</div></div>
+    </div>
+
+    <div class="body">
+      <p><strong>Dormancy drivers:</strong> poor performance (87% — lower returns, volatility, losses), external influences (75% — negative peer experiences, need for funds), market sentiment (31%). <strong>Lapsing drivers:</strong> poor performance (84%), change in personal goals (74% — peer experiences, urgent fund needs), cost/fees (30%), market sentiment (28%).</p>
+      <p><strong>Post-investment friction compounds it.</strong> Among investors, lack of knowledge/information actually <em>rises</em> after entry (47% → 69%): unclear statements, no timely fund-manager updates, difficulty tracking performance. Intermediaries confirm complexity/inconvenience jumps to a top-3 post-investment problem (84%), driven by managing multiple investments, technical glitches, and clunky redemptions.</p>
+    </div>
+
+    <div class="read">
+      <div class="label">Strategic read · retention is a product, not a campaign</div>
+      <p>Two high-leverage moves fall straight out of this. <strong>(1) Engineer against performance-panic.</strong> Since 84–87% of disengagement traces to performance disappointment in a population that is structurally loss-averse, proactive, plain-language portfolio communication — "here's what's happening and why, here's the plan" — is a retention feature. The survey explicitly flags "no clear/timely updates from fund managers" as a top post-investment gap; closing it is a differentiator.</p>
+      <p><strong>(2) Build a re-activation engine.</strong> 6 of 8 lapsers want back in, and 40% of investors are merely dormant, not gone. A targeted, RM-assisted win-back motion — especially around goal re-anchoring (the #2 lapse reason is "change in personal goals") — is cheaper than net-new acquisition and is sitting in your own book. For FundsIndia, dormant-client re-activation may be the highest-ROI launch-adjacent program of all.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ IMPLICATIONS ============ -->
+<section id="implications">
+  <div class="wrap">
+    <div class="sec-head"><div class="sec-num">08</div><h2>Consolidated launch implications</h2></div>
+    <p class="sec-sub">Pulling every layer together into a sequenced view. These are interpretations for FundsIndia, not survey findings — weighted by where the data is strongest.</p>
+
+    <div class="matrix">
+      <div class="pcard">
+        <span class="tier t1">Tier 1 · Now</span>
+        <h4>Guided MF/SIP acquisition for tier-2/3 affluent intenders</h4>
+        <p>Strongest data support. Vernacular, video-led top-of-funnel; micro-SIP entry; RM/assisted "how to start" conversion. Targets the 22% intender pool where it's commercially densest (NCCS A/B, 5–40L towns). Female-intender sub-play as a defensible wedge.</p>
+      </div>
+      <div class="pcard">
+        <span class="tier t1">Tier 1 · Now</span>
+        <h4>Dormant-book re-activation</h4>
+        <p>40% of investors dormant; 6/8 lapsers want back. Goal re-anchoring + proactive performance comms. Highest ROI, lowest CAC, uses the existing book. Pure retention-as-product.</p>
+      </div>
+      <div class="pcard">
+        <span class="tier t2">Tier 2 · Next</span>
+        <h4>RM/IFA productivity &amp; suitability layer</h4>
+        <p>61% of clients fully advice-dependent; 41% mis-selling complaints. WhatsApp-first servicing, co-browse onboarding, fiduciary/RIA-grade suitability as brand asset. Makes the advisor better rather than removing them.</p>
+      </div>
+      <div class="pcard">
+        <span class="tier t2">Tier 2 · Next</span>
+        <h4>ETF as low-cost passive on-ramp</h4>
+        <p>Answers the 61% fee/minimum-sensitivity, but no standalone ETF demand in the data — embed inside the MF journey, don't hero it.</p>
+      </div>
+      <div class="pcard">
+        <span class="tier t3">Tier 3 · Later / gated</span>
+        <h4>Curated PMS/AIF shelf for the affluent tail</h4>
+        <p>&lt;1% penetration, NCCS-A metro only, thin survey base. Advice-gated graduation product for top-of-book; share-of-wallet, not acquisition.</p>
+      </div>
+      <div class="pcard">
+        <span class="tier t3">Tier 3 · Later / gated</span>
+        <h4>SIF as category creation</h4>
+        <p>Zero demand data — greenfield. Sequence after the MF engine proves out; RM-led, education-first, aimed at the maturing mass-affluent MF investor.</p>
+      </div>
+    </div>
+
+    <div class="body" style="margin-top:26px">
+      <p><strong>The through-line.</strong> Every layer of this survey points the same direction: the Indian opportunity in 2025 is <em>conversion and trust</em>, not awareness; the under-served prize is the <em>affluent, advice-dependent, vernacular, non-metro</em> household; and the winning model is <em>human-plus-digital guidance</em>, not zero-touch self-serve. That is a description of FundsIndia's structural strengths. The launch strategy that follows the data is one that leads with a guided MF acquisition engine for the intender cohort, defends with an RM productivity and suitability layer, monetises the existing book through re-activation and graduation, and treats PMS/AIF/SIF as relationship-gated tiers rather than mass launches.</p>
+      <p><strong>What the survey can't tell you</strong> — and where you'll need your own data — is unit economics by cohort, the true CAC of the rural-affluent intender, SIF/PMS demand elasticity, and the competitive response from the discount incumbents. The survey sizes and shapes the opportunity; it doesn't price it.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><strong>SEBI Investor Survey 2025 — FundsIndia Launch Strategy Brief.</strong> Survey data is drawn from the SEBI Investor Survey 2025 (110 pp.), base 91,950 listing / 53,357 main households / 1,313 intermediaries, universe 33.72 cr households. Amber callouts and the Tier 1–3 matrix are strategic interpretation prepared for FundsIndia planning, not SEBI findings.</p>
+    <p class="disc">Caveats carried from the source: (1) the intermediary sample is 81% MFD, self-selected, and "not indicative of overall market incidence" — PMS/AIF/RIA cells are small (n=69/89/135) and directional only. (2) ETF is surveyed bundled with mutual funds and is not separable. (3) SIF is not a surveyed instrument; all SIF reads are inference from adjacent cohorts. (4) "% of intenders" figures are shares of the intender pool, not penetration or revenue. (5) 2015-vs-2025 comparisons are methodologically discouraged by SEBI itself. Treat the MF/ETF and household-behaviour signals as robust; treat premium-tier signals as suggestive.</p>
+    <p style="margin-top:14px"><a class="up" href="#tldr">↑ Back to top</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

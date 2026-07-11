@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FundsIndia V1 Documentation Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 20mm 16mm; }
+  * { box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 11pt; line-height: 1.55; color: #2B2A26; background: #FBFAF6; margin: 0; padding: 0; }
+  .page { max-width: 980px; margin: 0 auto; background: #FFFFFF; padding: 64px 84px 72px; box-shadow: 0 2px 24px rgba(0,0,0,0.05); }
+
+  .doc-title { font-size: 27pt; font-weight: 600; color: #1A1A18; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .doc-sub { font-size: 12.5pt; font-weight: 400; color: #5F5E5A; margin: 0 0 10px; }
+  .doc-meta { font-size: 10pt; color: #888780; margin: 0 0 8px; padding-bottom: 22px; border-bottom: 2px solid #534AB7; }
+
+  h1 { font-size: 18pt; font-weight: 600; color: #2B2A26; margin: 40px 0 14px; padding-bottom: 10px; border-bottom: 1px solid #D3D1C7; }
+  h1 .num { color: #534AB7; font-weight: 600; margin-right: 10px; }
+
+  p { margin: 0 0 12px; }
+  em { font-style: italic; color: #3D3D3A; }
+  strong { font-weight: 600; color: #1A1A18; }
+  a { color: #534AB7; text-decoration: none; }
+
+  .lead { font-size: 11.5pt; color: #444441; border-left: 3px solid #534AB7; padding: 4px 0 4px 18px; margin: 0 0 18px; }
+  .rule-box { background: #F4F3FB; border-left: 3px solid #534AB7; border-radius: 0 6px 6px 0; padding: 12px 18px; margin: 16px 0; font-size: 10.5pt; color: #2C2752; }
+  .rule-box strong { color: #3C3489; }
+  .note { background: #F1EFE8; border-radius: 6px; padding: 11px 18px; margin: 14px 0; font-size: 10.5pt; color: #444441; }
+  .flag { background: #FBF2DD; border-left: 3px solid #9A6A16; border-radius: 0 6px 6px 0; padding: 12px 18px; margin: 16px 0; font-size: 10.5pt; color: #5a431c; }
+  .flag strong { color: #7a5414; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 18px; font-size: 9.7pt; table-layout: fixed; }
+  th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid #E3E1D8; overflow-wrap: break-word; }
+  thead th { background: #F4F2EB; color: #2C2C2A; font-weight: 600; border-bottom: 1.5px solid #C9C7BD; }
+  td.doc { font-weight: 600; color: #1A1A18; }
+  tbody tr:last-child td { border-bottom: 1px solid #C9C7BD; }
+  td.ph { font-weight: 600; color: #1A1A18; }
+
+  .pill { display: inline-block; font-size: 8pt; font-weight: 600; letter-spacing: 0.04em; padding: 2px 9px; border-radius: 20px; text-transform: uppercase; white-space: nowrap; }
+  .pill.prd { background: #EEEDFE; color: #3C3489; }
+  .pill.spec { background: #E1F5EE; color: #085041; }
+  .pill.found { background: #F1EFE8; color: #5F5E5A; }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; max-width: none; padding: 0; }
+    h1 { page-break-after: avoid; }
+    table, .rule-box, .note, .flag { page-break-inside: avoid; }
+    tr { page-break-inside: avoid; }
+    thead { display: table-header-group; }
+  }
+  @media (max-width: 720px) { .page { padding: 32px 22px; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="doc-title">V1 Documentation Index</p>
+  <p class="doc-sub">The PRD and spec map for the FundsIndia V1 build</p>
+  <p class="doc-meta">Companion to the V1 Build Strategy (v2.1) and the 3-Week Lock-List &middot; 7 PRDs, 5 specs, one shared foundation &middot; reconciled against Build Strategy v2.1</p>
+
+  <p class="lead">This is the product-level decomposition of V1: which documents exist, who owns each, and what gets written when. It maps to the architecture, not to a flat feature list.</p>
+  <p>The substrate gate is the organising seam. Above it sits PRD-led work: user-facing capabilities, product-owned, each with a success metric. Below it sits spec-led work: contracts and invariants, architect and staff-eng owned, with no user stories. The Build Strategy and the Lock-List are the umbrella, so there is no separate master PRD.</p>
+
+  <div class="rule-box"><strong>Regulatory frame.</strong> Mass-affluent V1 is a distributor proposition under the MFD licence, not an RIA one. Allocation guidance is MFD-incidental, not advice-for-a-fee, and no advisory fee is charged. The MFD-not-RIA boundary is a hard compliance constraint that must be written into the recommendation-surface and Catalog PRDs (4 and 6, and the Catalog scope in 3), not just assumed. The ledger reflects only the consequence: no advisory-fee posting.</div>
+
+  <h1><span class="num">A</span>PRDs &middot; user-facing capabilities</h1>
+  <table>
+    <thead><tr><th style="width:25%">Document</th><th style="width:11%">Type</th><th style="width:64%">Scope and boundary</th></tr></thead>
+    <tbody>
+      <tr><td class="doc">1. Onboarding, KYC &amp; Account</td><td><span class="pill prd">PRD</span></td><td>Registration, login, the KYC flow, the consent and DPDP rights centre, and the servicing and account-lifecycle tail: periodic re-KYC, attaining majority (minor to major), nomination management, and transmission on death (drawn in J2, J4, J12). Boundary: the auth and consent-ledger machinery is substrate (Spec 5); this owns the funnel, the user-facing consent surface, and the servicing UX. Residency-change servicing and heir-claim servicing depth are out of V1.</td></tr>
+      <tr><td class="doc">2. Goals</td><td><span class="pill prd">PRD</span></td><td>The first-class, mandatory goal contract and the goal-led home, with an auto-created default goal so no investor is blocked, threading through catalog, discovery, portfolio, and transactions. The doc the others cite, not the reverse. Owns the goal contract that the allocation guidance in PRD 6 plugs into.</td></tr>
+      <tr><td class="doc">3. Catalog</td><td><span class="pill prd">PRD</span></td><td>Schema view, ingestion, serving, refresh, quality, and SEBI compliance. Regular-plan mutual funds and SIFs in V1, the distribution-only scope. FDs and NPS appear only as held-away AA data categories, never transactable in V1. The data pipeline, owned separately from the discovery experience. Carries the MFD-not-RIA constraint on the catalog surface.</td></tr>
+      <tr><td class="doc">4. Discovery &amp; Ranking</td><td><span class="pill prd">PRD</span></td><td>Browse, search, sort, filter, trust markers, and the governed business-intervention ranking console, which must carry suitability and SEBI mis-selling governance from day one and never rank on commercial incentive alone. Boundary: it surfaces guidance and recommendation-shaped output, but the logic lives in PRD 6.</td></tr>
+      <tr><td class="doc">5. Transactions &amp; Mandates</td><td><span class="pill prd">PRD</span></td><td>Lumpsum, SIP, redemption, switch, STP and SWP, the mandate lifecycle, and the full money-movement UX. The vertical owner of the riskiest flow, leaning on the integration and scaffold specs for detail. Mutual-fund transactions only in V1; FDs are deferred to V1.5.</td></tr>
+      <tr><td class="doc">6. Portfolio &amp; Recommendation</td><td><span class="pill prd">PRD</span></td><td>Three distinct surfaces. Portfolio dissection: deterministic decomposition only (holdings, value, XIRR, overlap, sectoral, concentration, cap split, benchmark with disclaimer), which states and never judges. Goal allocation guidance: research-driven, cohortised guidance with genuine alternatives and a what-if calculator, MFD-incidental and Compliance-gated, the bridge from goal to instrument. Financial picture (J13): the held-away after-cost view and an indicative, clearly-disclaimed tax view. Held-away holdings come through three reads in V1: the MF Central pull, the CAS OTP pull, and the AA rail (the firm is an FIU). Held-away equity surfaces read-only through CAS; no direct equity transactions. The retired "ideal portfolio recommendation" framing is replaced by the dissection-plus-guidance split. The MFD-not-RIA constraint governs every surface here, and the three highest-risk surfaces (FI Strategy back-test, the 25-year projection, the switch nudge) carry suitability and mis-selling governance from day one.</td></tr>
+      <tr><td class="doc">7. Referral &amp; Growth</td><td><span class="pill prd">PRD</span></td><td>Referral on the relationship graph, MarTech and acquisition hooks, and the clickstream taxonomy (what to track). Boundary: the clickstream data plane itself is infrastructure, in Spec 1.</td></tr>
+    </tbody>
+  </table>
+
+  <h1><span class="num">B</span>Specs &middot; platform building blocks</h1>
+  <table>
+    <thead><tr><th style="width:25%">Document</th><th style="width:11%">Type</th><th style="width:64%">Scope and boundary</th></tr></thead>
+    <tbody>
+      <tr><td class="doc">1. Domain Entity Model &amp; Event Spine</td><td><span class="pill spec">Spec</span></td><td>The entities and the typed domain event spine, plus the separate clickstream plane. Holds the Commercial Relationship and relationship-graph definitions; the lifecycle of establishing them lives in PRD 1.</td></tr>
+      <tr><td class="doc">2. Canonical Ledger</td><td><span class="pill spec">Spec</span></td><td>Double-entry, immutable, bitemporal, and a reconciliation projection of RTA truth rather than the system of record. Batch reconciliation in V1, microbatch deferred to V2. No advisory-fee posting, the ledger consequence of the MFD posture. Carved out on its own because it is the keystone; every rail reconciles against it.</td></tr>
+      <tr><td class="doc">3. Platform Scaffold</td><td><span class="pill spec">Spec</span></td><td>The anti-corruption layer, translation layer, orchestration and saga, and the BFF shaping pattern. The internal plumbing between domain and rails.</td></tr>
+      <tr><td class="doc">4. Third-Party Integration Contracts</td><td><span class="pill spec">Spec</span></td><td>One port each: FP MF, FP KYC, the payment gateway (Razorpay, FP-native), CAS and MF Central for the held-away pull, and the Account Aggregator adapter (single-AA in V1, the firm as FIU, written to a vendor-neutral interface). The domain-facing contract per vendor, matured from the lock-list ACL shapes. FDs are deferred to V1.5, so the earlier Setu FD port moves with them and is out of V1. The V1.5 rails (BSE StAR MF direct and the multi-AA gateway) plug into the same ports without a domain rewrite. No legacy-equity port is needed: equities are read-only through the held-away pull and the platform does no direct equity transactions.</td></tr>
+      <tr><td class="doc">5. Identity, Security, Privacy &amp; Observability</td><td><span class="pill spec">Spec</span></td><td>End-user auth, session, RBAC and ABAC, the consent ledger, PII tokenisation, plus monitoring, alerting, and the NFR bar.</td></tr>
+    </tbody>
+  </table>
+
+  <h1><span class="num">C</span>Shared foundation</h1>
+  <table>
+    <thead><tr><th style="width:25%">Document</th><th style="width:11%">Type</th><th style="width:64%">Scope and boundary</th></tr></thead>
+    <tbody>
+      <tr><td class="doc">Design System &amp; Frontend Foundation</td><td><span class="pill found">Foundation</span></td><td>Shared components and cross-surface parity rules (web, iOS, Android). Kept thin and referenced by every experience PRD rather than made a PRD of its own, since it carries no user story. Each capability PRD owns its own UX on top of it.</td></tr>
+    </tbody>
+  </table>
+
+  <h1><span class="num">D</span>Sequencing &middot; what to write when</h1>
+  <p>The sequence follows the Build Strategy's five build stages and the two gates. The ramp window is spec-led and research-led, not PRD-led; the heavy PRD work lands once the substrate is proven.</p>
+  <table>
+    <thead><tr><th style="width:23%">Phase</th><th style="width:42%">Documents</th><th style="width:35%">Why now</th></tr></thead>
+    <tbody>
+      <tr><td class="ph">Ramp window (Stage 0): lock and scaffold</td><td>Lock Spec 1 (Entity Model &amp; Event Spine) and Spec 2 (Canonical Ledger). Seed the Spec 4 ACL contract shapes (FP, payment gateway, KYC, held-away reads, AA). In the PM lane: competitive research and persona pressure-tests, not PRD drafting.</td><td>The lock-list directly seeds the two core specs and the ACL shapes. The entity lock rests on decisions already made in the journeys and the Open Decisions Register, not on net-new PRD drafting, which is why no heavy PRD work happens in this window. The research is what later sharpens the spec rewrite and the Blueprint refresh.</td></tr>
+      <tr><td class="ph">Canonical core to the gate (Stages 1 to 2)</td><td>Spec 3 (Platform Scaffold) and Spec 5 (Identity, Security, Privacy &amp; Observability) finalise as the core comes up. Spec 4 (Integration Contracts) finalises. PRD 5 (Transactions &amp; Mandates) finalises as the transaction path is proven end-to-end internally. Catalog ingestion of the FP scheme master constrains the Instrument shape.</td><td>Built as the core comes up and the transaction path is proven internally on the real rails, which is what the substrate gate tests.</td></tr>
+      <tr><td class="ph">Post-gate experience (Stage 3)</td><td>PRD 1 (Onboarding, KYC &amp; Account, including the servicing lifecycle), PRD 2 (Goals), PRD 3 (Catalog, finalised), PRD 4 (Discovery &amp; Ranking), PRD 6 (Portfolio &amp; Recommendation), PRD 7 (Referral &amp; Growth), plus the Design System foundation.</td><td>Customer-facing work, after the gate clears. A rough skeleton of each helps hold scope early, but finals can wait. Catalog's entity-shaping input is captured in the lock; what finalises here is its pipeline and experience.</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Non-load-bearing scaffolding (the design system, BFF skeletons, surface shells) can proceed in parallel with the canonical-core stages. The gate governs go-live and the transaction-dependent flows, not whether UI code may be touched before it.</p>
+
+  <h1><span class="num">E</span>Boundaries to hold</h1>
+  <div class="rule-box"><strong>Seams agreed during decomposition,</strong> recorded so two documents do not both claim the same thing. Recommendation and guidance logic lives in PRD 6; Discovery (PRD 4) only surfaces it; the goal contract it plugs into is in PRD 2. The Commercial Relationship and user-advisor mappings are defined in Spec 1; their establishment lifecycle is in PRD 1. The clickstream taxonomy (what to track) is product, in PRD 7; the clickstream data plane is infrastructure, in Spec 1. The consent rights-centre UX is in PRD 1; the consent ledger is in Spec 5. Held-away holdings come through three reads in V1, the MF Central and CAS OTP pulls (certification-free) and the AA rail (the firm as FIU, Sahamati certification in progress), with the experience in PRD 6 and the integrations in Spec 4. The multi-AA gateway is a V1.5 upgrade behind the same AA port, kept loosely coupled so it can be added without gutting either.</div>
+  <div class="flag"><strong>Open, pending closure.</strong> Recommendation-surface policing: whether the three recommendation-shaped surfaces (allocation guidance in PRD 6, dissection tagging in PRD 6, discovery pills in PRD 4) police the MFD dissection-not-prescription boundary independently or route through one shared enforcement point. PRDs 2, 4, and 6 are kept separate for now; the policing decision does not change that split, but once landed it may add a one-line enforcement-point note to PRD 4 and PRD 6. Tracked as the architecture-view open decision, not yet closed.</div>
+
+  <p class="note">Ownership note: the PRD-versus-spec label is a deliberate split of accountability. PRDs are product-owned and answer what and why for a user-facing capability with a success metric. Specs are architect or staff-eng owned and answer how, in contracts and invariants. Keeping the labels distinct keeps both the owner and the definition of done unambiguous for each document.</p>
+
+  <div class="note"><strong>Document control.</strong> Reconciled against Build Strategy v2.1. Changes from the prior index: Account Aggregator corrected from deferred to in-V1 (firm as FIU, vendor-neutral adapter; multi-AA gateway is the V1.5 item); held-away reframed as three reads (MF Central, CAS, AA) rather than CAS and MF Central alone; fixed deposits moved out of V1 to V1.5 in the Catalog scope and the Setu FD port removed from Spec 4; Catalog V1 instruments corrected to regular-plan mutual funds and SIFs; the retired "ideal portfolio recommendation" framing replaced with the dissection-plus-allocation-guidance split in PRD 6; the MFD-not-RIA constraint written in as a regulatory frame and a PRD-level boundary; the Servicing and account-lifecycle tail materialised into PRD 1; and the sequencing corrected so the ramp window is research-led and spec-led, with no heavy PRD drafting, per the Build Strategy's ramp-window definition. The recommendation-policing decision is carried as open.</div>
+
+</div>
+</body>
+</html>

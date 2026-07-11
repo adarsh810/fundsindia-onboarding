@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J7: Onboard to First Settled Order</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Journey Layer</p>
+  <h1 class="title">J7: Onboard to First Settled Order</h1>
+  <p class="subtitle">The marquee end-to-end thread: a brand-new investor from identity through a first lumpsum purchase to a settled holding. The day-one north star that touches every entity, drawn as a composition that instantiates J6 and references the front of J1 and the whole of J3 rather than re-deriving them.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.1: Decision-surfacing draft</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Journey document (not a reference, not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>The governing end-to-end view of a <strong>new investor reaching their first settled holding</strong>. It runs three segments in sequence and draws the seams between them: <strong>identity</strong>, capture and full KYC to a transactable, Validated record; <strong>container</strong>, the folio, brought into existence by the first purchase rather than presupposed; and the <strong>order</strong>, a lumpsum instance of the J6 spine through to a settled holding. It is the journey the team builds first, which is why it earns an early draft, and it is the one place where the whole suite is exercised at once.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a reference and not a PRD. It does not re-derive the KYC machinery, the folio model, or the order lifecycle: it <strong>instantiates J6</strong> for the order segment and <strong>references the front of J1</strong> and <strong>the whole of J3</strong> for the other two, drawing the handoffs rather than restating the internals. The marquee is the <strong>resident-individual</strong> baseline; the NRI, OCI, Minor, and entity branches are J1's depth, not drawn here. This is a <strong>decision-surfacing first pass</strong>: the seams it draws force two sequencing decisions it routes to the register, and it hardens once those and the no-pooling design under D1 close. The demat-versus-SOA fork (D3) is already settled as SOA-only, so the container segment has a default rather than a branch.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong, where the default intuition is likely to mislead.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a point the firm must actively design around, where the timing or the sequencing can surprise.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not yet settled, or one turning on a decision still open in the register; each names its owner.</p></div>
+  <p>State names are shown in <span class="mono">monospace</span> when they refer to a specific lifecycle state a reference owns. The altitude follows the draw-or-bullet test: what reroutes the path is drawn, what only changes a value or adds a check is bulleted. Segment internals are referenced, not redrawn.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">The spine</a></li>
+    <li><a href="#s2">Decision points</a></li>
+    <li><a href="#s3">Failure taxonomy</a></li>
+    <li><a href="#s4">Special cases</a></li>
+    <li><a href="#s5">Entities and states exercised</a></li>
+    <li><a href="#s6">Decisions surfaced</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1"><span class="num">1.</span>The spine</h2>
+<p class="lead">A new resident investor moves through three segments to a first settled holding. Identity comes first, because nothing routes until the record is transactable. The container and the order are fused on the marquee path: the first purchase is what brings the folio into existence, since the RTA issues a folio number the first time an investor transacts with a fund house. So the happy path is not three separate flows chained together, it is one thread with a deliberate fusion at the container seam.</p>
+<pre class="mermaid">
+flowchart TD
+  A([New investor intent]) --> B[Capture identity, bank, FATCA self-certification]
+  B --> C[Full KYC via video or biometric, Aadhaar-based]
+  C --> D{KYC status resolved}
+  D -->|Validated| E([Transactable identity])
+  D -->|On-Hold or Rejected| X1([Onboarding halts, remediate and retry])
+  E --> F[Place first lumpsum, flagged as a new folio]
+  F --> G[Order spine runs, Placed through Allotted]
+  G --> H[RTA issues the folio number at first allotment]
+  H --> I([First holding Settled in the new folio])
+  G -->|order fails or reverses| X2([No holding, see the J6 taxonomy])
+</pre>
+<p>The order box is J6 in full, not a simplification of it. Drawing it as one node here is the altitude holding: J7 owns the thread and the seams, J6 owns the states inside that box. The two failure exits shown are the two that end the journey rather than a sub-step, a KYC that never reaches Validated and an order that fails or reverses; the finer order-level failures live in the J6 taxonomy and are referenced in Section 3.</p>
+
+<h3>The three segments</h3>
+<table>
+  <thead><tr><th>Segment</th><th>What it does, and where it ends</th><th>Composes</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Identity</strong></td><td>Capture, full KYC via video or biometric, and status resolution to a transactable, Validated record. Ends at a transactable identity.</td><td>The front of J1; draws on Investor and Rails.</td></tr>
+    <tr><td><strong>Container</strong></td><td>The SOA folio, brought into existence by the first purchase on the marquee path, carrying the nominate-or-opt-out step at creation. Ends at an Active folio.</td><td>J3; draws on Folio and Rails.</td></tr>
+    <tr><td><strong>Order</strong></td><td>A lumpsum purchase running the full J6 spine, funded by a one-time payment, attributed on the Regular plan. Ends at a settled holding.</td><td>An instance of J6; draws on Order, Instrument, and Rails.</td></tr>
+  </tbody>
+</table>
+<div class="callout">
+  <p class="ck">Special attention: the folio is created by the order, not before it</p>
+  <p>The intuitive model, create the account, then transact into it, is not how mutual fund folios work. For a net-new investor at a new fund house, the folio number is issued by the RTA at the first allotment, so on the marquee path the container segment is fused into the order: the first lumpsum carries a new-folio instruction and the folio comes back with the allotment. Drawing folio creation as a mandatory discrete pre-step would model a sequence the rail does not require, and would miss that a first order and a folio creation are usually one event. Whether to keep the fusion or run folio creation standalone is the central seam, surfaced in Section 2.</p>
+</div>
+
+<h2 id="s2"><span class="num">2.</span>Decision points</h2>
+<p>J7 has one genuine structural seam and one status fork. The seam is how the front of the journey is sequenced, which reroutes the early steps and is therefore drawn. The fork is what the KYC status permits, which gates whether the order may proceed at all.</p>
+
+<h3>The sequencing seam</h3>
+<p>Three sequencings are viable, and the choice changes the early path rather than a value, so it is a decision point and not a special case. The marquee is KYC-first with a fused folio. The other two are real alternatives the business may prefer.</p>
+<pre class="mermaid">
+flowchart TD
+  K[KYC in progress] --> Q{Sequencing seam}
+  Q -->|KYC-first then order| M1[Marquee path, reach Validated then order<br/>folio created at allotment]
+  Q -->|order held pending KYC| M2[Capture the order, hold before Placed<br/>route only once Validated]
+  Q -->|discrete folio first| M3[Create the folio standalone<br/>then place the order into it]
+</pre>
+<p>The marquee, <strong>KYC-first then order</strong>, is the cleanest: the record reaches Validated, the first lumpsum is placed, and the folio is created at allotment. The <strong>order-held-pending-KYC</strong> variant lets an eager investor express the purchase while KYC is still resolving, holding the order before it is ever <span class="mono">Placed</span> and routing it only once the status clears; it improves conversion but, as Section 5 notes, it implies a state earlier than <span class="mono">Placed</span> that the Order reference does not yet carry. The <strong>discrete-folio-first</strong> variant runs J3 standalone before any order, which is the path when a folio is opened deliberately ahead of funding. All three are drawn here because the choice is the business's to make, and it is written back as a decision.</p>
+
+<h3>The KYC status fork</h3>
+<p>What the resolved KYC status permits is the gate on the whole journey, and for a net-new investor at a new fund house it is sharper than it first appears.</p>
+<table>
+  <thead><tr><th>Resolved status</th><th>What it permits for this journey</th><th>J7 outcome</th></tr></thead>
+  <tbody>
+    <tr><td><span class="mono">Validated</span></td><td>Unrestricted investment with any fund house. Earned by an Aadhaar-based validation against the official databases.</td><td>Proceeds to the order segment.</td></tr>
+    <tr><td><span class="mono">Registered</span></td><td>Investment only with fund houses where a relationship already exists. Typically the result of a non-Aadhaar OVD that could not be database-validated.</td><td>Insufficient for a new fund house. The journey must drive the record to Validated before the first order can route.</td></tr>
+    <tr><td><span class="mono">On-Hold</span> or <span class="mono">Rejected</span></td><td>Blocks new investment entirely. Caused by an inoperative PAN, an unverified mobile or email, or a non-OVD document.</td><td>Onboarding halts; the defect is remediated and the status re-resolved.</td></tr>
+  </tbody>
+</table>
+<div class="callout flag">
+  <p class="ck">Red flag: Registered is not good enough for the first order</p>
+  <p>For the mass-affluent resident this journey targets, only <span class="mono">Validated</span> clears the first purchase, because <span class="mono">Registered</span> permits transacting only where a relationship already exists and J7 is by definition a new relationship. In practice that means the identity segment must use an Aadhaar-based full-KYC modality, video IPV or biometric, rather than a non-Aadhaar OVD that would settle at <span class="mono">Registered</span> and silently block the order at pre-flight. Designing the onboarding around a non-Aadhaar OVD would produce a record that looks complete and still cannot transact.</p>
+</div>
+
+<h2 id="s3"><span class="num">3.</span>Failure taxonomy</h2>
+<p>A composed journey fails differently depending on which segment breaks, and how it recovers differs with it. This is the new shape J7 carries over a single-entity journey: three failure surfaces, not one. The order segment does not re-enumerate its breaks here, it inherits the J6 taxonomy wholesale.</p>
+<table>
+  <thead><tr><th>Segment</th><th>How it breaks</th><th>Where it lands, and recovery</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Identity</strong></td><td>KYC resolves to <span class="mono">On-Hold</span> or <span class="mono">Rejected</span>: an inoperative PAN, an unverified mobile or email, a non-OVD document; or it settles at <span class="mono">Registered</span> when only Aadhaar-based validation would clear a new fund house.</td><td>The investor never reaches a transactable identity. Remediate the specific defect, link PAN and Aadhaar or redo on an Aadhaar OVD, and re-resolve. No folio and no order exist yet, so nothing has to be unwound.</td></tr>
+    <tr><td><strong>Container</strong></td><td>Folio creation is rejected by the RTA for a data or name-PAN mismatch. On the fused path this surfaces as a not-in-good-order rejection of the first order at <span class="mono">Acknowledged</span>.</td><td>Correct the folio data and re-place. Distinguishing this from a payment failure is the subtlety below, because both present as a rejected first order.</td></tr>
+    <tr><td><strong>Order</strong></td><td>The full J6 taxonomy: pre-flight failure, money-leg or rail failure, post-acknowledgement rejection, and dishonour or error after allotment.</td><td>As J6. A pre-flight or rail failure ends in <span class="mono">Failed</span> with no holding; a dishonour after a provisional allotment ends in <span class="mono">Reversed</span>.</td></tr>
+  </tbody>
+</table>
+<div class="callout">
+  <p class="ck">Special attention: a rejected first order is ambiguous on the fused path</p>
+  <p>Because the marquee fuses folio creation into the first order, a container failure and an order failure can look identical at the surface, both are a first order that did not go through. The journey must tell apart "the folio data was not in good order" from "the payment failed" to route the investor to the right fix, since one is a data correction and the other is a funding retry. A flow that treats every failed first order the same will send half its new investors down the wrong recovery path.</p>
+</div>
+
+<h2 id="s4"><span class="num">4.</span>Special cases</h2>
+<p>Rare or within-path conditions that change a value, add a check, or shorten a segment without rerouting the thread. Listed, never drawn.</p>
+<ul class="tight">
+  <li><strong>Existing-KYC investor.</strong> A CKYC or KRA fetch that returns <span class="mono">Validated</span> collapses the identity segment to a fetch-and-confirm, skipping fresh KYC. A within-path shortcut, common for investors already KYC'd elsewhere, not a new path.</li>
+  <li><strong>Fetched Registered status.</strong> A fetch that returns <span class="mono">Registered</span> adds an incremental Aadhaar-validation step before the order can route, since Registered does not clear a new fund house. An added check, not a reroute.</li>
+  <li><strong>Folio reuse.</strong> If the investor already holds a folio with this AMC in the same holding mode and repatriability, the first purchase lands in the existing folio rather than creating one, and the container segment is a no-op. The marquee assumes net-new; this is the not-net-new variant, and its prevalence depends on the migration-scope question in Section 6.</li>
+  <li><strong>Nomination at creation.</strong> Nomination is captured at folio creation as a nominate-or-opt-out step, so the container segment carries it; the depth of nomination capture and update is J4's. A step within the segment, not a fork.</li>
+  <li><strong>Funding rail by ticket.</strong> A small first lumpsum rides UPI within the capital-markets ceiling; a larger one moves to netbanking, NEFT, or RTGS above it. A funding-rail and value change on the order leg, inherited from J6, not a new path.</li>
+  <li><strong>The order segment is J6.</strong> Every order-level special case, partial allotment, the provisional-allotment visibility window, a settled-state reversal, applies and is not restated here. J7 inherits them by instantiating J6.</li>
+</ul>
+
+<h2 id="s5"><span class="num">5.</span>Entities and states exercised</h2>
+<p>The references J7 threads, and the two places its drawing implies a state a reference does not yet carry. Per the precedence rule, J7 invents nothing: where the thread needs a state the ontology lacks, it flags it for the owning reference to add.</p>
+<table>
+  <thead><tr><th>Reference</th><th>What J7 exercises</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Investor</strong></td><td>The KYC machinery, capture, modality, and the Validated, Registered, On-Hold status regime, as the identity segment; the Resident Individual persona baseline; operating authority Self; the move to a transactable identity.</td></tr>
+    <tr><td><strong>Folio</strong></td><td>Folio creation as the investor-by-AMC join; the SOA folio profile, per the settled D3; nomination capture at creation; the <span class="mono">Created</span> to <span class="mono">Active</span> folio lifecycle transition.</td></tr>
+    <tr><td><strong>Order</strong></td><td>A lumpsum instance of the J6 spine: every state from <span class="mono">Placed</span> to <span class="mono">Settled</span>, with the <span class="mono">Failed</span> and <span class="mono">Reversed</span> exits, exercised through J6.</td></tr>
+    <tr><td><strong>Instrument</strong></td><td>The mutual fund scheme bought; forward pricing, cut-off, and the funds-realisation rule on the buy leg; the Regular plan carrying ARN and EUIN attribution.</td></tr>
+    <tr><td><strong>Rails</strong></td><td>The identity rail (the KRA, CKYC, and Aadhaar sources behind the KYC modality); the order-routing and payment rails via J6; the RTA issuing the folio at first allotment.</td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Open: two seam states to confirm with the owning references</p>
+  <p>First, the handoff from a Validated identity to a freshly created folio crosses two references: the Investor reference's transactable-identity state and the Folio reference's <span class="mono">Created</span> to <span class="mono">Active</span> transition. On the fused path these happen together, and whether that seam is modelled cleanly across the two references, or leaves a gap, is for Investor and Folio to confirm. Second, and sharper: if the business chooses the <strong>order-held-pending-KYC</strong> sequencing, an order must exist in a captured state <em>before</em> <span class="mono">Placed</span>, which the Order reference does not carry, since <span class="mono">Placed</span> already assumes pre-flight, including KYC, has passed. That option would force a pre-<span class="mono">Placed</span> draft state into the Order reference. Both are routed to the owning references per the precedence rule, not invented in this journey.</p>
+</div>
+
+<h2 id="s6"><span class="num">6.</span>Decisions surfaced</h2>
+<p>The decisions J7's drawing forced into view, routed to owners and written back to the Open Decisions Register. Two register rows are touched or resolved, two are new, and one scope question is flagged for confirmation.</p>
+<table>
+  <thead><tr><th>#</th><th>Decision and what J7 needs</th><th>Owner</th><th>Status after J7</th></tr></thead>
+  <tbody>
+    <tr><td>D3</td><td>Demat-versus-SOA scope. Settled as SOA-only first, so the container segment draws the SOA folio path with no fork. Applied, not open.</td><td>Internal</td><td>Resolved and applied.</td></tr>
+    <tr><td>D1</td><td>Order-routing rail and money path, brushed through the J6 order segment. The thread is rail-agnostic; the live part is the no-pooling design of the chosen middleware money path. The journey is drawable now; the PRD that decomposes the order slice will need it confirmed.</td><td>Internal / Compliance</td><td>Direction set; no-pooling design to confirm with Compliance.</td></tr>
+    <tr><td><strong>D38</strong> <span class="bkt core" style="margin-left:4px;">new</span></td><td>Folio-creation timing. Fuse folio creation into the first order, the marquee, or run it as a discrete pre-step. Forced by the container seam, and it shapes both the happy path and the ambiguous-rejection recovery in Section 3.</td><td>Product / Internal</td><td>New row, to take to Product.</td></tr>
+    <tr><td><strong>D39</strong> <span class="bkt core" style="margin-left:4px;">new</span></td><td>KYC-to-order sequencing. Strictly KYC-Validated-before-order, or capture the order and hold it pending Validated. Forced by the sequencing seam; if order-held is chosen it forces a pre-<span class="mono">Placed</span> state into the Order reference, per Section 5.</td><td>Product</td><td>New row, with a propagation consequence for the Order reference.</td></tr>
+    <tr><td>scope</td><td>Customer-migration scope. The marquee assumes a net-new investor. Whether V1 also onboards the existing book changes how common the existing-KYC and folio-reuse special cases are, and whether they are first-class paths.</td><td>Internal / Business</td><td>Flagged; J7 draws net-new, confirm whether existing-book migration is in V1.</td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Open: what hardens this draft into a governing contract</p>
+  <p>J7 governs the thread now. It hardens fully once D38 and D39 close, since those set the front-of-journey shape, and once the no-pooling design under D1 is confirmed for the order segment. D3 is already applied. D2 does not gate the marquee, because the resident baseline needs no NRI position, and D4 does not apply, because a first lumpsum needs no mandate. The two new rows and the migration-scope question are written back to the register with their owners, and the two seam-state flags in Section 5 are routed to the Investor, Folio, and Order references.</p>
+</div>
+
+<div class="footer">
+  <p><strong>Document control.</strong> J7: Onboard to First Settled Order. Version v0.1, decision-surfacing draft, June 2026. The second journey document in Wave 1 and the marquee end-to-end thread for a new investor reaching a first settled holding. Composes the front of J1, the whole of J3, and an instance of J6, drawing the segment seams rather than re-deriving the internals. Drawn on the resident-individual baseline; the NRI, OCI, Minor, and entity branches are J1's. The demat-versus-SOA fork is settled as SOA-only (D3). Surfaces two new decisions (D38 folio-creation timing, D39 KYC-to-order sequencing), brushes D1, and flags the customer-migration scope question and two seam states for the Investor, Folio, and Order references. The KYC status regime it leans on, Validated, Registered, On-Hold, with Aadhaar-based validation required to clear a new fund house, was verified current to mid-2026 against the KRA framework and the SEBI April 2026 Aadhaar and PAN authentication position. Not a reference and not a PRD.</p>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  try {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      themeVariables: {
+        fontFamily: "'Source Sans 3', sans-serif",
+        primaryColor: '#efe9f7',
+        primaryBorderColor: '#6a4a9c',
+        primaryTextColor: '#26222e',
+        lineColor: '#6a4a9c',
+        secondaryColor: '#fbf2dd',
+        tertiaryColor: '#fffdf8',
+        fontSize: '15px'
+      }
+    });
+  } catch (e) { /* if the CDN is unreachable, the Mermaid source remains legible as text */ }
+</script>
+</body>
+</html>

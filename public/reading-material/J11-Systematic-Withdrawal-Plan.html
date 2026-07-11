@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J11: Systematic Withdrawal Plan</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Journey Layer</p>
+  <h1 class="title">J11: Systematic Withdrawal Plan</h1>
+  <p class="subtitle">The recurring money-out plan: the withdrawal-side mirror of the SIP, drawn as J8's plan lifecycle running J9's redemption spine on each scheduled date. It needs no payment mandate, because money flows outward, and an instalment simply does not generate when the units are not there.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.1: Decision-surfacing draft</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Journey document (not a reference, not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>The governing view of <strong>how a Systematic Withdrawal Plan runs</strong>. An SWP is a long-lived standing instruction that, on each scheduled date, sells units back to the fund and pays the proceeds to the investor's bank account. It is the withdrawal-side mirror of the SIP, and it borrows two flows wholesale rather than redrawing them. The plan lifecycle, <span class="mono">Registered</span> through <span class="mono">Active</span> to <span class="mono">Completed</span> or <span class="mono">Cancelled</span>, and the two-clocks rule that keeps a single instalment from moving the plan, are J8's, reused unchanged. The per-instalment flow, the redemption itself with its unencumbered-units gate, its exit-load haircut, and the residential-status fork that withholds TDS at source for an NRI and routes proceeds by repatriability, is J9's, run once per scheduled date. What J11 owns is the joint between them, and the one thing that makes the withdrawal plan genuinely different from the investment plan: it carries no payment mandate, so a scheduled date with too few units does not fail, it simply produces nothing.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a reference and not a PRD. It does not redraw the redemption order, which is J9 instantiated each cycle, and it does not redraw the plan lifecycle, which is J8. It is the <strong>recurring, one-scheme, money-out</strong> plan specifically. The recurring two-scheme money-out, the STP, is J10, which reuses the same plan pattern but moves between schemes inside one AMC; the one-time money-out is J9. Both are out of scope here. Because the SWP has no bank debit, the mandate machinery the SIP leans on, the registration in J5, the per-cycle pre-debit notification, the pause-on-failed-debit policy, does not apply in the same way, and saying exactly where the mirror breaks is part of what this draft is for.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong, where the default intuition is likely to mislead.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a point the firm must actively design around, where a plan can deplete a holding, pay the wrong amount, or treat a non-event as a failure.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not yet settled, or one turning on a decision still open in the register; each names its owner.</p></div>
+  <p>State names are shown in <span class="mono">monospace</span> when they refer to a specific lifecycle state the Order reference owns. The plan states are <span class="mono">Registered</span>, <span class="mono">Active</span>, <span class="mono">Paused</span>, <span class="mono">Completed</span>, and <span class="mono">Cancelled</span>; each instalment runs the J6 order states, <span class="mono">Placed</span> through <span class="mono">Settled</span> with the <span class="mono">Failed</span> and <span class="mono">Reversed</span> edges, as J9 draws them. The altitude follows the draw-or-bullet test: a fork that reroutes the path is drawn, a captured value or an added check is bulleted. Tax and TDS figures defer to the Investor reference, which owns the rates.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">The spine</a></li>
+    <li><a href="#s2">Decision points</a></li>
+    <li><a href="#s3">Failure taxonomy</a></li>
+    <li><a href="#s4">Special cases</a></li>
+    <li><a href="#s5">Entities and states exercised</a></li>
+    <li><a href="#s6">Decisions surfaced</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1"><span class="num">1.</span>The spine</h2>
+<p class="lead">An SWP has the same two altitudes as a SIP, and keeping them apart is again the whole craft. There is the plan, a long-lived instruction registered once and living until its tenure ends or the investor stops it. And there is the instalment, a fresh child redemption minted on each scheduled date that gates, prices, and pays out on its own. The first diagram draws the plan lifecycle, which is J8's exactly, minus the mandate. The second draws what one scheduled date does, which is a J9 redemption with one gate moved to the front. Neither redraws the redemption spine itself, which each instalment runs in full.</p>
+
+<h3>The plan lifecycle</h3>
+<pre class="mermaid">
+flowchart TD
+  A([New SWP intent, a scheme in a folio, amount or units, schedule and tenure]) --> B{The folio holds redeemable units to draw from}
+  B -->|yes| C[Register the plan, schedule and amount or units and tenure, no mandate]
+  B -->|no holding to draw from| X1([Blocked, there is nothing to withdraw])
+  C --> D([Active, instalments generate on schedule])
+  D -->|on each scheduled date| E[Attempt a child redemption that runs the J9 spine]
+  E -->|outcome recorded, plan unchanged by one result| D
+  D -->|tenure or instalment count reached, or the holding is exhausted| G([Completed])
+</pre>
+<p>The plan is <span class="mono">Registered</span> once its schedule, its amount or unit quantity, and its tenure are set, and unlike a SIP it links no mandate, because nothing is being debited. It turns <span class="mono">Active</span> when instalments begin generating, and from there it loops, attempting a redemption each scheduled date and returning to <span class="mono">Active</span> regardless of how any single instalment turned out, until it reaches <span class="mono">Completed</span> at the end of its tenure or instalment count, or earlier if the holding runs out. Two states sit off this happy path and are reached deliberately: <span class="mono">Paused</span>, the investor suspending the plan, bulleted in Section 4, and <span class="mono">Cancelled</span>, the investor stopping it before its natural end. Cancelling stops future instalments only; it never reaches back to claw proceeds that already settled. The plan lifecycle and the two-clocks principle below are J8's, reused without change.</p>
+
+<h3>What one scheduled date does</h3>
+<pre class="mermaid">
+flowchart TD
+  A([Scheduled date reached]) --> B{Available unencumbered units cover this instalment}
+  B -->|no, too few free units| K([Non-generation, nothing emitted, plan stays Active, recorded not failed])
+  B -->|yes| C[Emit a child redemption order that runs the J9 spine, gates, NAV, exit load, TDS fork, payout]
+  C --> D{Instalment outcome}
+  D -->|settled| G([Instalment Settled, proceeds paid out, plan continues])
+  D -->|payout-tail failure after allotment| H([Instalment Reversed in J9, plan continues])
+</pre>
+<p>The single change from a SIP's scheduled date is the front gate. Where a SIP asks whether the mandate can be debited, an SWP asks whether the folio holds enough free, unencumbered units to satisfy the instalment. If it does, a child redemption is emitted and runs the J9 spine in full, including the residential-status TDS fork and the repatriability routing per instalment. If it does not, the instalment <strong>simply does not generate</strong>: nothing is emitted, the plan stays <span class="mono">Active</span>, and the event is recorded rather than treated as a failure. That distinction, between a non-event and a failure, is the one genuine decision J11 surfaces, drawn in Section 2. Both real outcomes, a settled instalment and a payout-tail reversal, return the plan to <span class="mono">Active</span>; the plan does not flinch at one result either way.</p>
+
+<h3>Who acts at each step</h3>
+<table>
+  <thead><tr><th>Step</th><th>Acting party (by role)</th><th>What the firm does</th></tr></thead>
+  <tbody>
+    <tr><td>Register the plan</td><td>The firm.</td><td>Captures the schedule, the amount or unit quantity, and the tenure against a folio that holds units. The plan is the firm's own entity; no mandate is registered, because no debit will occur.</td></tr>
+    <tr><td>Check units and generate</td><td>The firm.</td><td>On each scheduled date checks available unencumbered units against the folio and RTA record. Emits a child redemption if they cover the instalment; records a non-generation and moves on if they do not. No notification-and-debit step, because money flows outward.</td></tr>
+    <tr><td>Price, withhold, and pay out</td><td>The AMC and RTA.</td><td>Strike the NAV, apply the exit load, and for an NRI or OCI compute and withhold the capital-gains TDS, then pay the net to the registered bank account routed by repatriability. The firm reflects these; in V1 it does not compute the gain, holding no cost basis.</td></tr>
+    <tr><td>Record the outcome</td><td>The firm.</td><td>Reconciles each instalment against the RTA feed and records its result, settled, reversed, or never generated, on the plan. The plan does not change state on a single instalment outcome.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: two entities, two clocks, reused from J8</p>
+  <p>The plan and the instalment are separate entities with separate lifecycles, and the same discipline J8 owns governs the SWP. The plan carries the schedule, the amount or units, and the start and end conditions; each instalment carries a gate, a price, a haircut, and a payout. A single instalment outcome, whether a clean settlement, a payout-tail reversal, or a scheduled date that produced nothing, must not move the plan by itself. J11 inherits this clock and adds no new plan mechanics; it only changes what one scheduled date attempts, from a funded purchase to a gated redemption.</p>
+</div>
+
+<h2 id="s2"><span class="num">2.</span>Decision points</h2>
+<p>One genuine question J11 owns and draws, and one inherited fork it runs per instalment but does not redraw.</p>
+
+<h3>Non-generation versus failure, and what it means for a pause threshold</h3>
+<p>This is the decision J11 exists to surface, and it is a refinement of the SIP's pause policy rather than a new question. In a SIP, a scheduled date where the debit bounces marks that instalment <span class="mono">Failed</span> and may count toward the consecutive-failure threshold that pauses the plan (D9). An SWP has no debit to bounce. When the units are insufficient, the Order reference is explicit that the instalment <strong>simply does not generate</strong>: there is no order, no rail attempt, and nothing to mark <span class="mono">Failed</span>. The product question is therefore whether a non-generating SWP instalment should count toward a pause threshold the way a failed SIP debit does.</p>
+<pre class="mermaid">
+flowchart TD
+  P([Scheduled date, available units do not cover the instalment]) --> Q[Record a non-generation, no order emitted, plan stays Active]
+  Q --> R{Should this count toward a pause threshold}
+  R -->|recommended, no| S([Plan continues, next instalment attempts on schedule, investor optionally notified the holding is thin])
+  R -->|alternative, yes| T([Treat repeated non-generation like repeated failure, pause and prompt])
+</pre>
+<div class="callout verify">
+  <p class="ck">Open: non-generation is a D9 refinement for Product, not a new row</p>
+  <p>The recommended reading follows the Order reference: a non-generation is recorded but is not a failure event, because no debit and no order exist to fail, so it should not feed the consecutive-failure pause the SIP uses. A thin or empty holding is better surfaced to the investor as information, the plan is approaching the end of what it can pay, than punished as if a debit had bounced, and an SWP that runs a holding to zero reaches <span class="mono">Completed</span> on its own. The alternative, treating sustained non-generation like sustained failure and pausing, is defensible if Product wants a single uniform plan-health rule across SIP and SWP. Either way this is a refinement to D9's scope, who and what the pause counts, not a separate decision; it is surfaced as a D9 note for Product, not a new register row. Owner: Product.</p>
+</div>
+
+<h3>The per-instalment residential-status fork, inherited from J9</h3>
+<p>Each SWP instalment is a full redemption, so it carries J9's signature fork in full: for a resident the proceeds land whole and are self-assessed, while for an NRI or OCI the capital-gains TDS is withheld at source on that instalment and a certificate issued, with the net routed by the folio's repatriability tag to an NRE or NRO account. This is drawn in J9 and is not redrawn here; the altitude rule keeps it where it belongs. What J11 adds is only that it runs <strong>every cycle</strong>, so an NRI's SWP produces a withholding and a certificate on each scheduled date rather than once, which is the per-instalment brush of D45 noted in Section 6. The asymmetry with a SIP is worth stating plainly: a SIP's per-instalment overlay is on the way in, the mandate and its ceiling; an SWP's is on the way out, the TDS and repatriability of the payout.</p>
+
+<h2 id="s3"><span class="num">3.</span>Failure taxonomy</h2>
+<p>The ways an SWP breaks separate into the same two levels as a SIP, plan-level and instalment-level, but the instalment level looks different because there is no mandate. The dividing rule is the two-clocks principle: a single instalment outcome never moves the plan by itself.</p>
+<table>
+  <thead><tr><th>How it breaks</th><th>Cause</th><th>Where it lands, and recovery</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Insufficient or encumbered units</strong></td><td>On a scheduled date the free, unencumbered balance does not cover the instalment, because units are pledged, lien-marked, or simply fewer than the plan asks.</td><td>Non-generation: no order is emitted and nothing is marked <span class="mono">Failed</span>. The plan stays <span class="mono">Active</span> and attempts again next cycle. This is the SWP's defining instalment-level event, and it is recorded, not a failure.</td></tr>
+    <tr><td><strong>Below-minimum residual</strong></td><td>An instalment that would leave a balance below the scheme minimum, or a fixed-units plan asking for more than remains.</td><td>Handled per scheme rule, commonly by forcing that instalment to a full redemption of the residual rather than leaving an unviable balance, which can move the plan to <span class="mono">Completed</span>. Surface the choice rather than silently converting it. Inherited from J9.</td></tr>
+    <tr><td><strong>Payout cannot land</strong></td><td>The registered bank account is closed, frozen, or invalid when an instalment's proceeds are paid, after <span class="mono">Allotted</span>.</td><td>A post-allotment failure on that instalment: units are gone but the money cannot land. Resolves by correcting the bank mandate and re-paying; if unwound it is a <span class="mono">Reversed</span>, not a <span class="mono">Failed</span>. The plan continues. Owned by the J9 and J6 spine.</td></tr>
+    <tr><td><strong>Wrong repatriability or misapplied TDS on an instalment</strong></td><td>An NRI instalment paid to the wrong account class, or withheld at the wrong rate, on the J9 payout tail.</td><td>The J9 red flag, now recurring: a payout-tail error that repeats every cycle if the routing is wrong once. Lands on the J9 spine; the plan-level consequence is that the defect compounds across instalments until corrected.</td></tr>
+    <tr><td><strong>Holding exhausted under a live plan</strong></td><td>The plan has drawn the folio down to nothing or to a locked-only residual.</td><td>Not a failure: the plan reaches <span class="mono">Completed</span> when there is nothing left it can redeem. A natural terminal the investor should see coming, not an error.</td></tr>
+    <tr><td><strong>Plan cancelled by the investor</strong></td><td>The investor stops the SWP before its tenure ends.</td><td>The plan moves to <span class="mono">Cancelled</span>; future instalments stop. Settled instalments are untouched; there is no claw-back of proceeds already paid.</td></tr>
+  </tbody>
+</table>
+<div class="callout flag">
+  <p class="ck">Red flag: a thin holding is a non-event, but a recurring payout-tail error is the real danger</p>
+  <p>Two things must not be confused. A scheduled date that produces nothing because the units are not there is a non-event: it must not be treated as a failure, must not pause the plan on its own, and must not trigger a retry that double-redeems when units later appear. The genuine danger is the J9 payout tail made recurring. Once a redemption is allotted the obligation to pay exists, so a wrong repatriability route or a misapplied TDS does not just harm one instalment, it repeats on every cycle until someone catches it. The SWP turns a single payout-tail defect into a standing one, which is the reason the routing must be right at registration, not patched per instalment.</p>
+</div>
+
+<h2 id="s4"><span class="num">4.</span>Special cases</h2>
+<p>Variants that change a value or add a check without rerouting the plan lifecycle or the per-instalment redemption. Listed, never drawn.</p>
+<ul class="tight">
+  <li><strong>Fixed-amount versus fixed-units.</strong> A fixed-rupee SWP sells whatever number of units the NAV implies on each date, so the units leaving vary with price; a fixed-units SWP sells a set quantity, so the rupee payout varies. A capture-and-conversion detail per instalment, not a lifecycle change, and the variant decides which residual rule in Section 3 bites first.</li>
+  <li><strong>NRI TDS on every instalment.</strong> Each instalment withholds capital-gains TDS at source for an NRI or OCI and issues a certificate, so the investor should see the gross, the exit load, the TDS, and the net per cycle as distinct figures. The platform displays these; in V1 it reflects the TDS the RTA and AMC return rather than deriving it, holding no cost basis. This is the per-instalment brush of D45.</li>
+  <li><strong>Exit-load bands and lock-in per instalment.</strong> The load and any lock-in apply to the specific units being sold on each date, following the scheme convention and the order of units, so early instalments may carry a load that later ones do not, and a locked tranche blocks only its own units. A value-and-eligibility detail checked per cycle.</li>
+  <li><strong>DTAA relief for a non-resident.</strong> A Tax Residency Certificate plus a Form 10F can reduce the Indian withholding on an NRI's instalments. It changes the withholding rate, not the flow, and depends on the investor furnishing the documents. Inherited from J9.</li>
+  <li><strong>Investor-initiated pause and resume.</strong> The investor suspends the plan deliberately and resumes later, the same <span class="mono">Paused</span> state J8 carries. No instalments generate while paused. Unlike a SIP there is no mandate to keep alive across the pause, which makes resume simpler.</li>
+  <li><strong>No pre-debit notification, by design.</strong> The 24-hour pre-debit notification the SIP must send is a money-in, mandate-rail obligation. An SWP has no bank debit, so that specific notification does not apply. The firm may still notify before a payout as a courtesy or a control, but it is not the e-mandate framework's pre-debit alert, and J11 should not borrow that mechanic uncritically from J8.</li>
+  <li><strong>Capital depletion and longevity.</strong> An SWP can outlive the holding it draws from. A fixed-rupee plan against a falling market depletes units faster, and the plan naturally tends toward <span class="mono">Completed</span> as the folio thins. This is a planning consequence the experience layer should make visible, not a lifecycle branch.</li>
+  <li><strong>Repatriation certification.</strong> Remitting an NRI's NRO or sale proceeds abroad uses Forms 15CA and 15CB per remittance. A downstream servicing step that follows each payout, not a step inside the SWP spine. Inherited from J9.</li>
+  <li><strong>Persona authority.</strong> A minor's SWP is operated by the guardian until majority, when the lifecycle freeze owned by J2 interrupts it; a joint folio redeems per its operation mode. These set who may register and run the plan, not how it runs.</li>
+</ul>
+
+<h2 id="s5"><span class="num">5.</span>Entities and states exercised</h2>
+<p>The references and journeys J11 draws on. Per the precedence rule J11 invents no state. It composes J8's plan clock with J9's redemption spine, drops the mandate, and changes one gate, and like both of them it finds no missing state.</p>
+<table>
+  <thead><tr><th>Reference or journey</th><th>What J11 exercises</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Order</strong></td><td>The SWP as a member of the transaction family, money out, one scheme, recurring, needing no mandate; the standing-instruction-spawns-child-order separation; the plan states <span class="mono">Registered</span>, <span class="mono">Active</span>, <span class="mono">Paused</span>, <span class="mono">Completed</span>, <span class="mono">Cancelled</span>; and the explicit rule that an instalment simply does not generate when the units are insufficient.</td></tr>
+    <tr><td><strong>J9 (redemption)</strong></td><td>By reference: the full per-instalment flow, the unencumbered-units and lock-in gates, the exit-load haircut, the spine to a payout some working days after the NAV, and the residential-status fork that withholds TDS for an NRI and routes by repatriability.</td></tr>
+    <tr><td><strong>J8 (SIP)</strong></td><td>By reference: the plan lifecycle and the two-clocks principle, reused unchanged, minus the mandate and the pre-debit notification that are money-in concepts.</td></tr>
+    <tr><td><strong>Folio</strong></td><td>Encumbrance, the unencumbered-units gate that now decides generation rather than blocking a one-off; and repatriability, the NRE-or-FCNR-versus-NRO tag that routes each instalment's proceeds.</td></tr>
+    <tr><td><strong>Investor</strong></td><td>The TDS overlay applied per instalment, residents untaxed at source and NRIs withheld with a certificate; the residential-status attribute that forks each payout; and the operating authority that sets who may run the plan.</td></tr>
+    <tr><td><strong>Instrument</strong></td><td>The scheme attributes each instalment reads: the lock-in, the exit-load bands, and the cut-off and NAV mechanics every redemption inherits.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: J11 is a composition, and it confirms the rows it touches rather than adding any</p>
+  <p>J11 introduces no new entity and no new state. It is J8's plan running J9's redemption, and drawing it tested whether that composition holds without a mandate. It does: the plan clock, the non-generation behaviour, and the per-instalment TDS and repatriability all sit on states and rules the Order, Folio, and Investor references already carry. The one thing J11 sharpens is the scope of D9, by showing that a non-generating SWP instalment is structurally unlike a failed SIP debit. J11 adds no register row and flags no reference gap.</p>
+</div>
+
+<h2 id="s6"><span class="num">6.</span>Decisions surfaced</h2>
+<p>The decisions J11 refines, reuses, or brushes, routed to owners and written back to the register.</p>
+<table>
+  <thead><tr><th>#</th><th>Decision and what J11 needs</th><th>Owner</th><th>Status after J11</th></tr></thead>
+  <tbody>
+    <tr><td><strong>D9</strong></td><td>The pause-on-failure policy. J11 refines its scope: a non-generating SWP instalment has no debit and no order to fail, so it should not count toward the consecutive-failure pause the SIP uses. Recommended that non-generation is recorded as information, not a failure, and a holding running to zero reaches <span class="mono">Completed</span> on its own.</td><td>Product</td><td>Refined, not a new row. D9 now carries the SWP non-generation nuance for Product to settle alongside the SIP threshold.</td></tr>
+    <tr><td>D27</td><td>Repatriability routing. Reused per instalment: each NRI payout is routed by the folio's NRE-or-FCNR-versus-NRO tag, and the recommended separate-folio-by-repatriability position holds when the payout recurs.</td><td>Internal / Engineering</td><td>Exercised; position holds, now per instalment.</td></tr>
+    <tr><td>D28</td><td>Encumbrance. Reused as the generation gate: only unencumbered units can be drawn, and an encumbered or thin balance produces a non-generation rather than a block. The deeper lien-versus-pledge mechanics remain the Tier 3 detail.</td><td>Internal / Engineering</td><td>Brushed; gate is clear and now drives generation.</td></tr>
+    <tr><td>D45</td><td>NRI pre-trade TDS and net-proceeds visibility. Brushed per instalment: because cost-basis is out of V1, the question of what an NRI sees before each redemption is the same one J9 raised, now repeating every cycle.</td><td>Product / Architect</td><td>Brushed; J9's open call recurs per SWP instalment, no change to the row.</td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Open: what hardens J11</p>
+  <p>J11 is drawn against settled or applied decisions and the J8 and J9 spines it composes, so its lifecycle and gates are stable. The one thing it leaves open is the D9 refinement: Product needs to confirm that a non-generating instalment is recorded rather than counted toward a pause, and decide whether SIP and SWP share one plan-health rule or keep separate ones. The per-instalment NRI payout also keeps D45 live, since the platform still cannot derive the TDS itself in V1, but that is J9's call recurring rather than a new one. Closing the D9 refinement with Product is what moves J11 from decision-surfacing to governing. Nothing here blocks the wave.</p>
+</div>
+
+<div class="footer">
+  <p><strong>Document control.</strong> J11: Systematic Withdrawal Plan. Version v0.1, decision-surfacing draft, June 2026. The ninth journey document and the second of Wave 3, drawing the recurring money-out plan as a composition: J8's plan lifecycle and two-clocks principle, reused unchanged, running J9's redemption spine on each scheduled date, with no payment mandate because money flows outward. Its defining instalment-level behaviour is non-generation, an instalment that simply does not emit when the unencumbered units are insufficient, recorded rather than failed. Refines D9 with the SWP non-generation nuance for Product, reuses D27 and D28 per instalment, and brushes D45 as J9's NRI pre-trade-visibility call recurring each cycle. Adds no register row and flags no reference gap. Draws on Order for the SWP and plan lifecycle, J9 for the per-instalment redemption, J8 for the plan pattern, Folio for encumbrance and repatriability, and Investor for the TDS overlay. Tax and TDS figures defer to the Investor reference, which owns the rates. Not a reference and not a PRD.</p>
+</div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  try {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      themeVariables: {
+        fontFamily: "'Source Sans 3', sans-serif",
+        primaryColor: '#efe9f7',
+        primaryBorderColor: '#6a4a9c',
+        primaryTextColor: '#26222e',
+        lineColor: '#6a4a9c',
+        secondaryColor: '#fbf2dd',
+        tertiaryColor: '#fffdf8',
+        fontSize: '15px'
+      }
+    });
+  } catch (e) { /* if the CDN is unreachable, the Mermaid source remains legible as text */ }
+</script>
+</body>
+</html>

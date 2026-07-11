@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Folio Entity: Master Reference</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Domain Reference</p>
+  <h1 class="title">The Folio Entity</h1>
+  <p class="subtitle">A master reference for where a holding lives: the folio, the account, and the holding itself, with the ownership, repatriability, nomination, and transmission machinery that the Investor and Order references deferred here.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.2: Nomination rule grounded to the 29 May 2026 circular</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Master reference (not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>A reference view of the <strong>Folio entity</strong>: the container where an investor meets an instrument and a holding comes to rest. It covers what a folio is and how it differs from a demat account and from a holding, how ownership and operation modes work, how repatriability tags a holding, how nomination is captured, how a holding passes on through transmission, how units become encumbered, and why a household is a reporting roll-up rather than a real entity. It follows the same common-spine-plus-profile structure as the Investor, Instrument, and Order references.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a PRD and not a build plan. It specifies no flows or screens. It is also not legal, tax, or compliance advice; the nomination and transmission rules are current to the date above and one of them is the subject of a live SEBI consultation, flagged where it arises.</p>
+  </div>
+
+  <h3>Scope</h3>
+  <p><strong>In scope:</strong> the folio as the investor-by-AMC join; the two holding forms, statement-of-account and demat, and their consequences; single and joint ownership with the four operation modes; the repatriability tag; nomination; transmission by holding type; encumbrance through lien and pledge; the folio lifecycle states; and household as a reporting projection over folios.</p>
+  <p><strong>Profiles in scope:</strong> the two container forms, the <strong>SOA folio</strong> and the <strong>demat account</strong>, examined through the same facet set. These are the genuine fork in this domain, because they change where nomination, transmission, and pledge attach.</p>
+  <p><strong>Deliberately elsewhere:</strong> the persona definitions and the operating-authority model live in the Investor reference; the order lifecycle and mandate machinery live in the Order reference; tax rates live in the Investor reference; the counterparty and system-of-record map lives in the Rails reference. This document references each rather than reproducing it.</p>
+
+  <div class="callout principle">
+    <p class="ck">Relationship to the other references</p>
+    <p>This is the document the Instrument and Order references defer holding mode, nomination, and transmission to. The boundary with the Investor reference is one of <strong>grain</strong>. The Investor reference describes these at the <strong>persona level</strong>: which holding modes a persona can use, what a persona's transmission looks like in outline. This document owns them at the <strong>holding level</strong>: how a folio is actually structured, where the nominee sits, how the units move on death. The two are complementary by design, the persona view and the holding view, and neither needs to absorb the other.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong, where the default intuition is likely to mislead.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a point an investor or the firm must actively check, where the rule can bite or a common belief is simply wrong.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not settled with confidence, or one turning on a current regulatory position that may move; each names who to vet it with.</p></div>
+  <p>The build-scope view in Part V uses three badges: <span class="bkt core">Core build</span> own it end to end, <span class="bkt fac">Facilitate</span> assist while the AMC, RTA, or depository executes, <span class="bkt ref">Referential</span> understand it, no plumbing.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#p1">Part I: The folio entity model</a>
+      <ol>
+        <li><a href="#s1">What a folio is in this domain</a></li>
+        <li><a href="#s2">The facet taxonomy</a></li>
+        <li><a href="#s3">The container catalogue</a></li>
+      </ol>
+    </li>
+    <li><a href="#p2">Part II: The common spine</a>
+      <ol>
+        <li><a href="#s4">The folio as the investor-by-AMC join</a></li>
+        <li><a href="#s5">Holding form and its consequences</a></li>
+        <li><a href="#s6">Ownership and operation modes</a></li>
+        <li><a href="#s7">Repatriability</a></li>
+        <li><a href="#s8">Nomination</a></li>
+        <li><a href="#s9">Transmission</a></li>
+        <li><a href="#s10">Encumbrance: lien and pledge</a></li>
+        <li><a href="#s11">Household as a reporting projection</a></li>
+      </ol>
+    </li>
+    <li><a href="#p3">Part III: Container profiles</a>
+      <ol>
+        <li><a href="#soa">The SOA folio</a></li>
+        <li><a href="#demat">The demat account</a></li>
+      </ol>
+    </li>
+    <li><a href="#p4">Part IV: The folio lifecycle state model</a></li>
+    <li><a href="#p5">Part V: The build-scope view</a></li>
+    <li><a href="#p6">Part VI: Open items and verification register</a></li>
+    <li><a href="#refs">References</a></li>
+    <li><a href="#glossary">Glossary</a></li>
+  </ol>
+</nav>
+
+<div class="part-band" id="p1"><div class="pk">Part I</div><div class="pt">The folio entity model</div></div>
+
+<h2 id="s1"><span class="num">1.</span>What a folio is in this domain</h2>
+<p class="lead">A folio is a <strong>container</strong>, not a holding. It is the account under which an investor's units with a single fund house are recorded, and it carries the ownership mode, the bank mapping, the nominee, and the repatriability that colour everything held inside it. The holding is the position; the folio is where the position lives.</p>
+<p>The trap is to treat folio, account, and holding as three words for the same thing. They are three different grains, and the relationships between them are the foundation of the whole document:</p>
+<ul class="tight">
+  <li>A <strong>holding</strong> is a position in one scheme: so many units of one fund, at a cost and a current value.</li>
+  <li>A <strong>folio</strong> is the registrar's account for an investor, or a joint set of investors, with <strong>one AMC</strong>, holding units in statement-of-account form. One folio can hold many schemes of that one AMC. An investor can have several folios with the same AMC.</li>
+  <li>A <strong>demat account</strong> is a depository account, held through a depository participant, that can hold units of <strong>many AMCs</strong> alongside shares, bonds, and other dematerialised securities. It is a cross-AMC container.</li>
+</ul>
+<div class="callout principle">
+  <p class="ck">Key principle</p>
+  <p>The holding form decides which container is authoritative, and the two forms have different grains. In <strong>SOA form</strong> the container is the folio, scoped to one AMC, and the nominee, the operation mode, and the bank mapping attach to that folio. In <strong>demat form</strong> the container is the demat account, scoped across all AMCs and asset classes, and those same attributes attach to the account, not to a per-AMC folio. Modelling a single "holding container" that ignores this grain shift will misplace the nominee and the transmission path the moment an investor holds in demat. Carry the container grain explicitly.</p>
+</div>
+<p>One framing carries over from the other references and decides most of Part V. The firm is <strong>not the system of record</strong>. The RTA keeps the folio and its register for SOA holdings; the depository keeps the demat account. The firm captures and reflects the folio, drives nominee capture, and reconciles its own view against those external records, but it does not own them.</p>
+
+<h2 id="s2"><span class="num">2.</span>The facet taxonomy</h2>
+<p>Each container profile in Part III is examined through the same facets, in the same order, so the two read side by side. The facets are:</p>
+<ol class="tight">
+  <li><strong>Container grain and scope</strong>: what one container spans and who keeps it.</li>
+  <li><strong>What can be held</strong>: the instruments the container supports.</li>
+  <li><strong>Ownership and operation modes</strong>: single or joint, and the joint operation modes available.</li>
+  <li><strong>Repatriability handling</strong>: how the repatriable or non-repatriable tag is carried.</li>
+  <li><strong>Nomination attachment</strong>: where the nominee sits and how it is captured.</li>
+  <li><strong>Transmission mechanics</strong>: how the holding passes on within this form.</li>
+  <li><strong>Encumbrance mechanics</strong>: how units are lien-marked or pledged.</li>
+  <li><strong>Statementing and reporting</strong>: what the investor sees and from whom.</li>
+  <li><strong>Special attention and opens</strong>: the unusual and the unverified.</li>
+</ol>
+
+<h2 id="s3"><span class="num">3.</span>The container catalogue</h2>
+<p>The containers in scope, with their grain and keeper. The full treatment is in Part III; this is the catalogue.</p>
+<table>
+  <thead><tr><th>Container</th><th>Grain</th><th>Kept by</th><th>Holds</th></tr></thead>
+  <tbody>
+    <tr><td><strong>SOA folio</strong></td><td>One investor or joint set, one AMC</td><td>The RTA (CAMS or KFin)</td><td>Mutual fund and SIF units of that AMC, in the registrar's records, no demat needed.</td></tr>
+    <tr><td><strong>Demat account</strong></td><td>One investor or joint set, across all AMCs and asset classes</td><td>The depository (NSDL or CDSL) through a depository participant</td><td>Dematerialised units of any AMC, plus shares, bonds, and other securities.</td></tr>
+  </tbody>
+</table>
+<p>The great majority of mutual fund investing in India runs on SOA folios, because no demat account is needed and the registrar's record is sufficient. Demat becomes necessary when the investor also holds equities, or chooses to consolidate all holdings in one depository account. Because equities require demat, any future equity profile in the suite lives entirely in the demat container, which is part of why the grain distinction is worth establishing now rather than when equities arrive.</p>
+
+<div class="part-band" id="p2"><div class="pk">Part II</div><div class="pt">The common spine</div></div>
+<p class="lead" style="margin-top:18px;">Eight facets that behave consistently across the container forms, described once here. The profiles in Part III state only their deviations.</p>
+
+<h2 id="s4"><span class="num">4.</span>The folio as the investor-by-AMC join</h2>
+<p>A folio number is issued by the RTA the first time an investor transacts with a fund house and identifies that investor's relationship with that one AMC. It is the join between the party and the fund house, and everything the investor holds with that AMC in SOA form sits under it.</p>
+<h4>One investor can have many folios with one AMC.</h4>
+<p>A single investor often ends up with more than one folio at the same fund house. The common causes are a different holding mode (a single folio and a joint folio cannot share one folio number), a different repatriability classification (covered in Section 7, and a hard reason for separate folios), a different tax status, or simply separate transactions registered at different times that were never consolidated. The platform should consolidate the investor's view across folios by PAN, but it must not assume one investor maps to one folio per AMC, because the RTA does not.</p>
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p>Folio consolidation is a reporting convenience, not a structural truth. The firm can and should present a unified view of an investor's holdings across folios and AMCs, but the folio remains the RTA's unit of account, and operations such as transmission, nomination, and redemption happen at the folio level. A consolidated view that hides the underlying folios will mislead the moment one of those folio-level operations is needed.</p>
+</div>
+
+<h2 id="s5"><span class="num">5.</span>Holding form and its consequences</h2>
+<p>The single most consequential attribute of a holding is the form it takes, because the form decides the container grain and therefore where nomination, transmission, pledge, and statementing attach.</p>
+<table>
+  <thead><tr><th>Consequence</th><th>SOA form</th><th>Demat form</th></tr></thead>
+  <tbody>
+    <tr><td>Container</td><td>The folio, per AMC.</td><td>The demat account, across all AMCs.</td></tr>
+    <tr><td>Keeper of record</td><td>The RTA.</td><td>The depository, through the DP.</td></tr>
+    <tr><td>Nomination attaches to</td><td>The folio.</td><td>The demat account, once for everything in it.</td></tr>
+    <tr><td>Transmission runs through</td><td>The RTA, folio by folio.</td><td>The depository, for the whole account at once.</td></tr>
+    <tr><td>Pledge or lien is marked</td><td>On the folio by the RTA.</td><td>On the demat holding by the depository, a more standardised mechanism.</td></tr>
+    <tr><td>Statement comes from</td><td>The RTA (and the consolidated CAS).</td><td>The depository (and the consolidated CAS).</td></tr>
+  </tbody>
+</table>
+<p>The instrument itself is largely indifferent to the form; the investor and the platform choose it. What the form changes is operational, and it changes a great deal. A nominee registered on a demat account covers every fund and share in that account at once, whereas a nominee in SOA form must be registered folio by folio. Transmission of a demat account moves everything in one process; transmission of SOA holdings is run per folio, and an investor with five AMCs has five transmissions. This asymmetry is why the form is a first-class attribute and not a display preference.</p>
+
+<h2 id="s6"><span class="num">6.</span>Ownership and operation modes</h2>
+<p>A holding may be in one name or held jointly, and the joint case carries an operation mode that decides whose authorisation a transaction needs and how the holding passes on. Joint holding is a <strong>mode over personas, not a persona of its own</strong>, a point the Investor reference establishes and this document inherits at the holding level.</p>
+<h4>Holder order.</h4>
+<p>A joint holding has a first (primary) holder and one or more secondary holders. The first holder is the default for communications and statements, and, importantly, is the holder to whom income and gains are generally attributed for tax. Joint mode assigns the tax, it does not split it.</p>
+<h4>The four operation modes.</h4>
+<table>
+  <thead><tr><th>Mode</th><th>Who may transact while all are alive</th><th>On a holder's death</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Jointly</strong></td><td>All holders must sign every instruction.</td><td>The holding vests in the survivors, who then continue jointly.</td></tr>
+    <tr><td><strong>Either or Survivor</strong></td><td>Any one holder may act alone.</td><td>The survivor or survivors continue, ahead of any nominee.</td></tr>
+    <tr><td><strong>Anyone or Survivor</strong></td><td>Any one of several holders may act alone.</td><td>The remaining holders continue.</td></tr>
+    <tr><td><strong>Former or Survivor</strong></td><td>The first holder acts while alive; later holders act only after the former's death.</td><td>The next holder in order takes over.</td></tr>
+  </tbody>
+</table>
+<p>The operation mode is an input to the authorisation engine described in the Investor reference, so it is not cosmetic. A redemption on a Jointly-held folio that collects only one signature is not a valid order, and the pre-flight check in the Order reference depends on knowing the mode.</p>
+<div class="callout flag">
+  <p class="ck">Red flag: survivorship overrides the nominee</p>
+  <p>On a joint folio, the surviving joint holder takes the holding ahead of any registered nominee. The nominee only ever comes into play once there is no surviving holder. Treating the nominee as the next recipient on the first death is wrong for a joint holding and will route units to the wrong person. Survivorship first, nominee only on the last holder's death.</p>
+</div>
+<div class="callout flag">
+  <p class="ck">Red flag: a joint folio is not estate planning</p>
+  <p>On the first holder's death the survivor takes the entire folio and becomes its sole controller, free to redeem it or change the nominee to anyone, including away from the person the deceased holder intended to benefit. Nothing in the folio constrains those later choices, and survivorship settles who holds the units, not who is beneficially entitled to them. A holder who wants their share to reach a specific person cannot secure that through a joint folio and a nomination; that is a job for a will and often for separate holding. The survivor consequence is best raised with the family at onboarding, not discovered by a grieving spouse afterward.</p>
+</div>
+
+<h2 id="s7"><span class="num">7.</span>Repatriability</h2>
+<p>For NRI and OCI holdings, repatriability is not a tax detail. It is a tag on the folio that decides whether the proceeds can be sent abroad, and it follows the account that funded the holding.</p>
+<ul class="tight">
+  <li>A holding funded from an <strong>NRE or FCNR</strong> account is <strong>repatriable</strong>: the proceeds can be remitted out of India.</li>
+  <li>A holding funded from an <strong>NRO</strong> account is <strong>non-repatriable</strong>, subject to the limited remittance allowance that applies to NRO funds.</li>
+</ul>
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p>Repatriable and non-repatriable money cannot be mixed in one folio. An NRI who invests from both an NRE and an NRO account therefore holds at least two folios with the same AMC, one of each classification, and the platform must carry the tag at the folio level and keep the two apart. On transmission and on redemption, the repatriability of the proceeds follows the original classification of the folio, not the residential status of the recipient.</p>
+</div>
+<p>The tag is set at the moment the folio is funded and is a property the firm captures and reflects rather than computes. The detail of which account types an NRI or OCI may use, and the cross-border banking constraints, lives in the Investor reference; what matters here is that the folio carries the classification and that it is immutable for that folio.</p>
+
+<h2 id="s8"><span class="num">8.</span>Nomination</h2>
+<p>Nomination is the instruction that drives transmission on death, and it is captured at the container level: per folio in SOA form, per account in demat form. The framework was overhauled by SEBI in 2025 and revised again by a circular dated 29 May 2026, which superseded the earlier norms and settled the points the 2026 consultation had left open. The operative rule below is that circular, effective 1 September 2026.</p>
+<h4>The operative framework, the SEBI circular dated 29 May 2026, effective 1 September 2026.</h4>
+<ul class="tight">
+  <li>Nomination is <strong>effectively mandatory with an explicit opt-out</strong>. An investor in a single-holder folio or account must either nominate or consciously decline through an affirmed declaration.<sup class="fn">1</sup></li>
+  <li>Up to <strong>three nominees</strong> can be registered per folio or demat account, with a percentage share for each; where no share is specified the assets are apportioned equally, with any odd lot going to the first nominee named. The earlier framework allowed up to ten; the 29 May 2026 circular cut the maximum to three.<sup class="fn">1</sup></li>
+  <li>Only the <strong>investor</strong> can nominate. A power-of-attorney holder cannot make or change a nomination.<sup class="fn">1</sup></li>
+  <li><strong>Joint holders are not required to nominate</strong>, because survivorship already governs; they may nominate for the event of all holders' death. Where a joint folio does carry a nomination, <strong>the consent of all joint holders is required to provide or change it, irrespective of the operation mode</strong>, so an either-or-survivor folio cannot have its nominee changed by one holder acting alone.<sup class="fn">1</sup></li>
+  <li>The mandatory fields for a nominee are reduced to <strong>name and relationship</strong> only. Contact details, KYC particulars, and guardian details for a minor nominee are now optional, and witness signatures are no longer required except where the investor signs by thumb impression. A nomination can be submitted online, authenticated by digital signature, Aadhaar e-sign, or two-factor authentication, or offline.<sup class="fn">1</sup></li>
+  <li>The earlier threat to <strong>freeze accounts</strong> that lacked a nomination or opt-out was dropped. A missing nomination no longer blocks transactions; intermediaries instead periodically remind the investor.<sup class="fn">1</sup></li>
+</ul>
+<div class="callout">
+  <p class="ck">Resolved: the 2026 consultation has produced a circular</p>
+  <p>The 17 March 2026 consultation proposed cutting the maximum nominees from ten to four to align with banking norms. The final SEBI circular dated 29 May 2026 went further and settled the maximum at <strong>three</strong>, not four, made only the nominee's name and relationship mandatory with the rest optional, defaulted to an equal split with the odd lot to the first nominee, and grounded all-holder consent for nomination changes on joint folios.<sup class="fn">2</sup> This supersedes the earlier ten-nominee framework and takes effect 1 September 2026, so the form should be built to three. One residual remains for Compliance: confirm these provisions against the primary SEBI circular text before the capture form is finalised, since the operative source here is a reading of the circular rather than the gazette itself.</p>
+</div>
+<div class="callout flag">
+  <p class="ck">Red flag: a nominee is a trustee, not an owner</p>
+  <p>A registered nominee receives the units on death so the family can access them quickly, but the nominee holds them as a caretaker. The legal heirs under a will or succession law remain the rightful owners, and their claim can prevail over the nominee's where the two differ. Presenting nomination as a substitute for a will, or the nominee as the final owner, is wrong and is a frequent source of family dispute. The platform should capture nomination as an access mechanism, not as estate planning.</p>
+</div>
+
+<h2 id="s9"><span class="num">9.</span>Transmission</h2>
+<p>Transmission is the transfer of a deceased holder's units to the rightful claimant. It is a first-class lifecycle event, not an exception path, and for a private-wealth relationship it is one of the moments that matters most. Who the claimant is, and what they must produce, depends on the holding type.</p>
+<table>
+  <thead><tr><th>Holding type</th><th>Claimant</th><th>What governs and what is needed</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Joint holding</strong></td><td>The surviving holder or holders.</td><td>Survivorship governs, ahead of any nominee. The survivor submits the death certificate; under the 2025 framework no KYC, indemnity, or undertaking is sought from the surviving holder. The cleanest path.<sup class="fn">3</sup></td></tr>
+    <tr><td><strong>Single holding with a nominee</strong></td><td>The registered nominee.</td><td>The nominee submits a transmission request form, the death certificate, their own KYC, and a bank proof. Above a value threshold, commonly around &#8377;5 lakh for mutual funds, additional documents such as an affidavit, an indemnity, or a no-objection from other heirs may be required.<sup class="fn">3</sup></td></tr>
+    <tr><td><strong>Single holding, no nomination</strong></td><td>The legal heirs.</td><td>The heirs must establish title with succession papers: a will with probate, a succession certificate, or a legal heir certificate. The heaviest path, and the one nomination exists to avoid.<sup class="fn">3</sup></td></tr>
+    <tr><td><strong>HUF</strong></td><td>The continuing family.</td><td>On the Karta's death the role devolves to the next senior coparcener; the family persists as the entity rather than the holding being distributed.</td></tr>
+    <tr><td><strong>Other entities</strong> (trust, company, partnership, LLP, society)</td><td>The continuing entity.</td><td>The entity persists through the death of any individual; succession follows its own rules for trustees, directors, or partners. There is no transmission of the holding, only a change in who is authorised.</td></tr>
+  </tbody>
+</table>
+<h4>Two points worth carrying into any design.</h4>
+<p>First, transmission is not a taxable event. India has no inheritance tax, and the transfer of units on death is not a sale. To keep this clear in the records, SEBI in September 2025 introduced a standard reason code for a nominee-to-legal-heir transfer so that it is reported to the tax authority as a transmission rather than wrongly assessed as a capital-gains transfer.<sup class="fn">4</sup> Second, the documentation thresholds are binding the other way too: intermediaries are not permitted to demand a succession certificate for a nominee claim below the threshold, and a wrongful demand is a grievance an investor can escalate.<sup class="fn">3</sup></p>
+<div class="callout verify">
+  <p class="ck">Open: verify thresholds with AMFI and the AMC</p>
+  <p>The exact transmission documentation threshold, the around-&#8377;5-lakh figure above, follows the AMFI Best Practices Guidelines and can be revised. Confirm the current threshold and the precise document set for above-threshold and contested claims with AMFI and the AMC before building a transmission flow, rather than hard-coding the figure.<sup class="fn">3</sup></p>
+</div>
+
+<h2 id="s10"><span class="num">10.</span>Encumbrance: lien and pledge</h2>
+<p>Units in a folio or demat account are not always free to redeem. They can be <strong>encumbered</strong>, marked against a borrowing or a regulatory hold, and encumbered units cannot be redeemed until the mark is released. This is the holding state the Order reference reads when its pre-flight check looks for available, unencumbered units before allowing a redemption.</p>
+<ul class="tight">
+  <li>A <strong>lien</strong> is a hold placed on units, for example by a lender extending a loan against the holding, or by a regulator. The units remain the investor's but cannot be moved while the lien stands.</li>
+  <li>A <strong>pledge</strong> is units committed as collateral for a loan. In demat form the pledge is a standardised depository mechanism; in SOA form the RTA marks a lien on the folio.</li>
+</ul>
+<p>The firm does not create or release these marks; the lender, the depository, or the RTA does. The firm's job is to <strong>reflect</strong> the encumbrance so that an order against encumbered units fails its pre-flight check cleanly rather than being rejected later by the RTA. A platform that does not carry the encumbrance state will let an investor place a redemption that cannot succeed, which is a poor experience and a reconciliation problem.</p>
+
+<h2 id="s11"><span class="num">11.</span>Household as a reporting projection</h2>
+<p>A household is a useful way to look at several investors' folios together, a family's holdings viewed as one. It is not a base entity, and modelling it as one is an error the suite explicitly guards against.</p>
+<div class="callout principle">
+  <p class="ck">Key principle</p>
+  <p>Household is a <strong>reporting projection over folios</strong>, never a container that holds anything and never a posting altitude. No folio belongs to a household at the registrar; folios belong to investors, and a household is a grouping the firm draws over them for a consolidated view. Building that consolidated view is the firm's to do and is genuinely valuable for a relationship, but the household must never become a level at which ownership, nomination, transmission, or a ledger entry sits. The legal truth is always the folio and its holders.</p>
+</div>
+<p>The practical consequence is a clean separation. The firm builds a household roll-up as a read-only projection, keyed to the relationships it captures, and uses it for reporting and for the relationship view. Every operation that changes ownership or moves money still happens at the folio level against the real holders. The roll-up reads; it never writes.</p>
+
+<div class="part-band" id="p3"><div class="pk">Part III</div><div class="pt">Container profiles</div></div>
+<p class="lead" style="margin-top:18px;">Each profile states only what the container form changes about the common spine, through the same facet order. The SOA folio is the reference case; the demat account is described as a deviation from it.</p>
+
+<h2 id="soa"><span class="num">12.</span>The SOA folio</h2>
+
+<div class="persona">
+  <h3>Statement-of-account folio</h3>
+  <div class="facet"><span class="fl">Container grain and scope</span>One investor or joint set, one AMC. The RTA keeps the folio and its register. An investor commonly holds several folios with one AMC, split by holding mode, repatriability, or transaction history. This is the default and the most common form for mutual fund investing.</div>
+  <div class="facet"><span class="fl">What can be held</span>Mutual fund and SIF units of that one AMC. No demat account is needed; the registrar's record is the holding.</div>
+  <div class="facet"><span class="fl">Ownership and operation modes</span>Single or joint, with all four operation modes available. The first holder is the default for communications, statements, and tax attribution.</div>
+  <div class="facet"><span class="fl">Repatriability handling</span>The tag sits on the folio and follows the funding account. Repatriable and non-repatriable money sit in separate folios, so an NRI holds at least two folios per AMC where both account types are used.</div>
+  <div class="facet"><span class="fl">Nomination attachment</span>Per folio. A nominee must be registered folio by folio, so an investor with several folios at one AMC registers the nominee on each. This is the operational cost of the SOA form on the nomination side.</div>
+  <div class="facet"><span class="fl">Transmission mechanics</span>Run through the RTA, folio by folio. An investor with holdings across five AMCs has five separate transmissions, each against its own folio and nominee.</div>
+  <div class="facet"><span class="fl">Encumbrance mechanics</span>The RTA marks a lien on the folio when units are pledged or held against a loan. Less standardised than the depository pledge mechanism.</div>
+  <div class="facet"><span class="fl">Statementing and reporting</span>The RTA provides the account statement; holdings also appear on the consolidated account statement (CAS) that spans an investor's folios and demat. The firm reflects and consolidates.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>The per-folio grain of nomination and transmission is the thing to design around. A folio-by-folio nominee capture and a folio-by-folio transmission are more work than the demat case, and an investor with many folios at one AMC multiplies it.</div>
+</div>
+
+<h2 id="demat"><span class="num">13.</span>The demat account</h2>
+
+<div class="persona">
+  <h3>Demat account</h3>
+  <div class="facet"><span class="fl">Container grain and scope</span>One investor or joint set, across all AMCs and asset classes. The depository (NSDL or CDSL) keeps the account through a depository participant. A single demat account is the cross-AMC, cross-asset container, which is the defining difference from the folio.</div>
+  <div class="facet"><span class="fl">What can be held</span>Dematerialised units of any AMC, plus shares, bonds, and other securities. Equities can only be held here, which is why the future equity profile in the suite lives entirely in this container.</div>
+  <div class="facet"><span class="fl">Ownership and operation modes</span>Single or joint, with the same operation modes. A minor's demat is operated by the guardian; an entity's demat is operated by its authorised signatories, the same authority model as elsewhere.</div>
+  <div class="facet"><span class="fl">Repatriability handling</span>For non-residents the repatriability still follows the funding account, and a non-resident commonly holds separate repatriable and non-repatriable demat accounts for the same reason folios are split.</div>
+  <div class="facet"><span class="fl">Nomination attachment</span>
+    <div class="callout" style="margin-top:8px;">
+      <p class="ck">Special attention</p>
+      <p>Nomination attaches to the demat account once and covers everything in it, across every AMC and asset class. This is the demat form's advantage over the folio: one nomination instead of one per folio. The same is true of transmission. So the choice of holding form is also a choice about how much nomination and transmission overhead the investor and the firm carry.</p>
+    </div>
+  </div>
+  <div class="facet"><span class="fl">Transmission mechanics</span>Run through the depository for the whole account at once. A single transmission moves every holding in the demat account to the claimant, rather than one transmission per AMC. For an investor with many fund houses this is materially simpler than the SOA case.</div>
+  <div class="facet"><span class="fl">Encumbrance mechanics</span>Pledge and lien are standardised depository mechanisms, more uniform and machine-readable than the RTA lien on a folio. The encumbrance state is cleaner to reflect from a demat account.</div>
+  <div class="facet"><span class="fl">Statementing and reporting</span>The depository provides the demat statement, and the consolidated CAS spans demat and SOA together. The firm reflects and consolidates.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>
+    <div class="callout verify" style="margin-top:8px;"><p class="ck">Open: verify demat-MF scope with the team</p><p>Most mutual fund investing runs on SOA, and whether the platform supports demat-held mutual fund units from the start, or begins SOA-only and adds demat with equities, is a scope decision rather than a regulatory one. The depository-participant function itself is not the firm's to build as an MFD; the firm reflects a demat account it does not keep. Confirm the intended demat scope before building the container model.</p></div>
+  </div>
+</div>
+
+<div class="part-band" id="p4"><div class="pk">Part IV</div><div class="pt">The folio lifecycle state model</div></div>
+<p style="margin-top:18px;">A folio is a stateful thing, and the states it moves through are the part a static holdings table misses. They are also the states the Order reference reads when it decides whether an order may proceed, in particular the frozen and under-transmission cases that send an acknowledged order to rejection.</p>
+<table>
+  <thead><tr><th>State</th><th>Meaning</th><th>What it permits</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Created</strong></td><td>The folio exists at the RTA but is not yet fully active, for example awaiting first funding or a KYC step.</td><td>Limited; typically awaiting the condition that makes it active.</td></tr>
+    <tr><td><strong>Active</strong></td><td>The normal state: the folio is funded, KYC is in order, and it can transact.</td><td>The full transaction family, subject to the operation mode and any encumbrance.</td></tr>
+    <tr><td><strong>Frozen: KYC on-hold</strong></td><td>The holder's KYC has fallen to On-Hold or worse.</td><td>Blocks new investment and SIPs, and in some cases redemptions, mirroring the Investor reference status regime.</td></tr>
+    <tr><td><strong>Frozen: attaining majority</strong></td><td>A minor folio at the moment the minor turns eighteen.</td><td>Frozen for transactions until the now-adult completes their own KYC and a fresh mandate, per the Investor reference.</td></tr>
+    <tr><td><strong>Under transmission</strong></td><td>A transmission claim is in progress on the folio.</td><td>Blocks ordinary transactions; only the transmission itself proceeds. An order acknowledged against such a folio is rejected.</td></tr>
+    <tr><td><strong>Dormant or inactive</strong></td><td>No activity for a long period, per the RTA's definition.</td><td>May require a reactivation step before transacting; the holding persists.</td></tr>
+    <tr><td><strong>Closed</strong></td><td>Fully redeemed or transmitted out, with a zero balance.</td><td>Terminal. A fresh investment opens a new folio rather than reviving this one.</td></tr>
+  </tbody>
+</table>
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p>The frozen and under-transmission states are where this document meets the Order reference. An order's pre-flight check and the acknowledged-state rejection both depend on the folio state being known and current. A folio model that records only a balance, and not the state, will let orders through that the RTA will then reject, which surfaces to the investor as an unexplained failure late in the lifecycle rather than a clean refusal up front.</p>
+</div>
+
+<div class="part-band" id="p5"><div class="pk">Part V</div><div class="pt">The build-scope view</div></div>
+<p style="margin-top:18px;">The same lens as the other references. The principle is unchanged: the firm captures and reflects the container and drives the investor-facing moments, while the RTA and the depository keep the record and execute the transfers. Nominee capture and the holding-mode and repatriability tags are core build; transmission is facilitate.</p>
+<div class="legend">
+  <span><span class="bkt core">Core build</span> Own end to end.</span>
+  <span><span class="bkt fac">Facilitate</span> Assist; RTA, depository, or lender executes.</span>
+  <span><span class="bkt ref">Referential</span> Understand; no plumbing.</span>
+</div>
+<table>
+  <thead><tr><th>Element</th><th>Bucket</th><th>Why, and who executes</th></tr></thead>
+  <tbody>
+    <tr><td>Holding-mode capture and reflection (single or joint, operation mode, SOA or demat)</td><td><span class="bkt core">Core build</span></td><td>Captured and reflected by the firm; it drives the order, the authorisation, communications, and reporting. The authoritative folio is the RTA's.</td></tr>
+    <tr><td>Repatriability tag on the folio</td><td><span class="bkt core">Core build</span></td><td>A modelled folio attribute the firm captures and keeps separate; it colours every holding in the folio and follows through to proceeds.</td></tr>
+    <tr><td>Nominee capture</td><td><span class="bkt core">Core build</span></td><td>The firm captures the nomination and registers it with the RTA or depository. The 29 May 2026 circular has settled the rule at three nominees with name and relationship mandatory, so the form is built to that; keeping the count lightly configurable is still prudent against future revision.</td></tr>
+    <tr><td>Folio lifecycle state tracking, including frozen and under-transmission</td><td><span class="bkt core">Core build</span></td><td>The firm holds the folio state and gates orders on it, in concert with the Order reference's pre-flight check.</td></tr>
+    <tr><td>Folio consolidation and the household roll-up view</td><td><span class="bkt core">Core build</span></td><td>The firm's own read-only projection across folios and AMCs. Valuable for the relationship; never a posting or ownership altitude.</td></tr>
+    <tr><td>Reconciliation of the reflected folio against RTA and depository records</td><td><span class="bkt core">Core build</span></td><td>The firm's view is a projection that must agree with the keeper's record. The reconciliation is the firm's.</td></tr>
+    <tr><td>Transmission</td><td><span class="bkt fac">Facilitate</span></td><td>The RTA or depository effects the transfer on its record. The firm guides the family, collects and verifies documents, and routes the claim. For private wealth this facilitation is a defining relationship moment and must be built well.</td></tr>
+    <tr><td>Nomination registration with the keeper</td><td><span class="bkt fac">Facilitate</span></td><td>The firm captures; the RTA or depository records the registered nominee.</td></tr>
+    <tr><td>Encumbrance reflection (lien, pledge)</td><td><span class="bkt fac">Facilitate</span></td><td>The lender, depository, or RTA marks and releases. The firm reflects the state so orders behave correctly.</td></tr>
+    <tr><td>The folio register and the unit balance</td><td><span class="bkt ref">Referential</span></td><td>The RTA keeps the folio; the firm reflects, never owns, it.</td></tr>
+    <tr><td>The demat account and the depository-participant function</td><td><span class="bkt ref">Referential</span></td><td>The depository keeps the account through a DP. An MFD is not a DP; it reflects a demat account it does not keep.</td></tr>
+    <tr><td>The consolidated account statement (CAS)</td><td><span class="bkt ref">Referential</span></td><td>Generated by the depository and RTA infrastructure. The firm consumes and may present it.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">The stripped-down core</p>
+  <p>Reduced to what an MFD-only firm must build, the folio stack is: holding-mode and repatriability capture, nominee capture to the settled three-nominee rule, folio lifecycle state tracking that the order pre-flight reads, a consolidation and household roll-up view that reads but never writes, and reconciliation against the RTA and depository. Transmission, nomination registration, and encumbrance are facilitate, assisting a transfer the keeper executes. The folio register, the demat account, and the CAS are referential. The firm reflects the container and owns the investor-facing moments; it never keeps the record.</p>
+</div>
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p>The trap here is the same one the Investor reference named for transmission: letting "facilitate" quietly become "ignore". Transmission and the nominee experience are exactly where a private-wealth relationship is won or lost, and a firm that treats them as pure RTA problems and ships nothing has failed the relationship at its most important moment, even though it built no register.</p>
+</div>
+
+<div class="part-band" id="p6"><div class="pk">Part VI</div><div class="pt">Open items and verification register</div></div>
+<p style="margin-top:18px;">Everything in this document not established with confidence, collected with an owner. Each item also appears inline where it arises.</p>
+<table>
+  <thead><tr><th>#</th><th>Open item</th><th>What is uncertain</th><th>Vet with</th><th>Priority</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Operative nomination rule at build time</td><td>Resolved by the SEBI circular dated 29 May 2026, effective 1 September 2026: the maximum is three nominees, with name and relationship the only mandatory fields. The 17 March 2026 consultation had proposed four; the final circular set three. Residual: Compliance to confirm the provisions against the primary circular text before form build.</td><td>Compliance</td><td>Low</td></tr>
+    <tr><td>2</td><td>Transmission documentation threshold</td><td>The around-&#8377;5-lakh threshold and the above-threshold document set follow AMFI Best Practices Guidelines and can be revised.</td><td>AMFI / AMC</td><td>Medium</td></tr>
+    <tr><td>3</td><td>Demat-held mutual fund scope</td><td>Whether the platform supports demat-held MF units from the start or begins SOA-only and adds demat with equities. A scope decision, not regulatory.</td><td>Internal</td><td>Medium</td></tr>
+    <tr><td>4</td><td>Nominee, survivor, and legal-heir precedence handling</td><td>How the platform should behave when a registered nominee and the legal heirs differ, and when a sole surviving joint holder re-nominates or redeems away from the deceased holder's intended beneficiary. The survivor and the nominee receive as trustees, yet the heirs' beneficial rights can prevail, and the boundary is contested.</td><td>Legal</td><td>Medium</td></tr>
+    <tr><td>5</td><td>Repatriability separate-folio mechanics</td><td>The exact RTA handling that keeps repatriable and non-repatriable money in separate folios, and how proceeds classification is enforced on transmission.</td><td>RTA / AMC / Compliance</td><td>Low&ndash;Med</td></tr>
+    <tr><td>6</td><td>Encumbrance reflection on the chosen rail</td><td>How a lien on an SOA folio versus a pledge on a demat holding is surfaced to the firm for the order pre-flight check.</td><td>RTA / depository / lender</td><td>Low&ndash;Med</td></tr>
+    <tr><td>7</td><td>Folio dormancy and reactivation</td><td>The RTA's definition of an inactive or dormant folio and the reactivation step required before transacting.</td><td>RTA / operations</td><td>Low</td></tr>
+    <tr><td>8</td><td>NRI joined with a resident</td><td>Repatriability and reporting on a joint folio that mixes residential statuses follow the first holder; the precise handling carries over from the Investor reference and should be confirmed.</td><td>Compliance</td><td>Low&ndash;Med</td></tr>
+  </tbody>
+</table>
+
+<h2 id="refs"><span class="num">14.</span>References</h2>
+<p style="font-size:.88rem;color:var(--muted);">Sources for the time-sensitive nomination and transmission figures, current to mid-2026. The nomination framework in particular is under active revision and should be re-confirmed against the primary SEBI circulars and the outcome of the 2026 consultation before any flow relies on it. Holding-form, repatriability, and household material follows the SEBI and depository framework and FEMA, and is settled.</p>
+<ol class="ref-list">
+  <li><sup class="fn">1</sup> Operative nomination framework for mutual fund folios and demat accounts under the SEBI circular dated 29 May 2026 ("Ease of doing investments, Modified Norms for Nomination in Demat Accounts and Mutual Fund Folios"), effective 1 September 2026 and superseding all earlier nomination circulars including the 10 January 2025 framework: nomination mandatory with an affirmed opt-out for single-holder folios and accounts opened on or after 1 September 2026; up to three nominees, each with a percentage share; equal apportionment where no share is specified, with the odd lot to the first nominee; investor-only nomination; name and relationship the only mandatory fields, with contact, KYC, and minor-guardian details optional; all-holder consent required to provide or change a nomination on a joint folio irrespective of operation mode; online (DSC, Aadhaar e-sign, or two-factor) or offline submission, witness required only for a thumb impression; and periodic reminders in place of the dropped account-freeze provision. SEBI circular dated 29 May 2026; law-firm and contemporaneous reporting, May to June 2026. To be confirmed against the primary circular text before form build.</li>
+  <li><sup class="fn">2</sup> SEBI consultation paper dated 17 March 2026, comments to early April 2026, which proposed reducing the maximum nominees from ten to four to align with banking norms and slimming the mandatory fields to name and relationship. It produced the circular dated 29 May 2026 (footnote 1), which adopted the field slimming but set the maximum at three rather than the proposed four. SEBI; contemporaneous reporting, March to May 2026.</li>
+  <li><sup class="fn">3</sup> Transmission by holding type and the documentation thresholds: joint survivorship requiring only a death certificate from the survivor; nominee claims by transmission request form, death certificate, KYC, and bank proof, with additional documents above a value threshold of around &#8377;5 lakh for mutual funds; legal-heir claims requiring succession papers where no nomination exists; and the binding nature of thresholds against wrongful demands. AMFI Best Practices Guidelines on transmission (updated January 2024); CAMS and AMC transmission guidance; SEBI SCORES resolutions; contemporaneous reporting, 2024 to 2026.</li>
+  <li><sup class="fn">4</sup> SEBI simplification of nominee-to-legal-heir transfer, September 2025, introducing a standard reason code so the transmission is reported to the tax authority as a transmission rather than assessed as a capital-gains transfer; India levies no inheritance tax and transmission is not a sale. SEBI; contemporaneous reporting, September 2025.</li>
+</ol>
+
+<h2 id="glossary"><span class="num">15.</span>Glossary</h2>
+<p style="font-size:.9rem;color:var(--muted);">Plain definitions of the folio and holding terms a reader without a finance background may want unpacked. Terms defined in the Instrument reference glossary (NAV, RTA, SOA) are not repeated.</p>
+<table>
+  <thead><tr><th style="width:30%;">Term</th><th>Plain meaning</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Beneficial owner (BO)</strong></td><td>The holder of a demat account, identified by a BO identifier, in whose name the dematerialised securities sit.</td></tr>
+    <tr><td><strong>CAS</strong> (consolidated account statement)</td><td>A single statement spanning an investor's mutual fund folios and demat holdings, generated by the registrar and depository infrastructure.</td></tr>
+    <tr><td><strong>Demat account</strong></td><td>A depository account that holds securities in electronic form across many fund houses and asset classes; the container for anything dematerialised, and the only way to hold equities.</td></tr>
+    <tr><td><strong>Depository</strong> (NSDL, CDSL)</td><td>The institution that keeps securities in electronic form. India has two, NSDL and CDSL.</td></tr>
+    <tr><td><strong>Depository participant (DP)</strong></td><td>The intermediary through which an investor opens and operates a demat account with a depository, much as a bank branch is to a bank.</td></tr>
+    <tr><td><strong>Folio</strong></td><td>The registrar's account number identifying an investor's mutual fund holdings with one fund house, in statement-of-account form. One investor can have several with the same fund house.</td></tr>
+    <tr><td><strong>Household roll-up</strong></td><td>A reporting view that groups several investors' folios as one family picture. A projection, never a real container.</td></tr>
+    <tr><td><strong>Lien</strong></td><td>A hold placed on units so they cannot be moved, typically by a lender or a regulator, until released.</td></tr>
+    <tr><td><strong>Nominee</strong></td><td>A person named to receive a holding on the investor's death, who receives it as a caretaker for the legal heirs rather than as the final owner.</td></tr>
+    <tr><td><strong>Operation mode</strong></td><td>For a joint holding, the rule for whose signature a transaction needs: jointly, either or survivor, anyone or survivor, or former or survivor.</td></tr>
+    <tr><td><strong>Pledge</strong></td><td>Units committed as collateral for a loan; a standardised depository mechanism in demat form.</td></tr>
+    <tr><td><strong>Repatriable / non-repatriable</strong></td><td>Whether the proceeds of a non-resident's holding can be sent abroad. Repatriable if funded from an NRE or FCNR account, non-repatriable if from an NRO account.</td></tr>
+    <tr><td><strong>Survivorship</strong></td><td>The rule by which a jointly held holding passes to the surviving holders on a holder's death, ahead of any nominee.</td></tr>
+    <tr><td><strong>Transmission</strong></td><td>The transfer of a deceased holder's units to the surviving holder, the nominee, or the legal heirs. Not a sale and not taxed.</td></tr>
+    <tr><td><strong>Transmission request form (TRF)</strong></td><td>The form a claimant submits to the RTA or AMC to begin a transmission.</td></tr>
+  </tbody>
+</table>
+
+<div class="footer">
+  <p><strong>Document control.</strong> The Folio Entity: Master Reference. Version v0.2, June 2026. Fourth in the same family as the Investor, Instrument, and Order references; covers the folio, the demat account, and the holding, with ownership and operation modes, repatriability, nomination, transmission, encumbrance, the folio lifecycle, and household as a projection. Container profiles cover the SOA folio and the demat account. Master reference, not a PRD; specifies no flows. Persona definitions and operating authority live in the Investor reference, the order and mandate machinery in the Order reference, and tax rates in the Investor reference; none is duplicated here. <strong>Change in v0.2:</strong> the nomination framework was grounded to the SEBI circular dated 29 May 2026, effective 1 September 2026, which superseded the ten-nominee framework and resolved the 17 March 2026 consultation. The operative maximum is now three nominees, not the ten previously carried or the four the consultation proposed; name and relationship are the only mandatory fields, with minor-guardian details optional; all-holder consent on joint folios is grounded; and Part VI open item 1 is downgraded to a residual Compliance confirmation against the primary circular text. This propagates to J3 (corrected to three) and to register decision D10 (resolved). The remaining transmission items in Part VI still require vetting against the primary circulars before reliance.</p>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>India PMS &amp; AIF Landscape</title>
+<style>
+:root {
+  --fi-text-primary: #2C2C2A; --fi-text-secondary: #5F5E5A; --fi-text-tertiary: #888780;
+  --fi-bg-page: #FFFFFF; --fi-border: #D3D1C7;
+  --fi-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+html, body { margin: 0; padding: 0; background: var(--fi-bg-page); color: var(--fi-text-primary);
+  font-family: var(--fi-font-sans); font-size: 14px; line-height: 1.5; }
+body { padding: 24px; max-width: 1820px; margin: 0 auto; box-sizing: border-box; }
+h1 { font-size: 22px; font-weight: 500; margin: 0 0 4px 0; }
+p.meta { font-size: 14px; color: var(--fi-text-secondary); margin: 0 0 16px 0; max-width: 1120px; }
+.legend { font-size: 12px; color: var(--fi-text-secondary); margin: 0 0 20px 0; display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.diagram-wrap { width: 100%; overflow-x: auto; padding: 8px 0; }
+svg { font-family: var(--fi-font-sans); display: block; }
+svg text.t  { font-size: 14px; font-weight: 400; fill: var(--fi-text-primary); }
+svg text.ts { font-size: 13px; font-weight: 400; fill: var(--fi-text-secondary); }
+svg text.th { font-size: 15px; font-weight: 500; fill: var(--fi-text-primary); }
+svg .c-blue > rect { fill: #E6F1FB; stroke: #185FA5; stroke-width: 0.5; }
+svg .c-blue > text.t, svg .c-blue > text.th { fill: #0C447C; }
+svg .c-blue > text.ts { fill: #185FA5; }
+svg .c-purple > rect { fill: #EEEDFE; stroke: #534AB7; stroke-width: 0.5; }
+svg .c-purple > text.t, svg .c-purple > text.th { fill: #3C3489; }
+svg .c-purple > text.ts { fill: #534AB7; }
+svg .c-teal > rect { fill: #E1F5EE; stroke: #0F6E56; stroke-width: 0.5; }
+svg .c-teal > text.t, svg .c-teal > text.th { fill: #085041; }
+svg .c-teal > text.ts { fill: #0F6E56; }
+svg .c-coral > rect { fill: #FAECE7; stroke: #993C1D; stroke-width: 0.5; }
+svg .c-coral > text.t, svg .c-coral > text.th { fill: #712B13; }
+svg .c-coral > text.ts { fill: #993C1D; }
+svg .c-pink > rect { fill: #FBEAF0; stroke: #993556; stroke-width: 0.5; }
+svg .c-pink > text.t, svg .c-pink > text.th { fill: #72243E; }
+svg .c-pink > text.ts { fill: #993556; }
+svg .c-gray > rect { fill: #F1EFE8; stroke: #5F5E5A; stroke-width: 0.5; }
+svg .c-gray > text.t, svg .c-gray > text.th { fill: #2C2C2A; }
+svg .c-gray > text.ts { fill: #5F5E5A; }
+svg .c-green > rect { fill: #EAF3DE; stroke: #3B6D11; stroke-width: 0.5; }
+svg .c-green > text.t, svg .c-green > text.th { fill: #27500A; }
+svg .c-green > text.ts { fill: #3B6D11; }
+svg .c-slate > rect { fill: #EBEEF4; stroke: #3E4C63; stroke-width: 0.5; }
+svg .c-slate > text.t, svg .c-slate > text.th { fill: #2A3442; }
+svg .c-slate > text.ts { fill: #3E4C63; }
+svg .c-sand > rect { fill: #F3EEE4; stroke: #6E5D43; stroke-width: 0.5; }
+svg .c-sand > text.t, svg .c-sand > text.th { fill: #4A3F2E; }
+svg .c-sand > text.ts { fill: #6E5D43; }
+</style>
+</head>
+<body>
+<h1>India PMS &amp; AIF service-provider landscape</h1>
+<p class="meta">The custody-and-administration stack behind Portfolio Management Services and Alternative Investment Funds. Unlike the retail rails (exchange-routed, low-ticket), these are private, HNI and institutional structures: the investor's assets sit with a custodian, a trustee oversees the pool for an AIF, and a fund administrator keeps the books. Read top-to-bottom; PMS and AIF share most of the lower layers and differ mainly in legal structure. Names verified against provider sites and SEBI/APMI sources; figures like ticket sizes and tax treatment shift, so treat those as orientation rather than advice.</p>
+<div class="legend">
+  <span><i style="background:#EBEEF4;border:0.5px solid #3E4C63"></i>Roles &amp; structure</span>
+  <span><i style="background:#E6F1FB;border:0.5px solid #185FA5"></i>Onboarding &amp; identity</span>
+  <span><i style="background:#EAF3DE;border:0.5px solid #3B6D11"></i>Custody &amp; settlement</span>
+  <span><i style="background:#EEEDFE;border:0.5px solid #534AB7"></i>Fund admin &amp; accounting</span>
+  <span><i style="background:#FBEAF0;border:0.5px solid #993556"></i>Trustees (AIF)</span>
+  <span><i style="background:#FAECE7;border:0.5px solid #993C1D"></i>Banking &amp; money flow</span>
+  <span><i style="background:#E1F5EE;border:0.5px solid #0F6E56"></i>Distribution &amp; data</span>
+  <span><i style="background:#F3EEE4;border:0.5px solid #6E5D43"></i>GIFT City / IFSCA</span>
+  <span><i style="background:#F1EFE8;border:0.5px solid #5F5E5A"></i>Regulators &amp; bodies</span>
+</div>
+<div class="diagram-wrap">
+<svg viewBox="0 0 1760 1988" style="min-width:1200px" role="img">
+<title>India PMS & AIF service-provider landscape</title>
+<desc>Layered map of the custody-and-administration stack behind Portfolio Management Services and Alternative Investment Funds in India: product structure and regulated roles, onboarding and identity, custody and settlement, fund administration and accounting and portfolio technology, AIF trustees, banking and money flow, distribution and data, the GIFT City / IFSCA cross-border layer, and the regulators and industry bodies that govern them.</desc>
+<g class="c-slate"><rect x="40" y="40" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="65" font-size="16">Product structure &amp; regulated roles</text>
+<text class="ts" x="408" y="65" font-size="13">The key structural difference: PMS holds assets in the client's own name; an AIF pools them in a trust</text>
+</g>
+<g class="c-slate"><rect x="40" y="94" width="1680" height="30" rx="4" stroke-width="0.5"/>
+<text class="th" x="58" y="114" font-size="14">PMS</text>
+<text class="ts" x="107" y="114" font-size="13">managed account, assets in the client's own name, no pooling</text>
+</g>
+<g class="c-slate"><rect x="40.0" y="134" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="200.8" y="166" text-anchor="middle" font-size="15">Portfolio Manager (SEBI)</text>
+<text class="ts" x="200.8" y="188" text-anchor="middle" font-size="13">Discretionary, non-disc</text>
+<text class="ts" x="200.8" y="206" text-anchor="middle" font-size="13">or advisory; min ₹50L</text>
+</g>
+<g class="c-slate"><rect x="379.6" y="134" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="540.4" y="166" text-anchor="middle" font-size="15">Client account</text>
+<text class="ts" x="540.4" y="188" text-anchor="middle" font-size="13">Demat + bank a/c in</text>
+<text class="ts" x="540.4" y="206" text-anchor="middle" font-size="13">the client's own name</text>
+</g>
+<g class="c-slate"><rect x="719.2" y="134" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="166" text-anchor="middle" font-size="15">Custodian</text>
+<text class="ts" x="880.0" y="188" text-anchor="middle" font-size="13">Holds securities</text>
+<text class="ts" x="880.0" y="206" text-anchor="middle" font-size="13">&amp; settles trades</text>
+</g>
+<g class="c-slate"><rect x="1058.8" y="134" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1219.6" y="166" text-anchor="middle" font-size="15">Broker(s)</text>
+<text class="ts" x="1219.6" y="188" text-anchor="middle" font-size="13">Order execution</text>
+<text class="ts" x="1219.6" y="206" text-anchor="middle" font-size="13">on the exchanges</text>
+</g>
+<g class="c-slate"><rect x="1398.4" y="134" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1559.2" y="166" text-anchor="middle" font-size="15">Fund accountant / RTA</text>
+<text class="ts" x="1559.2" y="188" text-anchor="middle" font-size="13">Books, valuation,</text>
+<text class="ts" x="1559.2" y="206" text-anchor="middle" font-size="13">client reporting</text>
+</g>
+<g class="c-slate"><rect x="40" y="236" width="1680" height="30" rx="4" stroke-width="0.5"/>
+<text class="th" x="58" y="256" font-size="14">AIF</text>
+<text class="ts" x="107" y="256" font-size="13">pooled vehicle (Trust / LLP / Company), three SEBI categories</text>
+</g>
+<g class="c-slate"><rect x="40.0" y="276" width="265.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="172.5" y="308" text-anchor="middle" font-size="15">Sponsor + Manager</text>
+<text class="ts" x="172.5" y="330" text-anchor="middle" font-size="13">Sets up &amp;</text>
+<text class="ts" x="172.5" y="348" text-anchor="middle" font-size="13">manages the fund</text>
+</g>
+<g class="c-slate"><rect x="323.0" y="276" width="265.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="455.5" y="308" text-anchor="middle" font-size="15">Trustee / Trust</text>
+<text class="ts" x="455.5" y="330" text-anchor="middle" font-size="13">Holds the fund</text>
+<text class="ts" x="455.5" y="348" text-anchor="middle" font-size="13">in trust for investors</text>
+</g>
+<g class="c-slate"><rect x="606.0" y="276" width="265.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="738.5" y="308" text-anchor="middle" font-size="15">Categories I / II / III</text>
+<text class="ts" x="738.5" y="330" text-anchor="middle" font-size="13">VC/infra · PE/debt ·</text>
+<text class="ts" x="738.5" y="348" text-anchor="middle" font-size="13">long-short; min ₹1cr</text>
+</g>
+<g class="c-slate"><rect x="889.0" y="276" width="265.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1021.5" y="308" text-anchor="middle" font-size="15">Custodian (mandatory)</text>
+<text class="ts" x="1021.5" y="330" text-anchor="middle" font-size="13">Holds fund assets;</text>
+<text class="ts" x="1021.5" y="348" text-anchor="middle" font-size="13">required for AIFs</text>
+</g>
+<g class="c-slate"><rect x="1172.0" y="276" width="265.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1304.5" y="308" text-anchor="middle" font-size="15">Fund admin / RTA</text>
+<text class="ts" x="1304.5" y="330" text-anchor="middle" font-size="13">Accounting, unit</text>
+<text class="ts" x="1304.5" y="348" text-anchor="middle" font-size="13">register, ISIN</text>
+</g>
+<g class="c-slate"><rect x="1455.0" y="276" width="265.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1587.5" y="308" text-anchor="middle" font-size="15">Merchant banker / auditor</text>
+<text class="ts" x="1587.5" y="330" text-anchor="middle" font-size="13">PPM filing &amp; audit,</text>
+<text class="ts" x="1587.5" y="348" text-anchor="middle" font-size="13">compliance</text>
+</g>
+<g class="c-blue"><rect x="40" y="392" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="417" font-size="16">Onboarding &amp; identity</text>
+<text class="ts" x="279" y="417" font-size="13">Shares the retail identity rails; the delta is non-individual, HNI and accredited-investor handling</text>
+</g>
+<g class="c-blue"><rect x="40.0" y="446" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="243.2" y="478" text-anchor="middle" font-size="15">Digital onboarding tech</text>
+<text class="ts" x="243.2" y="500" text-anchor="middle" font-size="13">Fintuple (CAMS), KFin &amp; CAMS portals,</text>
+<text class="ts" x="243.2" y="518" text-anchor="middle" font-size="13">Signzy / Digio for VKYC + eSign</text>
+</g>
+<g class="c-blue"><rect x="464.5" y="446" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="667.8" y="478" text-anchor="middle" font-size="15">Non-individual KYC</text>
+<text class="ts" x="667.8" y="500" text-anchor="middle" font-size="13">Entity KYC, CKYC legal-entity record,</text>
+<text class="ts" x="667.8" y="518" text-anchor="middle" font-size="13">UBO, FATCA/CRS, board resolutions</text>
+</g>
+<g class="c-blue"><rect x="889.0" y="446" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1092.2" y="478" text-anchor="middle" font-size="15">Accredited investor</text>
+<text class="ts" x="1092.2" y="500" text-anchor="middle" font-size="13">SEBI AI framework; lower-ticket access,</text>
+<text class="ts" x="1092.2" y="518" text-anchor="middle" font-size="13">accreditation agencies (NSDL, CDSL, BSE)</text>
+</g>
+<g class="c-blue"><rect x="1313.5" y="446" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1516.8" y="478" text-anchor="middle" font-size="15">Demat &amp; PAN</text>
+<text class="ts" x="1516.8" y="500" text-anchor="middle" font-size="13">Securities demat via NSDL/CDSL;</text>
+<text class="ts" x="1516.8" y="518" text-anchor="middle" font-size="13">AIF units dematerialised by ISIN</text>
+</g>
+<g class="c-green"><rect x="40" y="562" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="587" font-size="16">Custody &amp; settlement</text>
+<text class="ts" x="270" y="587" font-size="13">The investor's assets live here, with a custodian, not with the manager</text>
+</g>
+<g class="c-green"><rect x="40.0" y="616" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="243.2" y="648" text-anchor="middle" font-size="15">Bank custodians</text>
+<text class="ts" x="243.2" y="670" text-anchor="middle" font-size="13">HDFC, ICICI, Kotak, Axis, SBI-SG,</text>
+<text class="ts" x="243.2" y="688" text-anchor="middle" font-size="13">Std Chartered, HSBC, Citi, Deutsche, JPM</text>
+</g>
+<g class="c-green"><rect x="464.5" y="616" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="667.8" y="648" text-anchor="middle" font-size="15">Independent custodians</text>
+<text class="ts" x="667.8" y="670" text-anchor="middle" font-size="13">Orbis Financial, Nuvama Custodial,</text>
+<text class="ts" x="667.8" y="688" text-anchor="middle" font-size="13">Stock Holding Corp (SHCIL)</text>
+</g>
+<g class="c-green"><rect x="889.0" y="616" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1092.2" y="648" text-anchor="middle" font-size="15">Depositories</text>
+<text class="ts" x="1092.2" y="670" text-anchor="middle" font-size="13">NSDL / CDSL</text>
+<text class="ts" x="1092.2" y="688" text-anchor="middle" font-size="13">demat of securities &amp; AIF units</text>
+</g>
+<g class="c-green"><rect x="1313.5" y="616" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1516.8" y="648" text-anchor="middle" font-size="15">Clearing &amp; DPs</text>
+<text class="ts" x="1516.8" y="670" text-anchor="middle" font-size="13">Clearing corps, depository participants,</text>
+<text class="ts" x="1516.8" y="688" text-anchor="middle" font-size="13">CP codes for custodial settlement</text>
+</g>
+<g class="c-purple"><rect x="40" y="732" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="757" font-size="16">Fund administration, accounting &amp; portfolio tech</text>
+<text class="ts" x="527" y="757" font-size="13">Keeping the books, the unit register, and the portfolio system</text>
+</g>
+<g class="c-purple"><rect x="40.0" y="786" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="314.0" y="818" text-anchor="middle" font-size="15">KFintech</text>
+<text class="ts" x="314.0" y="840" text-anchor="middle" font-size="13">Fund accounting (mPower), TA (Kbolt),</text>
+<text class="ts" x="314.0" y="858" text-anchor="middle" font-size="13">300+ AIFs; PMS FA; also an NPS CRA</text>
+</g>
+<g class="c-purple"><rect x="606.0" y="786" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="818" text-anchor="middle" font-size="15">CAMS (+ Fintuple)</text>
+<text class="ts" x="880.0" y="840" text-anchor="middle" font-size="13">AIF platform: servicing + fund accounting;</text>
+<text class="ts" x="880.0" y="858" text-anchor="middle" font-size="13">Fintuple onboarding &amp; data (CAMS-owned)</text>
+</g>
+<g class="c-purple"><rect x="1172.0" y="786" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1446.0" y="818" text-anchor="middle" font-size="15">Orbis Financial</text>
+<text class="ts" x="1446.0" y="840" text-anchor="middle" font-size="13">Custody and fund administration</text>
+<text class="ts" x="1446.0" y="858" text-anchor="middle" font-size="13">under one roof</text>
+</g>
+<g class="c-purple"><rect x="40.0" y="892" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="314.0" y="924" text-anchor="middle" font-size="15">Global fund admins</text>
+<text class="ts" x="314.0" y="946" text-anchor="middle" font-size="13">Apex, Vistra Fund Services, IQ-EQ, CITCO</text>
+<text class="ts" x="314.0" y="964" text-anchor="middle" font-size="13">(larger / offshore / GIFT funds)</text>
+</g>
+<g class="c-purple"><rect x="606.0" y="892" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="924" text-anchor="middle" font-size="15">Portfolio system</text>
+<text class="ts" x="880.0" y="946" text-anchor="middle" font-size="13">MoneyWare (Miles Software / EbixCash)</text>
+<text class="ts" x="880.0" y="964" text-anchor="middle" font-size="13">— reportedly ~80% of India PMS</text>
+</g>
+<g class="c-purple"><rect x="1172.0" y="892" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1446.0" y="924" text-anchor="middle" font-size="15">Analytics &amp; reporting</text>
+<text class="ts" x="1446.0" y="946" text-anchor="middle" font-size="13">Valuefy; portfolio risk &amp; performance,</text>
+<text class="ts" x="1446.0" y="964" text-anchor="middle" font-size="13">client reporting, factsheets</text>
+</g>
+<g class="c-pink"><rect x="40" y="1008" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="1033" font-size="16">Trustees  (AIF only)</text>
+<text class="ts" x="270" y="1033" font-size="13">An AIF is a trust and needs a trustee; a PMS does not</text>
+</g>
+<g class="c-pink"><rect x="40.0" y="1062" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="200.8" y="1094" text-anchor="middle" font-size="15">Vistra ITCL</text>
+<text class="ts" x="200.8" y="1116" text-anchor="middle" font-size="13">Largest; &gt;50% of SEBI AIFs</text>
+<text class="ts" x="200.8" y="1134" text-anchor="middle" font-size="13">(ex-IL&amp;FS Trust)</text>
+</g>
+<g class="c-pink"><rect x="379.6" y="1062" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="540.4" y="1094" text-anchor="middle" font-size="15">IDBI Trusteeship (ITSL)</text>
+<text class="ts" x="540.4" y="1116" text-anchor="middle" font-size="13">Top-ranked debenture</text>
+<text class="ts" x="540.4" y="1134" text-anchor="middle" font-size="13">&amp; AIF trustee</text>
+</g>
+<g class="c-pink"><rect x="719.2" y="1062" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="1094" text-anchor="middle" font-size="15">Catalyst Trusteeship</text>
+<text class="ts" x="880.0" y="1116" text-anchor="middle" font-size="13">AIF trustee,</text>
+<text class="ts" x="880.0" y="1134" text-anchor="middle" font-size="13">incl. GIFT City</text>
+</g>
+<g class="c-pink"><rect x="1058.8" y="1062" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1219.6" y="1094" text-anchor="middle" font-size="15">Axis Trustee</text>
+<text class="ts" x="1219.6" y="1116" text-anchor="middle" font-size="13">Trusteeship across</text>
+<text class="ts" x="1219.6" y="1134" text-anchor="middle" font-size="13">funds and debt</text>
+</g>
+<g class="c-pink"><rect x="1398.4" y="1062" width="321.6" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1559.2" y="1094" text-anchor="middle" font-size="15">Beacon Trusteeship</text>
+<text class="ts" x="1559.2" y="1116" text-anchor="middle" font-size="13">AIF &amp; debenture</text>
+<text class="ts" x="1559.2" y="1134" text-anchor="middle" font-size="13">trustee</text>
+</g>
+<g class="c-coral"><rect x="40" y="1178" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="1203" font-size="16">Banking &amp; money flow</text>
+<text class="ts" x="270" y="1203" font-size="13">Large-ticket money movement; mostly bank transfer, not UPI AutoPay</text>
+</g>
+<g class="c-coral"><rect x="40.0" y="1232" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="243.2" y="1264" text-anchor="middle" font-size="15">AIF: capital calls</text>
+<text class="ts" x="243.2" y="1286" text-anchor="middle" font-size="13">Commitment, then drawdown;</text>
+<text class="ts" x="243.2" y="1304" text-anchor="middle" font-size="13">escrow / pooling account</text>
+</g>
+<g class="c-coral"><rect x="464.5" y="1232" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="667.8" y="1264" text-anchor="middle" font-size="15">PMS: account funding</text>
+<text class="ts" x="667.8" y="1286" text-anchor="middle" font-size="13">Funded from the client's</text>
+<text class="ts" x="667.8" y="1304" text-anchor="middle" font-size="13">own bank account</text>
+</g>
+<g class="c-coral"><rect x="889.0" y="1232" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1092.2" y="1264" text-anchor="middle" font-size="15">Distributions / exits</text>
+<text class="ts" x="1092.2" y="1286" text-anchor="middle" font-size="13">Payouts with TDS</text>
+<text class="ts" x="1092.2" y="1304" text-anchor="middle" font-size="13">(esp. Cat III, NRI)</text>
+</g>
+<g class="c-coral"><rect x="1313.5" y="1232" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1516.8" y="1264" text-anchor="middle" font-size="15">Rails</text>
+<text class="ts" x="1516.8" y="1286" text-anchor="middle" font-size="13">RTGS / NEFT at HNI tickets;</text>
+<text class="ts" x="1516.8" y="1304" text-anchor="middle" font-size="13">sponsor &amp; escrow banks</text>
+</g>
+<g class="c-teal"><rect x="40" y="1348" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="1373" font-size="16">Distribution, data &amp; access</text>
+<text class="ts" x="334" y="1373" font-size="13">How HNIs discover, compare and access these products</text>
+</g>
+<g class="c-teal"><rect x="40.0" y="1402" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="243.2" y="1434" text-anchor="middle" font-size="15">Distributors</text>
+<text class="ts" x="243.2" y="1456" text-anchor="middle" font-size="13">RIAs, MFDs, wealth managers,</text>
+<text class="ts" x="243.2" y="1474" text-anchor="middle" font-size="13">private banks, family offices</text>
+</g>
+<g class="c-teal"><rect x="464.5" y="1402" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="667.8" y="1434" text-anchor="middle" font-size="15">PMS / AIF platforms</text>
+<text class="ts" x="667.8" y="1456" text-anchor="middle" font-size="13">PMS Bazaar, PMS AIF World, AltPort</text>
+<text class="ts" x="667.8" y="1474" text-anchor="middle" font-size="13">— comparison, data, access</text>
+</g>
+<g class="c-teal"><rect x="889.0" y="1402" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1092.2" y="1434" text-anchor="middle" font-size="15">Onboarding gateway</text>
+<text class="ts" x="1092.2" y="1456" text-anchor="middle" font-size="13">Fintuple distributor portal;</text>
+<text class="ts" x="1092.2" y="1474" text-anchor="middle" font-size="13">agreement &amp; commission flows</text>
+</g>
+<g class="c-teal"><rect x="1313.5" y="1402" width="406.5" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1516.8" y="1434" text-anchor="middle" font-size="15">Performance data</text>
+<text class="ts" x="1516.8" y="1456" text-anchor="middle" font-size="13">APMI portal (official PMS data),</text>
+<text class="ts" x="1516.8" y="1474" text-anchor="middle" font-size="13">fund factsheets &amp; benchmarks</text>
+</g>
+<g class="c-sand"><rect x="40" y="1518" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="1543" font-size="16">GIFT City / IFSCA</text>
+<text class="ts" x="242" y="1543" font-size="13">Cross-border fund layer for global and NRI capital</text>
+</g>
+<g class="c-sand"><rect x="40.0" y="1572" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="314.0" y="1604" text-anchor="middle" font-size="15">IFSCA FME regime</text>
+<text class="ts" x="314.0" y="1626" text-anchor="middle" font-size="13">Fund Management Entity rules;</text>
+<text class="ts" x="314.0" y="1644" text-anchor="middle" font-size="13">retail / non-retail / restricted schemes</text>
+</g>
+<g class="c-sand"><rect x="606.0" y="1572" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="1604" text-anchor="middle" font-size="15">GIFT-based funds</text>
+<text class="ts" x="880.0" y="1626" text-anchor="middle" font-size="13">60+ GIFT City funds and growing;</text>
+<text class="ts" x="880.0" y="1644" text-anchor="middle" font-size="13">USD-denominated, offshore feeder</text>
+</g>
+<g class="c-sand"><rect x="1172.0" y="1572" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1446.0" y="1604" text-anchor="middle" font-size="15">IFSCA service providers</text>
+<text class="ts" x="1446.0" y="1626" text-anchor="middle" font-size="13">Trustees, custodians, admins with</text>
+<text class="ts" x="1446.0" y="1644" text-anchor="middle" font-size="13">IFSCA registration (Vistra, Catalyst)</text>
+</g>
+<g class="c-gray"><rect x="40" y="1688" width="1680" height="40" rx="6" stroke-width="0.5"/>
+<text class="th" x="60" y="1713" font-size="16">Regulators &amp; industry bodies</text>
+<text class="ts" x="343" y="1713" font-size="13">Who governs the structure above</text>
+</g>
+<g class="c-gray"><rect x="40.0" y="1742" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="314.0" y="1774" text-anchor="middle" font-size="15">SEBI</text>
+<text class="ts" x="314.0" y="1796" text-anchor="middle" font-size="13">PMS Regulations 2020;</text>
+<text class="ts" x="314.0" y="1814" text-anchor="middle" font-size="13">AIF Regulations 2012</text>
+</g>
+<g class="c-gray"><rect x="606.0" y="1742" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="1774" text-anchor="middle" font-size="15">IFSCA</text>
+<text class="ts" x="880.0" y="1796" text-anchor="middle" font-size="13">GIFT City funds</text>
+<text class="ts" x="880.0" y="1814" text-anchor="middle" font-size="13">and FMEs</text>
+</g>
+<g class="c-gray"><rect x="1172.0" y="1742" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1446.0" y="1774" text-anchor="middle" font-size="15">APMI</text>
+<text class="ts" x="1446.0" y="1796" text-anchor="middle" font-size="13">Portfolio managers' body;</text>
+<text class="ts" x="1446.0" y="1814" text-anchor="middle" font-size="13">official PMS data portal</text>
+</g>
+<g class="c-gray"><rect x="40.0" y="1848" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="314.0" y="1880" text-anchor="middle" font-size="15">IVCA</text>
+<text class="ts" x="314.0" y="1902" text-anchor="middle" font-size="13">Alternate-capital / PE / VC</text>
+<text class="ts" x="314.0" y="1920" text-anchor="middle" font-size="13">industry body</text>
+</g>
+<g class="c-gray"><rect x="606.0" y="1848" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="880.0" y="1880" text-anchor="middle" font-size="15">RBI / FEMA</text>
+<text class="ts" x="880.0" y="1902" text-anchor="middle" font-size="13">Foreign &amp; NRI</text>
+<text class="ts" x="880.0" y="1920" text-anchor="middle" font-size="13">investment into funds</text>
+</g>
+<g class="c-gray"><rect x="1172.0" y="1848" width="548.0" height="92" rx="8" stroke-width="0.5"/>
+<text class="th" x="1446.0" y="1880" text-anchor="middle" font-size="15">CBDT</text>
+<text class="ts" x="1446.0" y="1902" text-anchor="middle" font-size="13">Tax: Cat I/II pass-through;</text>
+<text class="ts" x="1446.0" y="1920" text-anchor="middle" font-size="13">Cat III taxed at fund level</text>
+</g>
+</svg>
+</div>
+</body>
+</html>

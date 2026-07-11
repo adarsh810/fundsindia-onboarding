@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rails and Counterparties: Master Reference</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Domain Reference</p>
+  <h1 class="title">Rails and Counterparties</h1>
+  <p class="subtitle">The external parties that execute and record, what each is the system of record for, how the firm integrates with it, and where it fails. The map every build-scope part in the suite leans on.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.2: NRI relaxation grounded (D2)</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Master reference (not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>A reference map of the <strong>external parties</strong> a distribution platform depends on: the counterparties that keep the authoritative records, and the rails that carry orders, money, and identity between the firm and those records. For each it states what truth the party owns, how the firm integrates with it, and how it fails. It is the lightest document in the suite by design, because its job is to be a clear map rather than a deep treatment, and it is the document the build-scope parts of the other four references quietly assume.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a PRD, not a build plan, and not a vendor selection. It names the external ecosystem an MFD must integrate, by role and by the real institutions that play those roles, but it does not specify which commercial provider the firm should pick for any leg. The mechanics that ride these rails live in the other references and are pointed to, not repeated.</p>
+  </div>
+
+  <h3>Scope</h3>
+  <p><strong>In scope:</strong> the fund-side counterparties (AMC, RTA, custodian, trustee); the demat-side counterparty (the depositories) and the clearing corporations behind exchange-routed orders; the order-routing rails; the payment rails; and the identity rails. For each, the truth it owns, the interface, the firm's role, and the failure modes.</p>
+  <p><strong>Deliberately elsewhere:</strong> the order lifecycle and the mandate machinery live in the Order reference; the KYC status regime and the tax engine live in the Investor reference; holding form, nomination, and transmission live in the Folio reference. This document names the parties those mechanics run on and points back to each reference for the detail.</p>
+
+  <div class="callout principle">
+    <p class="ck">The organising principle: integrate through an adapter, never own</p>
+    <p>The firm is not the system of record for any of the truths below. It reflects each one, reconciles against it, and fronts the investor relationship, but the authoritative record always sits with an external party. The discipline that keeps this clean is to integrate each external truth through its own <strong>anti-corruption-layer adapter</strong>, one per domain, so the external party's model and quirks never leak into the firm's own model. An adapter translates the outside world into the firm's language and absorbs change on the outside without corrupting the inside. This single stance, paired with the not-the-system-of-record principle from the other references, classifies the entire build-scope view in Part V: the firm builds adapters and reconciliation, and treats every external record as referential.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong about a party or rail.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a dependency or failure mode the firm must actively design around.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not settled with confidence, or one turning on a current position that may move; each names who to vet it with.</p></div>
+  <p>The build-scope view in Part V uses three badges: <span class="bkt core">Core build</span> own it end to end, <span class="bkt fac">Facilitate</span> assist while the external party executes, <span class="bkt ref">Referential</span> understand it, no plumbing.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#p1">Part I: The counterparty and rail model</a>
+      <ol>
+        <li><a href="#s1">What a counterparty and a rail are here</a></li>
+        <li><a href="#s2">The facet taxonomy</a></li>
+        <li><a href="#s3">The catalogue</a></li>
+      </ol>
+    </li>
+    <li><a href="#p2">Part II: The truth-keepers</a>
+      <ol>
+        <li><a href="#amc">The fund chain: AMC, RTA, custodian, trustee</a></li>
+        <li><a href="#dep">The depositories and clearing corporations</a></li>
+      </ol>
+    </li>
+    <li><a href="#p3">Part III: The conduits</a>
+      <ol>
+        <li><a href="#route">Order-routing rails</a></li>
+        <li><a href="#pay">Payment rails</a></li>
+        <li><a href="#id">Identity rails</a></li>
+      </ol>
+    </li>
+    <li><a href="#p4">Part IV: The consolidated system-of-record map</a></li>
+    <li><a href="#p5">Part V: The build-scope view</a></li>
+    <li><a href="#p6">Part VI: Open items and verification register</a></li>
+    <li><a href="#refs">References</a></li>
+    <li><a href="#glossary">Glossary</a></li>
+  </ol>
+</nav>
+
+<div class="part-band" id="p1"><div class="pk">Part I</div><div class="pt">The counterparty and rail model</div></div>
+
+<h2 id="s1"><span class="num">1.</span>What a counterparty and a rail are here</h2>
+<p class="lead">Two kinds of external party matter. A <strong>counterparty</strong> keeps an authoritative record, a truth the firm must reflect but does not own. A <strong>rail</strong> carries something between the firm and a counterparty: an order, a payment, or an identity check. The first group answers "who owns this truth"; the second answers "how does it move".</p>
+<p>The distinction is not academic. The firm's relationship to a truth-keeper is to reconcile against it and never contradict it. The firm's relationship to a rail is to choose it, integrate it, and handle its failures. Mixing the two, treating a rail as if it owned a truth, or treating a record-keeper as if it were just a pipe, is the source of most integration confusion.</p>
+<div class="callout principle">
+  <p class="ck">Key principle</p>
+  <p>Every truth in this domain has exactly one owner, and it is never the firm. The unit register is the RTA's, the NAV is the AMC's, the demat holding is the depository's, the KYC status is the registry's, the money in flight is the rail's and the bank's. The firm's job is to hold a reconciled projection of each and to move cleanly between them. Name the owner of every truth explicitly, because the build-scope view is just that map with a badge attached to each row.</p>
+</div>
+<p>There is a third structural fact about how these parties are reached. An MFD rarely integrates each rail in this document directly. A market of infrastructure providers sits between the firm and the rails, wrapping the transaction, payment, identity, and data rails behind unified APIs, so the firm typically integrates a small number of aggregating providers rather than every counterparty one by one.</p>
+<div class="callout">
+  <p class="ck">Special attention: the rails are often consumed through an abstraction layer</p>
+  <p>A third-party abstraction layer is, in effect, someone else's anti-corruption layer: the firm trusts a vendor's translation of the external truth rather than writing its own adapter against the source. That can be the right call, but it cuts against the one-adapter-per-domain discipline in two ways. First, a single provider often spans more than one domain, so the clean domain boundary the firm wants on the inside does not match the provider boundary on the outside. Second, the firm inherits the provider's failure modes and model, not just the rail's. The discipline still holds: keep the firm's own domain adapter even when a provider already abstracts the rail, so the provider can be swapped without its model having leaked inside. The provider abstracts the rail; the firm's adapter abstracts the provider.</p>
+</div>
+<p>The providers cluster by the rail they abstract. Named by function rather than by vendor, the principal layers are:</p>
+<ul class="tight">
+  <li><strong>Transaction and settlement infrastructure.</strong> Wraps the order-routing rails and the RTA transaction processing behind one API: order placement across the transaction family, SIP and mandate registration, folio creation, and the allotment and settlement callbacks, through a single integration rather than one per platform.</li>
+  <li><strong>Payments and mandates.</strong> Wraps the bank and NPCI rails and the payment-aggregator path: collection, mandate setup and the pre-debit lifecycle, and money-leg reconciliation, always subject to the no-pooling constraint that keeps the firm out of the flow of funds.</li>
+  <li><strong>Identity, KYC, and onboarding.</strong> Wraps the KRA, CKYC, Aadhaar, and PAN sources: document capture, face match and liveness, video KYC, registry fetch, and PAN-Aadhaar validation, behind one onboarding flow.</li>
+  <li><strong>Holdings data and consolidation.</strong> Wraps the RTA mailback files, the consolidated account statement, and the servicing portals into a unified holdings and reconciliation feed for the firm's own book and for securities held away within mutual funds and demat. The broader cross-institution picture comes through the consent rail below.</li>
+  <li><strong>Consent-based financial data (Account Aggregator).</strong> Wraps the RBI-regulated Account Aggregator framework, through which a user consents to share held-away financial data, bank and deposit balances, investments, insurance, and more, drawn from the institutions that hold it. This is the rail behind a consolidated net-worth or financial-picture view that reaches beyond the firm's own book, with consent that is explicit, purpose-limited, time-bound, and revocable by the user.</li>
+</ul>
+<p>This document names no providers on purpose. The set is a competitive, fast-changing market, and which provider wraps which rail is a build-and-vendor decision the suite leaves out. What belongs here is that the layer exists, the five functions it splits into, and the discipline it demands.</p>
+
+<h2 id="s2"><span class="num">2.</span>The facet taxonomy</h2>
+<p>Each party in Parts II and III is described through the same five facets, so they read side by side:</p>
+<ol class="tight">
+  <li><strong>What it is</strong>: the party and its role in one line.</li>
+  <li><strong>What truth it owns</strong>: the authoritative record, if any, it is the system of record for.</li>
+  <li><strong>Interface</strong>: how the firm integrates with it.</li>
+  <li><strong>The firm's role</strong>: what the firm does with or through it.</li>
+  <li><strong>Failure modes</strong>: how it breaks, and what the firm must design around.</li>
+</ol>
+
+<h2 id="s3"><span class="num">3.</span>The catalogue</h2>
+<p>The external parties in scope, grouped into the truth-keepers and the conduits. Full treatment follows in Parts II and III.</p>
+<table>
+  <thead><tr><th>Group</th><th>Party</th><th>One-line role</th></tr></thead>
+  <tbody>
+    <tr><td rowspan="6"><strong>Truth-keepers</strong></td><td>AMC</td><td>Manages the scheme and strikes the NAV.</td></tr>
+    <tr><td>RTA (CAMS, KFin)</td><td>Keeps the unit register: who holds how many units.</td></tr>
+    <tr><td>Custodian</td><td>Holds the scheme's underlying securities.</td></tr>
+    <tr><td>Trustee</td><td>Holds the scheme in trust and oversees the AMC.</td></tr>
+    <tr><td>Depository (NSDL, CDSL)</td><td>Keeps demat holdings, across all issuers.</td></tr>
+    <tr><td>Clearing corporation</td><td>Settles exchange-routed orders on a non-pooled basis.</td></tr>
+    <tr><td rowspan="3"><strong>Conduits</strong></td><td>Order-routing rails</td><td>Carry orders to the RTA: the exchange platforms, the unified utility, or direct.</td></tr>
+    <tr><td>Payment rails</td><td>Carry money between the investor's bank and the AMC.</td></tr>
+    <tr><td>Identity rails</td><td>Carry KYC and identity checks: the KRAs, the central registry, and the identity sources.</td></tr>
+  </tbody>
+</table>
+
+<div class="part-band" id="p2"><div class="pk">Part II</div><div class="pt">The truth-keepers</div></div>
+<p class="lead" style="margin-top:18px;">The parties that own an authoritative record. The fund chain is described in depth in the Instrument reference; here it is mapped for its record-ownership and failure modes.</p>
+
+<h2 id="amc"><span class="num">4.</span>The fund chain: AMC, RTA, custodian, trustee</h2>
+
+<div class="persona">
+  <h3>AMC (Asset Management Company)</h3>
+  <div class="facet"><span class="fl">What it is</span>The company that runs a mutual fund or SIF scheme and makes its investment decisions.</div>
+  <div class="facet"><span class="fl">What truth it owns</span>The <strong>scheme and its NAV</strong>. The AMC strikes the NAV each valuation day; that price is the AMC's truth, consumed by everyone downstream.</div>
+  <div class="facet"><span class="fl">Interface</span>Largely indirect for an MFD. The firm reaches the AMC through the RTA or an order-routing rail, and consumes the AMC's published NAV and scheme data.</div>
+  <div class="facet"><span class="fl">The firm's role</span>Reflect the scheme in the catalog, consume the NAV, and surface AMC-driven events. The firm originates orders against the scheme but does not transact with the AMC directly.</div>
+  <div class="facet"><span class="fl">Failure modes</span>A scheme closed to fresh purchase, a change in fundamental attributes that triggers an exit window, side-pocketing on a credit event, a scheme merger, an NFO timing constraint, or a delayed or restated NAV. Each is an event the firm must reflect and route, not control.</div>
+</div>
+
+<div class="persona">
+  <h3>RTA (Registrar and Transfer Agent: CAMS, KFin)</h3>
+  <div class="facet"><span class="fl">What it is</span>The registrar that maintains the official records for an AMC's schemes. Two RTAs serve the industry: CAMS, handling roughly two-thirds of industry AUM, and KFin, handling the rest.<sup class="fn">1</sup></div>
+  <div class="facet"><span class="fl">What truth it owns</span>The <strong>unit register</strong>: the authoritative record of who holds how many units in SOA form, the folio, the nominee, and the lien. It also processes the transaction itself, the allotment, the settlement, the transmission, and the nomination registration. This is the single most important external truth in the whole map.</div>
+  <div class="facet"><span class="fl">Interface</span>Transactions route to the RTA either directly or through an order-routing rail. Holdings and reconciliation come back separately, through daily <strong>mailback files</strong>, not through the transaction rail. The two flows are distinct, and the firm needs both.<sup class="fn">1</sup></div>
+  <div class="facet"><span class="fl">The firm's role</span>Reflect the folio and the holding, reconcile the firm's projection against the RTA mailback files, and front the investor for everything the RTA executes. The firm never holds the register; it mirrors it.</div>
+  <div class="facet"><span class="fl">Failure modes</span>
+    <div class="callout flag" style="margin-top:8px;">
+      <p class="ck">Red flag: the RTA is the central single dependency</p>
+      <p>Because the RTA owns the register and executes the transaction, an RTA outage or processing delay halts the firm's ability to transact and to show a current holding, regardless of how robust the firm's own systems are. Add the not-in-good-order rejection (a transaction bounced for a data mismatch), folio mismatches, and reconciliation breaks between the mailback file and the firm's view, and the RTA integration is the one whose failure modes most need explicit, visible handling rather than silent retries.</p>
+    </div>
+  </div>
+</div>
+
+<div class="persona">
+  <h3>Custodian</h3>
+  <div class="facet"><span class="fl">What it is</span>The institution that holds the underlying securities the scheme owns.</div>
+  <div class="facet"><span class="fl">What truth it owns</span>The <strong>scheme's assets</strong>. This is a truth about the fund's holdings, not about the investor's units.</div>
+  <div class="facet"><span class="fl">Interface</span>None, for an MFD. The custodian sits inside the fund's operations and is not a party the distributor integrates with.</div>
+  <div class="facet"><span class="fl">The firm's role</span>Understand that it exists and what it secures. Nothing to build.</div>
+  <div class="facet"><span class="fl">Failure modes</span>Not investor-facing for a distributor. Purely referential.</div>
+</div>
+
+<div class="persona">
+  <h3>Trustee</h3>
+  <div class="facet"><span class="fl">What it is</span>The body that holds the scheme in trust for investors and oversees the AMC.</div>
+  <div class="facet"><span class="fl">What truth it owns</span>No data record the firm consumes. It owns <strong>oversight</strong>, a governance function.</div>
+  <div class="facet"><span class="fl">Interface</span>None.</div>
+  <div class="facet"><span class="fl">The firm's role</span>Understand the governance structure. Nothing to integrate.</div>
+  <div class="facet"><span class="fl">Failure modes</span>Not an operational dependency for the firm. Referential.</div>
+</div>
+
+<h2 id="dep"><span class="num">5.</span>The depositories and clearing corporations</h2>
+
+<div class="persona">
+  <h3>Depository (NSDL, CDSL)</h3>
+  <div class="facet"><span class="fl">What it is</span>The institution that holds securities in electronic form. India has two, NSDL and CDSL, reached through a depository participant.</div>
+  <div class="facet"><span class="fl">What truth it owns</span>The <strong>demat holding</strong>: the authoritative record of dematerialised units and securities, across all AMCs and asset classes, and the pledge or lien marked on them.</div>
+  <div class="facet"><span class="fl">Interface</span>Through a depository participant. An MFD is not itself a depository participant, so it reflects a demat account it does not keep.</div>
+  <div class="facet"><span class="fl">The firm's role</span>Reflect demat holdings where the investor holds in that form, and read the standardised pledge and lien state the depository exposes. The depository becomes central only when equities enter scope, since equities can only be held in demat.</div>
+  <div class="facet"><span class="fl">Failure modes</span>Depository or participant downtime, delivery-instruction and pledge-processing delays, and beneficial-owner mismatches against the firm's view.</div>
+</div>
+
+<div class="persona">
+  <h3>Clearing corporation</h3>
+  <div class="facet"><span class="fl">What it is</span>The settlement body behind an exchange. Exchange-routed mutual fund orders settle through the exchange's clearing corporation rather than through the distributor.</div>
+  <div class="facet"><span class="fl">What truth it owns</span>The <strong>settlement</strong> of an exchange-routed order: it stands between the investor's payment and the AMC so the money never rests with the distributor.</div>
+  <div class="facet"><span class="fl">Interface</span>Indirect, through the exchange order-routing rail the firm uses.</div>
+  <div class="facet"><span class="fl">The firm's role</span>Understand that the clearing corporation is how the no-pooling rule is satisfied on the exchange rail, and reconcile against the settlement it effects.</div>
+  <div class="facet"><span class="fl">Failure modes</span>Settlement delays and exchange-side processing failures, surfaced through the routing rail.</div>
+</div>
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p>The clearing corporation is the quiet reason the exchange-routing rails comply with the SEBI no-pooling rule. When an order routes through an exchange platform, the money flows investor to clearing corporation to AMC, never through the distributor's hands. This is why the choice of order-routing rail and the choice of money path are entangled: the rail decides who sits between the investor's bank and the fund, and therefore how the non-pooling constraint is met.</p>
+</div>
+
+<div class="part-band" id="p3"><div class="pk">Part III</div><div class="pt">The conduits</div></div>
+<p class="lead" style="margin-top:18px;">The rails that carry orders, money, and identity. These are the parts the firm actively chooses, integrates, and handles the failures of.</p>
+
+<h2 id="route"><span class="num">6.</span>Order-routing rails</h2>
+<p>An order can reach the RTA by more than one path, and the path shapes what the firm must build and how much of the servicing it has to handle. There are three live transaction rails plus the direct route, and a separate servicing portal.</p>
+<table>
+  <thead><tr><th>Rail</th><th>What it is</th><th>Note</th></tr></thead>
+  <tbody>
+    <tr><td><strong>BSE StAR MF</strong></td><td>The exchange MF platform run by BSE.</td><td>The largest by volume, processing tens of millions of transactions a month; most back-office providers integrate with it.<sup class="fn">2</sup></td></tr>
+    <tr><td><strong>NSE NMF II</strong></td><td>The exchange MF platform run by NSE.</td><td>Known for a more modern API; settles through the NSE clearing chain.<sup class="fn">2</sup></td></tr>
+    <tr><td><strong>MFU (MF Utilities)</strong></td><td>The industry-owned shared utility, promoted by AMFI.</td><td>Gives the investor a Common Account Number (CAN) spanning participating AMCs, and a consolidated payment. Popular with individual distributors.<sup class="fn">2</sup></td></tr>
+    <tr><td><strong>RTA-direct</strong></td><td>Integration straight to CAMS and KFin.</td><td>No exchange or utility in between; the firm carries more of the servicing itself.</td></tr>
+    <tr><td><strong>MF Central</strong></td><td>The investor servicing portal jointly run by CAMS and KFin.</td><td>A consolidated-view and servicing rail, not primarily a distributor order-routing rail. Useful for held-away and servicing flows.<sup class="fn">2</sup></td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Open: the routing-rail choice is a real fork, confirm it internally</p>
+  <p>The Investor and Order references both noted that the facilitate-versus-execute line on servicing shifts with the rail, because each hands over a different amount of the work. An exchange platform brings its clearing corporation and more of the settlement plumbing; the RTA-direct route leaves more for the firm to do but is closer to the source of truth; the utility route brings the CAN and consolidated payment. Which rail or rails the firm integrates first is an integration decision the suite deliberately leaves open. Confirm it before the order-routing adapter is built, because it changes the shape of that adapter.</p>
+</div>
+
+<h2 id="pay"><span class="num">7.</span>Payment rails</h2>
+<p>The money leg runs on several rails, and they are governed by both an RBI regime and a SEBI constraint that interact. The mechanics, the cut-off and realisation rules, the mandate lifecycle, and the transaction limits, live in the Order reference; here the rails are mapped as parties.</p>
+<table>
+  <thead><tr><th>Rail</th><th>Owned or run by</th><th>What it carries</th></tr></thead>
+  <tbody>
+    <tr><td><strong>UPI and UPI autopay</strong></td><td>NPCI</td><td>One-time pulls and recurring mandates for smaller and mid-size tickets, within the capital-markets limits set out in the Order reference.</td></tr>
+    <tr><td><strong>NACH and eNACH</strong></td><td>NPCI</td><td>The standing-instruction rail behind SIPs, under the RBI e-mandate framework detailed in the Order reference.</td></tr>
+    <tr><td><strong>NEFT, RTGS, IMPS, netbanking</strong></td><td>The banks, on RBI rails</td><td>One-time transfers, carrying the large tickets that exceed the digital-rail ceilings, including the first SIF purchase.</td></tr>
+    <tr><td><strong>The payment aggregator path</strong></td><td>A payment aggregator under RBI authorisation</td><td>The mediated path that moves money from the investor's bank toward the AMC where a gateway sits in the flow.</td></tr>
+  </tbody>
+</table>
+<h4>The two regimes that govern the money leg.</h4>
+<p>The RBI overhauled the payment-aggregator regime in 2025. The Reserve Bank of India (Regulation of Payment Aggregators) Directions, 2025, dated 15 September 2025, consolidated the earlier guidelines into one master direction, classified aggregators into online, physical, and cross-border categories, set non-bank net-worth thresholds, and hardwired an escrow architecture so that merchant and customer funds sit in a ring-fenced account with a scheduled commercial bank.<sup class="fn">3</sup> Above that sits the SEBI constraint the whole suite is built around: a distributor must not pool investor money.<sup class="fn">4</sup> The two meet at the payment rail.</p>
+<div class="callout flag">
+  <p class="ck">Red flag: the money path must satisfy SEBI no-pooling, whichever rail is chosen</p>
+  <p>The RBI aggregator regime governs how a payment aggregator handles funds in escrow; the SEBI no-pooling rule governs whether the distributor may ever sit in the money flow. They are different constraints, and both must be met. On the exchange rails the clearing corporation satisfies no-pooling; on a payment-aggregator path the design must ensure the money reaches the AMC without the distributor pooling it. Confirm that whichever money path is chosen keeps the firm out of the flow of funds, because this is the constraint that most shapes the payment architecture.</p>
+</div>
+
+<h2 id="id"><span class="num">8.</span>Identity rails</h2>
+<p>Identity and KYC ride a small set of registries and sources. The KYC status regime and its consequences live in the Investor reference; here the rails are mapped as parties.</p>
+<table>
+  <thead><tr><th>Rail</th><th>What it is</th><th>What it owns</th></tr></thead>
+  <tbody>
+    <tr><td><strong>KRA</strong> (CVL, NDML, CAMS, KFin)</td><td>The KYC Registration Agencies for the securities market.</td><td>The securities KYC record and its status (Validated, Registered, On-Hold).</td></tr>
+    <tr><td><strong>CKYC at CERSAI</strong></td><td>The Central KYC Registry maintained by CERSAI.</td><td>The fourteen-digit cross-sector KYC identifier spanning banking, insurance, and securities.</td></tr>
+    <tr><td><strong>UIDAI</strong></td><td>The Aadhaar authority.</td><td>Aadhaar identity, behind OTP and biometric eKYC.</td></tr>
+    <tr><td><strong>Income Tax Department</strong></td><td>The PAN authority and validation source.</td><td>PAN, and the PAN-Aadhaar linkage that determines whether a PAN is operative.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Resolved: the NRI and OCI KRA-status relaxation, carried from the Investor reference</p>
+  <p>Because Validated status needs PAN-Aadhaar database validation that many NRIs lack, NRI and OCI records commonly sit at Registered. The relaxation letting Registered-status records transact across fund houses lapsed on 30 April 2026 with no successor notified, so non-resident onboarding must reach Validated. Confirmed as D2 in the decisions register and grounded in J1; the Investor reference carries the full detail.</p>
+</div>
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p>The identity rails are where the firm's own work is heaviest, even though the records are external. The firm captures, runs the modality, consumes the status, and gates orders on it, while the KRA, CERSAI, UIDAI, and the tax database own the underlying truth. The failure modes to design around are a fetch failure, a validation still pending, a status downgrade, an eKYC outage, and a PAN turned inoperative by a lapsed Aadhaar linkage, each of which can block a transaction at the pre-flight check the Order reference describes.</p>
+</div>
+
+<div class="part-band" id="p4"><div class="pk">Part IV</div><div class="pt">The consolidated system-of-record map</div></div>
+<p style="margin-top:18px;">The single map the build-scope parts of all four other references lean on. Each row names a truth, its owner, the firm's relationship to it, and the principal failure to design around.</p>
+<table>
+  <thead><tr><th>Truth</th><th>Owned by</th><th>Firm's relationship</th><th>Principal failure mode</th></tr></thead>
+  <tbody>
+    <tr><td>The NAV and the scheme</td><td>AMC</td><td>Consume and reflect</td><td>Delayed or restated NAV; scheme closure or attribute change</td></tr>
+    <tr><td>The unit register (SOA): folio, holding, nominee, lien</td><td>RTA (CAMS, KFin)</td><td>Reflect and reconcile</td><td>RTA outage; not-in-good-order rejection; reconciliation break</td></tr>
+    <tr><td>The scheme's underlying assets</td><td>Custodian</td><td>Referential only</td><td>Not investor-facing for the firm</td></tr>
+    <tr><td>Scheme oversight and governance</td><td>Trustee</td><td>Referential only</td><td>Not an operational dependency</td></tr>
+    <tr><td>The demat holding and its pledge or lien</td><td>Depository (NSDL, CDSL)</td><td>Reflect through a DP it is not</td><td>Depository or DP downtime; pledge-processing delay; BO mismatch</td></tr>
+    <tr><td>Settlement of an exchange-routed order</td><td>Clearing corporation</td><td>Reconcile; relies on it for no-pooling</td><td>Settlement delay; exchange-side failure</td></tr>
+    <tr><td>The order's registration and time-stamp</td><td>Order-routing rail and RTA</td><td>Originate and route through an adapter</td><td>Rail downtime; cut-off handling; rejection codes</td></tr>
+    <tr><td>The money in flight</td><td>Banks, NPCI, and the payment aggregator</td><td>Initiate and track, never hold</td><td>Payment decline; mandate failure; no-pooling breach risk</td></tr>
+    <tr><td>The KYC record and status</td><td>KRA, CERSAI, UIDAI, Income Tax Department</td><td>Capture, gate, consume</td><td>Fetch failure; validation pending; status downgrade; inoperative PAN</td></tr>
+  </tbody>
+</table>
+
+<div class="part-band" id="p5"><div class="pk">Part V</div><div class="pt">The build-scope view</div></div>
+<p style="margin-top:18px;">The lightest build-scope view in the suite, because the answer is almost uniform: integrate through the adapter, never own. The only genuine build here is the adapters and the reconciliation around them; every external record is referential, and the servicing that runs through these parties is facilitate.</p>
+<div class="legend">
+  <span><span class="bkt core">Core build</span> Own end to end.</span>
+  <span><span class="bkt fac">Facilitate</span> Assist; the external party executes.</span>
+  <span><span class="bkt ref">Referential</span> Understand; no plumbing.</span>
+</div>
+<table>
+  <thead><tr><th>Element</th><th>Bucket</th><th>Why, and who executes</th></tr></thead>
+  <tbody>
+    <tr><td>The anti-corruption-layer adapters, one per domain (RTA, depository, routing rail, payment, identity)</td><td><span class="bkt core">Core build</span></td><td>The adapters are the firm's own code and the place the integration discipline lives. They translate each external truth into the firm's model and absorb external change.</td></tr>
+    <tr><td>Reconciliation against RTA mailback files, depository feeds, and payment settlement</td><td><span class="bkt core">Core build</span></td><td>The firm's projection must agree with each owner's record. The reconciliation, and the breaks it surfaces, are the firm's.</td></tr>
+    <tr><td>Failure-mode handling at each adapter (outage, rejection, decline, downgrade)</td><td><span class="bkt core">Core build</span></td><td>The external parties fail in known ways; handling those cleanly, rather than with silent retries, is the firm's build.</td></tr>
+    <tr><td>Servicing routed through the rails (transactions, nomination registration, transmission routing)</td><td><span class="bkt fac">Facilitate</span></td><td>The firm initiates and fronts; the RTA, depository, or rail executes.</td></tr>
+    <tr><td>The unit register, the NAV, the demat holding, the custody, the settlement</td><td><span class="bkt ref">Referential</span></td><td>Each is an external truth the firm reflects and never owns.</td></tr>
+    <tr><td>The KYC records held by the KRA, CERSAI, UIDAI, and the tax database</td><td><span class="bkt ref">Referential</span></td><td>The firm captures and gates on the status; the registries own the record.</td></tr>
+    <tr><td>The custodian and trustee functions</td><td><span class="bkt ref">Referential</span></td><td>Understood, not integrated.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">The stripped-down core</p>
+  <p>Reduced to what an MFD-only firm must build at the rail layer, there is one pattern: an adapter per external domain, reconciliation against each owner's record, and disciplined failure handling at each adapter. Everything else is reflect and facilitate. No truth in this document is the firm's to own, which is exactly why the discipline is the adapter: it is the boundary that keeps the external world's models and outages from leaking into a system that must present one coherent view to the investor.</p>
+</div>
+
+<div class="part-band" id="p6"><div class="pk">Part VI</div><div class="pt">Open items and verification register</div></div>
+<p style="margin-top:18px;">Everything in this document not settled with confidence, collected with an owner. Several are integration-shape decisions rather than external unknowns.</p>
+<table>
+  <thead><tr><th>#</th><th>Open item</th><th>What is uncertain</th><th>Vet with</th><th>Priority</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Order-routing rail choice</td><td>Whether the firm integrates RTA-direct, an exchange platform, the unified utility, or a combination first. It changes the adapter shape and how much servicing the firm carries.</td><td>Internal</td><td>Medium</td></tr>
+    <tr><td>2</td><td>Payment path and no-pooling compliance</td><td>That whichever money path is chosen, the payment-aggregator path included, keeps the firm out of the flow of funds and meets both the RBI 2025 aggregator regime and the SEBI no-pooling rule.</td><td>Compliance / Banking</td><td>Medium</td></tr>
+    <tr><td>3</td><td>NRI and OCI KRA-status relaxation deadline</td><td>Resolved, June 2026: the relaxation lapsed on 30 April 2026 with no successor; Validated is required (D2). Carried from the Investor reference, where the grounding is recorded.</td><td>Compliance / KRA</td><td>Closed</td></tr>
+    <tr><td>4</td><td>SIF distribution rail</td><td>Whether SIF routes on the ordinary MF rails or a dedicated AMC platform; carried from the Instrument and Order references and still evolving.</td><td>AMC / distribution partner</td><td>Medium</td></tr>
+    <tr><td>5</td><td>Demat and DP relationship</td><td>How demat-held orders route given the firm is not a depository participant, and the scope of demat support relative to SOA.</td><td>Depository / DP / Internal</td><td>Low&ndash;Med</td></tr>
+    <tr><td>6</td><td>MF Central and CAS as the held-away rail</td><td>The scope of the consolidated-view and servicing portal as the held-away and servicing rail.</td><td>Internal</td><td>Low&ndash;Med</td></tr>
+    <tr><td>7</td><td>Account Aggregator integration scope and timing</td><td>Onboarding as a financial-information user, and which data categories power the financial-picture view. A phase decision, with the consent rail and its flows planned rather than necessarily in the first cut.</td><td>Internal / Compliance</td><td>Low&ndash;Med</td></tr>
+  </tbody>
+</table>
+
+<h2 id="refs"><span class="num">9.</span>References</h2>
+<p style="font-size:.88rem;color:var(--muted);">Sources for the time-sensitive routing and payment-rail figures, current to mid-2026. The counterparty structure is settled and follows the SEBI and depository framework; the figures below moved in 2025 and should be re-confirmed against the primary circulars before reliance. Payment-rail mechanics and KYC-status detail are not repeated here and live in the Order and Investor references respectively.</p>
+<ol class="ref-list">
+  <li><sup class="fn">1</sup> The two-RTA structure (CAMS at roughly two-thirds of industry AUM, KFin the rest), the RTA as the unit register and transaction processor, and holdings reconciliation through daily mailback files distinct from the transaction rail. CAMS and KFintech disclosures; distributor-platform guidance; contemporaneous reporting, 2025 to 2026.</li>
+  <li><sup class="fn">2</sup> The order-routing rails as of FY26: BSE StAR MF as the largest by volume, NSE NMF II, and MF Utilities with its Common Account Number, sitting between distributors and the RTAs; MF Central as the CAMS and KFin investor servicing portal. Exchange, AMFI, and RTA disclosures; contemporaneous reporting, 2026.</li>
+  <li><sup class="fn">3</sup> The Reserve Bank of India (Regulation of Payment Aggregators) Directions, 2025, dated 15 September 2025, consolidating the 2020 and 2021 PA and gateway guidelines and the 2023 cross-border directions, with online, physical, and cross-border categories, non-bank net-worth thresholds of &#8377;15 crore at application rising to &#8377;25 crore, and a hardwired escrow architecture with a scheduled commercial bank. RBI; legal and industry analyses; contemporaneous reporting, September 2025 onward.</li>
+  <li><sup class="fn">4</sup> The SEBI prohibition on pooling of investor funds and units by mutual fund distributors and platforms, and the role of the exchange clearing corporations in keeping exchange-routed money out of the distributor's hands. SEBI circulars on non-pooling; exchange clearing documentation. The mandate and order mechanics are detailed in the Order reference.</li>
+</ol>
+
+<h2 id="glossary"><span class="num">10.</span>Glossary</h2>
+<p style="font-size:.9rem;color:var(--muted);">Plain definitions of the rail and counterparty terms a reader without a finance background may want unpacked. Terms defined in the earlier references (RTA, NAV, SOA, demat account, depository, DP, BO, eNACH, NACH, UPI autopay) are not repeated.</p>
+<table>
+  <thead><tr><th style="width:30%;">Term</th><th>Plain meaning</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Account Aggregator (AA)</strong></td><td>An RBI-regulated intermediary that lets a user consent to share their financial data from the institutions that hold it to a service that needs it, on a purpose-limited, time-bound, and revocable basis. The rail behind a cross-institution financial-picture or net-worth view.</td></tr>
+    <tr><td><strong>Anti-corruption layer (ACL)</strong></td><td>An adapter that sits between the firm's own model and an external system, translating between the two so the outside system's quirks and changes do not leak into and corrupt the firm's model.</td></tr>
+    <tr><td><strong>CAN</strong> (Common Account Number)</td><td>A single account number from the MF Utilities platform that lets an investor transact across many fund houses through one identity and one consolidated payment.</td></tr>
+    <tr><td><strong>CERSAI</strong></td><td>The central registry that maintains the Central KYC Registry (CKYC), among other records.</td></tr>
+    <tr><td><strong>CKYC</strong></td><td>The Central KYC record and its fourteen-digit identifier, shared across banking, insurance, and securities.</td></tr>
+    <tr><td><strong>Clearing corporation</strong></td><td>The settlement body behind an exchange, which stands between buyer and seller so money and securities change hands safely. For exchange-routed mutual fund orders it keeps the money out of the distributor's hands.</td></tr>
+    <tr><td><strong>Escrow account</strong></td><td>A ring-fenced bank account in which a payment aggregator holds funds it is moving, kept separate from its own money under RBI rules.</td></tr>
+    <tr><td><strong>KRA</strong> (KYC Registration Agency)</td><td>A SEBI-registered agency that stores and shares an investor's securities-market KYC record and status. CVL, NDML, CAMS, and KFin are the KRAs.</td></tr>
+    <tr><td><strong>Mailback file</strong></td><td>The daily data file an RTA sends a distributor with holdings and transaction details, the channel through which the firm reconciles, separate from the order-routing channel.</td></tr>
+    <tr><td><strong>MF Central</strong></td><td>The investor servicing and consolidated-view portal jointly run by the two RTAs, CAMS and KFin.</td></tr>
+    <tr><td><strong>MFU</strong> (MF Utilities)</td><td>The industry-owned shared transaction utility, promoted by AMFI, that issues the Common Account Number.</td></tr>
+    <tr><td><strong>Payment aggregator (PA)</strong></td><td>A regulated entity that sits in a payment flow to collect money on behalf of a merchant and settle it onward, under the RBI's aggregator directions.</td></tr>
+    <tr><td><strong>UIDAI</strong></td><td>The authority that issues Aadhaar and runs the identity checks behind Aadhaar-based eKYC.</td></tr>
+  </tbody>
+</table>
+
+<div class="footer">
+  <p><strong>Document control.</strong> Rails and Counterparties: Master Reference. Version v0.1, draft for review, June 2026. Fifth and last in the same family as the Investor, Instrument, Order, and Folio references; maps the external counterparties and rails, what each is the system of record for, the interface, the firm's role, and the failure modes, and consolidates the system-of-record map the other build-scope parts lean on. Master reference, not a PRD and not a vendor selection; names the ecosystem by role and real institution, not the firm's chosen providers. Payment-rail mechanics live in the Order reference, KYC-status detail in the Investor reference, and holding and transmission in the Folio reference; none is duplicated here. Routing and payment-rail figures are current to mid-2026 and moved in 2025; items in Part VI and the open callouts require vetting before reliance. v0.2 grounds the NRI and OCI Registered-status relaxation to its 30 April 2026 lapse per D2; the open callout and verification row are marked resolved.</p>
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J2: KYC Lifecycle Events</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Journey Layer</p>
+  <h1 class="title">J2: KYC Lifecycle Events</h1>
+  <p class="subtitle">What happens to a transactable identity after J1 created it: the events that downgrade it, the path that restores it, and the one that reroutes it entirely when a minor attains majority. The standing life of the KYC status the Order pre-flight reads on every transaction.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.1: Decision-surfacing draft</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Journey document (not a reference, not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>The governing view of <strong>how a KYC identity changes after onboarding</strong>. J1 drew the front door, a new investor reaching a transactable <span class="mono">Validated</span> status. J2 owns what happens to that status afterwards, because KYC is not a one-time event. A <span class="mono">Validated</span> record can be knocked down by a registry flag, a lapsed Aadhaar linkage that turns the PAN inoperative, or an expiring document, and it has to be restored before the investor can transact freely again. Separately, a minor's record reaches a hard fork on the eighteenth birthday and reroutes entirely. J2 draws the canonical downgrade-and-restore loop and the minor-to-major reroute, maps the registry failure modes the Rails reference owns to what the investor can and cannot do in each, and surfaces the one genuine product call this journey forces: what a KYC downgrade should do to a standing plan. It draws on Investor for the status regime and the lifecycle state model, Rails for the registries that own the truth, and Order for the pre-flight gate that consumes the status.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a reference and not a PRD. It does not redraw onboarding, which is J1, and it does not own the KYC status definitions, which are the Investor reference's. The persona set is the locked V1 four, resident individual, joint, minor, and NRI, so the undivided-family partition event is out of scope and noted only as deferred. The heavy residency-status change, resident to non-resident and back, is bulleted with its blast radius rather than drawn, because servicing it fully may be its own journey, which is the second decision J2 surfaces. D2, the requirement that a non-resident be <span class="mono">Validated</span> to transact, is applied as settled.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong, where the default intuition is likely to mislead.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a point the firm must actively design around, where a status change can strand an investor or let a transaction through that should have been blocked.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not yet settled, or one turning on a decision still open in the register; each names its owner.</p></div>
+  <p>State names are shown in <span class="mono">monospace</span> when they refer to a specific status the Investor reference owns: the KYC ladder is <span class="mono">Validated</span>, <span class="mono">Registered</span> (also shown as Verified), <span class="mono">On Hold</span>, and <span class="mono">Rejected</span>. J2 sequences the transitions between these and the persona lifecycle transitions the Investor reference's Part V carries; it invents no status. The altitude follows the draw-or-bullet test: a transition that reroutes the path is drawn, one that only changes a value or adds a check is bulleted.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">The spine</a></li>
+    <li><a href="#s2">Decision points</a></li>
+    <li><a href="#s3">Failure taxonomy</a></li>
+    <li><a href="#s4">Special cases</a></li>
+    <li><a href="#s5">Entities and states exercised</a></li>
+    <li><a href="#s6">Decisions surfaced</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1"><span class="num">1.</span>The spine</h2>
+<p class="lead">J2 has no single happy path, because it is event-driven: the journey is the set of transitions a KYC identity can take after it exists. Two of those transitions are common and structural enough to draw. The first is the downgrade-and-restore loop, the everyday case where a <span class="mono">Validated</span> record slips to <span class="mono">On Hold</span> or <span class="mono">Registered</span> and has to climb back. The second is attaining majority, the once-per-minor event that does not downgrade the record so much as replace the person behind it. Everything else, contact changes, dormancy, residency shifts, is a value change or a check on top of these, and is bulleted in Section 4.</p>
+
+<h3>The downgrade-and-restore loop</h3>
+<pre class="mermaid">
+flowchart TD
+  A([Validated identity, transacting normally]) --> B{A validation trigger fires}
+  B -->|a registry flag, a lapsed PAN-Aadhaar linkage, or an expired document| C([On Hold, new investment and SIPs blocked, redemptions blocked in some cases])
+  B -->|an attribute cannot be database-verified but mobile and email still hold| D([Registered, can continue at existing fund houses, blocked at a new one])
+  C --> E[Investor re-submits KYC, Aadhaar as the preferred document, and corrects the failed attribute]
+  D --> E
+  E --> F[The KRA re-validates the record against the official databases]
+  F -->|verified| G([Validated, full access restored])
+  F -->|still deficient| C
+</pre>
+<p>The two downgrade landing states differ in severity. <span class="mono">Registered</span> is the softer one: the investor can keep transacting at fund houses where they already hold, but cannot open a position at a new one until the record is pushed up to <span class="mono">Validated</span>, which the registry framework is actively encouraging. <span class="mono">On Hold</span> is the hard one: it blocks all new investment and standing instructions, and in some cases blocks redemptions in existing folios too, which is the harsh edge, because it can trap an investor's own money. The restore path is the same from either: re-submit the KYC, preferably with Aadhaar so the record reaches full <span class="mono">Validated</span> status rather than only <span class="mono">Registered</span>, the KRA re-validates against the Income Tax and Aadhaar databases, and the status lifts. If the re-submission is still deficient it falls back to <span class="mono">On Hold</span> rather than completing.</p>
+
+<h3>Attaining majority, the minor-to-major reroute</h3>
+<pre class="mermaid">
+flowchart TD
+  A([Minor's folio, operated by the guardian]) --> B{The minor turns eighteen}
+  B -->|majority reached| C([Account frozen for transactions, the minor-attaining-majority mid-transition state])
+  C --> D[The erstwhile minor completes KYC in their own right, supplies their PAN and a fresh bank mandate]
+  D --> E{KYC validated and the new mandate registered}
+  E -->|not yet| C
+  E -->|yes| F([Guardian authority ceases, clubbing with the parent stops, operation transfers to the new major])
+  F --> G([Account reactivated, the major transacts in their own name])
+</pre>
+<p>This is the transition that genuinely reroutes rather than merely downgrades, because the person operating the account changes. On the eighteenth birthday the folio freezes for transactions and enters the minor-attaining-majority mid-transition state the Investor reference flags as routinely under-built. It stays frozen, not failing but waiting, until the erstwhile minor has completed their own KYC, supplied their own PAN, and registered a fresh bank mandate in their own name. Only then does guardian authority cease, the tax subject change identity so that income stops being clubbed with the parent, and operation transfer. A platform that treats this as an attribute flip rather than a freeze-and-rebuild will let a guardian keep operating an adult's account, or strand the account in a half-state where neither the guardian nor the new major can act.</p>
+
+<h3>Who acts at each step</h3>
+<table>
+  <thead><tr><th>Step</th><th>Acting party (by role)</th><th>What the firm does</th></tr></thead>
+  <tbody>
+    <tr><td>Detect the trigger</td><td>The KRA, the Income Tax Department, or the calendar.</td><td>Reflects a status change the registry pushes, an inoperative PAN the Income Tax database reports, a document expiry, or a date of birth reaching eighteen. The firm does not own the truth; it reconciles to it.</td></tr>
+    <tr><td>Inform and gate</td><td>The firm.</td><td>Tells the investor what changed and what it blocks, and applies the gate so the Order pre-flight refuses what the status forbids. The cheapest place to prevent a transaction the registry would reject.</td></tr>
+    <tr><td>Re-submit or rebuild</td><td>The investor.</td><td>Re-submits KYC with the corrected attribute, or for majority completes a fresh KYC, PAN, and mandate. The firm captures and routes to the KRA; it does not validate.</td></tr>
+    <tr><td>Re-validate and restore</td><td>The KRA.</td><td>Re-checks against the official databases and returns the new status. The firm reflects it and lifts or maintains the gate accordingly.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: status is a function of attributes and current state, and J2 only sequences the transitions</p>
+  <p>The Investor reference models KYC, eligibility, and tax as functions of an investor's attributes and current lifecycle state rather than as fixed labels, and it owns the status ladder and the Part V transition table. J2 adds no new status and no new transition; it draws the order of operations around the two transitions that reroute a real flow, and it leans on the Order pre-flight to enforce whatever the current status permits. The discipline this protects is that a status is never edited directly to unblock an investor; it changes only when the registry that owns it says so.</p>
+</div>
+
+<h2 id="s2"><span class="num">2.</span>Decision points</h2>
+<p>One genuine product call this journey forces and must surface as a new register row, drawn, because either answer reroutes what a standing plan does.</p>
+
+<h3>What a KYC downgrade does to a standing plan</h3>
+<p>This is the decision J2 exists to surface. The status ladder is clear that <span class="mono">On Hold</span> blocks new investment and SIPs, but a SIP that is already <span class="mono">Active</span> sits in an ambiguous place: is each instalment a new investment the gate must refuse, or is the plan a standing thing that should react to the downgrade as a whole. No external rule settles it; it is a product and engineering choice, and it carries investor harm either way.</p>
+<pre class="mermaid">
+flowchart TD
+  A([A KYC downgrade hits an investor who has an Active SIP]) --> B{What happens to the standing plan}
+  B -->|option one, recommended| C([Plan proactively Paused, the investor is told why, no instalments attempt while On Hold])
+  B -->|option two| D([Plan stays Active, each instalment fails at the J6 pre-flight on the status gate])
+  D --> E([Failed instalments count toward the D9 pause threshold, the plan pauses only after several])
+  C --> F([On restore to Validated, the investor resumes the plan])
+  E --> F
+</pre>
+<div class="callout verify">
+  <p class="ck">Open: plan behaviour on a KYC downgrade is a new product call (D46)</p>
+  <p>The recommended position is to pause the plan proactively the moment the identity goes <span class="mono">On Hold</span>, with a clear message that the downgrade, not the funding, is the cause, and to resume on restore. The alternative, letting each instalment fail at the J6 pre-flight, has two problems: it produces a run of debit-style failures for a reason that has nothing to do with the mandate, and it entangles the downgrade with D9, since those failures would count toward the consecutive-failure pause and the investor would be told their funding failed when it did not. The proactive pause is cleaner and kinder, but it needs Product and Engineering to settle how it interacts with D9, whether a downgrade-pause is a distinct plan state from a funding-pause, and what happens to a SWP, whose instalments have no debit to fail. This is a new register row, D46, routed to Product and Engineering.</p>
+</div>
+
+<h2 id="s3"><span class="num">3.</span>Failure taxonomy</h2>
+<p>The Rails reference names five ways the identity rail breaks, each of which lands the investor in a different position. J2 maps them to what the investor can and cannot do while in each, because the harm is not uniform.</p>
+<table>
+  <thead><tr><th>How it breaks</th><th>Cause</th><th>Where it lands, and what the investor can do</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Fetch failure</strong></td><td>A registry call fails transiently, so the current status cannot be read at the moment it is needed.</td><td>A technical failure, not a status change. The transaction waits and retries; the firm must not infer a downgrade from a failed read, which would block an investor whose record is fine.</td></tr>
+    <tr><td><strong>Validation pending</strong></td><td>A re-submission has been sent to the KRA and not yet returned.</td><td>The record sits in its prior state until the KRA responds. The investor is told it is in progress; nothing is upgraded optimistically before the registry confirms.</td></tr>
+    <tr><td><strong>Status downgrade</strong></td><td>The KRA moves the record to <span class="mono">Registered</span> or <span class="mono">On Hold</span> on a failed attribute.</td><td>The downgrade-and-restore loop in Section 1. <span class="mono">Registered</span> limits the investor to existing fund houses; <span class="mono">On Hold</span> blocks new investment and standing plans and sometimes redemptions.</td></tr>
+    <tr><td><strong>eKYC outage</strong></td><td>The Aadhaar eKYC channel is unavailable during a re-submission.</td><td>The restore stalls at submission, not at validation. The investor can complete through an alternative modality, or wait for the channel; the firm should not push the record to a lower status because a channel was down.</td></tr>
+    <tr><td><strong>Inoperative PAN</strong></td><td>The PAN-Aadhaar linkage lapses, so the Income Tax database reports the PAN as inoperative.</td><td>A pre-flight block, not a post-submission failure: the unlinked PAN drops the record to a blocked state that stops even redemptions. The investor re-links the PAN with Aadhaar, pays the prescribed fee, and the PAN becomes operative again within the statutory window, after which the record can be re-validated.</td></tr>
+  </tbody>
+</table>
+<div class="callout flag">
+  <p class="ck">Red flag: a downgrade that blocks redemptions can trap an investor's own money</p>
+  <p>The harsh edge of this journey is that an <span class="mono">On Hold</span> status, or an inoperative PAN, can block not just new investment but redemptions in existing folios, which means an investor can be locked out of money that is already theirs. This is a compliance reality, not a platform choice, but the platform's duty is to make the cause and the remedy unmistakable, to never present it as the firm's decision, and to route the investor to the fastest restore path rather than leaving them to discover the block at the moment they try to withdraw. The worst version of this is silent: an investor who learns of the downgrade only when a redemption fails.</p>
+</div>
+
+<h2 id="s4"><span class="num">4.</span>Special cases</h2>
+<p>Transitions and events that change a value or add a check without rerouting the two drawn flows. Listed, never drawn.</p>
+<ul class="tight">
+  <li><strong>Residency-status change, resident to non-resident and back.</strong> The heaviest event J2 carries, and the reason it is bulleted rather than drawn: it is not one status change but several at once. It moves the KYC record, changes the bank account class from resident to NRE or NRO, re-tags the folio's repatriability, shifts tax residency and withholding, and pulls in FATCA and CRS reporting. The Investor reference flags the return leg, non-resident to resident, as routinely under-built, because teams build the departure and forget the homecoming. J2 records the blast radius and routes the full servicing flow to a candidate later journey; whether that flow is in V1 scope is the second decision below (D47).</li>
+  <li><strong>Contact and bank-detail changes.</strong> Updating a mobile number, email, or bank account triggers a re-validation of the changed attribute, since mobile and email are validated attributes and the bank account underpins payouts and mandates. A value change with a verification step, not a status reroute, though a failed re-validation can itself cause a downgrade, which lands back in Section 1.</li>
+  <li><strong>Dormancy marking and reactivation.</strong> A long-inactive record can be marked dormant and reactivated on the investor's return, a state on the record rather than a KYC downgrade. Reactivation may itself prompt a re-KYC if the dormancy outlasted a re-verification window.</li>
+  <li><strong>Periodic re-KYC.</strong> KYC is time-bound and risk-based, broadly re-verified every two years for high-risk, eight for medium, and ten for low-risk clients under the banking regime, with the KRA layering its own re-validation triggers on top, the push from <span class="mono">Registered</span> to <span class="mono">Validated</span> being the live one. A re-KYC scheduler keyed to a risk classification belongs in the model, so these are anticipated events, not surprises.</li>
+  <li><strong>Accreditation gain or loss.</strong> Meeting or ceasing to meet the accredited-investor thresholds, or a certificate expiring, toggles access to accredited-only treatment such as the SIF minimum-ticket exemption. A capability toggle on the record, not a KYC status move.</li>
+  <li><strong>Undivided-family partition, out of V1 scope.</strong> The partition of an undivided family changes its PAN and tax status and apportions its holdings, but the undivided-family persona is deferred from V1, so this event is noted as deferred rather than drawn.</li>
+  <li><strong>The tightening Validated bar.</strong> The registry framework moved during 2026 toward requiring Aadhaar and PAN authentication for full validation and toward pushing non-Aadhaar records up from <span class="mono">Registered</span>, so the practical bar for <span class="mono">Validated</span> has risen. The exact post-tightening KRA rule should be confirmed with Compliance and the KRA before build, since the grounding here is contemporaneous reporting rather than a single primary circular.</li>
+  <li><strong>The non-resident branch.</strong> A non-resident must be <span class="mono">Validated</span> to transact, applied as settled per D2; the registry relaxation that once let an NRI transact on <span class="mono">Registered</span> status has lapsed, so the downgrade-and-restore loop applies to non-residents with no softer path.</li>
+</ul>
+
+<h2 id="s5"><span class="num">5.</span>Entities and states exercised</h2>
+<p>The references and journeys J2 draws on. Per the precedence rule J2 invents no status; it sequences the transitions the Investor reference's Part V owns and applies the gate the Order reference describes.</p>
+<table>
+  <thead><tr><th>Reference or journey</th><th>What J2 exercises</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Investor</strong></td><td>The KYC status ladder, <span class="mono">Validated</span>, <span class="mono">Registered</span>, <span class="mono">On Hold</span>, <span class="mono">Rejected</span>, and what each permits; the Part V persona lifecycle state model and its transition table, including the minor-to-major reroute and the KYC status transition; and the principle that status is a function of attributes and current state.</td></tr>
+    <tr><td><strong>Rails</strong></td><td>The registries that own the truth, the KRA for KYC status, CKYC at CERSAI for the cross-sector record, UIDAI for Aadhaar, and the Income Tax Department for the PAN and the PAN-Aadhaar linkage; and the identity-rail failure modes, fetch failure, validation pending, status downgrade, eKYC outage, and inoperative PAN.</td></tr>
+    <tr><td><strong>Order</strong></td><td>By reference: the pre-flight gate that consumes the KYC status on every transaction and refuses what the current status forbids. J2 changes the status; the Order spine enforces its consequence.</td></tr>
+    <tr><td><strong>J1 (onboarding)</strong></td><td>By reference: the <span class="mono">Validated</span> identity J2 inherits and the statuses J1 produced. J1 reaches the status; J2 owns every change to it after.</td></tr>
+    <tr><td><strong>J8 and J11 (standing plans)</strong></td><td>By reference: the SIP and SWP whose behaviour on a downgrade is the open call in Section 2, and the D9 pause logic that call must be reconciled with.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: J2 sequences transitions it does not own, and adds two register rows rather than a reference gap</p>
+  <p>Every status and every transition J2 uses is the Investor reference's, and every registry and failure mode is the Rails reference's, so J2 flags no reference gap. What it adds is product surface the references could not settle: what a downgrade does to a standing plan (D46) and whether the residency-change servicing flow is in V1 scope and its own journey (D47). Both are genuine choices with investor-harm consequences, not facts a reference can carry, which is why they are register rows and not reference edits.</p>
+</div>
+
+<h2 id="s6"><span class="num">6.</span>Decisions surfaced</h2>
+<p>The decisions J2 applies or adds, routed to owners and written back to the register.</p>
+<table>
+  <thead><tr><th>#</th><th>Decision and what J2 needs</th><th>Owner</th><th>Status after J2</th></tr></thead>
+  <tbody>
+    <tr><td>D2</td><td>The non-resident <span class="mono">Validated</span> requirement. Applied as settled: a non-resident has no softer path through the downgrade-and-restore loop, since the <span class="mono">Registered</span>-status relaxation has lapsed.</td><td>Compliance</td><td>Applied.</td></tr>
+    <tr><td><strong>D46</strong> <span class="bkt core" style="margin-left:4px;">new</span></td><td>Plan behaviour on a KYC downgrade. Whether an Active SIP pauses proactively when the identity goes <span class="mono">On Hold</span>, or its instalments fail at the J6 pre-flight and count toward the D9 threshold; how a downgrade-pause differs from a funding-pause; and what a SWP does, having no debit to fail. Recommended: a proactive, distinct downgrade-pause.</td><td>Product / Engineering</td><td>New row. To define with Product and Engineering against the D9 pause logic.</td></tr>
+    <tr><td><strong>D47</strong> <span class="bkt core" style="margin-left:4px;">new</span></td><td>Residency-status-change servicing scope. Whether the resident-to-non-resident and return-leg servicing flow is in V1 scope, and whether it is its own journey, given its blast radius across KYC, bank account class, repatriability, tax residency, and FATCA and CRS. Recommended: bullet the trigger in J2, defer the full flow to a dedicated journey, and rule on V1 scope.</td><td>Product / Compliance</td><td>New row. A scope ruling, with the homecoming leg flagged as the under-built case.</td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Open: what hardens J2</p>
+  <p>J2 is drawn against the Investor reference's settled status ladder and transition model, so its two flows are stable. Two product calls sit on top. D46 needs Product and Engineering to decide how a standing plan reacts to a downgrade and how that reconciles with the D9 pause, since the recommended proactive pause is cleaner but introduces a second kind of pause to model. D47 needs Product and Compliance to rule whether the heavy residency-change flow is in V1 and whether it earns its own journey, with the non-resident-to-resident return leg called out as the part teams forget. A third, lighter item is to confirm the tightened post-2026 KRA validation bar against the primary KRA and SEBI material before build, since it is grounded here in contemporaneous reporting. None of this blocks the wave.</p>
+</div>
+
+<div class="footer">
+  <p><strong>Document control.</strong> J2: KYC Lifecycle Events. Version v0.1, decision-surfacing draft, June 2026. The eleventh journey document and the fourth of Wave 3, drawing what happens to a KYC identity after J1 created it: the downgrade-and-restore loop between <span class="mono">Validated</span>, <span class="mono">Registered</span>, and <span class="mono">On Hold</span>, and the minor-to-major reroute that freezes the account and rebuilds the identity behind it. Maps the Rails identity-rail failure modes, fetch failure, validation pending, status downgrade, eKYC outage, and inoperative PAN, to what the investor can and cannot do in each. Applies D2 as settled for the non-resident branch and adds two rows: plan behaviour on a KYC downgrade (D46), routed to Product and Engineering against the D9 pause logic, and residency-change servicing scope (D47), routed to Product and Compliance as a scope ruling with the under-built return leg flagged. Draws on Investor for the status regime and the Part V lifecycle model, Rails for the registries and failure modes, and Order for the pre-flight gate; references J1 for the status it inherits and J8 and J11 for the standing plans the downgrade call affects. Flags no reference gap; the two additions are product surface, not reference facts. Not a reference and not a PRD.</p>
+</div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  try {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      themeVariables: {
+        fontFamily: "'Source Sans 3', sans-serif",
+        primaryColor: '#efe9f7',
+        primaryBorderColor: '#6a4a9c',
+        primaryTextColor: '#26222e',
+        lineColor: '#6a4a9c',
+        secondaryColor: '#fbf2dd',
+        tertiaryColor: '#fffdf8',
+        fontSize: '15px'
+      }
+    });
+  } catch (e) { /* if the CDN is unreachable, the Mermaid source remains legible as text */ }
+</script>
+</body>
+</html>

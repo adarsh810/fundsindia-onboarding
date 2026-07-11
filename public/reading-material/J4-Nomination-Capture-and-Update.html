@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J4: Nomination Capture and Update</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Journey Layer</p>
+  <h1 class="title">J4: Nomination Capture and Update</h1>
+  <p class="subtitle">The standing life of a nomination on a live folio: viewing, adding, changing, or removing nominees and shares, or switching to a formal opt-out, with the consent the folio's ownership demands and the instruction registered with the RTA. The continuation of the creation-time gate J3 drew, governed now by the SEBI circular dated 29 May 2026.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.1: Decision-surfacing draft</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Journey document (not a reference, not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>The governing view of <strong>how a nomination lives and changes after the folio exists</strong>. J3 drew the creation-time gate, the moment a single-holder folio must nominate or formally opt out before it can come alive. J4 owns everything after that: the investor returning to view who is nominated, to add or remove a nominee, to re-weight the shares, or to flip between a nomination and a formal opt-out, on a folio that is already live. A nomination is not an order and has no money leg; it is an instruction captured against the folio, registered with the RTA, and reflected by the platform. J4 draws who may make that instruction, the consent a joint folio demands, the data the instruction must carry, and the one moment a nomination change must be refused outright. It draws on Folio for the nomination machinery, Investor for operating authority, and J3 for the creation gate it continues.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a reference and not a PRD. It does not redraw folio creation, which is J3, and it does not execute transmission, which is J12. The boundary with J12 is the hard one: a nomination is the instruction that <strong>drives</strong> transmission on death, but J4 stops at the living investor's changes, and the moment a death is intimated the nomination freezes and the folio passes to J12. J4 builds to the operative nomination framework, now settled rather than in flight: the SEBI circular dated 29 May 2026, effective 1 September 2026, which the Folio reference carries at v0.2 and J3 at v0.3. The presentation rule the Folio reference flags as a red flag is carried here in full, because the place an investor edits a nomination is exactly where the platform is tempted to misdescribe what a nominee is.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong, where the default intuition is likely to mislead.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a point the firm must actively design around, where a nomination can be changed by the wrong party, at the wrong moment, or presented as something it is not.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not yet settled, or one turning on a decision still open in the register; each names its owner.</p></div>
+  <p>State names are shown in <span class="mono">monospace</span> when they refer to a specific lifecycle state a reference owns. A nomination is a folio attachment, not a lifecycle of its own; J4 sequences updates to it while the folio is <span class="mono">Active</span>, and hands over the moment a death intimation arrives. The altitude follows the draw-or-bullet test: a fork that reroutes the path is drawn, a captured value or an added check is bulleted. The operative regulatory framework defers to the Folio reference, which owns it.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">The spine</a></li>
+    <li><a href="#s2">Decision points</a></li>
+    <li><a href="#s3">Failure taxonomy</a></li>
+    <li><a href="#s4">Special cases</a></li>
+    <li><a href="#s5">Entities and states exercised</a></li>
+    <li><a href="#s6">Decisions surfaced</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1"><span class="num">1.</span>The spine</h2>
+<p class="lead">A nomination update is a short flow with two heavy gates and a long shadow. The flow is simple: an investor changes who is nominated, the instruction registers with the RTA, the platform reflects it. The first gate is authority, only the investor may nominate, never a power-of-attorney holder, and a joint folio needs every holder to consent. The second gate is timing, a nomination cannot be changed once a death has been intimated on the folio, because at that point survivorship or transmission has taken over and the change would route units to the wrong person. The long shadow is that this instruction is the thing that decides, years later, who can reach the holding quickly when the investor dies, which is why the presentation of it matters as much as the mechanics.</p>
+<pre class="mermaid">
+flowchart TD
+  A([Investor initiates a nomination action on a live folio, add, change, remove, or switch to opt-out]) --> B{Folio is live and carries no death intimation}
+  B -->|death intimation present| X1([Blocked, the nomination is frozen and the folio routes to J12, see failure taxonomy])
+  B -->|live folio| C{Authority and consent satisfied}
+  C -->|not satisfied| X2([Blocked, only the investor may nominate, and a joint folio needs all-holder consent, see failure taxonomy])
+  C -->|satisfied| D[Capture the change, name and relationship mandatory, up to three nominees, shares total the whole or split equally by default]
+  D --> E[Register the instruction with the RTA, folio by folio in SOA form]
+  E --> F([RTA acknowledges, platform reflects the updated nomination or opt-out])
+</pre>
+<p>The two gates are the whole story. Authority is checked first because a nomination made by the wrong party is void no matter how clean the data: the circular is explicit that only the investor nominates, and on a joint folio the consent of every holder is required to provide or change a nomination irrespective of the operation mode, so even an either-or-survivor folio cannot have its nominee changed by one holder acting alone. The timing gate is checked because a nomination change after a death intimation is not a correction, it is an attempt to redirect a holding that has already begun to pass, and it must be refused and routed to J12. Past both gates the capture is light, name and relationship are the only mandatory fields under the 29 May 2026 circular, and the registration is folio by folio because in SOA form the nominee attaches to the folio, not to the investor.</p>
+
+<h3>Who acts at each step</h3>
+<table>
+  <thead><tr><th>Step</th><th>Acting party (by role)</th><th>What the firm does</th></tr></thead>
+  <tbody>
+    <tr><td>Initiate the action</td><td>The investor.</td><td>Presents the current nomination and lets the investor add, change, remove, or switch to opt-out. Never a power-of-attorney holder; the authority check is the firm's to enforce.</td></tr>
+    <tr><td>Obtain consent</td><td>The investor, and on a joint folio every joint holder.</td><td>For a joint folio, collects all-holder consent before the change can proceed. How consent is evidenced is a build choice; that it is required is not.</td></tr>
+    <tr><td>Validate and capture</td><td>The firm.</td><td>Checks the data is complete, name and relationship present, at most three nominees, shares that total the whole or default to an equal split with the odd lot to the first nominee. The cheapest place to catch a nomination the RTA would reject.</td></tr>
+    <tr><td>Register and reflect</td><td>The firm originates; the RTA records.</td><td>Registers the instruction with the RTA folio by folio, waits for acknowledgement, and reflects the updated nomination. The firm is not the system of record; the RTA holds the registered nominee.</td></tr>
+  </tbody>
+</table>
+
+<h2 id="s2"><span class="num">2.</span>Decision points</h2>
+<p>One genuine fork that decides whether the change is even permitted, drawn, and one toggle the investor controls, drawn lightly. The count and field rules are no longer a fork, because the circular settled them.</p>
+
+<h3>The authority and consent fork</h3>
+<p>This is the gate that makes or breaks the change. It has two independent conditions, the acting party and, for a joint folio, the consent of the others, and both must pass.</p>
+<pre class="mermaid">
+flowchart TD
+  P([A nomination change is requested on a live folio]) --> Q{Acting party}
+  Q -->|power-of-attorney holder| M1([Refused, a power-of-attorney holder cannot nominate])
+  Q -->|the investor| R{Folio ownership}
+  R -->|single-holder| M2([Proceed, the investor's instruction alone suffices])
+  R -->|jointly held| S{Consent of all joint holders obtained}
+  S -->|no| M3([Held, the change cannot register until every holder consents])
+  S -->|yes| M2
+</pre>
+<p>The investor-only rule comes from the Investor reference and the circular together: a nomination is a personal act, and a power of attorney that can place orders still cannot make or change a nomination. The all-holder-consent rule is the one the 29 May 2026 circular hardened, and it is the reason this is drawn rather than bulleted: it reroutes the path for a joint folio and it overrides the operation mode, so a folio that lets one holder transact alone still needs both holders to agree a nominee. How the firm evidences that consent, a co-sign, a second authentication, a dual approval, is PRD latitude; that it is mandatory is drawn here.</p>
+
+<h3>The nominate-versus-opt-out toggle</h3>
+<p>An investor can hold a nomination, or formally opt out, and can move between the two as often as they like. Each direction is a registrable instruction, not a silent UI state, because the opt-out is itself a declaration the RTA records.</p>
+<pre class="mermaid">
+flowchart TD
+  A([Current nomination state on the folio]) --> B{Investor's choice}
+  B -->|nominate or re-nominate| C([Capture up to three nominees and shares, register with the RTA])
+  B -->|opt out| D([Capture the affirmed opt-out declaration, register with the RTA])
+  C --> E([Reflected, the investor can change it any number of times later])
+  D --> E
+</pre>
+<div class="callout">
+  <p class="ck">D10 is applied as settled, not surfaced as open</p>
+  <p>When J3 drew the creation gate, the nominee count and mandatory-field set were an open call, D10, because a SEBI consultation was in flight. That call is now closed. The circular dated 29 May 2026 set the maximum at three nominees, made name and relationship the only mandatory fields, and defaulted to an equal split with the odd lot to the first nominee. J4 therefore builds to three with no fork on the count, applying D10 as settled. The single residual is a Compliance confirmation of the provisions against the primary circular text before the capture form is finalised, which the Folio reference carries.</p>
+</div>
+
+<h2 id="s3"><span class="num">3.</span>Failure taxonomy</h2>
+<p>A nomination update breaks in three ordinary ways and one that is a red flag. The ordinary failures return the investor to correct and retry; the red-flag failure must be refused and handed to another journey.</p>
+<table>
+  <thead><tr><th>How it breaks</th><th>Cause</th><th>Where it lands, and recovery</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Wrong acting party</strong></td><td>A power-of-attorney holder, or anyone other than the investor, attempts to make or change the nomination.</td><td>Refused at the authority gate, before anything registers. Only the investor can proceed; the holder of a power of attorney cannot be substituted here.</td></tr>
+    <tr><td><strong>Incomplete joint consent</strong></td><td>On a joint folio, one or more holders have not consented to the change.</td><td>Held, not failed: the instruction cannot register until every holder consents. It resumes when the missing consent arrives, and lapses if it does not.</td></tr>
+    <tr><td><strong>RTA rejection on nominee data</strong></td><td>Malformed or inconsistent data the RTA will not accept, shares that do not total the whole, more than three nominees, or a missing mandatory field.</td><td>Returned for correction before registration completes. Validate at capture so this is caught early; the share split and the three-nominee ceiling are the common offenders.</td></tr>
+    <tr><td><strong>Change attempted after a death intimation</strong></td><td>A nomination add, change, or removal requested once a death has been intimated on the folio.</td><td>Refused and routed to J12. This is the red flag below: the holding has begun to pass, and a nomination change at this point would redirect it. Never allowed, never queued.</td></tr>
+  </tbody>
+</table>
+<div class="callout flag">
+  <p class="ck">Red flag: no nomination change survives a death intimation</p>
+  <p>The most dangerous request J4 can receive is a nomination change after a holder's death has been intimated. On a single-holder folio the holding is already transmitting to the nominee or the heirs, and on a joint folio survivorship has already passed it to the survivor; a change at this moment is an attempt, innocent or not, to redirect a holding that is no longer the deceased's to redirect. The firm must hard-block any nomination instruction once a death intimation exists on the folio and route the folio to J12, rather than treat the change as a late edit. This is also why J4 and J12 share a clean seam: J4 owns the living investor's changes, J12 owns everything from the intimation onward.</p>
+</div>
+
+<h2 id="s4"><span class="num">4.</span>Special cases</h2>
+<p>Variants that change a value or add a check without rerouting the update flow. Listed, never drawn.</p>
+<ul class="tight">
+  <li><strong>Minor nominee.</strong> A minor can be nominated, with the date of birth captured so majority can be tracked. Under the 29 May 2026 circular the guardian details for a minor nominee are now optional rather than mandatory, a reduction from the earlier regime; the firm may still capture a guardian, but cannot block the nomination for its absence.</li>
+  <li><strong>NRI nominee.</strong> A non-resident can be nominated. The repatriability and TDS consequences do not arise at nomination; they arise only on a later transmission and redemption, and sit with J12 and the repatriation path, not here. J4 captures the nominee; it does not pre-judge the remittance.</li>
+  <li><strong>Opt-out reversal.</strong> An investor who opted out can later nominate, and a nominated investor can later opt out, any number of times. Each is a fresh registrable instruction; there is no penalty and no lock, and the reminder regime stops once a nomination or a fresh opt-out is on record.</li>
+  <li><strong>The reminder regime.</strong> An investor who has neither nominated nor opted out is sent periodic reminders, by SMS and email and an in-app prompt, rather than having the folio frozen. The earlier freeze threat was dropped; J4's surfaces are where these reminders resolve into an action.</li>
+  <li><strong>Per-folio capture in SOA form.</strong> A nominee attaches to the folio, so an investor with several folios at one AMC updates each folio separately, and a single intended change can mean several registrations. A demat account, by contrast, carries one nomination across everything in it. This is the operational cost of the SOA form, inherited from the Folio reference.</li>
+  <li><strong>Equal apportionment and the odd lot.</strong> Where shares are left unspecified across multiple nominees, the holding is split equally, and any indivisible odd lot goes to the first nominee named. A default the capture applies, not a decision the investor must make.</li>
+  <li><strong>Persona authority.</strong> A minor's folio is operated by the guardian, but the guardian operates it, they do not nominate on the minor's behalf in the investor sense; nomination on a minor's folio follows the framework the guardian administers until the minor attains majority, which is a J2 event. A joint folio's nomination follows the all-holder-consent rule regardless of who may transact.</li>
+</ul>
+<div class="callout flag">
+  <p class="ck">Red flag: a nominee is a trustee, not an owner, and the edit screen is where this is misread</p>
+  <p>Carried from the Folio reference because J4 is where it bites. A registered nominee receives the units on death so the family can reach them quickly, but holds them as a caretaker for the legal heirs, whose claim under a will or succession law can prevail. The screen where an investor adds or weights nominees is the exact place a platform is tempted to call it estate planning, to imply that naming a nominee settles who inherits. It does not. J4 must present nomination as an access mechanism and never as a substitute for a will, and on a joint folio it must not imply that a nominee will receive ahead of the surviving holder, because survivorship comes first.</p>
+</div>
+
+<h2 id="s5"><span class="num">5.</span>Entities and states exercised</h2>
+<p>The references and journeys J4 draws on. Per the precedence rule J4 invents no state; a nomination is a folio attachment the Folio reference owns, and J4 sequences its updates. With the Folio reference now at v0.2 it finds no gap.</p>
+<table>
+  <thead><tr><th>Reference or journey</th><th>What J4 exercises</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Folio</strong></td><td>The nomination attachment and the operative framework: the three-nominee maximum, name and relationship mandatory, equal apportionment with the odd lot to the first nominee, the investor-only rule, all-holder consent on joint folios, and the per-folio grain of SOA capture. All grounded to the 29 May 2026 circular at Folio v0.2.</td></tr>
+    <tr><td><strong>Investor</strong></td><td>Operating authority: who may act on the folio, the distinction between transacting authority and the personal act of nomination, and the persona overlays a power of attorney and a guardian carry.</td></tr>
+    <tr><td><strong>J3 (folio creation)</strong></td><td>By reference: the creation-time nominate-or-opt-out gate J4 continues. J3 captures the first nomination; J4 owns every change to it thereafter.</td></tr>
+    <tr><td><strong>Rails</strong></td><td>By reference: the RTA as the system of record that registers the nomination instruction and returns the acknowledgement the platform reflects.</td></tr>
+    <tr><td><strong>J12 (transmission)</strong></td><td>By reference, as the handover: the death intimation that freezes the nomination and the transmission J4's instruction ultimately drives. J4 stops at the intimation; J12 takes over.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: J4 sequences an attachment, it does not own a lifecycle, and it adds no row</p>
+  <p>A nomination has no lifecycle of its own; it is a value on the folio that the investor can change while the folio is live. J4's work is the order of operations around that value, the authority to change it, the consent a joint folio demands, the data it must carry, and the one moment it must be frozen. Because the Folio reference now carries the operative framework in full at v0.2, J4 invents nothing and flags no gap. It applies D10 as settled and brushes D12, adding no register row.</p>
+</div>
+
+<h2 id="s6"><span class="num">6.</span>Decisions surfaced</h2>
+<p>The decisions J4 applies or brushes, routed to owners and written back to the register.</p>
+<table>
+  <thead><tr><th>#</th><th>Decision and what J4 needs</th><th>Owner</th><th>Status after J4</th></tr></thead>
+  <tbody>
+    <tr><td>D10</td><td>The operative nomination rule. Applied as settled: the 29 May 2026 circular set three nominees with name and relationship mandatory, so J4 builds to three with no fork on the count. The one residual is a Compliance confirmation against the primary circular text before form build.</td><td>Compliance</td><td>Applied; resolved at register v0.11, residual confirmation only.</td></tr>
+    <tr><td>D12</td><td>The nominee-versus-survivor-versus-heir precedence. Brushed: J4 enforces the rule that no nomination changes once a death is intimated and routes the folio to J12, but it does not adjudicate the precedence itself, which is the contested legal judgment J12 carries.</td><td>Legal</td><td>Brushed; the no-change-after-intimation boundary is drawn, the precedence stays with J12.</td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Open: what hardens J4</p>
+  <p>J4 is drawn against a settled framework, so its spine and gates are stable. Two things sit just outside it. The first is the residual on D10: Compliance should confirm the 29 May 2026 circular's provisions, the three-nominee maximum, the mandatory fields, and the joint-consent and minor-guardian changes, against the primary circular text before the capture form is built, since the grounding here is a reading of the circular rather than the gazette. The second is D12: the precedence judgment J4 routes into is the contested legal call J12 carries, with the Legal opinion sought from the week of 15 June; J4 does not need it resolved to draw the freeze-and-route boundary, but J12 will. Neither blocks the wave. J4 adds no register row.</p>
+</div>
+
+<div class="footer">
+  <p><strong>Document control.</strong> J4: Nomination Capture and Update. Version v0.1, decision-surfacing draft, June 2026. The tenth journey document and the third of Wave 3, drawing the standing life of a nomination on a live folio: viewing, adding, changing, removing, or switching to a formal opt-out, gated by the investor-only authority rule and the all-holder consent a joint folio demands, registered with the RTA folio by folio, and hard-frozen the moment a death is intimated. Built to the operative framework now settled by the SEBI circular dated 29 May 2026, effective 1 September 2026: three nominees maximum, name and relationship the only mandatory fields, equal apportionment with the odd lot to the first nominee, and minor-guardian details optional. Applies D10 as settled, resolved at register v0.11, and brushes D12, the nominee-versus-survivor-versus-heir precedence it routes into. Draws on Folio for the nomination machinery and framework at v0.2, Investor for operating authority, and J3 for the creation gate it continues; hands death-claims to J12. Carries the Folio reference's red flag that a nominee is a trustee, not an owner, because the edit surface is where that is misread. Adds no register row and flags no reference gap. Not a reference and not a PRD.</p>
+</div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  try {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      themeVariables: {
+        fontFamily: "'Source Sans 3', sans-serif",
+        primaryColor: '#efe9f7',
+        primaryBorderColor: '#6a4a9c',
+        primaryTextColor: '#26222e',
+        lineColor: '#6a4a9c',
+        secondaryColor: '#fbf2dd',
+        tertiaryColor: '#fffdf8',
+        fontSize: '15px'
+      }
+    });
+  } catch (e) { /* if the CDN is unreachable, the Mermaid source remains legible as text */ }
+</script>
+</body>
+</html>

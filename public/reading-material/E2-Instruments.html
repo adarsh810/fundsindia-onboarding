@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Instrument Entity: Master Reference</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform · Domain Reference</p>
+  <h1 class="title">The Instrument Entity</h1>
+  <p class="subtitle">A master reference for what an investor can hold and transact. Iteration one covers the managed-fund instruments: Mutual Funds and Specialised Investment Funds.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.2: Draft for review</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Master reference (not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>A reference view of the <strong>Instrument entity</strong>: what each instrument is, how it is priced and acquired, how it moves through its lifecycle, how it settles, what constrains its liquidity, what risk and disclosure regime governs it, and the thin tax character a distributor needs to carry. It is the second in the same family as the Investor reference and follows the same common-spine-plus-profile structure.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a PRD and not a build plan. It carries no flow specifications. It also does not reproduce tax mechanics: the rate-and-holding-period detail lives in the Investor reference and is pointed to from here, not duplicated.</p>
+  </div>
+
+  <h3>Scope of this iteration</h3>
+  <p><strong>In scope now:</strong> Mutual Funds, including index funds treated as a mutual fund variant, and Specialised Investment Funds (SIF). Both are pooled, AMC-managed, NAV-based, RTA-settled fund vehicles under the Mutual Fund Regulations, which is why they sit together.</p>
+  <p><strong>Deliberately deferred:</strong> Bonds and Fixed Deposits are held for a later iteration to keep this document focused on the instruments in the immediate build. Equities, Insurance, and Lending are a separate exercise planned later. ETFs travel with Equities. REITs and InvITs are parked. Digital gold and crypto are permanently excluded as unregulated.</p>
+
+  <div class="callout principle">
+    <p class="ck">Relationship to the other references</p>
+    <p>Three boundaries keep this document from swelling into its neighbours. <strong>Tax</strong> appears here only as a per-instrument character tag; the rate table lives in the Investor reference. The <strong>order lifecycle</strong> (placed, routed, acknowledged, allotted, settled, failed, reversed) is described here only as far as each instrument bends it; the generic machinery belongs to the Order reference. <strong>Holding, nomination, and transmission</strong> are folio-and-investor concerns and live in the Folio reference, not here.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a point a distributor or investor must actively check, where the label can mislead or the risk is material.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not settled with confidence; names who to vet it with.</p></div>
+  <p>The build-scope view in Part V uses three badges: <span class="bkt core">Core build</span> own it end to end, <span class="bkt fac">Facilitate</span> assist while the AMC or RTA executes, <span class="bkt ref">Referential</span> understand it, no plumbing.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#p1">Part I: The instrument entity model</a>
+      <ol>
+        <li><a href="#s1">What an instrument is in this domain</a></li>
+        <li><a href="#s2">The facet taxonomy</a></li>
+        <li><a href="#s3">The instrument catalogue</a></li>
+      </ol>
+    </li>
+    <li><a href="#p2">Part II: The common fund-mechanics spine</a>
+      <ol>
+        <li><a href="#s4">The fund vehicle and the chain of custody</a></li>
+        <li><a href="#s5">NAV and forward pricing</a></li>
+        <li><a href="#s6">Transaction types and the order lifecycle</a></li>
+        <li><a href="#s7">Holding form</a></li>
+        <li><a href="#s8">Settlement</a></li>
+        <li><a href="#s9">Distribution attributes</a></li>
+      </ol>
+    </li>
+    <li><a href="#p3">Part III: Instrument profiles</a>
+      <ol>
+        <li><a href="#mf">Mutual Funds (with index funds)</a></li>
+        <li><a href="#sif">Specialised Investment Funds (SIF)</a></li>
+      </ol>
+    </li>
+    <li><a href="#p4">Part IV: Tax character at a glance</a></li>
+    <li><a href="#p5">Part V: The build-scope view</a></li>
+    <li><a href="#p6">Part VI: Open items and verification register</a></li>
+    <li><a href="#refs">References</a></li>
+    <li><a href="#glossary">Glossary</a></li>
+  </ol>
+</nav>
+
+<div class="part-band" id="p1"><div class="pk">Part I</div><div class="pt">The instrument entity model</div></div>
+
+<h2 id="s1"><span class="num">1.</span>What an instrument is in this domain</h2>
+<p class="lead">An instrument is a thing that can be held and transacted, wrapped in a regulatory structure, carrying a pricing mechanic, a lifecycle of its own, and a tax character. Like the investor, it is best understood as a shared spine that each type bends.</p>
+<p>The two instruments in this iteration share a great deal, because both are pooled investment vehicles run by an AMC under the Mutual Fund Regulations. They both issue units, strike a Net Asset Value, settle through a registrar, and support a common family of transaction types. What differs is the strategy freedom, the ticket size, the liquidity, and the risk regime. So the structure mirrors the Investor reference: a common fund-mechanics spine in Part II, then profiles in Part III that describe how each instrument modulates it.</p>
+<div class="callout principle">
+  <p class="ck">Key principle</p>
+  <p>The instrument is not the system of record for what an investor holds. The AMC manages the scheme, the registrar (the RTA) maintains the unit register, and a custodian holds the underlying assets. A distributor reflects and reconciles that truth; it does not own it. This single fact, carried over from the Investor reference, decides most of the build-scope view in Part V.</p>
+</div>
+
+<h2 id="s2"><span class="num">2.</span>The facet taxonomy</h2>
+<p>Each instrument profile is examined through the same facets, in the same order, so the two can be read side by side:</p>
+<ol class="tight">
+  <li><strong>Definition and regulatory wrapper</strong>: what it is and which framework governs it.</li>
+  <li><strong>Sub-types</strong>: the internal taxonomy.</li>
+  <li><strong>Pricing and valuation</strong>: how a unit is priced.</li>
+  <li><strong>Acquisition</strong>: how it is first bought.</li>
+  <li><strong>Transaction types and lifecycle</strong>: what actions it supports and how they bend the order lifecycle.</li>
+  <li><strong>Intrinsic events</strong>: lifecycle events the instrument generates on its own.</li>
+  <li><strong>Liquidity, lock-in and exit</strong>: how easily and on what terms it can be left.</li>
+  <li><strong>Risk and disclosure regime</strong>: how risk is classified and disclosed.</li>
+  <li><strong>Tax character</strong>: the thin classification tag, pointing to the Investor reference for rates.</li>
+  <li><strong>Counterparties and rails</strong>: who manages, records, and settles.</li>
+  <li><strong>Build-scope</strong>: what a distributor builds versus what the AMC and RTA own.</li>
+</ol>
+
+<h2 id="s3"><span class="num">3.</span>The instrument catalogue</h2>
+<p>The instruments in scope this iteration. One-line descriptions; full treatment in Part III.</p>
+<table>
+  <thead><tr><th>Instrument</th><th>One-line description</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Mutual Fund</strong></td><td>A pooled, professionally managed scheme issuing units at NAV under the SEBI Mutual Fund Regulations, spanning equity, debt, hybrid, solution-oriented, and index or fund-of-funds categories.</td></tr>
+    <tr><td><strong>Index Fund</strong> (MF variant)</td><td>A passive mutual fund that tracks an index rather than seeking alpha; mechanically an MF, with a tax character that follows whatever the index represents.</td></tr>
+    <tr><td><strong>Specialised Investment Fund</strong></td><td>A newer SEBI category under the MF framework, between mutual funds and PMS, allowing long-short and derivative strategies, with a ₹10 lakh per-PAN minimum.</td></tr>
+  </tbody>
+</table>
+<p style="font-size:.9rem;color:var(--muted);"><strong>Deferred and noted:</strong> Bonds and Fixed Deposits (later iteration); Equities, Insurance, Lending (separate exercise); ETFs (with Equities); REITs and InvITs (later); digital gold and crypto (permanently excluded as unregulated).</p>
+
+<div class="part-band" id="p2"><div class="pk">Part II</div><div class="pt">The common fund-mechanics spine</div></div>
+<p class="lead" style="margin-top:18px;">Six facets that both fund instruments share, described once here. The profiles in Part III state only their deviations.</p>
+
+<h2 id="s4"><span class="num">4.</span>The fund vehicle and the chain of custody</h2>
+<p>A fund pools money from many investors and issues units representing a proportional claim on a managed portfolio. Four parties sit behind every unit, and knowing which owns which truth is the foundation of everything downstream:</p>
+<table>
+  <thead><tr><th>Party</th><th>Owns</th></tr></thead>
+  <tbody>
+    <tr><td><strong>AMC</strong> (asset management company)</td><td>Manages the scheme and makes investment decisions; strikes the NAV.</td></tr>
+    <tr><td><strong>RTA</strong> (registrar and transfer agent, CAMS or KFin)</td><td>The unit register: the authoritative record of who holds how many units. The system of record.</td></tr>
+    <tr><td><strong>Custodian</strong></td><td>Holds the underlying securities of the scheme.</td></tr>
+    <tr><td><strong>Trustee</strong></td><td>Holds the scheme in trust for investors and oversees the AMC.</td></tr>
+  </tbody>
+</table>
+<p>A distributor originates the order and maintains its own reconciled view, but the unit register is the RTA's. This is why the document treats holdings as reflected rather than owned.</p>
+
+<h2 id="s5"><span class="num">5.</span>NAV and forward pricing</h2>
+<p>A fund unit is priced at its Net Asset Value (NAV). The NAV is simply the total value of everything the fund owns divided by the number of units on issue, worked out once at the end of each day. Two principles then matter for any transaction flow:</p>
+<p><strong>Forward pricing.</strong> An investor transacts at a NAV that is not yet known at the moment of placing the order. The applicable NAV depends on when the transaction is registered relative to a daily cut-off, and, for purchases, on when the money actually reaches the AMC.</p>
+<p><strong>The funds-realisation rule.</strong> For purchases, the applicable NAV is the NAV of the day on which the funds are realised and available to the AMC for utilisation, regardless of the order time or amount. So a purchase placed before cut-off but funded a day later receives the later day's NAV. Redemptions, by contrast, take the same-day NAV if registered before the redemption cut-off.</p>
+<p>Cut-off times follow SEBI norms: for liquid and overnight funds, an earlier purchase cut-off (around mid-day) reflecting their money-market nature; for other schemes, an afternoon cut-off for both purchase and redemption. The exact times are operational detail for the Order reference; what matters here is that the cut-off plus realisation together decide the price, not the click.</p>
+
+<h2 id="s6"><span class="num">6.</span>Transaction types and the order lifecycle</h2>
+<p>Both fund instruments support a common family of transactions. The generic lifecycle states belong to the Order reference; here is how the fund transaction types map onto them.</p>
+<table>
+  <thead><tr><th>Transaction</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Lumpsum purchase</strong></td><td>A one-time buy at the applicable NAV.</td></tr>
+    <tr><td><strong>SIP</strong> (systematic investment plan)</td><td>A recurring purchase on a schedule, executed against a standing mandate.</td></tr>
+    <tr><td><strong>SWP</strong> (systematic withdrawal plan)</td><td>A recurring redemption on a schedule.</td></tr>
+    <tr><td><strong>STP</strong> (systematic transfer plan)</td><td>A recurring switch from one scheme to another within an AMC.</td></tr>
+    <tr><td><strong>Switch</strong></td><td>A redemption from one scheme and purchase into another, in one instruction.</td></tr>
+    <tr><td><strong>Redemption</strong></td><td>A sale of units back to the fund at the applicable NAV.</td></tr>
+  </tbody>
+</table>
+<p>SIP and SWP are standing instructions and depend on a payment mandate (eNACH or UPI autopay). The mandate is the part the distributor orchestrates; the execution and allotment sit with the RTA. Mandate detail belongs in the Order and Folio references.</p>
+
+<h2 id="s7"><span class="num">7.</span>Holding form</h2>
+<p>Fund units can be held in <strong>statement-of-account (SOA)</strong> form, where the RTA's records are the holding and no demat account is needed, or <strong>dematerialised</strong> in a demat account. The form has consequences for nomination, transmission, and pledging, which are folio concerns. The instrument is largely indifferent to the form; the investor and the platform choose it. The holding-form decision and its downstream effects live in the Folio reference.</p>
+
+<h2 id="s8"><span class="num">8.</span>Settlement</h2>
+<p>Redemption proceeds settle to the investor's registered bank account on a scheme-dependent cycle: liquid and overnight funds the fastest, equity schemes a few days, with the exact cycle a property of the scheme type. Purchases settle as units credited to the folio once funds are realised, per the rule in Section 5. Because the firm never holds the money, settlement is between the investor's bank and the AMC through the RTA and the payment rail; the firm reflects it.</p>
+
+<h2 id="s9"><span class="num">9.</span>Distribution attributes</h2>
+<p>Three dimensions sit on top of any fund scheme and matter to a distributor specifically:</p>
+<p><strong>Direct versus Regular plan.</strong> Every scheme has both. A Direct plan carries no distributor and no commission and a lower expense ratio. A Regular plan embeds distributor commission in its expense ratio and pays the distributor a trail. A distribution business transacts Regular plans and earns the trail; this is the commercial spine of the model and the reason EUIN and ARN attribution, covered in the Investor reference, tags every transaction.</p>
+<p><strong>Growth versus IDCW option.</strong> Growth reinvests gains into NAV; IDCW (income distribution cum capital withdrawal, formerly dividend) pays out periodically and is taxable in the investor's hands at slab. The option chosen changes the cash-flow profile and the tax timing.</p>
+<p><strong>Expense ratio and exit load.</strong> The total expense ratio is the annual cost embedded in NAV. An exit load is a charge for leaving before a defined period. Both are scheme attributes the catalog must carry and the investor must see.</p>
+
+<div class="part-band" id="p3"><div class="pk">Part III</div><div class="pt">Instrument profiles</div></div>
+<p class="lead" style="margin-top:18px;">Each profile states only what the instrument changes about the common spine, through the same facet order.</p>
+
+<h2 id="mf"><span class="num">10.</span>Mutual Funds</h2>
+
+<div class="persona">
+  <h3>Mutual Fund</h3>
+  <div class="facet"><span class="fl">Definition and regulatory wrapper</span>A pooled investment scheme managed by an AMC under the SEBI (Mutual Funds) Regulations, issuing units at NAV. The most established and tightly regulated of the instruments in scope, and the baseline against which SIF is described.</div>
+  <div class="facet"><span class="fl">Sub-types</span>SEBI's scheme-categorisation framework groups schemes into five families:
+    <ul class="tight">
+      <li><strong>Equity</strong>: large-cap, mid-cap, small-cap, large-and-mid, flexi-cap, multi-cap, value, focused, sectoral or thematic, and ELSS (the tax-saving variant).</li>
+      <li><strong>Debt</strong>: a wide set from overnight and liquid through ultra-short, low, short, medium and long duration, corporate bond, banking and PSU, gilt, credit risk, and others, distinguished by duration and credit profile.</li>
+      <li><strong>Hybrid</strong>: aggressive, conservative, balanced advantage or dynamic allocation, multi-asset, arbitrage, and equity savings, distinguished by the equity-to-debt mix.</li>
+      <li><strong>Solution-oriented</strong>: retirement and children's funds, which carry a lock-in tied to the goal.</li>
+      <li><strong>Other</strong>: index funds and fund-of-funds. ETFs sit here in law but travel with Equities in this document's scope.</li>
+    </ul>
+  </div>
+  <div class="facet"><span class="fl">Pricing and valuation</span>NAV, struck per valuation day, with forward pricing and the funds-realisation rule from Section 5.</div>
+  <div class="facet"><span class="fl">Acquisition</span>Either at a New Fund Offer (the initial subscription at a fixed unit price) or, far more commonly, by ongoing purchase at the prevailing NAV through the RTA or an exchange order-routing platform.</div>
+  <div class="facet"><span class="fl">Transaction types and lifecycle</span>The full common family: lumpsum, SIP, SWP, STP, switch, redemption. Closed-ended schemes restrict ongoing purchase and redemption to listing or maturity.</div>
+  <div class="facet"><span class="fl">Intrinsic events</span>IDCW payouts; segregated portfolios (side-pocketing) when an underlying debt holding is hit by a credit event; scheme mergers and changes in fundamental attributes (which trigger an exit window); and, for closed-ended schemes and FMPs, maturity.</div>
+  <div class="facet"><span class="fl">Liquidity, lock-in and exit</span>Open-ended schemes offer daily liquidity at NAV. Constraints come from exit loads (a charge for early exit), ELSS (a three-year statutory lock-in tied to its tax benefit), solution-oriented lock-ins, and the closed-ended structure.</div>
+  <div class="facet"><span class="fl">Risk and disclosure regime</span>Each scheme carries a riskometer rating and a documentation set (the Scheme Information Document, Key Information Memorandum, and Statement of Additional Information). Debt schemes additionally carry a potential risk class matrix expressing interest-rate and credit risk.</div>
+  <div class="facet"><span class="fl">Tax character (tag only; rates in the Investor reference)</span>The bucket follows composition: an equity-oriented scheme (at least 65 percent domestic listed equity) is taxed as equity; a specified mutual fund (more than 65 percent debt and money-market) is taxed at slab with no long-term benefit; the residual middle (gold, international, many hybrids and FoFs) takes 24-month, 12.5-percent treatment. ELSS carries the three-year lock and 80C eligibility. Residents face no redemption TDS; NRIs face at-source TDS. Rates and holding periods are in the Investor reference, not repeated here.</div>
+  <div class="facet"><span class="fl">Counterparties and rails</span>AMC (manages), RTA CAMS or KFin (unit register), custodian (assets), and the payment rail for the money leg. Order routing via the RTA path or an exchange platform.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>None unusual. This is the reference instrument, and the place where the catalog and suitability surfaces do most of their work.</div>
+</div>
+
+<div class="persona">
+  <h3>Index Fund (a mutual fund variant)</h3>
+  <div class="facet"><span class="fl">Definition</span>A passively managed mutual fund that replicates an index rather than trying to beat it. Mechanically it is a mutual fund in every respect above: same wrapper, NAV, transaction family, settlement, and holding form. It is in scope precisely as an MF.</div>
+  <div class="facet"><span class="fl">What differs in substance</span>The management is passive, so the metric that matters is tracking error and tracking difference, not alpha, and the expense ratio is typically low. For suitability and comparison surfaces this changes what you show: a benchmark-relative tracking quality, not a manager's record.</div>
+  <div class="facet"><span class="fl">The special handling that genuinely matters</span>
+    <div class="callout" style="margin-top:8px;">
+      <p class="ck">Special attention</p>
+      <p>Index-fund tax character is <strong>not uniform</strong>; it follows whatever the index represents. An equity index fund tracking a domestic equity index is equity-oriented and taxed as equity. A <strong>debt or target-maturity index fund</strong> is, by composition, a specified mutual fund, so it is slab-taxed with no long-term benefit regardless of how long it is held. An <strong>international index fund</strong> falls into the residual bucket with 24-month, 12.5-percent treatment. So "index fund" must never be tagged with a single tax character in the catalog; the tag is derived from the underlying index, exactly as for any other scheme. This is the one place the "treat index as MF" rule needs a conscious carve-out.</p>
+    </div>
+  </div>
+  <div class="facet"><span class="fl">Everything else</span>Identical to the parent MF profile. No separate lifecycle, settlement, or risk-regime treatment is needed.</div>
+</div>
+
+<h2 id="sif"><span class="num">11.</span>Specialised Investment Funds (SIF)</h2>
+<p>SIF is the newest instrument here, and the one where certainty is thinnest. What follows is current to mid-2026 and grounded in the SEBI framework and the early live funds, but the category is barely a year old, so several points are flagged rather than asserted. The structure is solid; the lived experience is not yet there.</p>
+
+<div class="persona">
+  <h3>Specialised Investment Fund</h3>
+  <div class="facet"><span class="fl">Definition and regulatory wrapper</span>A SEBI-regulated product category created under the Mutual Fund framework, introduced by circular dated 27 February 2025 and effective 1 April 2025, positioned deliberately between mutual funds and Portfolio Management Services or AIFs.<sup class="fn">1</sup> It gives AMCs strategy freedom that ordinary mutual funds do not have, principally long-short and derivative exposure, at an entry point well below the ₹50 lakh of PMS.</div>
+  <div class="facet"><span class="fl">Who may launch it</span>Only eligible AMCs, by one of two routes: a sound-track-record route (a mutual fund operating at least three years with average AUM of at least ₹10,000 crore over the preceding three years), or an alternate route for AMCs bringing specialised expertise and meeting governance and fund-manager experience requirements.<sup class="fn">1</sup> SIFs carry a brand identity kept separate from the AMC's mutual fund brand, for example Altiva, Magnum SIF, or iSIF.</div>
+  <div class="facet"><span class="fl">Minimum investment</span>₹10 lakh per investor, aggregated at PAN level across all SIF strategies of a single AMC, and excluding that AMC's regular mutual fund holdings. Accredited investors are exempt. Once the ₹10 lakh threshold is met across strategies, further top-ups can be as small as ₹10,000 or as specified in the offer document.<sup class="fn">2</sup></div>
+  <div class="facet"><span class="fl">Sub-types</span>Three categories and seven strategies, with only one strategy permitted per category per AMC to prevent proliferation:<sup class="fn">3</sup>
+    <ul class="tight">
+      <li><strong>Equity</strong>: Equity Long-Short (at least 80 percent equity across caps, up to 25 percent unhedged short via derivatives); Equity Ex-Top 100 Long-Short (at least 65 percent outside the top 100 by market cap, the mid and small universe, up to 25 percent short); Sector Rotation Long-Short (80 percent across up to four sectors, up to 25 percent short).</li>
+      <li><strong>Debt</strong>: Debt Long-Short; Sectoral Debt Long-Short, using exchange-traded debt derivatives for the short side.</li>
+      <li><strong>Hybrid</strong>: Active Asset Allocator Long-Short (dynamic across equity, debt, REITs, InvITs, and commodities); Hybrid Long-Short (at least 25 percent each equity and debt).</li>
+    </ul>
+  </div>
+  <div class="facet"><span class="fl">Pricing and valuation</span>NAV-based with daily pricing, like a mutual fund.</div>
+  <div class="facet"><span class="fl">Transaction types, lifecycle and liquidity</span>This is where SIF departs most from a plain mutual fund. Equity SIF strategies have so far launched open-ended with daily redemption. Debt and hybrid strategies can be launched as interval funds, where redemption is permitted only in defined windows, commonly twice a week or once a month.<sup class="fn">4</sup> So liquidity is strategy-specific and cannot be assumed daily.</div>
+  <div class="facet"><span class="fl">Intrinsic mechanics</span>The defining feature is the ability to take short positions, that is, to bet that a security will fall in price, on up to 25 percent of net assets using derivatives, alongside the ordinary long holdings. This is what lets the strategies try to make money, or limit losses, when markets fall, rather than only when they rise.</div>
+  <div class="facet"><span class="fl">Risk and disclosure regime</span>A distinct, heavier regime than mutual funds, with its own offer documentation per strategy and explicit warnings that SIFs carry relatively higher risk including potential loss of capital, liquidity risk, and volatility. The separate branding requirement exists so investors do not mistake an SIF for the AMC's mainstream funds.</div>
+  <div class="facet"><span class="fl">Tax character (tag only; rates in the Investor reference)</span>SEBI's position is that an SIF is taxed like a mutual fund, by the orientation of its strategy, and notably without the fund-level taxation that Category III AIFs face.<sup class="fn">5</sup> An equity-oriented SIF is taxed as equity, a debt-oriented one at slab. The derivative classification nuance is flagged below.</div>
+  <div class="facet"><span class="fl">Counterparties and rails</span>The AMC under its SIF brand, the RTA, and a large-ticket payment path. Availability across third-party distribution platforms is still evolving; some AMCs route SIF through a dedicated platform rather than the ordinary mutual fund rails.</div>
+  <div class="facet"><span class="fl">Special attention and red flags</span>
+    <div class="callout flag" style="margin-top:8px;">
+      <p class="ck">Red flag: "long-short" does not guarantee shorting</p>
+      <p>SEBI permits 0 to 25 percent short exposure. A fund can carry the long-short label and hold no short positions at all. The label describes the permission, not the practice. Any suitability or comparison surface should reflect what a fund actually does, not what its name implies.</p>
+    </div>
+    <div class="callout flag">
+      <p class="ck">Red flag: no track record</p>
+      <p>The oldest SIFs are only months old as of mid-2026, and the category is still launching new strategies. There is not yet enough history to judge whether the downside-protection claims hold. This is a genuine, not rhetorical, caution for a mass-affluent or private-wealth recommendation.</p>
+    </div>
+    <div class="callout verify">
+      <p class="ck">Open: verify with Tax counsel</p>
+      <p>The headline "taxed like a mutual fund" is clear, but the bucket classification of a derivative-heavy long-short strategy is not obvious from the public material. Whether an equity long-short SIF reliably meets the equity-oriented test, given the derivative short overlay, should be confirmed for a specific strategy rather than assumed.</p>
+    </div>
+    <div class="callout verify">
+      <p class="ck">Open: verify with Compliance and the AMC</p>
+      <p>NRI and OCI eligibility for SIF is not settled in the public framework, and the large-ticket payment path is awkward for non-resident rails. Treat non-resident SIF access as unconfirmed.</p>
+    </div>
+    <div class="callout verify">
+      <p class="ck">Open: verify with the AMC and the offer document</p>
+      <p>The behaviour of the ₹10 lakh threshold once an investor's balance falls below it, for instance after partial redemption or a market fall, including whether any forced or restricted-redemption rule applies, is a scheme-and-framework detail I have not confirmed. Confirm against the strategy's offer document before designing a balance-threshold flow.</p>
+    </div>
+  </div>
+</div>
+
+<div class="part-band" id="p4"><div class="pk">Part IV</div><div class="pt">Tax character at a glance</div></div>
+<p style="margin-top:18px;">The thin classification tag agreed for this document. It exists so the catalog can categorise and the suitability surface can set expectations. It is not a tax computation; the rates, holding periods, and persona overlays live in the Investor reference. The recurring point is that the tag is derived from <em>composition</em>, never from a scheme's name.</p>
+<table>
+  <thead><tr><th>Instrument or sub-type</th><th>Tax bucket</th><th>Lock-in</th><th>NRI at-source TDS</th></tr></thead>
+  <tbody>
+    <tr><td>Equity-oriented MF (incl. equity index funds)</td><td>Equity</td><td>None</td><td>Yes</td></tr>
+    <tr><td>ELSS</td><td>Equity</td><td>3 years, 80C-eligible</td><td>Yes</td></tr>
+    <tr><td>Specified MF / debt-oriented (incl. debt and target-maturity index funds)</td><td>Slab, no long-term benefit</td><td>None</td><td>Yes</td></tr>
+    <tr><td>Residual MF (gold, international, many hybrids and FoFs; international index funds)</td><td>24-month, 12.5%</td><td>None</td><td>Yes</td></tr>
+    <tr><td>SIF, equity strategies</td><td>Equity, by orientation (verify derivative nuance)</td><td>Exit-load constrained</td><td>Open</td></tr>
+    <tr><td>SIF, debt or hybrid strategies</td><td>By orientation</td><td>Interval-window constrained</td><td>Open</td></tr>
+  </tbody>
+</table>
+<p style="font-size:.88rem;color:var(--muted);">Income character (growth versus IDCW) is a plan option on every row and changes the timing of taxable distribution; it is captured at the scheme level, not in this tag.</p>
+
+<div class="part-band" id="p5"><div class="pk">Part V</div><div class="pt">The build-scope view</div></div>
+<p style="margin-top:18px;">The same lens as the Investor reference, applied to these fund instruments. The principle is unchanged: the firm owns origination, suitability, the catalog, and the reconciled view; the AMC and RTA own NAV, allotment, settlement, and corporate actions.</p>
+<div class="legend">
+  <span><span class="bkt core">Core build</span> Own end to end.</span>
+  <span><span class="bkt fac">Facilitate</span> Assist; AMC or RTA executes.</span>
+  <span><span class="bkt ref">Referential</span> Understand; no plumbing.</span>
+</div>
+<table>
+  <thead><tr><th>Element</th><th>Bucket</th><th>Why, and who executes</th></tr></thead>
+  <tbody>
+    <tr><td>Scheme and strategy catalog (with riskometer, exit load, TER, and the composition-derived tax tag)</td><td><span class="bkt core">Core build</span></td><td>The firm's classification of the transactable universe. The index-fund tax tag in particular must be derived per underlying, not set once.</td></tr>
+    <tr><td>Order construction across the transaction family, with cut-off and NAV-applicability handling</td><td><span class="bkt core">Core build</span></td><td>Origination is the firm's. The forward-pricing and funds-realisation rules shape what the firm can promise about price.</td></tr>
+    <tr><td>Mandate setup for SIP and SWP (eNACH, UPI autopay)</td><td><span class="bkt core">Core build</span></td><td>The firm orchestrates the standing instruction; the RTA executes each instalment.</td></tr>
+    <tr><td>SIF suitability gate: ₹10 lakh PAN-aggregate check, accredited-investor check, risk-band fit</td><td><span class="bkt core">Core build</span></td><td>A real, SIF-specific gate the firm must enforce before an order is valid.</td></tr>
+    <tr><td>Direct versus Regular handling and EUIN / ARN attribution</td><td><span class="bkt core">Core build</span></td><td>The firm transacts Regular and tags every order; its commission depends on it.</td></tr>
+    <tr><td>Reconciled holdings and NAV view from RTA feeds</td><td><span class="bkt core">Core build</span></td><td>The firm's own ledger and reporting projection, reconciled against the RTA's register.</td></tr>
+    <tr><td>NAV striking, unit allotment, redemption settlement</td><td><span class="bkt ref">Referential</span></td><td>The AMC strikes NAV; the RTA allots and settles.</td></tr>
+    <tr><td>IDCW payouts, side-pocketing, scheme mergers and other corporate actions</td><td><span class="bkt fac">Facilitate</span></td><td>The AMC and RTA execute; the firm reflects and notifies the investor.</td></tr>
+    <tr><td>SIF strategy execution and short-exposure monitoring</td><td><span class="bkt ref">Referential</span></td><td>Entirely the AMC's. The firm surfaces what the fund discloses, including actual short deployment.</td></tr>
+    <tr><td>SIF distribution rail (dedicated AMC platform versus ordinary MF rails)</td><td><span class="bkt fac">Facilitate</span></td><td>Integrate with whatever the AMC mandates; availability is still evolving.</td></tr>
+    <tr><td>Tax computation, TDS, capital-gains statements</td><td><span class="bkt ref">Referential</span></td><td>The AMC and RTA, per the Investor reference. The firm may surface CAS-derived views as a value-add.</td></tr>
+  </tbody>
+</table>
+
+<div class="part-band" id="p6"><div class="pk">Part VI</div><div class="pt">Open items and verification register</div></div>
+<p style="margin-top:18px;">Everything in this document not established with confidence, collected with an owner. The SIF rows reflect the category's novelty rather than any inconsistency of depth.</p>
+<table>
+  <thead><tr><th>#</th><th>Open item</th><th>What is uncertain</th><th>Vet with</th><th>Priority</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>SIF tax-bucket classification</td><td>Whether a derivative-heavy long-short equity strategy reliably meets the equity-oriented test for tax.</td><td>Tax counsel</td><td>Medium</td></tr>
+    <tr><td>2</td><td>SIF NRI / OCI eligibility</td><td>Not settled in the public framework; large-ticket rail awkward for non-resident accounts.</td><td>Compliance / AMC</td><td>Medium</td></tr>
+    <tr><td>3</td><td>SIF below-threshold behaviour</td><td>What happens to the ₹10 lakh threshold after partial redemption or a market fall, and whether any forced or restricted-redemption rule applies.</td><td>AMC / offer document</td><td>Medium</td></tr>
+    <tr><td>4</td><td>SIF distribution rail and platform availability</td><td>Whether SIF transacts on ordinary MF rails or a dedicated AMC platform, and current third-party availability.</td><td>AMC / distribution partner</td><td>Medium</td></tr>
+    <tr><td>5</td><td>Index-fund tax tagging</td><td>A build discipline rather than an external unknown: the catalog must derive the tax bucket per underlying (equity, debt or target-maturity, international), never a single default.</td><td>Internal / Tax</td><td>Low–Med</td></tr>
+    <tr><td>6</td><td>Exact cut-off times and settlement cycles</td><td>Per-scheme-type operational figures, deliberately left to the Order reference.</td><td>RTA / operations</td><td>Low</td></tr>
+  </tbody>
+</table>
+
+<h2 id="refs"><span class="num">12.</span>References</h2>
+<p style="font-size:.88rem;color:var(--muted);">Sources for the SIF material, current to mid-2026. SIF is a young category; figures and availability should be re-confirmed against SEBI circulars and AMC offer documents before reliance. Mutual fund mechanics follow the SEBI (Mutual Funds) Regulations and associated circulars.</p>
+<ol class="ref-list">
+  <li><sup class="fn">1</sup> SIF framework, effective 1 April 2025 under SEBI circular dated 27 February 2025 (SEBI/HO/IMD/IMD-I POD-1/P/CIR/2025/26), positioning, and the two AMC-eligibility routes. SEBI; AMC SIF pages (Edelweiss Altiva, SBI Magnum SIF, DSP Endurance); 1 Finance; HDFC Sky.</li>
+  <li><sup class="fn">2</sup> ₹10 lakh per-PAN minimum aggregated across an AMC's SIF strategies, accredited-investor exemption, and top-up mechanics. Finnovate; DSP Endurance; Choice.</li>
+  <li><sup class="fn">3</sup> Three categories and seven strategies, one strategy per category per AMC, with their composition limits and the up-to-25-percent short. Edelweiss Altiva; SBI Magnum SIF; Finnovate; GoPocket.</li>
+  <li><sup class="fn">4</sup> Liquidity by strategy: equity long-short open-ended with daily redemption, hybrid as interval funds with twice-weekly or monthly windows, debt typically weekly. DSP Endurance; Finnovate; IndMoney.</li>
+  <li><sup class="fn">5</sup> SIF taxed as a mutual fund by orientation (equity short-term 20 percent, long-term 12.5 percent; debt at slab) and without fund-level taxation, unlike Category III AIFs. TradeBrains; Kotak Neo.</li>
+</ol>
+
+<h2 id="glossary"><span class="num">13.</span>Glossary</h2>
+<p style="font-size:.9rem;color:var(--muted);">Plain definitions of the financial terms a reader without a finance background may want unpacked. Widely familiar terms (mutual fund, SIP, exit load, demat, ELSS) are left out on purpose.</p>
+<table>
+  <thead><tr><th style="width:30%;">Term</th><th>Plain meaning</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Accredited Investor</strong></td><td>A SEBI status for investors meeting set net-worth or income thresholds, which unlocks lighter rules such as the SIF minimum-ticket waiver.</td></tr>
+    <tr><td><strong>AMC</strong></td><td>Asset Management Company, the firm that runs a fund and makes its investment decisions.</td></tr>
+    <tr><td><strong>ARN / EUIN</strong></td><td>The distributor's registration number (ARN) and the servicing individual's number (EUIN), tagged to every transaction for attribution and commission.</td></tr>
+    <tr><td><strong>Derivatives</strong></td><td>Contracts whose value comes from an underlying asset, used here to take short positions.</td></tr>
+    <tr><td><strong>Forward pricing</strong></td><td>You transact at a NAV that is not yet known when you place the order, because it is struck later that day.</td></tr>
+    <tr><td><strong>Funds-realisation rule</strong></td><td>For a purchase, the NAV that applies is the one for the day the money actually reaches the fund, not the day the order was placed.</td></tr>
+    <tr><td><strong>IDCW</strong></td><td>Income Distribution cum Capital Withdrawal, the periodic payout option once called dividend, taxable in the investor's hands.</td></tr>
+    <tr><td><strong>Long-short</strong></td><td>A strategy holding some securities expecting them to rise (long) while betting against others expecting them to fall (short).</td></tr>
+    <tr><td><strong>NAV</strong></td><td>Net Asset Value, the per-unit price of a fund: the value of its holdings divided by the units on issue.</td></tr>
+    <tr><td><strong>NFO</strong></td><td>New Fund Offer, the initial subscription window when a scheme first launches.</td></tr>
+    <tr><td><strong>PMS and AIF</strong></td><td>Portfolio Management Service (₹50 lakh minimum) and Alternative Investment Fund (typically ₹1 crore minimum), higher-entry vehicles that sit above mutual funds and SIF.</td></tr>
+    <tr><td><strong>Riskometer</strong></td><td>A standardised SEBI risk gauge shown on every scheme, running from low to very high.</td></tr>
+    <tr><td><strong>RTA</strong></td><td>Registrar and Transfer Agent (CAMS or KFin), which keeps the official record of who owns how many units.</td></tr>
+    <tr><td><strong>SID / KIM / SAI</strong></td><td>The three mutual fund disclosure documents: Scheme Information Document, Key Information Memorandum, and Statement of Additional Information.</td></tr>
+    <tr><td><strong>Short position (shorting)</strong></td><td>Betting that a security will fall in price, so the position profits if it does.</td></tr>
+    <tr><td><strong>Side-pocketing</strong></td><td>Walling off a fund's troubled holding after a credit event so it does not drag down the rest.</td></tr>
+    <tr><td><strong>SOA</strong></td><td>Statement of Account, holding fund units in the registrar's records without needing a demat account.</td></tr>
+    <tr><td><strong>Specified Mutual Fund</strong></td><td>A tax label for debt-heavy funds (more than 65 percent debt); their gains are always taxed at the investor's slab rate, with no long-term benefit.</td></tr>
+    <tr><td><strong>STP and SWP</strong></td><td>Systematic Transfer Plan (move money periodically between schemes) and Systematic Withdrawal Plan (redeem periodically); the withdrawal-side mirrors of a SIP.</td></tr>
+    <tr><td><strong>TER</strong></td><td>Total Expense Ratio, the annual cost of running a fund, already deducted inside its NAV.</td></tr>
+    <tr><td><strong>Tracking error</strong></td><td>How closely an index fund follows its index; lower is better.</td></tr>
+    <tr><td><strong>Trail commission</strong></td><td>The ongoing commission a distributor earns on Regular-plan assets for as long as they stay invested.</td></tr>
+  </tbody>
+</table>
+
+<div class="footer">
+  <p><strong>Document control.</strong> The Instrument Entity: Master Reference. Version v0.2, draft for review, June 2026. Iteration one of a modular reference; covers Mutual Funds (including index funds) and Specialised Investment Funds. Bonds, Fixed Deposits, Equities, Insurance, and Lending are deferred to later iterations. Master reference, not a PRD; specifies no flows. Tax rates live in the Investor reference and are not duplicated here. SIF material is current to mid-2026 and, given the category's youth, should be re-confirmed against SEBI circulars and AMC offer documents; items in Part VI and the open callouts require vetting before reliance. v0.2 simplifies the densest passages for non-specialist readers and adds the glossary in Part 13.</p>
+</div>
+
+</div>
+</body>
+</html>

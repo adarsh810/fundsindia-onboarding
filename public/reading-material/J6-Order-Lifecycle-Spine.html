@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>J6: The Order Lifecycle Spine</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Journey Layer</p>
+  <h1 class="title">J6: The Order Lifecycle Spine</h1>
+  <p class="subtitle">The single-order lifecycle that every transaction journey instantiates: how one order moves from placed to settled, where the path forks on direction, and the four ways it breaks. The most reused flow in the platform, drawn rail-agnostic so it can govern before the rail is finally chosen.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.1: Decision-surfacing draft</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Journey document (not a reference, not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>The governing view of <strong>one order's end-to-end lifecycle</strong>: the canonical happy path from the moment an investor's intent becomes a valid order to the moment money and units have finished moving and the books reconcile, the single fork that genuinely reroutes that path, and the four ways it terminates short of success. It is the shared sub-journey that J7, J8, J9, J10, and J11 each instantiate, which is why it is drafted first and why hardening it pays off across every transaction flow. It draws on the <strong>Order</strong> reference for every state and transition, on <strong>Rails</strong> for which party acts at each leg, and references <strong>Investor</strong>, <strong>Folio</strong>, and <strong>Instrument</strong> for the pre-flight gates without restating them.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a reference: it invents no entity and no state, it sequences the ones the Order reference owns. Not a PRD: it specifies no screens and no build tasks. And it is deliberately <strong>one order only</strong>. The standing-instruction layer where a plan spawns child orders belongs to J8, the two-leg sell-then-buy linkage belongs to J10, and the onboard-to-first-order thread belongs to J7. This is also a <strong>decision-surfacing first pass</strong>, per the layer method: it draws the skeleton to expose the decisions the drawing forces, routes those to the register, and hardens into a governing contract once they close. The spine itself is rail-agnostic, so it is governing on the mechanics today even while the rail decision is still settling.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong, where the default intuition is likely to mislead.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a point the firm must actively design around, where money is at risk or the timing can surprise.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not yet settled, or one turning on a decision still open in the register; each names its owner.</p></div>
+  <p>State names are shown in <span class="mono">monospace</span> when they refer to a specific lifecycle state the Order reference owns. The altitude follows the draw-or-bullet test: what reroutes the path is drawn, what only changes a value or adds a check on a step already drawn is bulleted.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">The spine</a></li>
+    <li><a href="#s2">Decision points</a></li>
+    <li><a href="#s3">Failure taxonomy</a></li>
+    <li><a href="#s4">Special cases</a></li>
+    <li><a href="#s5">Entities and states exercised</a></li>
+    <li><a href="#s6">Decisions surfaced</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1"><span class="num">1.</span>The spine</h2>
+<p class="lead">One order moves through five states on the happy path and exits to one of two terminal failure states. The states are the Order reference's; the journey is the sequence between them. Naming each state explicitly, rather than inferring it from a timestamp, is what lets the platform answer "where is my money" correctly at any moment, because a single order can sit in flight across several days.</p>
+<pre class="mermaid">
+flowchart TD
+  A([Placed]) -->|pre-flight pass| B[RoutedToRail]
+  A -->|pre-flight fail| F([Failed])
+  B -->|rail accepts and time-stamps| C[Acknowledged]
+  B -->|money leg fails or rail rejects| F
+  C -->|NAV struck and units or value allotted| D[Allotted]
+  C -->|post-acknowledgement rejection| F
+  D -->|settlement reconciles against RTA feed| S([Settled])
+  D -->|dishonour or error after allotment| R([Reversed])
+</pre>
+<p>That is the whole governing altitude in one picture. The direction fork attaches as the decision point in Section 2, the exit causes are enumerated in the failure taxonomy in Section 3, and rarities such as a partial allotment are bulleted in Section 4. The diagram never tries to hold all of it.</p>
+
+<h3>Who acts at each leg</h3>
+<p>The spine is drawn rail-agnostic, but each transition is an action by a specific party, named here by role rather than by vendor, because the firm originates and tracks but never executes the allotment or holds the money. This is the level at which J6 draws on the Rails reference.</p>
+<table>
+  <thead><tr><th>Transition</th><th>Acting party (by role)</th><th>What the firm does</th></tr></thead>
+  <tbody>
+    <tr><td>Intent to <span class="mono">Placed</span></td><td>The firm.</td><td>Constructs and validates the order: authority, eligibility, KYC status, suitability, an open cut-off window, and the direction-specific gate. Nothing has left the investor.</td></tr>
+    <tr><td><span class="mono">Placed</span> to <span class="mono">RoutedToRail</span></td><td>The order-routing rail (middleware or direct), and the payment rail for a purchase.</td><td>Hands the order to the rail and, for a purchase, initiates the money leg on a non-pooled basis. The firm is now waiting, not acting.</td></tr>
+    <tr><td><span class="mono">RoutedToRail</span> to <span class="mono">Acknowledged</span></td><td>The RTA (or the platform on its behalf).</td><td>The order is registered and time-stamped externally. The applicable NAV becomes determinable from the cut-off and, for a purchase, the realisation of funds.</td></tr>
+    <tr><td><span class="mono">Acknowledged</span> to <span class="mono">Allotted</span></td><td>The AMC strikes the NAV; the RTA allots units or computes the redemption value.</td><td>The firm consumes the struck NAV and reflects the allotment. It does not price or allot.</td></tr>
+    <tr><td><span class="mono">Allotted</span> to <span class="mono">Settled</span></td><td>The payment rail and, on the exchange path, the clearing corporation, between the investor's bank and the AMC; the RTA register is the truth.</td><td>Reconciles its own projection against the RTA feed. Money never passes through the firm.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">Key principle: the spine is rail-agnostic by design</p>
+  <p>The states and transitions above are identical whether the order routes through a transaction-infrastructure middleware today or a direct exchange adapter later. The rail changes who sits behind each leg and how a reversal is mechanically unwound, not the shape of the lifecycle. This is what lets J6 be governing on the mechanics before the rail decision (D1) closes, and it is the reason the firm keeps its own order adapter behind whichever rail a middleware abstracts, so the rail can be swapped without its model leaking inside.</p>
+</div>
+
+<h2 id="s2"><span class="num">2.</span>Decision points</h2>
+<p>The spine has one fork that genuinely reroutes the path, and one gate cluster that either lets the order continue or sends it to <span class="mono">Failed</span>. Everything else is a check on a step already drawn, which belongs in the failure taxonomy or the special cases, not in the diagram.</p>
+
+<h3>The direction fork: money in versus money out</h3>
+<p>Direction is the one decision that changes the steps rather than just a value. A purchase depends on a payment that must succeed and realise before anything is priced, so it carries a funding gate and the funds-realisation rule. A redemption depends on units being available and unencumbered, carries no realisation dependency because no incoming money has to clear, and adds a payout leg measured in working days after the applicable NAV.</p>
+<pre class="mermaid">
+flowchart TD
+  P([Placed]) --> DIR{Money in or money out}
+  DIR -->|money in, purchase| B1[Funding instruction must exist<br/>pre-flight adds a funding check]
+  DIR -->|money out, redemption| S1[Units must be unencumbered<br/>pre-flight adds a units check]
+  B1 --> B2[RoutedToRail<br/>payment leg initiated]
+  S1 --> S2[RoutedToRail<br/>redemption registered, no money leg]
+  B2 --> B3[Acknowledged<br/>NAV determinable on funds realisation]
+  S2 --> S3[Acknowledged<br/>same-day NAV if before cut-off]
+  B3 --> B4[Allotted<br/>units credited to the folio]
+  S3 --> S4[Allotted<br/>payout value computed]
+  B4 --> B5([Settled<br/>units on register, payment realised])
+  S4 --> S5([Settled<br/>proceeds in registered bank, T+n days])
+</pre>
+<div class="callout">
+  <p class="ck">Special attention: the price is not set at the click</p>
+  <p>On the money-in branch the applicable NAV cannot be known at <span class="mono">Placed</span>. Under forward pricing it is struck later that day, and under the funds-realisation rule it is the NAV of the day the funds actually reach the AMC, for every ticket size. A purchase placed before cut-off but funded a day later takes the later day's NAV. So the rail's speed is a pricing input, not just a convenience, and the platform must not promise a price it cannot honour. The money-out branch is simpler: a redemption registered before the cut-off takes the same day's NAV, and the complication there is the payout timing, not the price.</p>
+</div>
+
+<h3>The pre-flight gate</h3>
+<p>Every order passes a single pre-flight gate before it leaves the firm. It is drawn as one gate, not as a row of separate forks, because every check that fails sends the order to the same place, <span class="mono">Failed</span>, with no money having moved. What matters at this altitude is not the branching but the catalogue of checks and, crucially, which the firm can see at <span class="mono">Placed</span> and which it cannot. The firm validates against its own reflected projection of external state, so a check is only as good as the freshness of that reflection, and some conditions are simply invisible until the RTA or AMC sees the order.</p>
+<table>
+  <thead><tr><th>Pre-flight check</th><th>What it reads, and which reference owns it</th><th>Caught at <span class="mono">Placed</span>?</th></tr></thead>
+  <tbody>
+    <tr><td>KYC status</td><td>The Validated, Registered, On-Hold, Rejected regime (Investor). On-Hold or worse blocks new investment and SIPs, and an inoperative PAN blocks even redemptions.</td><td class="c">Yes</td></tr>
+    <tr><td>Operating authority</td><td>The persona's authority model and, for a joint folio, the operation mode that decides whose signature a valid order needs (Investor, Folio).</td><td class="c">Yes</td></tr>
+    <tr><td>Open cut-off window</td><td>Whether the order is time-stamped before the applicable cut-off; otherwise it rolls to the next window (Instrument, Order).</td><td class="c">Yes</td></tr>
+    <tr><td>Funding instruction <span style="font-style:italic;">(purchase)</span></td><td>A funded one-time payment or an active mandate within ceiling (Order).</td><td class="c">Yes</td></tr>
+    <tr><td>Unencumbered units <span style="font-style:italic;">(redemption)</span></td><td>Available units free of lien, pledge, lock-in, or exit-load consideration (Folio, Instrument).</td><td class="c">Yes</td></tr>
+    <tr><td>Folio state</td><td>Active rather than frozen or dormant (Folio). A KYC-frozen or attaining-majority folio fails here.</td><td class="c">Mostly</td></tr>
+    <tr><td>Under-transmission folio; AMC or scheme-level restriction</td><td>A transmission claim in progress, a scheme closed to fresh purchase, or an AMC compliance flag (Folio, Rails).</td><td class="c">No</td></tr>
+  </tbody>
+</table>
+<p>The last row is the reason the <span class="mono">Acknowledged</span> to <span class="mono">Failed</span> rejection edge in Section 3 is real and not redundant with pre-flight. The firm catches what its reflected folio and KYC state can see; the rest surfaces only once the order is registered.</p>
+
+<h2 id="s3"><span class="num">3.</span>Failure taxonomy</h2>
+<p>The exception paths are where an order platform is judged, because the money is at risk only when something breaks part-way. There are four canonical exits, each mapped to a terminal state the Order reference owns. The decisive line between them is allotment: before it, unwinding is returning any money that moved, so the order <span class="mono">Failed</span>; at or after it, units exist or a payout was computed, so backing it out is a compensating action and the order is <span class="mono">Reversed</span>.</p>
+<table>
+  <thead><tr><th>Exit</th><th>From</th><th>To</th><th>Canonical causes and handling</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Pre-flight failure</strong></td><td><span class="mono">Placed</span></td><td><span class="mono">Failed</span></td><td>A check in Section 2 fails: KYC On-Hold or blocked, an authority gap, a closed cut-off, a scheme closed to purchase, an unfunded mandate, or encumbered, locked-in, or insufficient units. No money has moved. The cheapest failure and the highest-leverage place to catch one.</td></tr>
+    <tr><td><strong>Money-leg or rail failure</strong></td><td><span class="mono">RoutedToRail</span></td><td><span class="mono">Failed</span></td><td>A purchase payment fails for insufficient funds, an inactive or exceeded mandate, or a bank decline; or the rail rejects the order on receipt. Any funds that moved are returned. For a SIP instalment this is an event on the instalment, not the plan, which is J8's concern.</td></tr>
+    <tr><td><strong>Post-acknowledgement rejection</strong></td><td><span class="mono">Acknowledged</span></td><td><span class="mono">Failed</span></td><td>The AMC or RTA rejects a registered order: a compliance flag, a frozen or under-transmission folio, or a scheme-level restriction. These are largely the conditions pre-flight could not see. If units were already provisionally allotted, the exit is to <span class="mono">Reversed</span> instead.</td></tr>
+    <tr><td><strong>Dishonour or error after allotment</strong></td><td><span class="mono">Allotted</span></td><td><span class="mono">Reversed</span></td><td>The costly edge: a purchase whose payment is later dishonoured after units were allotted on a provisional basis, or an allotment found to be erroneous. The allotment is rescinded and the register corrected by a compensating entry, never a quiet deletion. The exact unwind is rail-specific.</td></tr>
+  </tbody>
+</table>
+<div class="callout flag">
+  <p class="ck">Red flag: the dangerous window is between provisional allotment and confirmed realisation</p>
+  <p>On a purchase, the most exposed moment in the whole lifecycle is the gap where units have been allotted on a provisional basis but the payment is not yet confirmed realised. The investor may appear to hold something the money has not yet paid for. A platform that shows a confirmed holding in that window invites a <span class="mono">Reversed</span> it then has to explain. The conservative design treats a purchase as truly final only when allotment and realisation agree, which is precisely the product decision Section 6 surfaces.</p>
+</div>
+
+<h2 id="s4"><span class="num">4.</span>Special cases</h2>
+<p>Rare, within-path conditions that change a value or add a check but never reroute the spine. Listed, never drawn.</p>
+<ul class="tight">
+  <li><strong>Partial allotment.</strong> A purchase funded for less than its full value, or a redemption only partly serviceable, allots what is fundable or available and fails or does not generate the remainder. It changes a quantity on a step already drawn, not the path.</li>
+  <li><strong>Settled-state reversal.</strong> The rare <span class="mono">Settled</span> to <span class="mono">Reversed</span> case, reserved for genuine error correction or a regulatory unwind, always effected as a compensating entry rather than a rewrite of history. Heavy enough to name, rare enough not to draw.</li>
+  <li><strong>The persona payout overlay on the money-out leg.</strong> A resident redemption carries no TDS and is self-assessed; an NRI or OCI redemption is withheld at source on the same event, with a certificate issued, and the proceeds route by the folio's repatriability to an NRE or NRO account. This adds a step and changes the net value on the payout, it does not reroute the spine. Rate detail stays in the Investor reference.</li>
+  <li><strong>Stale reflected state.</strong> Because pre-flight reads the firm's reflected projection of KYC, folio, and encumbrance state, a stale reflection can pass an order that the RTA then rejects after acknowledgement. A within-path caveat on the pre-flight gate, surfaced as a decision in Section 6.</li>
+  <li><strong>SIF interval-window gating.</strong> For an interval-strategy SIF, a redemption placed outside the defined window does not run; it queues to the next window, making the <span class="mono">Placed</span> to <span class="mono">RoutedToRail</span> transition conditional on the window being open. A gate on the money-out leg for one instrument profile, confirmed per strategy from the offer document.</li>
+  <li><strong>SIF large-ticket first purchase.</strong> The first SIF purchase clears the per-PAN aggregate minimum, which exceeds the UPI capital-markets ceiling and forces a high-value rail. A rail-and-value change on the buy leg, not a new path.</li>
+  <li><strong>Instantiation by the transaction family.</strong> A SIP instalment, an SWP instalment, and each leg of a switch or STP each instantiate this one spine independently. The standing-instruction lifecycle and the two-leg linkage that compose them are out of J6 and live in J8, J10, and J11.</li>
+</ul>
+
+<h2 id="s5"><span class="num">5.</span>Entities and states exercised</h2>
+<p>The references J6 draws on, and the one place its drawing implies a refinement a reference does not yet carry. Per the precedence rule, J6 invents nothing: where it needs something the ontology lacks, it flags it for the reference to fix.</p>
+<table>
+  <thead><tr><th>Reference</th><th>What J6 exercises</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Order</strong></td><td>The whole spine: the five happy states, the <span class="mono">Failed</span> and <span class="mono">Reversed</span> terminals, and every transition between them. J6 sequences these; it adds no state.</td></tr>
+    <tr><td><strong>Investor</strong></td><td>The KYC status regime as the pre-flight KYC gate; the operating-authority models as the authority gate; the persona payout overlay (resident no TDS, NRI and OCI TDS at source) on the money-out leg.</td></tr>
+    <tr><td><strong>Folio</strong></td><td>Encumbrance through lien and pledge as the unencumbered-units gate; the operation mode feeding the authority gate; the folio lifecycle states (active, frozen, under-transmission, dormant) that split pre-flight-catchable failures from post-acknowledgement rejections; repatriability routing the payout.</td></tr>
+    <tr><td><strong>Instrument</strong></td><td>Forward pricing, the cut-off, the funds-realisation rule, and exit load on the buy and sell gates; the SIF interval-window and large-ticket modulations as special cases.</td></tr>
+    <tr><td><strong>Rails</strong></td><td>The acting party by role at each leg; the RTA as the central record-keeping dependency; the clearing corporation or payment rail as the non-pooled money path between investor bank and AMC.</td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Open: a candidate refinement to propagate to the Order reference</p>
+  <p>J6's money-in branch leans on a distinction the Order reference currently holds as a property rather than a state: <span class="mono">Allotted</span> on a purchase can be <em>provisional</em>, before realisation is confirmed, or <em>final</em>, once allotment and realisation agree. Whether that warrants an explicit provisional-versus-confirmed sub-state on the buy side, or stays a property of <span class="mono">Allotted</span>, is a question for the Order reference to settle, not for J6 to invent. It is tied directly to the holding-visibility decision below, and is routed to the Order reference per the precedence rule.</p>
+</div>
+<div class="callout principle">
+  <p class="ck">Key principle: the build-scope was settled upstream</p>
+  <p>J6 adds no new build-scope. The Order reference already classified it: order construction with pre-flight validation, the lifecycle state machine including the failure and reversal edges, payment-leg initiation within the non-pooling rule, cut-off and realisation handling, attribution, and reconciliation against the RTA feed are the firm's to own; NAV striking, allotment, and settlement are referential; reversal execution and grievance routing are facilitate. The firm builds the verb; the AMC and RTA execute and record it.</p>
+</div>
+
+<h2 id="s6"><span class="num">6.</span>Decisions surfaced</h2>
+<p>The open decisions this drawing forced into view, each routed to an owner and written back to the Open Decisions Register. Four already live there and are brushed or sharpened by J6; two are new and are proposed as fresh register rows. None blocks the spine on its mechanics, which is why J6 is governing as a draft even while they resolve.</p>
+<table>
+  <thead><tr><th>#</th><th>Decision and what J6 needs</th><th>Owner</th><th>Status after J6</th></tr></thead>
+  <tbody>
+    <tr><td>D1</td><td>Order-routing rail and the money path. J6 brushes it but stays rail-agnostic. Direction is set: a transaction-infrastructure middleware with its paired payment port for V1, with a direct exchange adapter as a fast-follow. The live part is the no-pooling design of the chosen money path.</td><td>Internal / Compliance</td><td>Direction set; no-pooling design of the middleware money path to confirm with Compliance.</td></tr>
+    <tr><td>D8</td><td>Provisional-allotment reversal mechanics, which sit on the <span class="mono">Reversed</span> edge. With a two-rail plan this is now plural: the unwind of a dishonoured purchase differs between the middleware path and the future direct path.</td><td>RTA / execution rail</td><td>Sharpened: confirm per rail, for both rails.</td></tr>
+    <tr><td>D5</td><td>Exact cut-off minutes by scheme type, which gate the cut-off pre-flight check. The 3 PM afternoon standard is corroborated by the March 2026 Master Circular; the precise per-scheme minutes remain to confirm.</td><td>RTA / operations</td><td>Standard corroborated; precise minutes pending.</td></tr>
+    <tr><td>D6</td><td>Per-scheme settlement cycles, which set the <span class="mono">Allotted</span> to <span class="mono">Settled</span> duration on the payout. Equity T+2 is confirmed current to mid-2026.</td><td>RTA / ops / AMFI</td><td>Confirmed current; track the cash market for further shortening.</td></tr>
+    <tr><td><strong>D36</strong> <span class="bkt core" style="margin-left:4px;">new</span></td><td>Holding visibility at provisional allotment. Does the platform show a confirmed holding at provisional <span class="mono">Allotted</span> on the buy side, or wait for <span class="mono">Settled</span> when allotment and realisation agree? Forced by the dangerous-window red flag, and tied to the Order-reference sub-state question.</td><td>Product</td><td>New row, to take to Product.</td></tr>
+    <tr><td><strong>D37</strong> <span class="bkt core" style="margin-left:4px;">new</span></td><td>Reflected-state freshness and the pre-flight trust threshold. How current must reflected KYC, folio, and encumbrance state be for pre-flight to trust it, and what reconciliation cadence backs that? Forced by the stale-reflection special case.</td><td>Internal / Engineering</td><td>New row, lower priority; depends on the RTA and depository feed cadence.</td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Open: what hardens this draft into a governing contract</p>
+  <p>J6 governs the mechanics now. It hardens fully once D1's no-pooling design is confirmed and D36 closes, since those are the two that touch what the spine commits to on the buy side. D2, D3, and D4 do not gate J6: they bite on the onboarding, folio, and mandate journeys instead. The two new rows, D36 and D37, are written back to the register with their owners, keeping the decision-surfacing loop closed.</p>
+</div>
+
+<div class="footer">
+  <p><strong>Document control.</strong> J6: The Order Lifecycle Spine. Version v0.1, decision-surfacing draft, June 2026. The first journey document in Wave 1 and the shared single-order sub-journey that J7, J8, J9, J10, and J11 instantiate. Draws on the Order reference for every state and transition, on Rails for the acting party at each leg, and references Investor, Folio, and Instrument for the pre-flight gates without restating them. Drawn rail-agnostic so it governs the mechanics before the order-routing decision closes. Not a reference and not a PRD. Surfaces six decisions, four already in the Open Decisions Register (D1, D5, D6, D8) and two new (D36, D37), and flags one candidate refinement to the Order reference's <span class="mono">Allotted</span> state. Fast-moving facts it leans on, the equity T+2 settlement cycle, the 3 PM cut-off, the all-ticket funds-realisation rule, and the UPI and e-mandate ceilings, were verified current to mid-2026 against NPCI, RBI, and the SEBI March 2026 Master Circular.</p>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  try {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      securityLevel: 'loose',
+      themeVariables: {
+        fontFamily: "'Source Sans 3', sans-serif",
+        primaryColor: '#efe9f7',
+        primaryBorderColor: '#6a4a9c',
+        primaryTextColor: '#26222e',
+        lineColor: '#6a4a9c',
+        secondaryColor: '#fbf2dd',
+        tertiaryColor: '#fffdf8',
+        fontSize: '15px'
+      }
+    });
+  } catch (e) { /* if the CDN is unreachable, the Mermaid source remains legible as text */ }
+</script>
+</body>
+</html>

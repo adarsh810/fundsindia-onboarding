@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Order Entity: Master Reference</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.55rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.18rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h2 .num{color:var(--accent);font-weight:700;margin-right:.5em;}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+h3{font-size:1.16rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+h4{font-size:1rem;font-weight:700;color:var(--ink);margin:22px 0 2px;letter-spacing:.01em;}
+p{margin:12px 0;}
+a{color:var(--accent);}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.06rem;color:#39333f;}
+.toc{background:var(--cream);border:1px solid var(--line);border-radius:9px;padding:26px 30px;margin:34px 0 10px;}
+.toc h2{margin:0 0 12px;font-size:1.15rem;padding:0;}
+.toc ol{margin:0;padding-left:0;list-style:none;counter-reset:toc;}
+.toc > ol > li{counter-increment:toc;margin:7px 0;font-weight:600;}
+.toc > ol > li:before{content:counter(toc) ".";color:var(--accent);font-weight:700;margin-right:10px;}
+.toc ol ol{list-style:none;padding-left:26px;margin:4px 0 8px;}
+.toc ol ol li{font-weight:400;color:var(--muted);font-size:.92rem;margin:3px 0;}
+.toc a{text-decoration:none;color:inherit;}
+.toc a:hover{color:var(--accent);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+caption{caption-side:top;text-align:left;font-size:.8rem;color:var(--muted);margin-bottom:8px;font-style:italic;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+td.c,th.c{text-align:center;}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 24px;margin:30px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:14px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:5px 0;}
+.ref-list{font-size:.84rem;color:var(--muted);}
+.ref-list li{margin:8px 0;}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+sup.fn{color:var(--accent);font-weight:700;font-size:.72em;}
+.bkt{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.03em;padding:2px 9px;border-radius:20px;white-space:nowrap;}
+.bkt.core{background:var(--accent-soft);color:var(--accent-dark);}
+.bkt.fac{background:var(--teal-soft);color:var(--teal);}
+.bkt.ref{background:var(--amber-soft);color:var(--amber);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 26px;margin:16px 0;font-size:.88rem;color:var(--muted);}
+.legend span{display:flex;align-items:center;gap:8px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+  .toc{page-break-after:always;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:2rem;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Domain Reference</p>
+  <h1 class="title">The Order Entity</h1>
+  <p class="subtitle">A master reference for how an investment is transacted: the order, the systematic instruction that spawns it, and the payment mandate behind it. The third in the same family as the Investor and Instrument references.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.3: STP mandate correction</b></div>
+    <div><span class="label">Date</span><b>June 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Master reference (not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this document is</p>
+    <p>A reference view of the <strong>Order entity</strong>: what an order is, the states it moves through from the moment it is placed to the moment it settles, the family of transaction types that share that lifecycle, the payment mandate machinery that funds them, the cut-off and pricing rules that decide what an investor actually pays, how money settles, and how failure and reversal are handled. It is the verb that connects the investor, the instrument, the money, and the rail. It follows the same common-spine-plus-profile structure as the Investor and Instrument references.</p>
+    <p class="ck" style="margin-top:14px;">What it is not</p>
+    <p>Not a PRD and not a build plan. It specifies no flows, screens, or sequencing. Individual PRDs, in particular the forthcoming Transactions and Mandates work, will draw on subsets of this material. It is also not legal, tax, or compliance advice; the regulatory figures are current to the date above and several move with SEBI, RBI, and NPCI circulars.</p>
+  </div>
+
+  <h3>Scope</h3>
+  <p><strong>In scope:</strong> the generic order lifecycle and its transitions; the transaction family of lumpsum purchase, SIP, SWP, STP, switch, and redemption; payment mandates on the eNACH, UPI autopay, and NACH rails; cut-off and NAV-applicability mechanics including the funds-realisation rule in full; settlement cycles by scheme type; failure, rejection, and reversal handling; and EUIN and ARN attribution at the transaction level.</p>
+  <p><strong>Instrument profiles in scope this iteration:</strong> Mutual Funds (including index funds as an MF variant) and Specialised Investment Funds, matching the Instrument reference. Bonds, Fixed Deposits, and Equities bend the same spine and will be added as profiles when those instruments enter scope.</p>
+  <p><strong>Deliberately elsewhere:</strong> tax rates and holding periods live in the Investor reference and are not repeated here; holding form, nomination, and transmission live in the Folio reference; the counterparty and system-of-record map lives in the Rails reference. This document references each rather than reproducing it.</p>
+
+  <div class="callout principle">
+    <p class="ck">Relationship to the other references</p>
+    <p>This is the document the other two pointed to. The Instrument reference described each instrument's lifecycle only as far as the instrument bends it and deferred the generic machinery here. The Investor reference described who may authorise an order and deferred the order mechanics here. So three boundaries hold the suite together. <strong>This document owns</strong> the order lifecycle and the mandate machinery. <strong>It defers tax</strong> to the Investor reference, carrying only a thin note where a tax event forks a payout. <strong>It defers holding, nomination, and transmission</strong> to the Folio reference. <strong>It defers the counterparty map</strong> to the Rails reference, naming parties by role rather than by vendor.</p>
+  </div>
+
+  <h3>Conventions</h3>
+  <div class="callout"><p class="ck">Special attention</p><p>Marks something unusual or easy to get wrong, where the default intuition is likely to mislead.</p></div>
+  <div class="callout flag"><p class="ck">Red flag</p><p>Marks a point a distributor or investor must actively check, where the rule can bite or the timing can surprise.</p></div>
+  <div class="callout verify"><p class="ck">Open: verify before relying</p><p>Marks a point not settled with confidence, or one turning on a current regulatory position that may move; each names who to vet it with.</p></div>
+  <p>The build-scope view in Part V uses three badges: <span class="bkt core">Core build</span> own it end to end, <span class="bkt fac">Facilitate</span> assist while the AMC or RTA executes, <span class="bkt ref">Referential</span> understand it, no plumbing. State names are shown in <span class="mono">monospace</span> when referring to a specific lifecycle state.</p>
+</section>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#p1">Part I: The order entity model</a>
+      <ol>
+        <li><a href="#s1">What an order is in this domain</a></li>
+        <li><a href="#s2">The facet taxonomy</a></li>
+        <li><a href="#s3">The transaction family</a></li>
+      </ol>
+    </li>
+    <li><a href="#p2">Part II: The common order spine</a>
+      <ol>
+        <li><a href="#s4">The order lifecycle: states and transitions</a></li>
+        <li><a href="#s5">Systematic plans: the standing instruction and its child orders</a></li>
+        <li><a href="#s6">Payment, mandates, and the money leg</a></li>
+        <li><a href="#s7">Cut-off and NAV applicability</a></li>
+        <li><a href="#s8">Settlement</a></li>
+        <li><a href="#s9">Failure, rejection, and reversal</a></li>
+        <li><a href="#s10">Attribution</a></li>
+      </ol>
+    </li>
+    <li><a href="#p3">Part III: Order profiles</a>
+      <ol>
+        <li><a href="#mf">Mutual Funds (with index funds)</a></li>
+        <li><a href="#sif">Specialised Investment Funds (SIF)</a></li>
+      </ol>
+    </li>
+    <li><a href="#p4">Part IV: The state models at a glance</a></li>
+    <li><a href="#p5">Part V: The build-scope view</a></li>
+    <li><a href="#p6">Part VI: Open items and verification register</a></li>
+    <li><a href="#refs">References</a></li>
+    <li><a href="#glossary">Glossary</a></li>
+  </ol>
+</nav>
+
+<div class="part-band" id="p1"><div class="pk">Part I</div><div class="pt">The order entity model</div></div>
+
+<h2 id="s1"><span class="num">1.</span>What an order is in this domain</h2>
+<p class="lead">An order is not a row that records a purchase. It is a <strong>stateful entity with a lifecycle</strong>, moving from the moment an investor expresses intent to the moment money and units have changed hands and the books reconcile. The part a simple transaction log misses is everything between those two points, which is where almost all of the operational risk lives.</p>
+<p>The same instruction can be in flight for days. A purchase placed on a Friday afternoon, funded the following Monday, priced at Monday's NAV, allotted Tuesday and reflected Wednesday is a single order in five different states across five days. Treating it as one atomic event hides the questions that actually matter: has the money left the investor, has the AMC received it, at which NAV, have units been allotted, and what happens if any step fails after an earlier one succeeded.</p>
+<p>Two structures sit on top of the bare lifecycle and deserve naming up front, because they shape everything downstream:</p>
+<ul class="tight">
+  <li>The <strong>transaction family</strong>. Lumpsum purchase, SIP, SWP, STP, switch, and redemption are not six unrelated flows. They are variations that share one lifecycle, differing in direction (money in or out), in whether they repeat, and in whether they touch one scheme or two.</li>
+  <li>The <strong>standing instruction</strong>. A SIP, SWP, or STP is not itself an order. It is a long-lived instruction that <em>spawns</em> a child order on each scheduled date, each of which runs the full lifecycle on its own. The instruction and the instalment are two different entities with two different lifecycles, and conflating them is the most common modelling error in this domain.</li>
+</ul>
+<div class="callout principle">
+  <p class="ck">Key principle</p>
+  <p>Model the order as a stateful entity, and model a systematic plan as a separate entity that produces orders rather than as a special kind of order. The plan carries the schedule, the mandate, and the start and end conditions; each instalment carries a price, an allotment, and a settlement. A failed instalment must not fail the plan, and a cancelled plan must not unwind instalments that already settled. Keeping the two lifecycles distinct is what makes that behaviour correct rather than accidental.</p>
+</div>
+<p>One more framing carries over from the other references and decides most of Part V. The firm is <strong>not the system of record</strong>. It originates the order and orchestrates the money instruction, but the AMC strikes the NAV, the RTA allots the units and keeps the register, and the money moves directly between the investor's bank and the AMC on a non-pooled basis. The firm's own order record is a reconciled projection of the RTA's truth, not the truth itself.</p>
+
+<h2 id="s2"><span class="num">2.</span>The facet taxonomy</h2>
+<p>Each instrument profile in Part III is examined through the same facets, in the same order, so the profiles read side by side. The facets are:</p>
+<ol class="tight">
+  <li><strong>Transaction family supported</strong>: which of the six transaction types apply, and any the instrument restricts.</li>
+  <li><strong>Cut-off and NAV applicability</strong>: how and when the price is fixed.</li>
+  <li><strong>Payment and mandate rail</strong>: how the money leg is funded and which rails fit.</li>
+  <li><strong>Settlement cycle</strong>: how quickly proceeds or units land.</li>
+  <li><strong>Lifecycle modulations</strong>: where this instrument bends or gates the generic spine.</li>
+  <li><strong>Failure and reversal specifics</strong>: the exception behaviour peculiar to it.</li>
+  <li><strong>Attribution specifics</strong>: anything beyond the standard EUIN and ARN stamping.</li>
+  <li><strong>Special attention and opens</strong>: the unusual and the unverified.</li>
+</ol>
+
+<h2 id="s3"><span class="num">3.</span>The transaction family</h2>
+<p>The six transaction types in scope, with the direction of money and the number of schemes each touches. The full lifecycle treatment is in Part II; this is the catalogue.</p>
+<table>
+  <thead><tr><th>Transaction</th><th>Direction</th><th>Schemes</th><th>Repeats</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Lumpsum purchase</strong></td><td>Money in</td><td>One</td><td>No</td><td>A one-time buy at the applicable NAV, funded by a single payment.</td></tr>
+    <tr><td><strong>SIP</strong></td><td>Money in</td><td>One</td><td>Yes</td><td>A recurring purchase on a schedule, each instalment funded by a standing mandate.</td></tr>
+    <tr><td><strong>Redemption</strong></td><td>Money out</td><td>One</td><td>No</td><td>A sale of units back to the fund at the applicable NAV, proceeds to the registered bank account.</td></tr>
+    <tr><td><strong>SWP</strong></td><td>Money out</td><td>One</td><td>Yes</td><td>A recurring redemption on a schedule, the withdrawal-side mirror of a SIP. Needs no payment mandate, because money flows outward.</td></tr>
+    <tr><td><strong>Switch</strong></td><td>Out then in</td><td>Two</td><td>No</td><td>A redemption from one scheme and a purchase into another within an AMC, as a single instruction. The buy leg waits on the sell leg.</td></tr>
+    <tr><td><strong>STP</strong></td><td>Out then in</td><td>Two</td><td>Yes</td><td>A recurring switch on a schedule, moving money periodically from one scheme to another within an AMC.</td></tr>
+  </tbody>
+</table>
+<p>Three observations shape the lifecycle work that follows. The money-in transactions depend on a successful payment before anything is priced, so the funds-realisation rule in Section 7 governs them. The money-out transactions depend on units being available and unencumbered, so they can be blocked by a lock-in, an exit load, or a pledged holding. And the two-scheme transactions, switch and STP, carry an internal dependency: the buy leg is priced and placed only once the sell leg has settled, which makes them two linked orders rather than one, and means a failure on the sell leg must cleanly abort the buy leg.</p>
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p>A switch is not a single atomic move at a single price. It is a redemption and a purchase, each priced on its own cut-off and each capable of failing independently. The investor experiences one instruction, but the system runs two orders with a dependency between them. The gap between the two legs, during which the money is realised but not yet reinvested, is real and is where a switch can silently stall if the buy leg is not driven off the sell leg's settlement.</p>
+</div>
+
+<div class="part-band" id="p2"><div class="pk">Part II</div><div class="pt">The common order spine</div></div>
+<p class="lead" style="margin-top:18px;">The generic lifecycle and machinery shared by every transaction type, described once here. The profiles in Part III state only their deviations.</p>
+
+<h2 id="s4"><span class="num">4.</span>The order lifecycle: states and transitions</h2>
+<p>Every order, whatever its transaction type, moves through a common set of states. Five are the happy path; two are exception and terminal. Naming them as explicit states, rather than inferring them from timestamps, is what lets the platform answer "where is my money" correctly at any moment.</p>
+<table>
+  <thead><tr><th>State</th><th>Meaning</th><th>What is true on entry</th></tr></thead>
+  <tbody>
+    <tr><td><span class="mono">Placed</span></td><td>The investor's intent is captured and validated, and a valid order has been constructed.</td><td>Authority, eligibility, KYC status, and suitability have been checked. For a purchase, a funding instruction exists. Nothing has left the investor yet.</td></tr>
+    <tr><td><span class="mono">RoutedToRail</span></td><td>The order has been handed to the execution rail and the money leg, where applicable, has been initiated.</td><td>The order is now in an external party's hands. The firm is waiting, not acting.</td></tr>
+    <tr><td><span class="mono">Acknowledged</span></td><td>The rail has accepted the order and time-stamped it.</td><td>The order is registered with the RTA or platform. The applicable NAV is now determinable from the cut-off and, for a purchase, the realisation of funds.</td></tr>
+    <tr><td><span class="mono">Allotted</span></td><td>The AMC has struck the NAV and the RTA has allotted units (purchase) or computed the redemption value (sale).</td><td>The price is fixed. Units exist on the register, or a rupee payout is determined.</td></tr>
+    <tr><td><span class="mono">Settled</span></td><td>The money and units have finished moving and the firm's books reconcile against the RTA feed.</td><td>For a purchase, units are credited and payment is confirmed realised. For a redemption, proceeds have reached the registered bank account. Terminal, happy path.</td></tr>
+    <tr><td><span class="mono">Failed</span></td><td>The order could not complete and never reached allotment.</td><td>No units were allotted and no proceeds were paid. Any funds that moved are returned. Terminal.</td></tr>
+    <tr><td><span class="mono">Reversed</span></td><td>An order that had progressed to or past allotment is unwound by a compensating action.</td><td>An allotment is rescinded or a settled leg is backed out, with a corresponding correction on the books. Terminal.</td></tr>
+  </tbody>
+</table>
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p><span class="mono">Failed</span> and <span class="mono">Reversed</span> are not the same thing, and the difference is the allotment line. <span class="mono">Failed</span> means the order never got far enough to create units or a payout, so unwinding it is simply returning any money that moved. <span class="mono">Reversed</span> means units were allotted or proceeds were paid and then have to be backed out, which is a compensating transaction, not a deletion. A payment that bounces before allotment fails; an allotment rescinded because the payment later dishonoured is reversed. Treating both as "cancel" loses the accounting distinction that matters when money has already moved.</p>
+</div>
+<h3>The transitions</h3>
+<p>The happy path is <span class="mono">Placed</span> to <span class="mono">RoutedToRail</span> to <span class="mono">Acknowledged</span> to <span class="mono">Allotted</span> to <span class="mono">Settled</span>. The exception edges are where the design earns its keep:</p>
+<ul class="tight">
+  <li><strong>From <span class="mono">Placed</span>:</strong> a pre-flight check that fails, such as an On-Hold KYC status, an unfunded mandate, or a closed cut-off window, sends the order to <span class="mono">Failed</span> before it ever leaves the firm.</li>
+  <li><strong>From <span class="mono">RoutedToRail</span>:</strong> the payment leg fails (insufficient funds, mandate inactive, bank decline) or the rail rejects the order outright, sending it to <span class="mono">Failed</span>.</li>
+  <li><strong>From <span class="mono">Acknowledged</span>:</strong> the AMC or RTA rejects the registered order (a compliance flag, a frozen folio, a scheme closed to fresh purchase), sending it to <span class="mono">Failed</span>.</li>
+  <li><strong>From <span class="mono">Allotted</span>:</strong> a purchase whose payment is subsequently dishonoured, or an allotment found to be erroneous, is unwound to <span class="mono">Reversed</span>. This is the costliest edge, because units already exist and the register has to be corrected.</li>
+  <li><strong>From <span class="mono">Settled</span>:</strong> reversal after settlement is rare and heavy, used only for a genuine error correction or a regulatory unwind, and always as a compensating entry rather than a rewrite of history.</li>
+</ul>
+<p>The lifecycle is the same whether the order originated as a lumpsum, a SIP instalment, or one leg of a switch. What changes by transaction type is which transitions are possible and what gates sit on them, which is the subject of the next sections.</p>
+
+<h2 id="s5"><span class="num">5.</span>Systematic plans: the standing instruction and its child orders</h2>
+<p>A SIP, SWP, or STP is a standing instruction with its own lifecycle, separate from the orders it generates. Getting this separation right is the single most consequential structural decision in the document, because almost every systematic-plan defect traces back to collapsing the two.</p>
+<h4>The plan lifecycle.</h4>
+<p>A systematic plan moves through states of its own: <strong>registered</strong> (the schedule is set up, with the funding mandate for a SIP, or the source and target schemes for an STP, which needs no bank mandate), <strong>active</strong> (instalments are being generated on schedule), <strong>paused</strong> (temporarily suspended, by the investor or by repeated instalment failure), <strong>completed</strong> (the defined tenure or instalment count is reached), and <strong>cancelled</strong> (stopped before its natural end). These are distinct from any instalment's state.</p>
+<h4>The instalment as a child order.</h4>
+<p>On each scheduled date the active plan emits a child order, which then runs the full lifecycle in Section 4 independently. The plan's job is to generate the instalment, attach the mandate, and record the outcome; the instalment's job is to get priced, allotted, and settled. The relationship is one plan to many orders.</p>
+<div class="callout principle">
+  <p class="ck">Key principle</p>
+  <p>A failed instalment is an event in the instalment's lifecycle, not the plan's. One bounced SIP debit should mark that instalment <span class="mono">Failed</span> and, depending on policy, count toward a pause threshold, but it must not silently stop the plan, and it must not be retried in a way that double-invests. Equally, cancelling a plan stops future instalments only; it never reaches back to unwind instalments that already settled. The plan and the instalment fail, pause, and terminate on their own clocks.</p>
+</div>
+<p>The asymmetry between the bank-funded and the internally-funded plans is worth stating. The SIP is the one plan funded from the investor's bank account, so its instalments depend on a payment mandate and inherit all of the mandate machinery in Section 6, including the pre-debit notification and the authentication thresholds. The other recurring plans move money without a bank debit, and so need no payment mandate at all. An SWP redeems units outward to the bank; an STP transfers between schemes inside a single AMC, so neither its sell leg nor its buy leg touches a bank account, the buy leg being funded by the realised proceeds of its own sell leg. Both the SWP and the STP need only available, unencumbered units on each scheduled date, and an instalment simply does not generate if the units are insufficient. The only place a bank rail appears in an STP is the one-time initial funding of the source scheme, which is a separate purchase rather than part of the recurring transfer.</p>
+
+<h2 id="s6"><span class="num">6.</span>Payment, mandates, and the money leg</h2>
+<p>The money leg is the part the firm orchestrates most actively, and the mandate that funds a recurring purchase is itself a stateful entity with its own lifecycle, distinct from both the plan and the order. This section covers the rails, the mandate lifecycle, and the regulatory machinery around recurring debits, all of which moved materially in 2025 and 2026 and have been re-grounded by search.</p>
+<h3>The rails</h3>
+<table>
+  <thead><tr><th>Rail</th><th>Used for</th><th>Shape</th></tr></thead>
+  <tbody>
+    <tr><td><strong>One-time bank transfer</strong> (netbanking, NEFT, RTGS, IMPS)</td><td>Lumpsum purchases, large tickets.</td><td>A single push or pull of funds for one order. RTGS and NEFT carry the large tickets that exceed the digital-rail per-transaction ceilings.</td></tr>
+    <tr><td><strong>UPI</strong> (one-time)</td><td>Lumpsum purchases within the per-transaction ceiling.</td><td>An instant pull. For the capital-markets category the per-transaction limit is now &#8377;5 lakh with a &#8377;10 lakh daily aggregate to verified merchants, raised from &#8377;2 lakh on 15 September 2025.<sup class="fn">1</sup></td></tr>
+    <tr><td><strong>eNACH</strong> (electronic mandate on a bank account)</td><td>SIP and STP recurring debits.</td><td>A registered standing instruction that lets the collecting party debit the investor's account on schedule. The workhorse rail for SIPs.</td></tr>
+    <tr><td><strong>UPI autopay</strong></td><td>SIP recurring debits.</td><td>A UPI-native recurring mandate. Standard cap of &#8377;15,000 per debit without re-authentication, with an enhanced &#8377;1 lakh limit for mutual fund subscriptions.<sup class="fn">2</sup></td></tr>
+    <tr><td><strong>NACH</strong> (the older paper-or-physical mandate)</td><td>Legacy and bank-led SIP mandates.</td><td>The predecessor to eNACH, still in use; mechanically similar from the order's point of view.</td></tr>
+  </tbody>
+</table>
+<h3>The mandate lifecycle</h3>
+<p>A payment mandate is created once and then debited many times. Its states: <strong>created</strong> (the investor has expressed the instruction and its ceiling), <strong>authenticated</strong> (the one-time additional-factor authentication that registration requires is complete), <strong>active</strong> (the mandate is registered with the bank or NPCI and can be debited within its ceiling and validity), <strong>rejected</strong> (the bank or rail declined the mandate at registration, or it stayed pending past its registration window, so it never became debitable), <strong>paused or on-hold</strong> (temporarily not debitable), and <strong>cancelled or expired</strong> (terminated by the investor or by reaching its validity end). A single active mandate funds every instalment of the plan it backs, up to its per-debit ceiling. The two terminal states differ in where they sit: <strong>rejected</strong> is a registration-time failure reached from <strong>created</strong> or <strong>authenticated</strong> before the mandate ever goes live, while <strong>cancelled or expired</strong> is reached from <strong>active</strong> by investor action or by validity end. Keeping them distinct matters, because a rejected mandate stops a plan from starting and is recovered by re-registering, whereas a failed debit on a live mandate is an instalment event handled by the plan, not a mandate-state change.</p>
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p>The mandate ceiling is not the SIP amount. A mandate is registered for a maximum per-debit value, and the SIP debits some amount at or below it. This lets an investor step up a SIP later without re-registering, as long as the new amount stays under the mandate ceiling. Designing the mandate ceiling to equal the current SIP amount is a common error that forces a fresh mandate, and a fresh authentication, on every step-up.</p>
+</div>
+<h3>The recurring-debit machinery, current to 2026</h3>
+<p>Recurring debits in India are governed by the RBI's e-mandate framework, which was consolidated and re-issued in 2026 and is the live rulebook for any SIP debit. The points that bear directly on order design:</p>
+<ul class="tight">
+  <li><strong>One-time authentication at registration, then automatic debits.</strong> Registering a mandate requires an additional factor of authentication. Once registered, recurring debits proceed automatically up to a per-transaction limit without re-authentication each cycle.<sup class="fn">3</sup></li>
+  <li><strong>The authentication thresholds.</strong> The general no-authentication ceiling for recurring debits is &#8377;15,000 per transaction. For mutual fund subscriptions, insurance premiums, and credit card bills it is raised to &#8377;1 lakh per transaction. A SIP instalment above &#8377;1 lakh therefore requires an additional factor of authentication on every cycle, which materially changes the experience for large SIPs.<sup class="fn">3</sup></li>
+  <li><strong>The mandatory pre-debit notification.</strong> The collecting party must notify the investor at least 24 hours before every debit, with the amount, the date, and an opt-out facility, and must send a confirmation after each successful debit.<sup class="fn">3</sup> This is a hard requirement, not a courtesy, and it means an instalment has a notification step before its debit that the lifecycle must account for.</li>
+  <li><strong>Granular control.</strong> The framework lets an investor skip a single scheduled debit through the pre-debit notification without cancelling the whole mandate, and carries mandates over when a card is reissued. The order model needs a clean "skip this instalment" path that touches neither the plan nor the mandate.</li>
+  <li><strong>Two-factor authentication baseline.</strong> From 1 April 2026 the RBI requires at least one dynamically created authentication factor for digital payments generally, which sits underneath mandate registration.<sup class="fn">4</sup></li>
+</ul>
+<h3>The non-pooling rule</h3>
+<p>One constraint sits above every rail and is non-negotiable: the SEBI prohibition on distributors and platforms pooling investor funds. Money must flow on a non-pooled basis, directly between the investor's bank account and the AMC, never resting in an intermediary account controlled by the firm. This is the deepest reason the firm is not the system of record for money, and it shapes the payment leg of every order: the firm initiates and tracks the instruction, but the funds never pass through it.</p>
+
+<h2 id="s7"><span class="num">7.</span>Cut-off and NAV applicability</h2>
+<p>What an investor pays or receives is not set when they tap "confirm". It is set by two rules working together: the cut-off time, and, for purchases, the funds-realisation rule. Together they decide which day's NAV applies. This is the single most counter-intuitive part of the order lifecycle for a non-finance reader, so it is set out in full.</p>
+<h3>Forward pricing</h3>
+<p>A fund unit is priced at its Net Asset Value, struck once at the end of each valuation day. An investor always transacts at a NAV that is <strong>not yet known</strong> at the moment of placing the order, because it is computed later that day. There is no live price to click. This is forward pricing, and it is why the cut-off, not the click, governs.</p>
+<h3>The cut-off times</h3>
+<p>The applicable NAV depends on whether the order is time-stamped as received before or after a daily cut-off. The standard SEBI cut-offs are an afternoon cut-off for purchase and redemption of most schemes, and an earlier cut-off for the purchase of liquid and overnight funds reflecting their money-market nature.</p>
+<table>
+  <thead><tr><th>Scheme type</th><th>Purchase cut-off</th><th>Redemption cut-off</th></tr></thead>
+  <tbody>
+    <tr><td>Liquid and overnight funds</td><td>Earlier, around mid-day</td><td>Afternoon</td></tr>
+    <tr><td>All other schemes (equity, debt, hybrid, SIF)</td><td>Afternoon</td><td>Afternoon</td></tr>
+  </tbody>
+</table>
+<div class="callout verify">
+  <p class="ck">Open: verify exact times with the RTA and operations</p>
+  <p>The exact clock times attached to these cut-offs are operational figures the Instrument reference deliberately deferred here. They follow SEBI norms and are stable, but they should be confirmed against the current RTA and AMC operational guidance before any flow relies on a specific minute, and re-checked against the SEBI (Mutual Funds) Regulations, 2026, which took effect this year and whose operational circulars should be read for any change.<sup class="fn">5</sup></p>
+</div>
+<h3>The funds-realisation rule, in full</h3>
+<p>For a purchase, the cut-off alone does not fix the price. The applicable NAV is the NAV of the day on which the <strong>funds are realised and available to the AMC for utilisation</strong>, regardless of when the order was placed or how large it is. A purchase order time-stamped before the cut-off but funded a day later receives the <em>later</em> day's NAV, because that is when the money actually reached the fund. The click commits the intent; the money landing fixes the price.</p>
+<p>Two consequences follow that the order model must encode:</p>
+<ul class="tight">
+  <li>The applicable NAV cannot be determined at <span class="mono">Placed</span>. It becomes determinable only once the order is <span class="mono">Acknowledged</span> and the funds are confirmed realised, which is why those are separate states.</li>
+  <li>The rail's speed becomes a pricing input, not just a convenience. An instant UPI pull realised the same day before cut-off gets that day's NAV; a slower transfer realised the next day gets the next day's NAV. The choice of payment rail can change the price the investor pays.</li>
+</ul>
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p>The realisation rule now applies to <strong>all</strong> purchases regardless of amount. An older rule, retired in early 2021, applied funds-realisation pricing only to purchases of &#8377;2 lakh and above and gave smaller purchases the NAV of the time-stamp day. Any legacy assumption that small purchases are priced on the order time-stamp is stale and will misprice. There is one uniform rule: NAV follows realisation, for every ticket size.</p>
+</div>
+<p>Redemptions are simpler. A redemption registered before the redemption cut-off takes the same day's NAV; there is no realisation dependency, because no incoming money has to clear first. The complication on the redemption side is settlement timing, not pricing, which is the next section.</p>
+
+<h2 id="s8"><span class="num">8.</span>Settlement</h2>
+<p>Settlement is the move from <span class="mono">Allotted</span> to <span class="mono">Settled</span>: the actual landing of units in the folio or proceeds in the bank account. Because the firm never holds the money, settlement is between the investor's bank and the AMC through the RTA and the payment rail; the firm reflects it and reconciles against the RTA feed.</p>
+<h3>Purchase settlement</h3>
+<p>For a purchase, settlement is the credit of units to the folio once funds are realised and the NAV is struck. There is no separate payout; the "settlement" is the allotment becoming final and reconciled. The order is <span class="mono">Settled</span> when units are on the register and the payment is confirmed realised, the two having to agree.</p>
+<h3>Redemption settlement</h3>
+<p>Redemption proceeds settle to the investor's registered bank account on a scheme-dependent cycle, expressed as T plus a number of working days, where T is the day of the applicable NAV.</p>
+<table>
+  <thead><tr><th>Scheme type</th><th>Typical redemption payout</th></tr></thead>
+  <tbody>
+    <tr><td>Liquid and overnight funds</td><td>Fastest, around T+1.</td></tr>
+    <tr><td>Equity-oriented schemes</td><td>T+2, aligned to the equity market settlement cycle.<sup class="fn">6</sup></td></tr>
+    <tr><td>Debt and most other schemes</td><td>Generally T+1 to T+2 depending on the scheme.</td></tr>
+  </tbody>
+</table>
+<p>The equity payout moved to T+2 in February 2023, when the industry shortened it by a day to pass on the benefit of the equity market moving to a T+1 settlement cycle.<sup class="fn">6</sup> A regulatory outer limit sits above the norms: redemption proceeds must reach the investor within a small number of working days, and a delay beyond the prescribed timeline carries a penal-interest liability on the AMC. The cycle continues to track the underlying market, and an industry move toward an even shorter cycle should be expected as the cash market pursues optional same-day settlement.</p>
+<div class="callout verify">
+  <p class="ck">Open: verify current cycles with the RTA and operations</p>
+  <p>The exact per-scheme settlement cycles, and any tightening that follows the cash market's move toward a T+1 or optional T+0 regime, are operational figures to confirm with the RTA and against current AMFI and SEBI guidance, rather than hard-coding the numbers above.<sup class="fn">6</sup></p>
+</div>
+
+<h2 id="s9"><span class="num">9.</span>Failure, rejection, and reversal</h2>
+<p>The exception paths are where an order platform is actually judged, because the happy path is easy and the money is at risk only when something breaks part-way. The states were defined in Section 4; this section catalogues the causes and the correct handling.</p>
+<h3>Pre-flight failures, before the order leaves the firm</h3>
+<p>These send the order from <span class="mono">Placed</span> to <span class="mono">Failed</span> with no money having moved, and are the cheapest failures because they are caught early. The principal causes: a KYC status that is On-Hold or worse, which blocks new investment; an operating-authority gap, such as a mandate not covering the acting party; a closed cut-off window; a scheme closed to fresh purchase; an unfunded or inactive payment mandate; and, for a redemption, units that are locked in, under an exit-load consideration, pledged, or insufficient. A clean pre-flight check is the highest-leverage place to prevent downstream mess.</p>
+<h3>Money-leg and rail failures</h3>
+<p>These occur at <span class="mono">RoutedToRail</span>: a payment that fails for insufficient funds, an inactive or exceeded mandate, or a bank decline; or a rail that rejects the order on receipt. The order goes to <span class="mono">Failed</span> and any funds that moved are returned. For a SIP instalment, a failed debit is an event on that instalment, and depending on policy may count toward a pause threshold on the plan, but it does not by itself stop the plan.</p>
+<h3>Post-acknowledgement rejection</h3>
+<p>The AMC or RTA can reject an order it has acknowledged, for a compliance flag, a frozen or under-transmission folio, or a scheme-level restriction. If this happens before allotment the order fails; if it happens after units were provisionally allotted it must be reversed.</p>
+<h3>Reversal, the costly path</h3>
+<p>Reversal applies once an order has reached or passed <span class="mono">Allotted</span>. The defining case is a purchase whose payment is later dishonoured after units were allotted on a provisional basis: the allotment is rescinded and the units backed off the register, with a compensating correction on the firm's books. Because units existed and the register changed, this is a compensating transaction and never a quiet deletion. Reversal after full settlement is rarer still and reserved for genuine error correction or a regulatory unwind.</p>
+<div class="callout">
+  <p class="ck">Special attention</p>
+  <p>The most dangerous moment in the whole lifecycle is the window between provisional allotment and confirmed realisation of a purchase payment. Units appear to exist, the investor may see a holding, and yet the money is not yet certain. A platform that shows a confirmed holding before payment realisation invites a reversal it then has to explain to the investor. The conservative design treats a purchase as truly final only when allotment and realisation agree.</p>
+</div>
+
+<h2 id="s10"><span class="num">10.</span>Attribution</h2>
+<p>Every order a distributor places carries attribution, and it is both a compliance requirement and the firm's commercial lifeline. Two identifiers are stamped on every transaction:</p>
+<ul class="tight">
+  <li>The <strong>ARN</strong>, the distributor's AMFI Registration Number, which identifies the firm earning the trail commission.</li>
+  <li>The <strong>EUIN</strong>, the Employee Unique Identification Number of the individual who advised or facilitated the transaction, which survives even if that person later leaves, so a complaint can be traced to the right adviser.</li>
+</ul>
+<p>Attribution rides on the Regular-plan choice. A Regular plan embeds distributor commission and pays the firm a trail; a Direct plan carries no distributor and no commission. A distribution business transacts Regular plans, and the ARN and EUIN stamping is what entitles it to the trail. The detail of the regime lives in the Investor reference; what matters at the order level is that the stamping happens on every order, including every SIP instalment and every leg of a switch or STP, and that it is non-negotiable. An order without correct attribution is a commercial and compliance defect, not a cosmetic one.</p>
+
+<div class="part-band" id="p3"><div class="pk">Part III</div><div class="pt">Order profiles</div></div>
+<p class="lead" style="margin-top:18px;">Each profile states only what the instrument changes about the common spine, through the same facet order. Mutual Funds are the reference instrument; SIF is described as a deviation from it.</p>
+
+<h2 id="mf"><span class="num">11.</span>Mutual Funds</h2>
+
+<div class="persona">
+  <h3>Mutual Fund (and index funds)</h3>
+  <div class="facet"><span class="fl">Transaction family supported</span>The full family: lumpsum, SIP, SWP, STP, switch, and redemption. Open-ended schemes support all of them at daily frequency. Closed-ended schemes and FMPs restrict ongoing purchase and redemption to listing or maturity, so for them the transaction family collapses to the entry and the exit. ELSS and solution-oriented funds allow purchase freely but block redemption during the lock-in.</div>
+  <div class="facet"><span class="fl">Cut-off and NAV applicability</span>The reference case for Section 7. Afternoon cut-off for most schemes; earlier purchase cut-off for liquid and overnight funds. The funds-realisation rule applies in full to purchases, for every ticket size. Index funds are mechanically identical; passivity changes the suitability story, not the order mechanics.</div>
+  <div class="facet"><span class="fl">Payment and mandate rail</span>The full rail set. Lumpsum by UPI within the &#8377;5 lakh capital-markets ceiling, or by netbanking, NEFT, or RTGS above it. SIP by eNACH or UPI autopay, with the &#8377;1 lakh enhanced no-authentication ceiling covering the great majority of retail SIPs and an additional factor required each cycle above it.</div>
+  <div class="facet"><span class="fl">Settlement cycle</span>Liquid and overnight around T+1, equity T+2, debt and others generally T+1 to T+2. Purchases settle as units credited on realisation.</div>
+  <div class="facet"><span class="fl">Lifecycle modulations</span>None. This is the instrument the generic spine was drawn from. Every state and transition applies as written.</div>
+  <div class="facet"><span class="fl">Failure and reversal specifics</span>Standard. The common cause of reversal is a dishonoured purchase payment after provisional allotment; the common cause of pre-flight failure is an On-Hold KYC status or a closed cut-off.</div>
+  <div class="facet"><span class="fl">Attribution specifics</span>Standard ARN and EUIN stamping on every transaction and every SIP instalment, on the Regular plan.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>None unusual. This is the reference instrument and the place the order machinery does most of its work.</div>
+</div>
+
+<h2 id="sif"><span class="num">12.</span>Specialised Investment Funds (SIF)</h2>
+<p>SIF runs on the same NAV-and-RTA machinery as a mutual fund, so most of the spine carries over unchanged. Where it departs is in the size of the money leg and in liquidity, and both have direct order-lifecycle consequences. The category is barely a year old, so the operational specifics below are flagged rather than asserted, current to mid-2026 and grounded by search.</p>
+
+<div class="persona">
+  <h3>Specialised Investment Fund</h3>
+  <div class="facet"><span class="fl">Transaction family supported</span>Purchase and redemption, with systematic plans where the strategy's structure permits. The decisive constraint is the &#8377;10 lakh per-PAN minimum aggregated across an AMC's SIF strategies, which means the <em>first</em> purchase is always a large-ticket order. Subsequent top-ups can be small once the threshold is met. Redemption frequency is strategy-specific, covered below.</div>
+  <div class="facet"><span class="fl">Cut-off and NAV applicability</span>NAV-based with daily pricing, like a mutual fund, but NAVs are disclosed later, by around 11 PM on the business day, reflecting the derivative and short positions that have to be valued.<sup class="fn">7</sup> Forward pricing and the funds-realisation rule still apply to purchases.</div>
+  <div class="facet"><span class="fl">Payment and mandate rail</span>
+    <div class="callout flag" style="margin-top:8px;">
+      <p class="ck">Red flag: the first SIF purchase cannot ride a single UPI rail</p>
+      <p>The &#8377;10 lakh minimum exceeds the UPI capital-markets ceiling of &#8377;5 lakh per transaction and &#8377;10 lakh per day. A first SIF purchase therefore cannot be funded by a single UPI payment and in practice forces a high-value rail, RTGS, NEFT, or netbanking.<sup class="fn">1</sup> A SIF onboarding flow built on the UPI happy path that works for mutual funds will break at the first order. The large-ticket payment rail is a first-class requirement for SIF, not an edge case.</p>
+    </div>
+  </div>
+  <div class="facet"><span class="fl">Settlement cycle</span>By orientation, similar to the equivalent mutual fund: the equity strategies that have launched open-ended settle on an equity-like cycle. The complication is not the cycle but the redemption window, below.</div>
+  <div class="facet"><span class="fl">Lifecycle modulations</span>
+    <div class="callout" style="margin-top:8px;">
+      <p class="ck">Special attention</p>
+      <p>Liquidity is strategy-specific and cannot be assumed daily. Equity long-short strategies have launched open-ended with daily redemption, but hybrid and debt strategies are commonly launched as interval funds, where redemption is permitted only in defined windows, often twice a week or once a month.<sup class="fn">7</sup> For an interval strategy the order lifecycle is <strong>gated</strong>: a redemption placed outside the window does not run, it queues to the next window. The <span class="mono">Placed</span> to <span class="mono">RoutedToRail</span> transition is conditional on the window being open, which is a genuine modulation of the spine that no mutual fund profile needs.</p>
+    </div>
+  </div>
+  <div class="facet"><span class="fl">Failure and reversal specifics</span>As for a mutual fund, plus two SIF-specific gates at <span class="mono">Placed</span>: the &#8377;10 lakh PAN-aggregate threshold check, and a redemption-window check for interval strategies. Exit loads, some as high as 1 percent within 12 months on the equity strategies, are a redemption-side consideration the pre-flight check should surface.<sup class="fn">8</sup></div>
+  <div class="facet"><span class="fl">Attribution specifics</span>Standard ARN and EUIN stamping, on whatever distribution rail the AMC mandates for SIF, which is still settling and may be a dedicated platform rather than the ordinary mutual fund rails.</div>
+  <div class="facet"><span class="fl">Special attention and opens</span>
+    <div class="callout verify" style="margin-top:8px;"><p class="ck">Open: verify with the AMC and the offer document</p><p>The precise cut-off, redemption-window mechanics, and settlement cycle for a given SIF strategy are defined per strategy in its offer document and are not uniform across the category. Confirm them per strategy before designing a SIF order flow, rather than assuming the mutual fund norms carry over.</p></div>
+    <div class="callout verify"><p class="ck">Open: verify SIF distribution rail and platform availability</p><p>Whether a given SIF transacts on ordinary mutual fund rails or a dedicated AMC platform is still evolving, and third-party distribution availability is uneven. The order-routing path for SIF should be confirmed with the AMC, not assumed to mirror mutual funds. As of early 2026 around six AMCs were live, with more filed.<sup class="fn">9</sup></p></div>
+  </div>
+</div>
+
+<div class="part-band" id="p4"><div class="pk">Part IV</div><div class="pt">The state models at a glance</div></div>
+<p style="margin-top:18px;">A single-screen reference to the three lifecycles this document defines. The detail in Parts II and III is authoritative where the two seem to differ.</p>
+
+<h3>The order lifecycle</h3>
+<table>
+  <thead><tr><th>State</th><th>Next on success</th><th>Next on failure</th></tr></thead>
+  <tbody>
+    <tr><td><span class="mono">Placed</span></td><td><span class="mono">RoutedToRail</span></td><td><span class="mono">Failed</span> (pre-flight)</td></tr>
+    <tr><td><span class="mono">RoutedToRail</span></td><td><span class="mono">Acknowledged</span></td><td><span class="mono">Failed</span> (payment or rail)</td></tr>
+    <tr><td><span class="mono">Acknowledged</span></td><td><span class="mono">Allotted</span></td><td><span class="mono">Failed</span> (AMC or RTA rejection)</td></tr>
+    <tr><td><span class="mono">Allotted</span></td><td><span class="mono">Settled</span></td><td><span class="mono">Reversed</span> (dishonour or error)</td></tr>
+    <tr><td><span class="mono">Settled</span></td><td>Terminal</td><td><span class="mono">Reversed</span> (rare, error or regulatory unwind)</td></tr>
+  </tbody>
+</table>
+
+<h3>The systematic-plan lifecycle</h3>
+<table>
+  <thead><tr><th>State</th><th>Meaning</th><th>Note</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Registered</strong></td><td>Schedule set up, with the funding mandate for a SIP; an STP registers its source and target schemes and needs no mandate.</td><td>No instalment generated yet.</td></tr>
+    <tr><td><strong>Active</strong></td><td>Instalments generated on schedule.</td><td>Each instalment is a child order running its own lifecycle.</td></tr>
+    <tr><td><strong>Paused</strong></td><td>Temporarily suspended.</td><td>By investor request or repeated instalment failure; resumable.</td></tr>
+    <tr><td><strong>Completed</strong></td><td>Defined tenure or instalment count reached.</td><td>Terminal, natural end.</td></tr>
+    <tr><td><strong>Cancelled</strong></td><td>Stopped before its natural end.</td><td>Stops future instalments only; never unwinds settled ones.</td></tr>
+  </tbody>
+</table>
+
+<h3>The mandate lifecycle</h3>
+<table>
+  <thead><tr><th>State</th><th>Meaning</th><th>Note</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Created</strong></td><td>Instruction and per-debit ceiling expressed.</td><td>Not yet debitable.</td></tr>
+    <tr><td><strong>Authenticated</strong></td><td>One-time additional-factor authentication done.</td><td>Required once, at registration.</td></tr>
+    <tr><td><strong>Active</strong></td><td>Registered and debitable within ceiling and validity.</td><td>Funds many instalments; pre-debit notification precedes each debit.</td></tr>
+    <tr><td><strong>Rejected</strong></td><td>Declined by the bank or rail at registration, or stuck pending past the registration window.</td><td>Terminal. Reached from <span class="mono">Created</span> or <span class="mono">Authenticated</span>, before the mandate goes live; recovered by re-registering. Distinct from a failed debit on a live mandate, which is an instalment event the plan handles.</td></tr>
+    <tr><td><strong>Paused or on-hold</strong></td><td>Temporarily not debitable.</td><td>A single instalment can be skipped without pausing the mandate.</td></tr>
+    <tr><td><strong>Cancelled or expired</strong></td><td>Terminated or past validity.</td><td>Terminal.</td></tr>
+  </tbody>
+</table>
+
+<div class="part-band" id="p5"><div class="pk">Part V</div><div class="pt">The build-scope view</div></div>
+<p style="margin-top:18px;">The same lens as the other references, applied to the order. The principle is unchanged: the firm owns origination and the money-instruction orchestration; the AMC and RTA own pricing, allotment, and settlement. Order construction and mandate orchestration are the heart of the build; allotment and settlement are referential.</p>
+<div class="legend">
+  <span><span class="bkt core">Core build</span> Own end to end.</span>
+  <span><span class="bkt fac">Facilitate</span> Assist; AMC or RTA executes.</span>
+  <span><span class="bkt ref">Referential</span> Understand; no plumbing.</span>
+</div>
+<table>
+  <thead><tr><th>Element</th><th>Bucket</th><th>Why, and who executes</th></tr></thead>
+  <tbody>
+    <tr><td>Order construction across the transaction family, with pre-flight validation (authority, eligibility, KYC status, suitability, cut-off, funding)</td><td><span class="bkt core">Core build</span></td><td>Origination is the firm's. A valid order cannot be built without these checks, and the cheapest failures are caught here.</td></tr>
+    <tr><td>The order lifecycle state machine, including the <span class="mono">Failed</span> and <span class="mono">Reversed</span> edges</td><td><span class="bkt core">Core build</span></td><td>The firm tracks every order through its states and reconciles against the RTA feed. The exception edges are where the build is judged.</td></tr>
+    <tr><td>Systematic-plan engine (SIP, SWP, STP), with the plan-spawns-child-order separation</td><td><span class="bkt core">Core build</span></td><td>The schedule, the instalment generation, and the plan lifecycle are the firm's. Each instalment then runs the standard order lifecycle.</td></tr>
+    <tr><td>Mandate orchestration (eNACH, UPI autopay, NACH), including the mandate lifecycle, ceiling, pre-debit notification, and authentication handling</td><td><span class="bkt core">Core build</span></td><td>The heart of the recurring-money build. The firm sets up and manages the mandate and respects the 2026 e-mandate rules; the bank and NPCI execute the debit.</td></tr>
+    <tr><td>Payment-leg initiation and rail selection (UPI, netbanking, RTGS, NEFT), within the non-pooling rule</td><td><span class="bkt core">Core build</span></td><td>The firm initiates and tracks the instruction and selects the rail to fit the ticket. Money never rests with the firm.</td></tr>
+    <tr><td>Cut-off and NAV-applicability handling, including the funds-realisation rule</td><td><span class="bkt core">Core build</span></td><td>The firm must know which day's NAV an order will get, and must not promise a price it cannot honour. The rule shapes what the firm can show the investor.</td></tr>
+    <tr><td>EUIN and ARN attribution on every order and instalment</td><td><span class="bkt core">Core build</span></td><td>Compliance and the trail-commission lifeline. Non-negotiable on every transaction.</td></tr>
+    <tr><td>Reconciliation of orders against RTA allotment and settlement feeds</td><td><span class="bkt core">Core build</span></td><td>The firm's own order record is a projection that must agree with the RTA's register. The reconciliation is the firm's.</td></tr>
+    <tr><td>NAV striking</td><td><span class="bkt ref">Referential</span></td><td>The AMC computes and publishes the NAV. The firm consumes it.</td></tr>
+    <tr><td>Unit allotment and the unit register</td><td><span class="bkt ref">Referential</span></td><td>The RTA allots and keeps the register. The firm reflects, never owns, it.</td></tr>
+    <tr><td>Money settlement between investor bank and AMC</td><td><span class="bkt ref">Referential</span></td><td>Settlement runs on the rail between the investor's bank and the AMC. The firm tracks and reflects it.</td></tr>
+    <tr><td>Reversal and error-correction execution on the register</td><td><span class="bkt fac">Facilitate</span></td><td>The RTA effects the register correction; the firm detects the condition, initiates the unwind, and reconciles its books.</td></tr>
+    <tr><td>Grievance and dispute handling on a failed or reversed order</td><td><span class="bkt fac">Facilitate</span></td><td>The firm fronts the investor relationship and routes to the AMC or RTA, which holds the authoritative record.</td></tr>
+    <tr><td>Corporate-action-driven order events (IDCW reinvestment, scheme merger exit windows)</td><td><span class="bkt fac">Facilitate</span></td><td>The AMC and RTA generate these; the firm reflects them and surfaces any investor choice.</td></tr>
+  </tbody>
+</table>
+<div class="callout principle">
+  <p class="ck">The stripped-down core</p>
+  <p>Reduced to what an MFD-only firm must build, the order stack is: pre-flight order construction across the transaction family, the order lifecycle state machine with its failure and reversal edges, the systematic-plan engine with a clean plan-to-instalment separation, mandate orchestration that respects the 2026 e-mandate rules, payment-leg initiation within the non-pooling rule, cut-off and realisation-aware pricing, attribution on every order, and reconciliation against the RTA feeds. NAV striking, allotment, and the money settlement itself are referential; reversal execution and grievance routing are facilitate. The firm builds the verb; the AMC and RTA execute and record it.</p>
+</div>
+
+<div class="part-band" id="p6"><div class="pk">Part VI</div><div class="pt">Open items and verification register</div></div>
+<p style="margin-top:18px;">Everything in this document not established with confidence, collected with an owner. Each item also appears inline where it arises.</p>
+<table>
+  <thead><tr><th>#</th><th>Open item</th><th>What is uncertain</th><th>Vet with</th><th>Priority</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td>Exact cut-off clock times by scheme type</td><td>The specific minutes attached to the standard SEBI cut-offs, and any change under the SEBI (Mutual Funds) Regulations, 2026.</td><td>RTA / operations</td><td>Medium</td></tr>
+    <tr><td>2</td><td>Per-scheme settlement cycles and any tightening</td><td>Whether equity stays at T+2 or shortens as the cash market pursues T+1 or optional T+0; exact debt and hybrid cycles.</td><td>RTA / operations / AMFI</td><td>Medium</td></tr>
+    <tr><td>3</td><td>SEBI (Mutual Funds) Regulations, 2026 operational impact</td><td>The 2026 regulations took effect this year; their operational circulars should be read for any change to order, cut-off, or settlement mechanics beyond the cost-structure changes.</td><td>Compliance / operations</td><td>Medium</td></tr>
+    <tr><td>4</td><td>SIF per-strategy cut-off, redemption window, and settlement</td><td>Not uniform across the category; defined per strategy in the offer document. Interval-window mechanics gate the lifecycle.</td><td>AMC / offer document</td><td>Medium</td></tr>
+    <tr><td>5</td><td>SIF distribution and order-routing rail</td><td>Whether SIF transacts on ordinary MF rails or a dedicated AMC platform; third-party availability still evolving.</td><td>AMC / distribution partner</td><td>Medium</td></tr>
+    <tr><td>6</td><td>SIF large-ticket payment handling</td><td>The first &#8377;10 lakh purchase exceeds the UPI ceiling; the supported high-value rail and its reconciliation should be confirmed.</td><td>Banking partner / AMC</td><td>Medium</td></tr>
+    <tr><td>7</td><td>Provisional-allotment reversal mechanics on the chosen rail</td><td>How a dishonoured purchase payment after provisional allotment is unwound differs by execution rail and should be confirmed against whichever is settled on.</td><td>RTA / execution rail</td><td>Medium</td></tr>
+    <tr><td>8</td><td>Bank-level caps under the UPI and e-mandate ceilings</td><td>Banks may set internal limits below the NPCI and RBI maxima, which can bite on large lumpsum or large SIP debits.</td><td>Banking partner</td><td>Low</td></tr>
+  </tbody>
+</table>
+
+<h2 id="refs"><span class="num">13.</span>References</h2>
+<p style="font-size:.88rem;color:var(--muted);">Sources for the time-sensitive payment, settlement, and SIF figures, current to mid-2026. Several of these moved in 2025 and 2026 and should be re-confirmed against the primary NPCI, RBI, SEBI, and AMFI circulars before any flow relies on them. The generic mutual fund order mechanics follow the SEBI (Mutual Funds) Regulations and associated circulars.</p>
+<ol class="ref-list">
+  <li><sup class="fn">1</sup> NPCI enhancement of the UPI person-to-merchant per-transaction limit to &#8377;5 lakh with a &#8377;10 lakh daily aggregate for capital-markets and insurance categories to verified merchants, effective 15 September 2025 (NPCI circular dated 28 August 2025), raised from &#8377;2 lakh; person-to-person transfers remain &#8377;1 lakh per day. NPCI; contemporaneous reporting, September 2025.</li>
+  <li><sup class="fn">2</sup> UPI autopay standard per-debit limit of &#8377;15,000 without re-authentication, with an enhanced &#8377;1 lakh limit for mutual fund subscriptions, insurance premiums, and credit card bills (NPCI UPI/OC-151A, December 2023, and subsequent clarifications). NPCI; payment-provider guidance, 2025 to 2026.</li>
+  <li><sup class="fn">3</sup> RBI Digital Payments E-mandate Framework, 2026 (circular dated April 2026), consolidating the earlier e-mandate circulars: one-time additional-factor authentication at registration; no per-cycle authentication up to &#8377;15,000, raised to &#8377;1 lakh for mutual fund subscriptions, insurance premiums, and credit card bills; mandatory 24-hour pre-debit notification with opt-out and post-debit confirmation; single-instalment skip without cancelling the mandate; mandate continuity on card reissuance; no charges. RBI; contemporaneous reporting, April 2026.</li>
+  <li><sup class="fn">4</sup> RBI requirement of at least one dynamically created factor of authentication for digital payments, effective 1 April 2026. RBI; reporting, September 2025.</li>
+  <li><sup class="fn">5</sup> SEBI (Mutual Funds) Regulations, 2026, approved 17 December 2025, replacing the 1996 regulations, principally restructuring the total expense ratio and rationalising cost caps; operational circulars to be read for any change to order, cut-off, and settlement mechanics. SEBI; contemporaneous reporting, December 2025.</li>
+  <li><sup class="fn">6</sup> Equity-scheme redemption payout shortened to T+2, effective 1 February 2023, aligning with the equity market's move to a T+1 settlement cycle; SEBI requirement to transfer redemption proceeds within a prescribed number of working days with penal interest on delay (SEBI circular, November 2022); ongoing cash-market move toward optional T+0. AMFI; SEBI; CAMS; contemporaneous reporting, 2022 to 2026.</li>
+  <li><sup class="fn">7</sup> SIF NAV disclosure by around 11 PM on the business day, and strategy-specific liquidity: equity long-short strategies open-ended with daily redemption, hybrid and debt strategies commonly interval funds with defined redemption windows. AMC SIF pages and offer documents; contemporaneous reporting, 2025 to 2026.</li>
+  <li><sup class="fn">8</sup> SIF exit loads of up to around 1 percent within 12 months on the equity strategies; the &#8377;10 lakh per-PAN minimum aggregated across an AMC's SIF strategies. AMC offer documents; contemporaneous reporting, 2026.</li>
+  <li><sup class="fn">9</sup> SIF category size and participation as of early 2026, around six AMCs live with net assets in the &#8377;6,500 crore range by January 2026 and growing, hybrid strategies dominating; first SIF launched September 2025; early equity strategies below issue price by late March 2026. Contemporaneous reporting, 2026. The category is young and figures should be re-confirmed.</li>
+</ol>
+
+<h2 id="glossary"><span class="num">14.</span>Glossary</h2>
+<p style="font-size:.9rem;color:var(--muted);">Plain definitions of the order and payment terms a reader without a finance background may want unpacked. Terms defined in the Instrument reference glossary (NAV, forward pricing, the funds-realisation rule, SOA, RTA, exit load) are not repeated.</p>
+<table>
+  <thead><tr><th style="width:30%;">Term</th><th>Plain meaning</th></tr></thead>
+  <tbody>
+    <tr><td><strong>AFA</strong> (additional factor of authentication)</td><td>A second proof of identity, typically a one-time password, required to register a mandate and, above the no-authentication ceiling, on each recurring debit.</td></tr>
+    <tr><td><strong>Cut-off time</strong></td><td>The daily deadline by which an order must be time-stamped as received to be considered for that day's NAV.</td></tr>
+    <tr><td><strong>eNACH</strong></td><td>The electronic version of a NACH mandate: a standing instruction on a bank account that lets an approved party debit it on schedule, set up online with authentication.</td></tr>
+    <tr><td><strong>Mandate</strong></td><td>A pre-authorised standing instruction to debit a bank account up to a set ceiling on a schedule, used to fund SIPs and other recurring purchases.</td></tr>
+    <tr><td><strong>Mandate ceiling</strong></td><td>The maximum per-debit amount a mandate is registered for; the actual debit can be any amount at or below it.</td></tr>
+    <tr><td><strong>NACH</strong> (National Automated Clearing House)</td><td>The bulk clearing system behind recurring bank debits and credits; the older mandate rail that eNACH digitised.</td></tr>
+    <tr><td><strong>NEFT, RTGS, IMPS</strong></td><td>Bank money-transfer rails: NEFT in batches, RTGS for large real-time transfers, IMPS for instant smaller transfers. The high-value rails carry tickets above the UPI ceiling.</td></tr>
+    <tr><td><strong>Pre-debit notification</strong></td><td>The alert a collecting party must send at least 24 hours before a recurring debit, with the amount and an option to skip that debit.</td></tr>
+    <tr><td><strong>SIP, SWP, STP</strong></td><td>Systematic Investment Plan (recurring buy), Systematic Withdrawal Plan (recurring sell), Systematic Transfer Plan (recurring switch between schemes). Each is a standing instruction that generates a child order on schedule.</td></tr>
+    <tr><td><strong>Switch</strong></td><td>A single instruction that redeems from one scheme and buys into another within the same AMC, run as two linked orders.</td></tr>
+    <tr><td><strong>T+n</strong></td><td>Settlement timing counted in working days from T, the day of the applicable NAV. T+2 means two working days later.</td></tr>
+    <tr><td><strong>UPI autopay</strong></td><td>A UPI-native recurring mandate that funds repeating payments such as SIPs directly from a bank account.</td></tr>
+  </tbody>
+</table>
+
+<div class="footer">
+  <p><strong>Document control.</strong> The Order Entity: Master Reference. Version v0.3, June 2026. Builds on v0.2 by correcting the systematic-plan asymmetry passage: an STP transfers between schemes within a single AMC, so neither leg touches a bank account and it needs no payment mandate, sitting with the SWP as a no-mandate plan rather than with the SIP; the only bank rail in an STP is the one-time funding of the source scheme. The earlier v0.2 added <span class="mono">Rejected</span> as a first-class terminal in the mandate lifecycle, the registration-time failure state surfaced while drawing J5 mandate registration, distinct from <span class="mono">Cancelled or expired</span>. Both corrections were surfaced by the journey work (J5 and J10). Third in the same family as the Investor and Instrument references; covers the order lifecycle, the transaction family, payment mandates, cut-off and NAV applicability, settlement, failure and reversal, and attribution. Instrument profiles cover Mutual Funds and Specialised Investment Funds; Bonds, Fixed Deposits, and Equities will be added as profiles when those instruments enter scope. Master reference, not a PRD; specifies no flows. Tax rates live in the Investor reference, and holding, nomination, and transmission in the Folio reference; neither is duplicated here. Payment, settlement, and SIF figures are current to mid-2026 and several moved in 2025 and 2026; items in Part VI and the open callouts require vetting against primary NPCI, RBI, SEBI, and AMFI circulars before reliance.</p>
+</div>
+
+</div>
+</body>
+</html>

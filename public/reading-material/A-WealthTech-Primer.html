@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document 0 · Wealth-Tech Primer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 20mm 16mm; }
+  * { box-sizing: border-box; }
+  body { font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 11pt; line-height: 1.55; color: #2B2A26; background: #FBFAF6; margin: 0; padding: 0; }
+  .page { max-width: 980px; margin: 0 auto; background: #FFFFFF; padding: 64px 84px 72px; box-shadow: 0 2px 24px rgba(0,0,0,0.05); }
+
+  .doc-title { font-size: 27pt; font-weight: 600; color: #1A1A18; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .doc-sub { font-size: 12.5pt; font-weight: 400; color: #5F5E5A; margin: 0 0 10px; }
+  .doc-meta { font-size: 10pt; color: #888780; margin: 0 0 8px; padding-bottom: 22px; border-bottom: 2px solid #534AB7; }
+
+  h1 { font-size: 18pt; font-weight: 600; color: #2B2A26; margin: 44px 0 14px; padding-bottom: 10px; border-bottom: 1px solid #D3D1C7; }
+  h1 .num { color: #534AB7; font-weight: 600; margin-right: 12px; }
+  h2 { font-size: 13pt; font-weight: 600; color: #2B2A26; margin: 26px 0 8px; }
+  h3 { font-size: 11.5pt; font-weight: 600; color: #3D3D3A; margin: 20px 0 6px; }
+
+  p { margin: 0 0 12px; }
+  em { font-style: italic; color: #3D3D3A; }
+  strong { font-weight: 600; color: #1A1A18; }
+  a { color: #534AB7; text-decoration: none; }
+
+  .lead { font-size: 11.5pt; color: #444441; border-left: 3px solid #534AB7; padding: 4px 0 4px 18px; margin: 0 0 18px; }
+  .rule-box { background: #F4F3FB; border-left: 3px solid #534AB7; border-radius: 0 6px 6px 0; padding: 12px 18px; margin: 16px 0; font-size: 10.5pt; color: #2C2752; }
+  .rule-box strong { color: #3C3489; }
+  .note { background: #F1EFE8; border-radius: 6px; padding: 11px 18px; margin: 14px 0; font-size: 10.5pt; color: #444441; }
+  .note strong { color: #1A1A18; }
+
+  table { width: 100%; border-collapse: collapse; margin: 14px 0 20px; font-size: 9.7pt; table-layout: fixed; }
+  th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid #E3E1D8; overflow-wrap: break-word; }
+  thead th { background: #F4F2EB; color: #2C2C2A; font-weight: 600; border-bottom: 1.5px solid #C9C7BD; }
+  td.k { font-weight: 600; color: #1A1A18; }
+  tbody tr:last-child td { border-bottom: 1px solid #C9C7BD; }
+
+  .pill { display: inline-block; font-size: 8pt; font-weight: 600; letter-spacing: 0.04em; padding: 2px 9px; border-radius: 20px; text-transform: uppercase; white-space: nowrap; vertical-align: middle; }
+  .pill.v1 { background: #E1F5EE; color: #085041; }
+  .pill.horizon { background: #F1EFE8; color: #5F5E5A; }
+  .pill.reg { background: #FAEEDA; color: #633806; }
+
+  ul, ol { margin: 0 0 12px; padding-left: 22px; }
+  li { margin-bottom: 6px; }
+
+  .legend { font-size: 9.5pt; color: #5F5E5A; margin: 0 0 22px; }
+  .legend .pill { margin-right: 4px; }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; max-width: none; padding: 0; }
+    h1 { page-break-after: avoid; }
+    table, .rule-box, .note { page-break-inside: avoid; }
+    tr { page-break-inside: avoid; }
+    thead { display: table-header-group; }
+  }
+  @media (max-width: 720px) { .page { padding: 32px 22px; } table { font-size: 9pt; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="doc-title">Document 0 &middot; The Wealth-Tech Primer</p>
+  <p class="doc-sub">A domain orientation for the FundsIndia platform team</p>
+  <p class="doc-meta">Reference document, not a PRD &middot; no success metric, no user stories &middot; cited by every PRD and spec that follows</p>
+
+  <p class="lead">If you have built consumer products at scale but never worked inside Indian wealth management, read this first. It is the shared frame the PRDs assume. The goal is not to make you an expert. It is to make sure that when a PRD says "the order is acknowledged by the RTA" or "the ranking console must stay inside the vetted envelope," you already know what those words mean and why they matter.</p>
+
+  <p>This primer covers the business of wealth management, the regulated actors, the investor and how their type forks the whole system, the four-tier model and our one-brain thesis, the product universe, the technical rails and systems of record underneath, the core journeys end to end, the compliance environment, the three flows we will eventually serve, and a direct account of where your eCommerce instincts will help you and where they will quietly mislead you. It closes with the vocabulary you will hear every day.</p>
+
+  <div class="legend">
+    <span class="pill v1">V1</span> built in the first release, the Mass Affluent product. &nbsp;
+    <span class="pill horizon">Horizon</span> deferred to V1.5, V2, or later; here for context, not for building. &nbsp;
+    <span class="pill reg">Reg</span> a regulatory or compliance fact that constrains design.
+  </div>
+
+  <p class="note"><strong>One convention before you start.</strong> Throughout, you will see the V1 and Horizon markers. When a section describes Private Wealth, the IFA console, PMS, AIF, NPS, bonds, or the in-house execution core, it is teaching you the board we are building toward, not the thing we ship in February. The architecture is deliberately one platform that serves every tier; the V1 product is only the Mass Affluent slice of it. Do not build for a Horizon persona because this document explained it to you.</p>
+
+  <!-- ============ 1 ============ -->
+  <h1><span class="num">1</span>What wealth management is, and why it is not eCommerce</h1>
+
+  <p>Strip away the app and the business is a loop. An investor has money and a set of life goals that the money is meant to reach. Financial products exist that grow money at different rates and risks over different horizons. Someone distributes or advises on those products. A regulator governs every step of that advice and distribution. When the investor commits money, it moves through payment and settlement rails operated by third parties. The record of what the investor actually owns is kept by external registrars, not by us. The investor holds for years, the value compounds, and eventually the money is withdrawn to meet the goal.</p>
+
+  <p>Three features of that loop have no clean analogue in eCommerce, and they shape everything downstream.</p>
+
+  <p><strong>You do not own the inventory or the record.</strong> When someone buys a mutual fund through FundsIndia, the units are allotted and held by a Registrar and Transfer Agent (CAMS or KFintech), against an Asset Management Company's scheme, routed through an exchange order platform (BSE StAR MF). FundsIndia is the distributor and the experience, not the custodian of the asset and not the system of record for the units. This is the single most important mental shift. In eCommerce you own the catalog, the cart, and the fulfilment truth. Here the truth lives outside, and our job is to maintain our own canonical record and continuously reconcile it against the external ones.</p>
+
+  <p><strong>The transaction is a multi-day regulated process, not an instant checkout.</strong> A purchase is accepted by us, routed to the rail, acknowledged by the RTA, priced at a specific day's NAV under cutoff rules, and only later settled with units allotted. A SIP is not a single payment; it is a mandate that authorises recurring debits, and whether a SIP is actually live depends on the mandate's state, not on the user having tapped a button. "Committed" has several distinct meanings along that path, which is why the order entity carries explicit lifecycle states rather than a single status flag.</p>
+
+  <p><strong>Almost nothing the platform says to a customer is free speech.</strong> A recommendation, a ranking, a nudge, a label like "top performing" all carry regulatory weight because they can constitute advice or inducement. Suitability and mis-selling rules govern what may be shown, to whom, and on what basis. This is why our discovery surface cannot rank purely on what earns us the most, why personalised output has to be governed at runtime and not just in static copy, and why every recommendation has to be traceable to an approved rule version.</p>
+
+  <div class="rule-box"><strong>The one-line version.</strong> eCommerce sells you a thing and the transaction ends. Wealth management advises you toward a goal, executes through regulated rails it does not own, keeps reconciling a record it is accountable for, and answers to a regulator for everything it ever told you. Hold that and most of the architecture explains itself.</div>
+
+  <!-- ============ 2 ============ -->
+  <h1><span class="num">2</span>The regulated actors, and what each is licensed to do</h1>
+
+  <p>Between the investor and the rails sits a licensed entity, and the licence it holds dictates what it is allowed to do and earn. You need to recognise the categories because they decide what the platform can legally say and how it gets paid.</p>
+
+  <table>
+    <thead><tr><th style="width:22%">Actor</th><th style="width:18%">Regulator</th><th style="width:60%">What it does, and the catch</th></tr></thead>
+    <tbody>
+      <tr><td class="k">RIA <span class="pill reg">Reg</span></td><td>SEBI</td><td>Registered Investment Advisor. Fee-only, fiduciary advice. May charge the client a fee but may not earn commission on what it recommends. The advice-versus-distribution line is a bright regulatory line, not a preference.</td></tr>
+      <tr><td class="k">MFD / ARN holder</td><td>AMFI / SEBI</td><td>Mutual Fund Distributor. Earns commission from the AMC for distribution, tagged by an ARN (the distributor's registration number) and an EUIN (the individual employee who advised). May not charge the client an advisory fee for the same. Distribution, not fiduciary advice.</td></tr>
+      <tr><td class="k">Stockbroker</td><td>SEBI</td><td>Demat and exchange execution for equity, ETFs, bonds. Requires broking registration and a depository participant relationship.</td></tr>
+      <tr><td class="k">Authorised Person</td><td>SEBI</td><td>A sub-broker operating under a registered stockbroker.</td></tr>
+      <tr><td class="k">EOP Cat 1 / Cat 2</td><td>AMFI / Exchange</td><td>Execution-Only Platform. A lighter registration for platforms that execute mutual fund transactions without advice. Cat 1 is registered with AMFI, Cat 2 through the exchange.</td></tr>
+    </tbody>
+  </table>
+
+  <p>FundsIndia holds the RIA, distribution, AMFI, and SEBI registrations already, which is why licensing is not in our build scope. What matters for you is the consequence: because the same group can advise and distribute, the platform has to keep those postures clean and attributable. Who advised this customer, under what fee model, on what date, has to be answerable for any point in time. That requirement is exactly why the <strong>Commercial Relationship</strong> is a first-class, bitemporal entity in our model, separate from the investor and from the login.</p>
+
+  <p class="note"><strong>EUIN matters more than it looks.</strong> Every advised mutual fund transaction is tagged with the advising individual's EUIN. It is the regulator's answer to "who told this person to buy this." When you see attribution and ARN/EUIN tagging threaded through the transaction and relationship model, this is why.</p>
+
+  <!-- ============ 3 ============ -->
+  <h1><span class="num">3</span>The investor, and how their type forks everything</h1>
+
+  <p>"The investor" is not one path. The investor's legal type forks KYC, substitutes rails, changes tax treatment, and gates which products they can even hold. Treat persona as branching logic, not a profile field.</p>
+
+  <table>
+    <thead><tr><th style="width:20%">Persona</th><th style="width:16%">V1 status</th><th style="width:64%">What forks</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Resident individual</td><td><span class="pill v1">V1</span></td><td>The standard fully-digital path: Aadhaar eKYC and DigiLocker, PAN, UPI AutoPay or eNACH for SIPs. This is the V1 happy path and the persona the Mass Affluent product is built for.</td></tr>
+      <tr><td class="k">NRI / OCI / PIO</td><td><span class="pill v1">V1</span></td><td>NRE/NRO account routing, FEMA rules, video KYC where Aadhaar is unavailable, FATCA gating for US and Canada persons, and TDS deducted at source on redemptions. Still a natural person with a PAN, so it fits the Investor invariant, but the money-flow, tax, and product-gating consequences run through Transactions, Catalog, and the Ledger, not just Onboarding.</td></tr>
+      <tr><td class="k">Minor + guardian</td><td><span class="pill v1">V1</span></td><td>The minor is the investor and KYC subject; the guardian operates. Maps onto the Investor-versus-Identity separation directly. The bounded extra is the attaining-majority lifecycle: a freeze, re-KYC, and transfer of operating authority at eighteen. Including it in V1 forces the joint-and-minor modelling the lock-list flagged, resolved now rather than retrofitted.</td></tr>
+      <tr><td class="k">HUF</td><td><span class="pill horizon">Horizon</span></td><td>Hindu Undivided Family: its own PAN, the Karta operates, a non-individual KYC path. Deferred from V1 because it breaks the natural-person Investor invariant and shares the entity-reshape cost of the other non-individuals, while its demand skews to the Wealth tier.</td></tr>
+      <tr><td class="k">Other non-individuals</td><td><span class="pill horizon">Horizon</span></td><td>Trusts, partnerships, companies, LLPs. Entity KYC, a CKYC legal-entity record, UBO and board-resolution handling. Relevant mainly at the Wealth tier.</td></tr>
+    </tbody>
+  </table>
+
+  <p>The V1 scope covers three individual personas: resident, NRI, and minor. The deliberate discipline is to model the entity layer for the whole individual gamut now, making tax residency, repatriability, and the owning-versus-operating distinction first-class during the lock, so the branches that ship are clean and the ones that do not are not a future retrofit. The Investor entity stays the natural person and KYC subject, deduped on PAN, one per human; NRI and minor both fit inside that invariant. HUF and the other non-individuals are deferred because they break it: an HUF is a legal-tax entity with its own PAN operated by the Karta, which is an entity reshape, not an added attribute. Including minor now is the deliberate resolution of the joint-and-minor modelling the lock-list flagged as a retrofit trap, settled during the freeze when it is cheap.</p>
+
+  <p class="note"><strong>What "NRI and minor in V1" actually pulls in.</strong> NRI is not an onboarding toggle. NRE and NRO accounts mean repatriability becomes a first-class attribute and the payment adapter handles account types where UPI AutoPay does not behave as it does for a resident; redemptions carry TDS deducted at source by the RTA, which has to post correctly in the ledger and reporting; and FATCA gating shrinks the investable universe for US and Canada persons, so the catalog needs jurisdiction-eligibility flags. Minor adds the attaining-majority lifecycle. Both are downstream of KYC and live across Transactions, Catalog, and the Ledger, which is where the real work sits. Vendor coverage for the NRI video-KYC path and the NRE/NRO order and TDS handling is still to be confirmed against HyperVerge and FP in the Stage-0 onboarding window, so treat those as tracked confirmations, not assumptions.</p>
+
+  <!-- ============ 4 ============ -->
+  <h1><span class="num">4</span>The four tiers, and the one-brain thesis</h1>
+
+  <p>FundsIndia segments investors by wealth and the kind of relationship each segment needs. The same intelligence reasons across all of them; what differs is the instrument universe and how the understanding is expressed.</p>
+
+  <table>
+    <thead><tr><th style="width:22%">Tier</th><th style="width:18%">V1 status</th><th style="width:60%">Relationship and expression</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Tier 1 &middot; Entry</td><td><span class="pill horizon">Horizon</span></td><td>Algorithmic advisory, low cognitive load, emotive nudges. Self-serve.</td></tr>
+      <tr><td class="k">Tier 2 &middot; Mass Affluent</td><td><span class="pill v1">V1</span></td><td>The platform's V1 target. Augmented by a virtual RM rather than a dedicated human. Goal-led, suitability-governed, broader instrument access than entry.</td></tr>
+      <tr><td class="k">Tier 3 &middot; Private Wealth</td><td><span class="pill horizon">Horizon</span></td><td>A dedicated human Relationship Manager, the deepest instrument universe including PMS and AIF, a calm low-noise experience. Deferred to V2 with the RM workstation.</td></tr>
+      <tr><td class="k">B2B &middot; IFA channel</td><td><span class="pill horizon">Horizon</span></td><td>Around ten thousand empanelled Independent Financial Advisors distributing through their own client relationships, the top thousand carrying meaningful books. The IFA console is a later release; the attribution substrate is partly in V1.</td></tr>
+    </tbody>
+  </table>
+
+  <p>The thesis you will hear repeatedly is <strong>one brain, expressed differently</strong>. A single intelligence engine reasons over a single canonical substrate, and a presentation layer decides how much of that understanding surfaces for each persona at each moment: an emotive nudge for entry, a virtual-RM cue for Mass Affluent, a prioritised task for a Tier 3 RM, an informational signal for an IFA. Architecturally this is why we do not build per-tier silos. It is also why the V1 substrate has to be built honestly even though V1 only ships the Mass Affluent expression. The attribution and relationship entities are in V1 because the later tiers and channels reconcile against them.</p>
+
+  <!-- ============ 5 ============ -->
+  <h1><span class="num">5</span>The product universe</h1>
+
+  <p>V1 is mutual-fund-centric, with fixed deposits as a second asset class. The one nuance is equities: the platform does not transact them in V1, but a customer's existing equity and demat holdings are pulled in read-only through the CAS held-away view for portfolio review, so equities are present for review without being a transactable product. Everything else is on the horizon and matters here only so you understand why the catalog and ledger are built multi-asset-ready from day one.</p>
+
+  <h3>Mutual funds <span class="pill v1">V1</span></h3>
+  <p>A mutual fund pools money from many investors and a fund manager invests it per a stated mandate. The investor holds <em>units</em>, priced daily at the Net Asset Value (NAV). Key things to internalise: funds are bought and sold at NAV, not at a live market price, and NAV cutoff times decide which day's price a transaction gets. <strong>Direct</strong> plans carry no distributor commission and a lower expense ratio; <strong>regular</strong> plans pay the distributor. Schemes are categorised by SEBI (equity, debt, hybrid, and sub-categories by market cap or duration), and that category drives suitability: a small-cap equity fund suits a long-horizon goal, a short-duration debt fund suits a two-year goal. The common transaction types are lumpsum, SIP (a recurring instalment via mandate), redemption, switch (move between schemes), STP (systematic transfer), and SWP (systematic withdrawal).</p>
+
+  <h3>Fixed deposits <span class="pill v1">V1</span></h3>
+  <p>Bank or NBFC deposits with a fixed rate and tenure, DICGC-covered up to a limit, accessed in V1 through Setu's FD rail. A different asset class with a different lifecycle from MFs, which is why it sits behind its own anti-corruption adapter.</p>
+
+  <h3>The horizon products <span class="pill horizon">Horizon</span></h3>
+  <p>Briefly, so the catalog's typing makes sense. <strong>NPS</strong> is the regulated retirement vehicle under PFRDA, recorded by CRAs. <strong>Bonds</strong> reach retail through OBPP platforms under SEBI's online bond framework. <strong>Equity and ETFs</strong> execute on exchanges and settle into a demat account at NSDL or CDSL; in V1 these surface read-only through the held-away CAS view for portfolio review, not as a transactable product. <strong>PMS</strong> is a managed account, minimum around fifty lakh, with assets held in the client's own name by a custodian. <strong>AIF</strong> is a pooled vehicle, minimum around one crore, structured as a trust with a mandatory custodian and trustee. <strong>Digital gold, gold ETFs and SGBs, and global equities</strong> via the LRS route round out the eventual universe. PMS and AIF are V2 and Wealth-tier; their custody-and-administration stack is genuinely different from retail rails, which is part of why they are deferred.</p>
+
+  <div class="rule-box"><strong>Why this matters for V1 even though V1 is MF and FD.</strong> The Instrument entity is strongly typed and multi-asset-ready, with capability flags and per-asset-class extension blocks, precisely so that adding bonds or NPS later is a new source behind a clean adapter rather than a reshape of the core. Locking that extension mechanism now is the single biggest multi-asset risk we are managing.</div>
+
+  <!-- ============ 6 ============ -->
+  <h1><span class="num">6</span>The stack underneath: rails, records, and where we sit</h1>
+
+  <p>Read the stack top to bottom. At the top are the licensed actors who face the investor. Beneath them is the verification technology a platform calls during onboarding. Below that are the regulated identity rails the verification tech ultimately resolves against. Then the consent framework, the payment rails, the abstraction layer we build on, the direct rails where orders actually execute and units are recorded, the data feeds, and the regulators governing each layer.</p>
+
+  <h3>Identity and verification</h3>
+  <p>Onboarding a customer means proving who they are against government and SEBI rails. The <strong>verification tech</strong> layer is vendor SDKs and APIs (HyperVerge, Signzy, IDfy, Perfios, Digio, Decentro and others) that wrap face-match, liveness, video KYC, document OCR, bank-account verification, eSign and eMandate. They sit on top of the real rails: <strong>UIDAI / Aadhaar</strong> for eKYC, <strong>DigiLocker</strong> for issued documents, the <strong>PAN ecosystem</strong> (Protean, UTIITSL) for PAN validation and PAN-Aadhaar linkage, <strong>eSign</strong> providers, the five SEBI-regulated <strong>KRAs</strong> (CVL, NDML, DotEx, CAMS, KFin) that hold canonical capital-markets KYC records, and the <strong>CKYC registry</strong> at CERSAI with its 14-digit identifier. In V1, KYC and identity resolution run through Fintech Primitives, which abstracts much of this.</p>
+
+  <h3>The Account Aggregator framework <span class="pill reg">Reg</span></h3>
+  <p>AA is RBI's consent-based financial-data-sharing rail. Data flows FIP to AA to FIU: a Financial Information Provider (a bank, AMC, depository) shares data, through a licensed Account Aggregator, to a Financial Information User. <strong>FundsIndia is the FIU</strong>, pulling a customer's held-away holdings for a unified view, only ever against a live, purpose-bound consent. Sahamati is the AA ecosystem's collective and standards body. For V1, the held-away portfolio view is served not through AA but through the certification-free CAS and MF Central path: the customer authorises a pull of their mutual fund and demat holdings by OTP, and no FIU registration or Sahamati certification is required. AA, which does require FIU status and certification and which delivers the broader and fresher financial picture (bank balances, deposits, cash flows, recurring consent), is deferred to a later phase, where it becomes a pure upgrade on the held-away view rather than a new capability.</p>
+
+  <h3>Payment and mandate rails</h3>
+  <p>Money movement runs on NPCI's public infrastructure: <strong>UPI and UPI AutoPay</strong> for real-time payment and e-mandates, <strong>NACH and eNACH</strong> for recurring debit mandates (the backbone of SIP collection), and standing instructions on cards or net-banking. Above these sit payment gateways and mandate providers (Razorpay, Cashfree, BillDesk and others). The thing to remember is that a SIP debit is a recurring authorised pull against a registered mandate, and mandates have their own full lifecycle: created, pending, active, paused, failed, cancelled. Whether a SIP will actually collect next month is derived from the mandate's state. For NRI investors the mandate sits against an NRE or NRO bank account, and the autopay behaviour and constraints differ from a resident account, which the payment adapter has to absorb.</p>
+
+  <h3>The abstraction layer, and where we sit <span class="pill v1">V1</span></h3>
+  <p>Between a platform and the messy direct rails sits an API layer that hides the rails behind clean primitives. <strong>Fintech Primitives (FP), by Cybrilla, is our choice here.</strong> It is mutual-fund-in-a-box: it abstracts the AMCs, the RTAs, and BSE StAR MF, and it also provides KYC and mandate flows. This compresses our MF integration meaningfully, which is exactly why it helps the February timeline. The non-negotiable discipline is that <strong>FP is a source, never our system of record</strong>. Whatever FP returns is reconciled into our own canonical ledger; it does not become truth by being adopted. If FP's data model leaks into our domain, the eventual move to direct rails or in-house execution becomes a forklift. That is the reason for the anti-corruption layer around every vendor.</p>
+
+  <h3>Direct rails and the real systems of record</h3>
+  <p>This is where orders execute and ownership is recorded, and almost none of it is us. For mutual funds, <strong>BSE StAR MF</strong> is the dominant order rail (north of six crore transactions a month). The <strong>RTAs, CAMS and KFintech</strong>, are the system of record for nearly all AMCs: they allot the units and publish daily mailback files. The <strong>AMCs</strong> (forty-plus fund houses) manufacture the schemes and publish NAVs. For equity and ETFs, the exchanges match orders and the depositories NSDL and CDSL hold demat positions. For bonds, OBPP platforms; for retirement, the NPS CRAs; for G-Secs, RBI Retail Direct. The practical consequence: our holdings are a projection we fold from our ledger and reconcile against the RTA's view, never something a rail writes into us directly.</p>
+
+  <h3>Data and reference</h3>
+  <p>NAV and scheme data come from AMFI feeds and providers like ICRA Analytics, Accord, Morningstar and Value Research. <strong>CAS</strong> (Consolidated Account Statement) from NSDL/CDSL and CAMS/KFin is the cross-AMC and demat holdings statement, a key input for stitching a complete portfolio view alongside AA.</p>
+
+  <div class="rule-box"><strong>The picture to carry.</strong> We are an experience and an advisory-and-distribution layer sitting on FP in V1, with a canonical ledger of our own that reconciles continuously against external systems of record we do not control. Our durable asset is not the rail integration, which FP abstracts; it is the canonical substrate, the relationship, and the intelligence on top.</div>
+
+  <!-- ============ 7 ============ -->
+  <h1><span class="num">7</span>The core journeys, end to end</h1>
+
+  <p>Four journeys carry most of V1. Each is described at the level you need to read the PRDs, and each is tied to the entities so you see why the model is shaped as it is. The step-level sequence detail lives in the Architecture Companion.</p>
+
+  <h2>7.1 Onboarding and KYC <span class="pill v1">V1</span></h2>
+  <p>The resident-individual happy path: register and create a login, capture PAN, resolve KYC status against the KRAs (often already KYC-compliant from a prior relationship), complete any missing steps through Aadhaar eKYC, DigiLocker and video KYC as needed, capture the consents required for data use and AA, and reach a state where the investor is permitted to transact. NRI and minor are in V1 as variations on this path: the NRI route leans on video KYC where Aadhaar is unavailable and captures FATCA and tax-residency declarations, while the minor route runs the guardian's KYC alongside the minor's proof and records the guardian as the operating party. A degraded path exists when records are missing or screening flags the customer for Enhanced Due Diligence. Two entities are exercised here and must not be conflated: the <strong>Investor</strong> (the natural person and KYC subject) and the <strong>Identity</strong> (the login and auth principal). One Identity can act for several Investors, and every action carries both an acting Identity and a subject Investor; the guardian-operating-for-a-minor case is exactly this separation at work. The hard invariant: an Investor cannot transact until KYC status is a permitted state.</p>
+  <p>At the end of this journey the platform assigns a <strong>default goal</strong> (Wealth Creation, also framed as FIRE) so the investor is never blocked on goal creation, and the goal-led home takes over from there. The onboarding journey itself stops at KYC-permitted and hands off; the goal mechanism belongs to the Goals capability.</p>
+
+  <h2>7.2 The mutual fund transaction lifecycle <span class="pill v1">V1</span></h2>
+  <p>This is the riskiest flow and the one most unlike a checkout. A lumpsum purchase is accepted by us, routed to the rail (FP, then BSE StAR MF), acknowledged, priced at the applicable NAV under cutoff rules, paid for, and settled with units allotted by the RTA, after which our holding projection updates. Each of those is a distinct, ledger-affecting fact, which is why the order is immutable and its state is the fold of its events rather than a mutable status. Corrections are new events, never edits. A <strong>saga</strong> owns this multi-step lifecycle and its compensating actions: FP executes the steps, but the platform owns cross-step consistency, so that a payment that succeeds while an order fails, or the reverse, resolves correctly. Idempotency is mandatory everywhere money moves, because rails get retried.</p>
+  <p>Redemptions, switches, STPs and SWPs are variations on the same spine. A redemption is a market-priced exit at the applicable NAV, settling cash back over a few days; it is emphatically not a refund. For an NRI, the RTA deducts TDS at source on the gains at redemption, so the cash that settles back is net of tax, and the ledger and reporting have to reflect that deduction correctly. A resident redemption carries no such deduction at source.</p>
+
+  <h2>7.3 SIPs and mandates <span class="pill v1">V1</span></h2>
+  <p>A SIP is a recurring investment, and it depends on a <strong>mandate</strong>, which is a first-class entity, not a field on an order. The investor authorises recurring debits through eNACH or UPI AutoPay; the mandate moves through its lifecycle; and on each scheduled date a debit is attempted and an instalment placed. Debits fail (insufficient funds, expired mandate), so the journey includes retry and recovery. Whether a SIP is live is always derived from the mandate state, never assumed from the fact that the user set one up.</p>
+
+  <h2>7.4 Portfolio view and recommendation <span class="pill v1">V1</span></h2>
+  <p>The investor sees holdings organised under goals, reviews portfolio health, and gets an ideal-portfolio or basket recommendation shaped by amount, risk and horizon. Held-away holdings from other institutions are pulled in through CAS and MF Central to complete the picture, with AA as a later upgrade. In V1 the recommendation is a research-driven lookup, but it is built at the seam as (investor plus goal plus eligible instruments plus engine output) so the real intelligence engine drops in later without a rewrite. Risk profiling here carries SEBI suitability weight; it is not a quiz for flavour.</p>
+
+  <!-- ============ 8 ============ -->
+  <h1><span class="num">8</span>The compliance and regulatory environment <span class="pill reg">Reg</span></h1>
+
+  <p>This is the section most foreign to a consumer-tech background and the one that will bite hardest if underweighted. In wealth management, compliance is not a gate at the end; it is a property of the product at runtime. Each PRD that follows carries its own compliance section and a checklist the compliance function signs. This is the shared backdrop for all of them.</p>
+
+  <h3>Suitability and mis-selling</h3>
+  <p>SEBI's regime holds that what is recommended must be suitable for the specific investor, given risk profile, horizon and circumstances. Recommending an unsuitable product, or inducing a transaction for the distributor's benefit, is mis-selling and carries real regulatory exposure. The practical design consequences: a discovery surface may not rank purely on commercial incentive; any business override of ranking must be bounded to approved, suitability-aware logic; and risk profiling is a regulated input, not a UX flourish.</p>
+
+  <h3>The advice-versus-distribution line</h3>
+  <p>The RIA (fee-only, fiduciary, no commission) and the distributor (commission-earning, no client advisory fee for the same) are distinct regulatory postures. The platform has to keep which posture applies to a given customer clean and attributable over time. This is the reason the Commercial Relationship is bitemporal: you must be able to answer who advised this customer, under what model, on any past date.</p>
+
+  <h3>KYC, AML and screening</h3>
+  <p>Beyond identity proofing, the platform operates under anti-money-laundering obligations: screening for sanctioned and politically exposed persons, Enhanced Due Diligence for high-risk customers, transaction monitoring, and Suspicious Transaction Report filing to FIU-IND. Maker-checker controls apply to consequential actions. Records must be retained over SEBI's horizon. For NRI investors there is an added layer: FATCA and CRS declarations are captured at onboarding, and US and Canada persons are refused by a number of AMCs, so the investable universe is gated by jurisdiction and the catalog has to carry eligibility flags that the transaction path enforces.</p>
+
+  <h3>DPDP, consent and data residency</h3>
+  <p>India's Digital Personal Data Protection Act governs personal data: purpose-bound, time-bound, revocable consent, and data-subject rights including access and erasure. Our <strong>consent ledger</strong> is first-class from day one: any data fetch or use must cite a live consent, and revocation is a recorded event with downstream effect. AA data in particular is consent-gated by construction. PII (PAN, bank, contact, the relationship graph) is tokenised. Data residency in India and the vendor's sub-processor posture have to be confirmed, FP included.</p>
+
+  <h3>The vetting envelope, and proof of what was shown</h3>
+  <p>All customer-facing copy, messaging and recommendation logic is vetted in plain English by FundsIndia's compliance function. Two surfaces have to stay inside that vetted envelope at runtime, not just at copy-review time: the <strong>ranking console</strong>, where business overrides must be bounded to approved logic, and any <strong>personalised or generated output</strong>, where the generation rules and guardrails are what get vetted, not a fixed string. Every customer-facing recommendation or ranking carries a reference to the approved rule version that produced it, which is also how the platform answers the SEBI question of what a given customer saw on a given date and whether it was suitable.</p>
+
+  <div class="rule-box"><strong>Off-channel advisory is a real exposure.</strong> Advice given outside the governed, recorded channels (a personal WhatsApp message from an RM, for instance) sits outside the vetted envelope and the audit trail. A regulated messaging channel is viable only if off-channel advisory is explicitly prohibited and enforced. When the platform constrains communications, this is why; it is not bureaucracy.</div>
+
+  <!-- ============ 9 ============ -->
+  <h1><span class="num">9</span>The three flows: Mass Affluent, Private Wealth, IFA</h1>
+
+  <p>You will hear all three discussed because the architecture serves all three. Only the first is a V1 product. The table makes the difference and the V1 line explicit.</p>
+
+  <table>
+    <thead><tr><th style="width:18%">Dimension</th><th style="width:28%">Mass Affluent (B2C) <span class="pill v1">V1</span></th><th style="width:27%">Private Wealth (B2C) <span class="pill horizon">Horizon</span></th><th style="width:27%">IFA channel (B2B) <span class="pill horizon">Horizon</span></th></tr></thead>
+    <tbody>
+      <tr><td class="k">Who serves</td><td>Virtual RM, algorithmic and self-serve</td><td>Dedicated human RM</td><td>The IFA serves their own clients; we serve the IFA</td></tr>
+      <tr><td class="k">Primary user</td><td>The investor</td><td>The investor, RM-assisted</td><td>The IFA as operator; the investor is the managed entity</td></tr>
+      <tr><td class="k">Instruments</td><td>MF and FD in V1, broadening over time</td><td>Deepest universe, including PMS and AIF</td><td>Distribution-led, MF-centric</td></tr>
+      <tr><td class="k">Experience</td><td>Goal-led, low-noise, suitability-governed</td><td>Calm, high-touch, low-noise</td><td>Console and book management</td></tr>
+      <tr><td class="k">V1 build</td><td>The full product</td><td>Not built; RM attribution substrate only</td><td>Not built; relationship and attribution substrate partly present</td></tr>
+    </tbody>
+  </table>
+
+  <p>The common thread is that the same canonical substrate, the same entities, and the same intelligence underlie all three. The Commercial Relationship and the relationship graph are in V1 not because the Mass Affluent product needs the RM surface, but because the later flows reconcile against attribution that has to be correct from the first transaction.</p>
+
+  <!-- ============ 10 ============ -->
+  <h1><span class="num">10</span>Where eCommerce intuition helps, and where it betrays you</h1>
+
+  <p>Most of this team is arriving from high-scale consumer and commerce systems. That background is an asset, and it is also a set of reflexes that are wrong here in specific, expensive ways. Be deliberate about both.</p>
+
+  <h3>Where it transfers cleanly</h3>
+  <p>Funnel thinking, instrumentation and acquisition mechanics carry over directly. Scale intuition, idempotency, queueing, reconciliation at volume, graceful degradation under a dependency outage, all transfer. The discipline of a backend-for-frontend per surface, shared canonical services beneath, is the same pattern you know. Search, sort and filter as interaction primitives are still useful.</p>
+
+  <h3>Where it quietly misleads</h3>
+  <p><strong>The catalog is not a SKU list.</strong> An instrument is strongly typed, carries risk-return characteristics, regulatory category, tier eligibility and goal suitability, and is time-versioned. Treating it as a flat product table is the multi-asset reshape trap.</p>
+  <p><strong>Discovery cannot rank on margin.</strong> "Most profitable to us, first" is a mis-selling problem here, not a merchandising lever. Ranking lives inside a governed, suitability-aware envelope.</p>
+  <p><strong>Checkout is not instant and not ours.</strong> A purchase is a multi-day, multi-party regulated settlement with NAV cutoffs and RTA allotment, owned by a saga, reconciled against external records. There is no "order shipped." There is accepted, routed, acknowledged, settled, each a distinct fact.</p>
+  <p><strong>There are no returns.</strong> A redemption is a market-priced exit, not a refund. Value can be lower than what went in. The framing of reversals and corrections is regulatory, not customer-service.</p>
+  <p><strong>The system of record is external.</strong> You do not own ownership truth. The RTA does. Your job is a canonical ledger that reconciles against it and surfaces breaks rather than silently overwriting.</p>
+  <p><strong>Communications are compliance-gated.</strong> You cannot send any nudge you can write. Personalised output is governed at runtime, and off-channel advice is an exposure.</p>
+  <p><strong>The customer relationship is a first-class, attributable object.</strong> Who advises whom, under what model, on what date, is a bitemporal entity with regulatory weight, not a CRM convenience field. Relatedly, an RM's book is a first-class object whose valuation basis shapes behaviour; that is a design concern, not an afterthought.</p>
+
+  <div class="rule-box"><strong>The meta-lesson.</strong> When a wealth requirement feels needlessly heavy compared to how you would build it in commerce, assume there is a regulatory or reconciliation reason before assuming it is over-engineering. Usually there is. When there genuinely is not, say so; the platform doctrine is correctness where it counts, not correctness everywhere.</div>
+
+  <!-- ============ 11 ============ -->
+  <h1><span class="num">11</span>FundsIndia's position, and the V1 thesis</h1>
+
+  <p>FundsIndia is an eighteen-year-old wealth platform with an established retail investor base and a large network of empanelled IFAs. That maturity is the strategic context: this is not a zero-to-one startup bet but a greenfield platform rebuild beneath an existing, sizeable business, which is why migration and a legacy bridge are first-class concerns in the broader blueprint even though V1 itself is built clean with no legacy code in scope.</p>
+
+  <p>The V1 bet is specific. Build the Mass Affluent (Tier 2) product as a goal-led experience on a canonical substrate that is honest enough to carry every future tier, channel and asset class. Goal is a mandatory, first-class entity and the organising lens, with holdings hanging under goals rather than the reverse. The ledger is canonical and the rails are sources reconciled against it. FP compresses the MF path without becoming our record. The intelligence engine is deferred in build but designed for at the seams now. V1 deliberately collapses the substrate and the first experience into one delivery, separated by a hard internal gate: the canonical core has to prove end-to-end internal transacting and clean reconciliation before any customer-facing layer goes live.</p>
+
+  <p>The load-bearing strategic assumption underneath the product is <strong>goal adoption</strong>: whether investors actually engage with goals, rather than treating them as a skippable step, is the variable most likely to determine whether the goal-led thesis works. Because a default goal is assigned so no one is blocked, the real measure is not whether a goal exists but whether the investor personalises it, sets a real target and horizon, adds further goals, and funds toward them. Keep that distinction sharp wherever goal engagement is discussed.</p>
+
+  <!-- ============ 12 ============ -->
+  <h1><span class="num">12</span>The vocabulary you will hear daily</h1>
+
+  <p>A compact reference for the highest-frequency terms. The Strategic Blueprint's appendix carries the full glossary.</p>
+
+  <table>
+    <thead><tr><th style="width:24%">Term</th><th style="width:76%">Meaning in one line</th></tr></thead>
+    <tbody>
+      <tr><td class="k">NAV</td><td>Net Asset Value, the per-unit price of a mutual fund, struck daily under cutoff rules.</td></tr>
+      <tr><td class="k">RTA</td><td>Registrar and Transfer Agent (CAMS, KFintech). Allots units and is the system of record for AMCs.</td></tr>
+      <tr><td class="k">BSE StAR MF</td><td>The dominant mutual fund order-routing rail between the platform and the RTAs.</td></tr>
+      <tr><td class="k">AMC</td><td>Asset Management Company, the fund house that manufactures schemes and publishes NAVs.</td></tr>
+      <tr><td class="k">SIP / mandate</td><td>Systematic Investment Plan, a recurring investment, backed by an eNACH or UPI AutoPay mandate that authorises the debits.</td></tr>
+      <tr><td class="k">Lumpsum / switch / STP / SWP</td><td>One-time buy; move between schemes; systematic transfer; systematic withdrawal.</td></tr>
+      <tr><td class="k">Direct vs regular</td><td>Plan with no distributor commission and lower cost vs the commission-bearing plan.</td></tr>
+      <tr><td class="k">KRA / CKYC</td><td>SEBI KYC Registration Agencies and the central CKYC registry; canonical KYC record sources.</td></tr>
+      <tr><td class="k">AA (FIP / FIU)</td><td>Account Aggregator consent rail; we are the FIU pulling held-away data with consent.</td></tr>
+      <tr><td class="k">CAS</td><td>Consolidated Account Statement, cross-AMC and demat holdings, used for the unified view.</td></tr>
+      <tr><td class="k">FP / Cybrilla</td><td>Fintech Primitives, our MF-in-a-box abstraction over AMCs, RTAs and BSE StAR MF, behind an ACL.</td></tr>
+      <tr><td class="k">ACL</td><td>Anti-Corruption Layer, the adapter that keeps a vendor's concepts from leaking into our domain.</td></tr>
+      <tr><td class="k">Canonical ledger</td><td>Our own double-entry, immutable, bitemporal system of record; rails reconcile against it.</td></tr>
+      <tr><td class="k">Bitemporal</td><td>Recording both when something happened and when it took effect, so past states reconstruct fully.</td></tr>
+      <tr><td class="k">Event spine</td><td>The typed, durable, replayable stream of business-significant domain events; institutional memory.</td></tr>
+      <tr><td class="k">Held-away assets</td><td>Holdings at other institutions, pulled in via AA and CAS to complete the picture.</td></tr>
+      <tr><td class="k">ARN / EUIN</td><td>The distributor's registration number and the advising individual's identifier, for attribution.</td></tr>
+      <tr><td class="k">RIA / MFD</td><td>Fee-only fiduciary advisor vs commission-earning distributor; distinct regulatory postures.</td></tr>
+      <tr><td class="k">DPDP / consent ledger</td><td>India's data protection law and our first-class record of purpose-bound, revocable consents.</td></tr>
+      <tr><td class="k">Suitability / mis-selling</td><td>The SEBI requirement that a recommendation fit the investor, and the violation when it does not.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="note"><strong>Where this document is silent or thin,</strong> it is by design. Persona branches beyond the resident individual, the PMS and AIF custody stack, NPS mechanics, and the migration and legacy bridge are sketched only enough to orient you. The PRDs and specs go deep where V1 needs depth, and they cite this primer rather than re-explaining it. If something here reads as settled that you believe is still open, treat that as a flag to raise, not a fact to build on.</p>
+
+</div>
+</body>
+</html>
