@@ -2,7 +2,7 @@ import type { L1Track, Week } from './types';
 
 export const TOPICS: L1Track[] = [
   {
-    id: 'l1', label: 'AI Native PM', hours: 50, color: '#2D6A4F', accent: '#B7E4C7',
+    id: 'l1', label: 'AI 101', hours: 50, color: '#2D6A4F', accent: '#B7E4C7',
     categories: [
       {
         name: 'AI Tech', topics: [
@@ -145,7 +145,7 @@ export const TOPICS: L1Track[] = [
     ],
   },
   {
-    id: 'l2', label: 'Finance 101–103', hours: 44, color: '#1B4F72', accent: '#AED6F1',
+    id: 'l2', label: 'Finance 101', hours: 44, color: '#1B4F72', accent: '#AED6F1',
     categories: [
       {
         name: 'Domain', topics: [
@@ -600,7 +600,7 @@ export const TOPICS: L1Track[] = [
 ];
 
 export const WEEKS: Week[] = [
-  // ── Phase 1: AI Native PM + Finance 101 + AI SDLC (blended) ──────────────
+  // ── Phase 1: AI 101 + Finance 101 + Software dev 101 (blended) ──────────────
   {
     week: 'W1',
     weekday: 'AI Fundamentals (1.1) + Transformers start (1.2) + CS Primitives start (4.1)',
@@ -650,7 +650,7 @@ export const WEEKS: Week[] = [
     weekend: 'V1 Build Strategy & Open Decisions (3.9)',
     artifacts: 'Transaction lifecycle diagram, Blueprint strategy + entity + 20 Day-1 questions for Avijit, Journey map — 15 flows summarised, V1 open-decisions one-pager ready for Day 1',
   },
-  // ── Phase 3: Remaining AI Native PM + AI SDLC (pushed) ───────────────────
+  // ── Phase 3: Remaining AI 101 + Software dev 101 (pushed) ───────────────────
   {
     week: 'W9',
     weekday: 'Responsible AI (1.10) + AI Product Metrics (1.11) + Observability & SRE (4.11)',
@@ -669,8 +669,8 @@ export const ALL_TOPICS = TOPICS.flatMap(l1 => l1.categories.flatMap(c => c.topi
 export const TOTAL_HOURS = TOPICS.reduce((a, l) => a + l.hours, 0);
 
 export const ONBOARDING_TOPICS: L1Track[] = [
-  { id: 'l1', label: 'AI Native PM',    hours: 0, color: '#2D6A4F', accent: '#B7E4C7', categories: [] },
-  { id: 'l2', label: 'Finance 101–103', hours: 0, color: '#1B4F72', accent: '#AED6F1', categories: [] },
+  { id: 'l1', label: 'AI 101',    hours: 0, color: '#2D6A4F', accent: '#B7E4C7', categories: [] },
+  { id: 'l2', label: 'Finance 101', hours: 0, color: '#1B4F72', accent: '#AED6F1', categories: [] },
   { id: 'l3', label: 'FundsIndia 101',  hours: 0, color: '#6B3FA0', accent: '#D7BDE2', categories: [] },
   { id: 'l4', label: 'Software dev 101', hours: 0, color: '#B7410E', accent: '#FAD7A0', categories: [] },
 ];
