@@ -24,7 +24,7 @@ export default function Home() {
       mode:       'pre-joining' as const,
       title:      'Pre-joining KT',
       subtitle:   'June 8 → August 8, 2026',
-      desc:       'Self-paced learning plan across AI, Finance, FundsIndia & SDLC — built for the weeks before you join.',
+      desc:       'Self-paced learning plan across AI, Finance, FundsIndia & Software Dev — built for the weeks before you join.',
       color:      '#2D6A4F',
       colorDark:  '#1F5240',
       colorLight: '#3D8A65',
