@@ -315,6 +315,7 @@ export const TOPICS: L1Track[] = [
               { label: 'BSE StAR MF — platform overview', url: 'https://www.bsestarmf.in/' },
               { label: 'CAMS — RTA services', url: 'https://www.camsonline.com/' },
               { label: 'KFintech — RTA services', url: 'https://www.kfintech.com/' },
+              { label: 'Scaffolding — Answered', url: '/reading-material/Scaffolding_answered.html' },
             ],
             artifact: 'Build vs buy map: FI in-house vs vendor for every major capability',
           },
