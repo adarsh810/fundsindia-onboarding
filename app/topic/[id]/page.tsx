@@ -6,8 +6,9 @@ import TopicChat from '@/components/TopicChat';
 import ArtifactReviewer from '@/components/ArtifactReviewer';
 import ResourcesPanel from '@/components/ResourcesPanel';
 import TopicSidebar from '@/components/TopicSidebar';
-import { getAllProgress } from '@/lib/supabase';
+import { getAllProgress, getAllScheduleOverrides } from '@/lib/supabase';
 import { findTopicById, findTrackForTopic, ALL_TOPICS } from '@/lib/data';
+import { getEffectivePositions, formatEffectiveWeekLabel } from '@/lib/schedule';
 import type { Status } from '@/lib/types';
 import type { Metadata } from 'next';
 
@@ -26,8 +27,9 @@ export default async function TopicPage({ params }: Props) {
   if (!topic) notFound();
 
   const track = findTrackForTopic(id)!;
-  const progress = await getAllProgress();
+  const [progress, overrides] = await Promise.all([getAllProgress(), getAllScheduleOverrides()]);
   const status: Status = (progress[id] as Status) ?? 'not_started';
+  const effectiveWeek = formatEffectiveWeekLabel(getEffectivePositions(topic, overrides));
 
   // prev/next topic in flat order
   const allIds = ALL_TOPICS.map(t => t.id);
@@ -58,7 +60,7 @@ export default async function TopicPage({ params }: Props) {
           <div className="p-5 sm:p-6">
             <div className="flex items-center gap-2 mb-3">
               <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full" style={{ background: track.accent, color: track.color }}>{topic.id}</span>
-              <span className="text-[11px] text-[#9B9590]">{topic.week} · {topic.hours}h</span>
+              <span className="text-[11px] text-[#9B9590]">{effectiveWeek} · {topic.hours}h</span>
               <span className="text-[11px] text-[#9B9590]">·</span>
               <span className="text-[11px]" style={{ color: track.color }}>{track.label}</span>
             </div>

@@ -1,11 +1,11 @@
 import AppNav from '@/components/AppNav';
 import ScheduleView from '@/components/ScheduleView';
-import { getAllProgress } from '@/lib/supabase';
+import { getAllProgress, getAllScheduleOverrides } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
 
 export default async function SchedulePage() {
-  const progress = await getAllProgress();
+  const [progress, overrides] = await Promise.all([getAllProgress(), getAllScheduleOverrides()]);
 
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
@@ -16,10 +16,10 @@ export default async function SchedulePage() {
             Weekly schedule
           </h1>
           <p className="text-sm text-[#6B6560]">
-            10 hrs weekdays · 6 hrs weekends · 16 hrs/week · click a week to see the Gantt
+            Drag pills between collapsed weeks to reshuffle · click a week to see the Gantt
           </p>
         </div>
-        <ScheduleView progress={progress} />
+        <ScheduleView progress={progress} initialOverrides={overrides} />
       </div>
     </div>
   );

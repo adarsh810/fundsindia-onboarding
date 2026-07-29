@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { TOPICS } from '@/lib/data';
+import { TOPICS, findTopicById } from '@/lib/data';
 import type { ProgressMap, Status } from '@/lib/types';
 import { SHADOW_RAISED } from '@/lib/elevation';
+import { getEffectivePositions, formatEffectiveWeekLabel, type OverrideMap } from '@/lib/schedule';
 
 const CYCLE: Record<Status, Status> = {
   not_started: 'in_progress',
@@ -18,7 +19,7 @@ const STATUS_STYLE: Record<Status, { bg: string; text: string; dot: string; labe
   done:        { bg: '#D1EDDA', text: '#1B5E2A', dot: '#4CAF65', label: 'Done' },
 };
 
-export default function PlanView({ initialProgress, initialTrack }: { initialProgress: ProgressMap; initialTrack?: string }) {
+export default function PlanView({ initialProgress, initialTrack, overrides }: { initialProgress: ProgressMap; initialTrack?: string; overrides: OverrideMap }) {
   const [progress, setProgress] = useState<ProgressMap>(initialProgress);
   const validTrack = TOPICS.find(l => l.id === initialTrack)?.id ?? TOPICS[0].id;
   const [activeTrack, setActiveTrack] = useState<string>(validTrack);
@@ -145,7 +146,9 @@ export default function PlanView({ initialProgress, initialTrack }: { initialPro
                     </div>
 
                     <div className="shrink-0 text-right hidden sm:block">
-                      <p className="text-[11px] text-[#9B9590]">{t.week}</p>
+                      <p className="text-[11px] text-[#9B9590]">
+                        {formatEffectiveWeekLabel(getEffectivePositions(findTopicById(t.id)!, overrides))}
+                      </p>
                       <p className="text-[11px] font-medium text-[#4A4540]">{t.hours}h</p>
                     </div>
 

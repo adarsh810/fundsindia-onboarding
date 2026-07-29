@@ -1,8 +1,14 @@
 import Link from 'next/link';
 import AppNav from '@/components/AppNav';
 import TrackStatusPill from '@/components/TrackStatusPill';
-import { getAllProgress } from '@/lib/supabase';
+import { getAllProgress, getAllScheduleOverrides } from '@/lib/supabase';
 import { TOPICS, ALL_TOPICS, TOTAL_HOURS, findTrackForTopic } from '@/lib/data';
+import {
+  getEffectiveStartWeek,
+  getEffectiveEndWeek,
+  getEffectivePositions,
+  formatEffectiveWeekLabel,
+} from '@/lib/schedule';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,7 +19,7 @@ const STATUS_DOT: Record<string, string> = {
 };
 
 export default async function Dashboard() {
-  const progress = await getAllProgress();
+  const [progress, overrides] = await Promise.all([getAllProgress(), getAllScheduleOverrides()]);
 
   const doneCount  = ALL_TOPICS.filter(t => progress[t.id] === 'done').length;
   const activeCount = ALL_TOPICS.filter(t => progress[t.id] === 'in_progress').length;
@@ -24,35 +30,14 @@ export default async function Dashboard() {
   const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
   const msElapsed = Date.now() - WEEK1_START.getTime();
   const currentWeek = Math.min(Math.max(Math.floor(msElapsed / MS_PER_WEEK) + 1, 1), 10);
-  // Day-level proration: how far through the current week (1–7, capped at 7)
   const dayOfWeek = Math.min(Math.floor((msElapsed % MS_PER_WEEK) / (24 * 60 * 60 * 1000)) + 1, 7);
   const weekProgress = dayOfWeek / 7;
 
-  function topicStartWeek(w: string): number {
-    const simple = w.match(/^W(\d+)$/);
-    if (simple) return parseInt(simple[1]);
-    const range = w.match(/^W(\d+)[–\-]/);
-    if (range) return parseInt(range[1]);
-    const comma = w.match(/^W(\d+),/);
-    if (comma) return parseInt(comma[1]);
-    return 99;
-  }
-
-  function topicEndWeek(w: string): number {
-    const range = w.match(/W\d+[–\-](\d+)/);
-    if (range) return parseInt(range[1]);
-    const comma = w.match(/W\d+,\s*(\d+)/);
-    if (comma) return parseInt(comma[1]);
-    const simple = w.match(/^W(\d+)$/);
-    if (simple) return parseInt(simple[1]);
-    return 99;
-  }
-
   const expectedHours = ALL_TOPICS.reduce((a, t) => {
-    const end = topicEndWeek(t.week);
-    if (end < currentWeek) return a + t.hours;               // past week — full hours
-    if (end === currentWeek) return a + t.hours * weekProgress; // current week — prorated
-    return a;                                                  // future — not expected
+    const end = getEffectiveEndWeek(t, overrides);
+    if (end < currentWeek) return a + t.hours;
+    if (end === currentWeek) return a + t.hours * weekProgress;
+    return a;
   }, 0);
 
   // In-progress topics count at 30% — fairer than 0%
@@ -70,14 +55,18 @@ export default async function Dashboard() {
     : { label: 'Off track', bg: '#FEE2E2', text: '#991B1B' };
 
   const overdueTopics = ALL_TOPICS
-    .filter(t => topicEndWeek(t.week) <= currentWeek && progress[t.id] !== 'done')
-    .sort((a, b) => topicEndWeek(a.week) - topicEndWeek(b.week))
-    .map(t => ({ title: t.title, hours: t.hours, week: t.week }));
+    .filter(t => getEffectiveEndWeek(t, overrides) <= currentWeek && progress[t.id] !== 'done')
+    .sort((a, b) => getEffectiveEndWeek(a, overrides) - getEffectiveEndWeek(b, overrides))
+    .map(t => ({
+      title: t.title,
+      hours: t.hours,
+      week: formatEffectiveWeekLabel(getEffectivePositions(t, overrides)),
+    }));
 
   const inProgress = ALL_TOPICS.filter(t => progress[t.id] === 'in_progress');
   const notStarted = ALL_TOPICS
     .filter(t => (progress[t.id] ?? 'not_started') === 'not_started')
-    .sort((a, b) => topicStartWeek(a.week) - topicStartWeek(b.week));
+    .sort((a, b) => getEffectiveStartWeek(a, overrides) - getEffectiveStartWeek(b, overrides));
   const nextTopics = [...inProgress, ...notStarted].slice(0, 3);
 
   return (
@@ -183,7 +172,7 @@ export default async function Dashboard() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium group-hover:underline">{t.title}</p>
-                    <p className="text-[11px] text-[#FAF8F5]/40 mt-0.5">{t.week} · {t.hours}h · {track.label}</p>
+                    <p className="text-[11px] text-[#FAF8F5]/40 mt-0.5">{formatEffectiveWeekLabel(getEffectivePositions(t, overrides))} · {t.hours}h · {track.label}</p>
                   </div>
                   <svg className="w-4 h-4 text-[#4A4540] group-hover:text-[#FAF8F5] transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
