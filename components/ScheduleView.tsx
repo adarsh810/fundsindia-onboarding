@@ -14,8 +14,9 @@ import {
   useDraggable,
   useDroppable,
 } from '@dnd-kit/core';
-import { WEEKS, ALL_TOPICS, findTopicById, findTrackForTopic } from '@/lib/data';
+import { WEEKS, ALL_TOPICS, findTopicById, findTrackForTopic, resolveMeta } from '@/lib/data';
 import type { ProgressMap, Topic } from '@/lib/types';
+import type { MetaOverrideMap } from '@/lib/supabase';
 import {
   type OverrideMap,
   type Position,
@@ -75,8 +76,8 @@ function distributePills(pills: PillRef[], hoursPerDay: number, numDays: number,
 
 // ─── Day column ───────────────────────────────────────────────────────────────
 
-function DayColumn({ label, hoursPerDay, slots, progress }: {
-  label: string; hoursPerDay: number; slots: DaySlot; progress: ProgressMap;
+function DayColumn({ label, hoursPerDay, slots, progress, metas }: {
+  label: string; hoursPerDay: number; slots: DaySlot; progress: ProgressMap; metas: MetaOverrideMap;
 }) {
   return (
     <div className="flex flex-col items-stretch gap-1">
@@ -92,7 +93,7 @@ function DayColumn({ label, hoursPerDay, slots, progress }: {
             <Link key={`${topicId}-${i}`} href={`/topic/${topicId}`}
               className="flex items-center justify-center overflow-hidden hover:brightness-95 transition-all"
               style={{ height: `${pct}%`, background: statusBg(status, track), borderBottom: '1px solid #FAF8F5' }}
-              title={`${topic.title} · ${hours}h`}
+              title={`${resolveMeta(topic, metas).title} · ${hours}h`}
             >
               {pct >= 38 && (
                 <span className="text-[9px] font-bold px-0.5 leading-none" style={{ color: statusTextColor(status, track) }}>
@@ -110,8 +111,8 @@ function DayColumn({ label, hoursPerDay, slots, progress }: {
 
 // ─── Day section ──────────────────────────────────────────────────────────────
 
-function DaySection({ emoji, dayLabels, hoursPerDay, pills, progress, overrides }: {
-  emoji: string; dayLabels: string[]; hoursPerDay: number; pills: PillRef[]; progress: ProgressMap; overrides: OverrideMap;
+function DaySection({ emoji, dayLabels, hoursPerDay, pills, progress, overrides, metas }: {
+  emoji: string; dayLabels: string[]; hoursPerDay: number; pills: PillRef[]; progress: ProgressMap; overrides: OverrideMap; metas: MetaOverrideMap;
 }) {
   if (pills.length === 0) return null;
   const days = distributePills(pills, hoursPerDay, dayLabels.length, overrides);
@@ -136,7 +137,7 @@ function DaySection({ emoji, dayLabels, hoursPerDay, pills, progress, overrides 
       </p>
       <div className="grid gap-1.5 mb-3" style={{ gridTemplateColumns: `repeat(${dayLabels.length}, 1fr)` }}>
         {dayLabels.map((label, i) => (
-          <DayColumn key={label} label={label} hoursPerDay={hoursPerDay} slots={days[i]} progress={progress} />
+          <DayColumn key={label} label={label} hoursPerDay={hoursPerDay} slots={days[i]} progress={progress} metas={metas} />
         ))}
       </div>
       <div className="space-y-1">
@@ -147,7 +148,7 @@ function DaySection({ emoji, dayLabels, hoursPerDay, pills, progress, overrides 
               <span className="w-2.5 h-2.5 rounded-sm shrink-0"
                 style={{ background: statusBg(status, track!), border: `1.5px solid ${track!.color}` }} />
               <span className="font-mono text-[10px] text-[#9B9590] w-7 shrink-0">{pill.topicId}</span>
-              <span className="text-[#4A4540] group-hover:text-[#1C1C1A] transition-colors truncate">{topic!.title}</span>
+              <span className="text-[#4A4540] group-hover:text-[#1C1C1A] transition-colors truncate">{resolveMeta(topic!, metas).title}</span>
               <span className="text-[#9B9590] ml-auto shrink-0">
                 {isMulti ? `${wh}h` : `${total}h`}
                 {isMulti && <span className="text-[#C8C2BA]"> / {total}h total</span>}
@@ -227,9 +228,10 @@ function DropWeekOverlay({ weekNum, active }: { weekNum: number; active: boolean
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function ScheduleView({ progress, initialOverrides }: {
+export default function ScheduleView({ progress, initialOverrides, metas }: {
   progress: ProgressMap;
   initialOverrides: OverrideMap;
+  metas: MetaOverrideMap;
 }) {
   const currentWeek = getCurrentWeek();
   const isFuture = Date.now() < WEEK1_START.getTime();
@@ -375,10 +377,10 @@ export default function ScheduleView({ progress, initialOverrides }: {
                   </div>
                   <DaySection emoji="⏱" dayLabels={['Mon', 'Tue', 'Wed', 'Thu', 'Fri']}
                     hoursPerDay={Math.max(2, Math.ceil(weekdayHours / 5))}
-                    pills={bucket.weekdayPills} progress={progress} overrides={overrides} />
+                    pills={bucket.weekdayPills} progress={progress} overrides={overrides} metas={metas} />
                   <DaySection emoji="🌿" dayLabels={['Sat', 'Sun']}
                     hoursPerDay={Math.max(3, Math.ceil(weekendHours / 2))}
-                    pills={bucket.weekendPills} progress={progress} overrides={overrides} />
+                    pills={bucket.weekendPills} progress={progress} overrides={overrides} metas={metas} />
                   <div className="border-t border-[#EEE9E2] pt-3">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[#9B9590] mb-1.5">📄 Artifacts due</p>
                     <p className="text-[11px] text-[#6B6560] leading-relaxed">{w.artifacts}</p>

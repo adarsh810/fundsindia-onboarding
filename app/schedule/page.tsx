@@ -1,11 +1,15 @@
 import AppNav from '@/components/AppNav';
 import ScheduleView from '@/components/ScheduleView';
-import { getAllProgress, getAllScheduleOverrides } from '@/lib/supabase';
+import { getAllProgress, getAllScheduleOverrides, getAllMetaOverrides } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
 
 export default async function SchedulePage() {
-  const [progress, overrides] = await Promise.all([getAllProgress(), getAllScheduleOverrides()]);
+  const [progress, overrides, metas] = await Promise.all([
+    getAllProgress(),
+    getAllScheduleOverrides(),
+    getAllMetaOverrides(),
+  ]);
 
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
@@ -19,7 +23,7 @@ export default async function SchedulePage() {
             Drag pills between collapsed weeks to reshuffle · click a week to see the Gantt
           </p>
         </div>
-        <ScheduleView progress={progress} initialOverrides={overrides} />
+        <ScheduleView progress={progress} initialOverrides={overrides} metas={metas} />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import type { L1Track, Week } from './types';
+import type { L1Track, Topic, Week } from './types';
 
 export const TOPICS: L1Track[] = [
   {
@@ -682,4 +682,20 @@ export function findTopicById(id: string) {
 
 export function findTrackForTopic(topicId: string) {
   return TOPICS.find(l => l.categories.some(c => c.topics.some(t => t.id === topicId))) ?? null;
+}
+
+type MetaOverride = { title?: string; desc?: string };
+type MetaOverrideMap = Record<string, MetaOverride>;
+
+export function resolveMeta(topic: Topic, overrides?: MetaOverrideMap): { title: string; desc: string } {
+  const o = overrides?.[topic.id];
+  return {
+    title: o?.title?.trim() ? o.title : topic.title,
+    desc: o?.desc?.trim() ? o.desc : topic.desc,
+  };
+}
+
+export function applyMeta<T extends Topic>(topic: T, overrides?: MetaOverrideMap): T {
+  const { title, desc } = resolveMeta(topic, overrides);
+  return topic.title === title && topic.desc === desc ? topic : { ...topic, title, desc };
 }

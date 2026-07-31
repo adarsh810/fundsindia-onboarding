@@ -1,5 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { findTopicById, findTrackForTopic } from '@/lib/data';
+import { findTopicById, findTrackForTopic, resolveMeta } from '@/lib/data';
+import { getAllMetaOverrides } from '@/lib/supabase';
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
 
@@ -13,11 +14,14 @@ export async function POST(req: Request) {
   const track = topic ? findTrackForTopic(topicId) : null;
   if (!topic) return new Response('Topic not found', { status: 404 });
 
-  const system = `You are a study companion helping someone learn "${topic.title}" as part of their FundsIndia onboarding preparation.
+  const metas = await getAllMetaOverrides();
+  const { title, desc } = resolveMeta(topic, metas);
+
+  const system = `You are a study companion helping someone learn "${title}" as part of their FundsIndia onboarding preparation.
 
 Topic context:
 - Track: ${track?.label}
-- Description: ${topic.desc}
+- Description: ${desc}
 - Time allocation: ${topic.hours} hours (${topic.week})
 - Resources: ${topic.resources.join(', ')}
 - Artifact to produce: ${topic.artifact}

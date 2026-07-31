@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import AppNav from '@/components/AppNav';
 import TrackStatusPill from '@/components/TrackStatusPill';
-import { getAllProgress, getAllScheduleOverrides } from '@/lib/supabase';
-import { TOPICS, ALL_TOPICS, TOTAL_HOURS, findTrackForTopic } from '@/lib/data';
+import { getAllProgress, getAllScheduleOverrides, getAllMetaOverrides } from '@/lib/supabase';
+import { TOPICS, ALL_TOPICS, TOTAL_HOURS, findTrackForTopic, resolveMeta } from '@/lib/data';
 import {
   getEffectiveStartWeek,
   getEffectiveEndWeek,
@@ -19,7 +19,11 @@ const STATUS_DOT: Record<string, string> = {
 };
 
 export default async function Dashboard() {
-  const [progress, overrides] = await Promise.all([getAllProgress(), getAllScheduleOverrides()]);
+  const [progress, overrides, metas] = await Promise.all([
+    getAllProgress(),
+    getAllScheduleOverrides(),
+    getAllMetaOverrides(),
+  ]);
 
   const doneCount  = ALL_TOPICS.filter(t => progress[t.id] === 'done').length;
   const activeCount = ALL_TOPICS.filter(t => progress[t.id] === 'in_progress').length;
@@ -58,7 +62,7 @@ export default async function Dashboard() {
     .filter(t => getEffectiveEndWeek(t, overrides) <= currentWeek && progress[t.id] !== 'done')
     .sort((a, b) => getEffectiveEndWeek(a, overrides) - getEffectiveEndWeek(b, overrides))
     .map(t => ({
-      title: t.title,
+      title: resolveMeta(t, metas).title,
       hours: t.hours,
       week: formatEffectiveWeekLabel(getEffectivePositions(t, overrides)),
     }));
@@ -171,7 +175,7 @@ export default async function Dashboard() {
                     {t.id}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium group-hover:underline">{t.title}</p>
+                    <p className="text-sm font-medium group-hover:underline">{resolveMeta(t, metas).title}</p>
                     <p className="text-[11px] text-[#FAF8F5]/40 mt-0.5">{formatEffectiveWeekLabel(getEffectivePositions(t, overrides))} · {t.hours}h · {track.label}</p>
                   </div>
                   <svg className="w-4 h-4 text-[#4A4540] group-hover:text-[#FAF8F5] transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

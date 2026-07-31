@@ -6,19 +6,24 @@ import TopicChat from '@/components/TopicChat';
 import ArtifactReviewer from '@/components/ArtifactReviewer';
 import ResourcesPanel from '@/components/ResourcesPanel';
 import TopicSidebar from '@/components/TopicSidebar';
-import { getAllProgress, getAllScheduleOverrides } from '@/lib/supabase';
-import { findTopicById, findTrackForTopic, ALL_TOPICS } from '@/lib/data';
+import EditableTopicHeader from '@/components/EditableTopicHeader';
+import { getAllProgress, getAllScheduleOverrides, getAllMetaOverrides } from '@/lib/supabase';
+import { findTopicById, findTrackForTopic, ALL_TOPICS, resolveMeta } from '@/lib/data';
 import { getEffectivePositions, formatEffectiveWeekLabel } from '@/lib/schedule';
 import type { Status } from '@/lib/types';
 import type { Metadata } from 'next';
 
 interface Props { params: Promise<{ id: string }> }
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const topic = findTopicById(id);
   if (!topic) return { title: 'Topic not found' };
-  return { title: `${topic.title} — FI Prep` };
+  const metas = await getAllMetaOverrides();
+  const { title } = resolveMeta(topic, metas);
+  return { title: `${title} — FI Prep` };
 }
 
 export default async function TopicPage({ params }: Props) {
@@ -27,15 +32,24 @@ export default async function TopicPage({ params }: Props) {
   if (!topic) notFound();
 
   const track = findTrackForTopic(id)!;
-  const [progress, overrides] = await Promise.all([getAllProgress(), getAllScheduleOverrides()]);
+  const [progress, overrides, metas] = await Promise.all([
+    getAllProgress(),
+    getAllScheduleOverrides(),
+    getAllMetaOverrides(),
+  ]);
   const status: Status = (progress[id] as Status) ?? 'not_started';
   const effectiveWeek = formatEffectiveWeekLabel(getEffectivePositions(topic, overrides));
+  const { title: effectiveTitle, desc: effectiveDesc } = resolveMeta(topic, metas);
 
   // prev/next topic in flat order
   const allIds = ALL_TOPICS.map(t => t.id);
   const idx = allIds.indexOf(id);
   const prevId = idx > 0 ? allIds[idx - 1] : null;
   const nextId = idx < allIds.length - 1 ? allIds[idx + 1] : null;
+  const prevTopic = prevId ? findTopicById(prevId) : null;
+  const nextTopic = nextId ? findTopicById(nextId) : null;
+  const prevTitle = prevTopic ? resolveMeta(prevTopic, metas).title : '';
+  const nextTitle = nextTopic ? resolveMeta(nextTopic, metas).title : '';
 
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
@@ -64,8 +78,14 @@ export default async function TopicPage({ params }: Props) {
               <span className="text-[11px] text-[#9B9590]">·</span>
               <span className="text-[11px]" style={{ color: track.color }}>{track.label}</span>
             </div>
-            <h1 className="font-[family-name:var(--font-playfair)] text-[22px] sm:text-[26px] font-bold text-[#1C1C1A] mb-1.5 leading-snug">{topic.title}</h1>
-            <p className="text-sm text-[#6B6560] mb-5">{topic.desc}</p>
+            <EditableTopicHeader
+              topicId={topic.id}
+              initialTitle={effectiveTitle}
+              initialDesc={effectiveDesc}
+              baseTitle={topic.title}
+              baseDesc={topic.desc}
+              trackColor={track.color}
+            />
             <StatusToggle topicId={topic.id} initial={status} color={track.color} />
           </div>
         </div>
@@ -96,12 +116,12 @@ export default async function TopicPage({ params }: Props) {
           {prevId ? (
             <Link href={`/topic/${prevId}`} className="flex items-center gap-1.5 text-xs text-[#6B6560] hover:text-[#1C1C1A] bg-white border border-[#E8E4DE] rounded-xl px-3.5 py-2.5 hover:border-[#C8C2BA] transition-all max-w-[48%]">
               <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-              <span className="truncate">{findTopicById(prevId)?.title}</span>
+              <span className="truncate">{prevTitle}</span>
             </Link>
           ) : <div />}
           {nextId ? (
             <Link href={`/topic/${nextId}`} className="flex items-center gap-1.5 text-xs text-[#6B6560] hover:text-[#1C1C1A] bg-white border border-[#E8E4DE] rounded-xl px-3.5 py-2.5 hover:border-[#C8C2BA] transition-all max-w-[48%] ml-auto">
-              <span className="truncate">{findTopicById(nextId)?.title}</span>
+              <span className="truncate">{nextTitle}</span>
               <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
             </Link>
           ) : <div />}
@@ -109,7 +129,7 @@ export default async function TopicPage({ params }: Props) {
 
         </div>{/* end main content */}
 
-        <TopicSidebar track={track} currentId={id} progress={progress} />
+        <TopicSidebar track={track} currentId={id} progress={progress} metas={metas} />
 
       </div>
     </div>

@@ -1,15 +1,16 @@
 import AppNav from '@/components/AppNav';
 import PlanView from '@/components/PlanView';
-import { getAllProgress, getAllScheduleOverrides } from '@/lib/supabase';
+import { getAllProgress, getAllScheduleOverrides, getAllMetaOverrides } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
 
 interface Props { searchParams: Promise<{ track?: string }> }
 
 export default async function PlanPage({ searchParams }: Props) {
-  const [progress, overrides, { track }] = await Promise.all([
+  const [progress, overrides, metas, { track }] = await Promise.all([
     getAllProgress(),
     getAllScheduleOverrides(),
+    getAllMetaOverrides(),
     searchParams,
   ]);
 
@@ -20,7 +21,7 @@ export default async function PlanPage({ searchParams }: Props) {
         <h1 className="font-[family-name:var(--font-playfair)] text-[28px] font-bold tracking-tight text-[#1C1C1A] mb-6">
           Learning plan
         </h1>
-        <PlanView initialProgress={progress} initialTrack={track} overrides={overrides} />
+        <PlanView initialProgress={progress} initialTrack={track} overrides={overrides} metas={metas} />
       </div>
     </div>
   );

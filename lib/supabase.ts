@@ -40,3 +40,38 @@ export async function setScheduleOverride(topicId: string, positions: Position[]
     { onConflict: 'user_id,topic_id' },
   );
 }
+
+export type MetaOverride = { title?: string; desc?: string };
+export type MetaOverrideMap = Record<string, MetaOverride>;
+
+export async function getAllMetaOverrides(): Promise<MetaOverrideMap> {
+  const { data, error } = await supabase
+    .from('fi_topic_meta_override')
+    .select('topic_id, title, desc')
+    .eq('user_id', USER_ID);
+  if (error || !data) return {};
+  return Object.fromEntries(
+    data.map(r => [r.topic_id, { title: r.title ?? undefined, desc: r.desc ?? undefined }]),
+  );
+}
+
+export async function setMetaOverride(topicId: string, patch: MetaOverride): Promise<void> {
+  await supabase.from('fi_topic_meta_override').upsert(
+    {
+      user_id: USER_ID,
+      topic_id: topicId,
+      title: patch.title ?? null,
+      desc: patch.desc ?? null,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: 'user_id,topic_id' },
+  );
+}
+
+export async function clearMetaOverride(topicId: string): Promise<void> {
+  await supabase
+    .from('fi_topic_meta_override')
+    .delete()
+    .eq('user_id', USER_ID)
+    .eq('topic_id', topicId);
+}

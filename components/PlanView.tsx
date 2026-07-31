@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { TOPICS, findTopicById } from '@/lib/data';
+import { TOPICS, findTopicById, resolveMeta } from '@/lib/data';
 import type { ProgressMap, Status } from '@/lib/types';
+import type { MetaOverrideMap } from '@/lib/supabase';
 import { SHADOW_RAISED } from '@/lib/elevation';
 import { getEffectivePositions, formatEffectiveWeekLabel, type OverrideMap } from '@/lib/schedule';
 
@@ -19,7 +20,7 @@ const STATUS_STYLE: Record<Status, { bg: string; text: string; dot: string; labe
   done:        { bg: '#D1EDDA', text: '#1B5E2A', dot: '#4CAF65', label: 'Done' },
 };
 
-export default function PlanView({ initialProgress, initialTrack, overrides }: { initialProgress: ProgressMap; initialTrack?: string; overrides: OverrideMap }) {
+export default function PlanView({ initialProgress, initialTrack, overrides, metas }: { initialProgress: ProgressMap; initialTrack?: string; overrides: OverrideMap; metas: MetaOverrideMap }) {
   const [progress, setProgress] = useState<ProgressMap>(initialProgress);
   const validTrack = TOPICS.find(l => l.id === initialTrack)?.id ?? TOPICS[0].id;
   const [activeTrack, setActiveTrack] = useState<string>(validTrack);
@@ -109,6 +110,7 @@ export default function PlanView({ initialProgress, initialTrack, overrides }: {
               {cat.topics.map(t => {
                 const status: Status = (progress[t.id] as Status) ?? 'not_started';
                 const s = STATUS_STYLE[status];
+                const meta = resolveMeta(t, metas);
                 return (
                   <Link
                     key={t.id}
@@ -140,9 +142,9 @@ export default function PlanView({ initialProgress, initialTrack, overrides }: {
 
                     <div className="flex-1 min-w-0">
                       <p className={`text-[13px] font-medium group-hover:text-[#000] transition-colors truncate ${status === 'done' ? 'text-[#9B9590] line-through' : 'text-[#1C1C1A]'}`}>
-                        {t.title}
+                        {meta.title}
                       </p>
-                      <p className="text-[11px] text-[#9B9590] truncate mt-0.5 hidden sm:block">{t.desc}</p>
+                      <p className="text-[11px] text-[#9B9590] truncate mt-0.5 hidden sm:block">{meta.desc}</p>
                     </div>
 
                     <div className="shrink-0 text-right hidden sm:block">

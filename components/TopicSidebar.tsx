@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { L1Track, ProgressMap, Status } from '@/lib/types';
+import type { MetaOverrideMap } from '@/lib/supabase';
 
-function TopicList({ track, currentId, progress, onNavigate }: {
-  track: L1Track; currentId: string; progress: ProgressMap; onNavigate?: () => void;
+function TopicList({ track, currentId, progress, metas, onNavigate }: {
+  track: L1Track; currentId: string; progress: ProgressMap; metas: MetaOverrideMap; onNavigate?: () => void;
 }) {
   return (
     <>
@@ -29,7 +30,7 @@ function TopicList({ track, currentId, progress, onNavigate }: {
                     <span className="font-mono text-[9px] shrink-0" style={{ color: isCurrent ? track.color : '#9B9590' }}>{t.id}</span>
                     <span className={`text-[11px] truncate transition-colors ${isCurrent ? 'font-semibold' : 'text-[#6B6560] group-hover:text-[#1C1C1A]'}`}
                       style={isCurrent ? { color: track.color } : {}}
-                    >{t.title}</span>
+                    >{metas[t.id]?.title?.trim() || t.title}</span>
                   </Link>
                 );
               })}
@@ -41,8 +42,8 @@ function TopicList({ track, currentId, progress, onNavigate }: {
   );
 }
 
-export default function TopicSidebar({ track, currentId, progress }: {
-  track: L1Track; currentId: string; progress: ProgressMap;
+export default function TopicSidebar({ track, currentId, progress, metas }: {
+  track: L1Track; currentId: string; progress: ProgressMap; metas: MetaOverrideMap;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -73,7 +74,7 @@ export default function TopicSidebar({ track, currentId, progress }: {
                 </svg>
               </button>
             </div>
-            <TopicList track={track} currentId={currentId} progress={progress} onNavigate={() => setOpen(false)} />
+            <TopicList track={track} currentId={currentId} progress={progress} metas={metas} onNavigate={() => setOpen(false)} />
           </div>
         </div>
       )}
@@ -81,7 +82,7 @@ export default function TopicSidebar({ track, currentId, progress }: {
       {/* Desktop sidebar */}
       <aside className="hidden lg:block w-52 shrink-0 self-stretch">
         <div className="sticky top-[4.5rem] max-h-[calc(100vh-5.5rem)] overflow-y-auto">
-          <TopicList track={track} currentId={currentId} progress={progress} />
+          <TopicList track={track} currentId={currentId} progress={progress} metas={metas} />
         </div>
       </aside>
     </>

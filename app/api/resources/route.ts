@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { createClient } from '@supabase/supabase-js';
-import { findTopicById } from '@/lib/data';
+import { findTopicById, resolveMeta } from '@/lib/data';
+import { getAllMetaOverrides } from '@/lib/supabase';
 import type { GeneratedResource } from '@/lib/types';
 
 const supabase = createClient(
@@ -32,6 +33,9 @@ export async function POST(req: NextRequest) {
   const topic = findTopicById(topicId);
   if (!topic) return NextResponse.json({ error: 'Topic not found' }, { status: 404 });
 
+  const metas = await getAllMetaOverrides();
+  const { title, desc } = resolveMeta(topic, metas);
+
   const existingLabels = topic.resources.map(r => `- ${r.label}`).join('\n');
 
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -41,7 +45,7 @@ export async function POST(req: NextRequest) {
     messages: [
       {
         role: 'user',
-        content: `You are helping a product manager learn "${topic.title}" — ${topic.desc}.
+        content: `You are helping a product manager learn "${title}" — ${desc}.
 
 Existing resources they already have:
 ${existingLabels}

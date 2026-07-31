@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
-import { findTopicById, findTrackForTopic } from '@/lib/data';
+import { findTopicById, findTrackForTopic, resolveMeta } from '@/lib/data';
+import { getAllMetaOverrides } from '@/lib/supabase';
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! });
 
@@ -12,9 +13,12 @@ export async function POST(req: Request) {
   if (!topic) return NextResponse.json({ error: 'Topic not found' }, { status: 404 });
   if (!artifact?.trim()) return NextResponse.json({ error: 'No artifact text provided' }, { status: 400 });
 
+  const metas = await getAllMetaOverrides();
+  const { title } = resolveMeta(topic, metas);
+
   const system = `You are reviewing a learning artifact produced as part of a FundsIndia PM onboarding programme.
 
-Topic: "${topic.title}" (${track?.label})
+Topic: "${title}" (${track?.label})
 Expected artifact: ${topic.artifact}
 Done when: ${topic.done}
 
