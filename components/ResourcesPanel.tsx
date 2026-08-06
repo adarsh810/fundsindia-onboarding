@@ -98,6 +98,8 @@ function SortableRow({
   editing,
   editText,
   saving,
+  renamingLabel,
+  renameText,
   onToggleOpen,
   onToggleDone,
   onSummarise,
@@ -108,6 +110,10 @@ function SortableRow({
   onSaveEdit,
   onCancelEdit,
   onRegenerate,
+  onRenameStart,
+  onRenameChange,
+  onRenameSave,
+  onRenameCancel,
 }: {
   resource: ManagedResource;
   section: 'primary' | 'additional';
@@ -121,6 +127,8 @@ function SortableRow({
   editing: boolean;
   editText: string;
   saving: boolean;
+  renamingLabel: boolean;
+  renameText: string;
   onToggleOpen: () => void;
   onToggleDone: () => void;
   onSummarise: () => void;
@@ -131,6 +139,10 @@ function SortableRow({
   onSaveEdit: () => void;
   onCancelEdit: () => void;
   onRegenerate: () => void;
+  onRenameStart: () => void;
+  onRenameChange: (v: string) => void;
+  onRenameSave: () => void;
+  onRenameCancel: () => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: resource.label,
@@ -171,18 +183,38 @@ function SortableRow({
           </button>
         )}
 
-        {/* Link or plain label */}
-        {resource.url ? (
+        {/* Label — inline rename on double-click */}
+        {renamingLabel ? (
+          <input
+            autoFocus
+            value={renameText}
+            onChange={e => onRenameChange(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter') { e.preventDefault(); onRenameSave(); }
+              if (e.key === 'Escape') onRenameCancel();
+            }}
+            onBlur={onRenameSave}
+            className="text-[12px] flex-1 min-w-0 bg-transparent border-b border-[#9B9590] focus:outline-none text-[#1C1C1A] truncate"
+          />
+        ) : resource.url ? (
           <a
             href={resource.url} target="_blank" rel="noopener noreferrer"
-            className={`text-[12px] flex-1 min-w-0 truncate hover:underline underline-offset-2 transition-colors ${isDone && section === 'primary' ? 'line-through opacity-60' : ''}`}
+            onDoubleClick={e => { e.preventDefault(); onRenameStart(); }}
+            className={`text-[12px] flex-1 min-w-0 truncate hover:underline underline-offset-2 transition-colors group/label cursor-pointer ${isDone && section === 'primary' ? 'line-through opacity-60' : ''}`}
             style={{ color: trackColor }}
+            title="Double-click to rename"
           >
             {resource.label}
+            <span className="opacity-0 group-hover/label:opacity-40 ml-1 text-[10px] not-italic font-normal" style={{ color: trackColor }}>✎</span>
           </a>
         ) : (
-          <span className={`text-[12px] flex-1 min-w-0 truncate text-[#4A4540] ${isDone && section === 'primary' ? 'line-through opacity-60' : ''}`}>
+          <span
+            onDoubleClick={onRenameStart}
+            className={`text-[12px] flex-1 min-w-0 truncate text-[#4A4540] group/label cursor-default ${isDone && section === 'primary' ? 'line-through opacity-60' : ''}`}
+            title="Double-click to rename"
+          >
             {resource.label}
+            <span className="opacity-0 group-hover/label:opacity-40 ml-1 text-[10px] text-[#9B9590]">✎</span>
           </span>
         )}
 
@@ -502,6 +534,10 @@ export default function ResourcesPanel({
   const [editText, setEditText] = useState('');
   const [saving, setSaving] = useState(false);
 
+  // Label rename state
+  const [renamingLabel, setRenamingLabel] = useState<string | null>(null);
+  const [renameText, setRenameText] = useState('');
+
   // Done state
   const [resourceDone, setResourceDone] = useState<Record<string, boolean>>({});
   const [togglingDone, setTogglingDone] = useState<string | null>(null);
@@ -606,6 +642,45 @@ export default function ResourcesPanel({
     setPrimary(newP);
     setAdditional(newA);
     saveConfig(newP, newA);
+  }
+
+  // ── Label rename ───────────────────────────────────────────────────────────
+
+  function startRename(label: string) {
+    setRenamingLabel(label);
+    setRenameText(label);
+  }
+
+  function saveRename() {
+    const oldLabel = renamingLabel;
+    const newLabel = renameText.trim();
+    setRenamingLabel(null);
+    if (!oldLabel || !newLabel || newLabel === oldLabel) return;
+
+    const rename = (list: ManagedResource[]) =>
+      list.map(r => r.label === oldLabel ? { ...r, label: newLabel } : r);
+
+    const newP = rename(primary);
+    const newA = rename(additional);
+    setPrimary(newP);
+    setAdditional(newA);
+
+    // Migrate resourceDone key
+    if (resourceDone[oldLabel] !== undefined) {
+      setResourceDone(prev => {
+        const next = { ...prev };
+        next[newLabel] = next[oldLabel];
+        delete next[oldLabel];
+        return next;
+      });
+    }
+
+    saveConfig(newP, newA);
+  }
+
+  function cancelRename() {
+    setRenamingLabel(null);
+    setRenameText('');
   }
 
   // ── Remove ─────────────────────────────────────────────────────────────────
@@ -796,6 +871,8 @@ export default function ResourcesPanel({
                   editing={editing === r.url}
                   editText={editText}
                   saving={saving}
+                  renamingLabel={renamingLabel === r.label}
+                  renameText={renameText}
                   onToggleOpen={() => r.url && setOpen(prev => ({ ...prev, [r.url!]: !prev[r.url!] }))}
                   onToggleDone={() => toggleDone(r)}
                   onSummarise={() => summarise(r)}
@@ -806,6 +883,10 @@ export default function ResourcesPanel({
                   onSaveEdit={() => r.url && saveEdit(r.url, r.label)}
                   onCancelEdit={() => setEditing(null)}
                   onRegenerate={() => summarise(r)}
+                  onRenameStart={() => startRename(r.label)}
+                  onRenameChange={setRenameText}
+                  onRenameSave={saveRename}
+                  onRenameCancel={cancelRename}
                 />
               ))}
             </DroppableSection>
@@ -900,6 +981,8 @@ export default function ResourcesPanel({
                   editing={editing === r.url}
                   editText={editText}
                   saving={saving}
+                  renamingLabel={renamingLabel === r.label}
+                  renameText={renameText}
                   onToggleOpen={() => r.url && setOpen(prev => ({ ...prev, [r.url!]: !prev[r.url!] }))}
                   onToggleDone={() => {}}
                   onSummarise={() => summarise(r)}
@@ -910,6 +993,10 @@ export default function ResourcesPanel({
                   onSaveEdit={() => r.url && saveEdit(r.url, r.label)}
                   onCancelEdit={() => setEditing(null)}
                   onRegenerate={() => summarise(r)}
+                  onRenameStart={() => startRename(r.label)}
+                  onRenameChange={setRenameText}
+                  onRenameSave={saveRename}
+                  onRenameCancel={cancelRename}
                 />
               ))}
             </DroppableSection>
