@@ -183,7 +183,7 @@ function SortableRow({
           </button>
         )}
 
-        {/* Label — inline rename on double-click */}
+        {/* Label — inline rename */}
         {renamingLabel ? (
           <input
             autoFocus
@@ -196,26 +196,30 @@ function SortableRow({
             onBlur={onRenameSave}
             className="text-[12px] flex-1 min-w-0 bg-transparent border-b border-[#9B9590] focus:outline-none text-[#1C1C1A] truncate"
           />
-        ) : resource.url ? (
-          <a
-            href={resource.url} target="_blank" rel="noopener noreferrer"
-            onDoubleClick={e => { e.preventDefault(); onRenameStart(); }}
-            className={`text-[12px] flex-1 min-w-0 truncate hover:underline underline-offset-2 transition-colors group/label cursor-pointer ${isDone && section === 'primary' ? 'line-through opacity-60' : ''}`}
-            style={{ color: trackColor }}
-            title="Double-click to rename"
-          >
-            {resource.label}
-            <span className="opacity-0 group-hover/label:opacity-40 ml-1 text-[10px] not-italic font-normal" style={{ color: trackColor }}>✎</span>
-          </a>
         ) : (
-          <span
-            onDoubleClick={onRenameStart}
-            className={`text-[12px] flex-1 min-w-0 truncate text-[#4A4540] group/label cursor-default ${isDone && section === 'primary' ? 'line-through opacity-60' : ''}`}
-            title="Double-click to rename"
-          >
-            {resource.label}
-            <span className="opacity-0 group-hover/label:opacity-40 ml-1 text-[10px] text-[#9B9590]">✎</span>
-          </span>
+          <div className="flex items-center gap-1 flex-1 min-w-0 group/label overflow-hidden">
+            {resource.url ? (
+              <a
+                href={resource.url} target="_blank" rel="noopener noreferrer"
+                className={`text-[12px] min-w-0 truncate hover:underline underline-offset-2 transition-colors ${isDone && section === 'primary' ? 'line-through opacity-60' : ''}`}
+                style={{ color: trackColor }}
+              >
+                {resource.label}
+              </a>
+            ) : (
+              <span className={`text-[12px] min-w-0 truncate text-[#4A4540] ${isDone && section === 'primary' ? 'line-through opacity-60' : ''}`}>
+                {resource.label}
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={e => { e.preventDefault(); e.stopPropagation(); onRenameStart(); }}
+              className="shrink-0 opacity-0 group-hover/label:opacity-50 hover:!opacity-100 text-[10px] text-[#9B9590] hover:text-[#4A4540] transition-opacity leading-none"
+              title="Rename"
+            >
+              ✎
+            </button>
+          </div>
         )}
 
         {/* Summarise / Notes button */}
