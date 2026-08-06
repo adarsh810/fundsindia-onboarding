@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   DndContext,
   DragEndEvent,
@@ -244,59 +244,19 @@ function SortableRow({
         </div>
       )}
 
-      {/* Notes edit panel — shown when editing (with or without existing summary) */}
+      {/* Notes edit panel */}
       {editing && (
-        <div className="border-t border-[#EEE9E2] px-4 py-3 bg-[#FAF8F5]">
-          <textarea
-            autoFocus
-            value={editText}
-            onChange={e => onEditChange(e.target.value)}
-            onKeyDown={e => {
-              const el = e.currentTarget;
-              const pos = el.selectionStart;
-
-              if (e.key === 'Tab') {
-                e.preventDefault();
-                const next = editText.slice(0, pos) + '  ' + editText.slice(el.selectionEnd);
-                onEditChange(next);
-                requestAnimationFrame(() => { el.selectionStart = el.selectionEnd = pos + 2; });
-                return;
-              }
-
-              if (e.key === 'Enter' && !e.shiftKey) {
-                const before = editText.slice(0, pos);
-                const currentLine = before.split('\n').pop() ?? '';
-                const m = currentLine.match(/^(\d+)\.\s+\S/);
-                if (m) {
-                  e.preventDefault();
-                  const insert = '\n' + (parseInt(m[1]) + 1) + '. ';
-                  onEditChange(editText.slice(0, pos) + insert + editText.slice(el.selectionEnd));
-                  requestAnimationFrame(() => { el.selectionStart = el.selectionEnd = pos + insert.length; });
-                }
-              }
-            }}
-            className="w-full text-[12px] text-[#3A3530] leading-relaxed bg-white border border-[#D8D3CC] rounded-lg px-3 py-2.5 resize-none focus:outline-none focus:border-[#9B9590] transition-colors"
-            rows={Math.max(5, editText.split('\n').length + 1)}
-            placeholder="1. First note&#10;2. Second note&#10;   - sub-point (Tab to indent)"
-          />
-          <p className="text-[10px] text-[#C8C2BA] mt-1">Enter → next bullet · Shift+Enter → new line · Tab → sub-point</p>
-          <div className="flex items-center gap-2 mt-2">
-            <button
-              onClick={onSaveEdit}
-              disabled={saving}
-              className="text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white transition-all hover:brightness-90 disabled:opacity-50"
-              style={{ background: trackColor }}
-            >
-              {saving ? 'Saving…' : 'Save'}
-            </button>
-            <button onClick={onCancelEdit} className="text-[11px] text-[#9B9590] hover:text-[#4A4540] transition-colors">
-              Cancel
-            </button>
-          </div>
-        </div>
+        <NotesEditor
+          value={editText}
+          onChange={onEditChange}
+          onSave={onSaveEdit}
+          onCancel={onCancelEdit}
+          saving={saving}
+          trackColor={trackColor}
+        />
       )}
 
-      {/* Notes view panel — shown when summary exists, panel is open, and not currently editing */}
+      {/* Notes view panel */}
       {summary && isOpen && !editing && (
         <div className="border-t border-[#EEE9E2] px-4 py-3 bg-[#FAF8F5]">
           <ul className="space-y-2">
@@ -305,15 +265,15 @@ function SortableRow({
               return (
                 <li key={bi} className="flex items-start gap-2.5 text-[12px] text-[#3A3530] leading-snug">
                   <span className="shrink-0 mt-0.5 text-[10px] font-bold" style={{ color: trackColor }}>{bi + 1}.</span>
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     {lines.map((line, li) =>
                       /^\s*[-•]\s/.test(line) ? (
                         <div key={li} className="flex items-start gap-1.5 mt-1 ml-1">
                           <span className="shrink-0 text-[9px] mt-0.5 font-bold" style={{ color: trackColor }}>–</span>
-                          <span>{line.replace(/^\s*[-•]\s+/, '')}</span>
+                          <div className="flex-1 min-w-0"><RichLine text={line.replace(/^\s*[-•]\s+/, '')} /></div>
                         </div>
                       ) : (
-                        <div key={li}>{line}</div>
+                        <div key={li}><RichLine text={line} /></div>
                       )
                     )}
                   </div>
@@ -332,6 +292,186 @@ function SortableRow({
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+// ─── RichLine — renders a line that may contain ![alt](url) image tokens ─────
+
+function RichLine({ text }: { text: string }) {
+  // Split the line into text and image segments.
+  const IMG_RE = /!\[([^\]]*)\]\(([^)]+)\)/g;
+  const parts: React.ReactNode[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  let key = 0;
+
+  while ((m = IMG_RE.exec(text)) !== null) {
+    if (m.index > last) parts.push(<span key={key++}>{text.slice(last, m.index)}</span>);
+    const [, alt, url] = m;
+    parts.push(
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        key={key++}
+        src={url}
+        alt={alt || 'image'}
+        className="max-w-full rounded-lg border border-[#E8E4DE] mt-2 mb-1 block"
+        style={{ maxHeight: 360 }}
+        loading="lazy"
+      />,
+    );
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) parts.push(<span key={key++}>{text.slice(last)}</span>);
+  if (parts.length === 0) return <span>{text}</span>;
+  return <>{parts}</>;
+}
+
+// ─── NotesEditor — textarea with paste-to-upload and file picker ──────────────
+
+async function uploadImage(file: File): Promise<string> {
+  const form = new FormData();
+  form.append('file', file);
+  const res = await fetch('/api/upload-image', { method: 'POST', body: form });
+  if (!res.ok) {
+    const { error } = await res.json().catch(() => ({ error: 'Upload failed' }));
+    throw new Error(error ?? 'Upload failed');
+  }
+  const { url } = await res.json();
+  return url as string;
+}
+
+function NotesEditor({
+  value,
+  onChange,
+  onSave,
+  onCancel,
+  saving,
+  trackColor,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  onSave: () => void;
+  onCancel: () => void;
+  saving: boolean;
+  trackColor: string;
+}) {
+  const [uploading, setUploading] = useState(false);
+  const [uploadErr, setUploadErr] = useState('');
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
+
+  async function insertImage(file: File) {
+    setUploading(true);
+    setUploadErr('');
+    try {
+      const url = await uploadImage(file);
+      const el = textareaRef.current;
+      if (!el) return;
+      const pos = el.selectionStart;
+      const tag = `![${file.name.replace(/\.[^.]+$/, '')}](${url})`;
+      const next = value.slice(0, pos) + tag + value.slice(pos);
+      onChange(next);
+      requestAnimationFrame(() => {
+        el.selectionStart = el.selectionEnd = pos + tag.length;
+        el.focus();
+      });
+    } catch (e) {
+      setUploadErr(e instanceof Error ? e.message : 'Upload failed');
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  function handlePaste(e: React.ClipboardEvent<HTMLTextAreaElement>) {
+    const items = Array.from(e.clipboardData.items);
+    const imgItem = items.find(i => i.type.startsWith('image/'));
+    if (!imgItem) return;
+    e.preventDefault();
+    const file = imgItem.getAsFile();
+    if (file) void insertImage(file);
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) void insertImage(file);
+    e.target.value = '';
+  }
+
+  return (
+    <div className="border-t border-[#EEE9E2] px-4 py-3 bg-[#FAF8F5]">
+      <div className="relative">
+        <textarea
+          ref={textareaRef}
+          autoFocus
+          value={value}
+          onChange={e => onChange(e.target.value)}
+          onPaste={handlePaste}
+          onKeyDown={e => {
+            const el = e.currentTarget;
+            const pos = el.selectionStart;
+            if (e.key === 'Tab') {
+              e.preventDefault();
+              const next = value.slice(0, pos) + '  ' + value.slice(el.selectionEnd);
+              onChange(next);
+              requestAnimationFrame(() => { el.selectionStart = el.selectionEnd = pos + 2; });
+              return;
+            }
+            if (e.key === 'Enter' && !e.shiftKey) {
+              const before = value.slice(0, pos);
+              const currentLine = before.split('\n').pop() ?? '';
+              const m = currentLine.match(/^(\d+)\.\s+\S/);
+              if (m) {
+                e.preventDefault();
+                const insert = '\n' + (parseInt(m[1]) + 1) + '. ';
+                onChange(value.slice(0, pos) + insert + value.slice(el.selectionEnd));
+                requestAnimationFrame(() => { el.selectionStart = el.selectionEnd = pos + insert.length; });
+              }
+            }
+          }}
+          className="w-full text-[12px] text-[#3A3530] leading-relaxed bg-white border border-[#D8D3CC] rounded-lg px-3 py-2.5 resize-none focus:outline-none focus:border-[#9B9590] transition-colors"
+          rows={Math.max(5, value.split('\n').length + 1)}
+          placeholder="1. First note&#10;2. Second note&#10;   - sub-point&#10;&#10;Paste a screenshot or click 📎 to attach an image"
+        />
+        {uploading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-white/70 rounded-lg">
+            <span className="text-[11px] text-[#6B6560] flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: `${trackColor} transparent transparent transparent` }} />
+              Uploading image…
+            </span>
+          </div>
+        )}
+      </div>
+
+      <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+        <p className="text-[10px] text-[#C8C2BA] flex-1">Paste screenshot · Tab → sub-point · Enter → next bullet</p>
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading}
+          className="text-[10px] text-[#9B9590] hover:text-[#4A4540] border border-[#D8D3CC] hover:border-[#9B9590] px-2 py-1 rounded-md transition-colors disabled:opacity-40"
+          title="Attach image from file"
+        >
+          📎 Attach image
+        </button>
+        <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
+      </div>
+
+      {uploadErr && <p className="text-[10px] text-red-500 mt-1">{uploadErr}</p>}
+
+      <div className="flex items-center gap-2 mt-2">
+        <button
+          onClick={onSave}
+          disabled={saving || uploading}
+          className="text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white transition-all hover:brightness-90 disabled:opacity-50"
+          style={{ background: trackColor }}
+        >
+          {saving ? 'Saving…' : 'Save'}
+        </button>
+        <button onClick={onCancel} className="text-[11px] text-[#9B9590] hover:text-[#4A4540] transition-colors">
+          Cancel
+        </button>
+      </div>
     </div>
   );
 }
