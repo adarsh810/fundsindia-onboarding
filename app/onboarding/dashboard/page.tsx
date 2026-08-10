@@ -19,6 +19,8 @@ export default async function OnboardingDashboard() {
   type FlatTopic = { id: string; title: string; hours: number; l1Id: string; l1Label: string; l1Color: string; serial: string };
 
   const allTopics: FlatTopic[] = [];
+
+  // Static L1 tracks (from ONBOARDING_TOPICS)
   for (const l1 of ONBOARDING_TOPICS) {
     let pos = 0;
     for (const cat of l1.categories) {
@@ -32,6 +34,15 @@ export default async function OnboardingDashboard() {
     for (const ct of customTopics.filter(c => c.l1Id === l1.id)) {
       pos++;
       allTopics.push({ id: ct.id, title: ct.title, hours: ct.hours, l1Id: l1.id, l1Label: l1.label, l1Color: l1.color, serial: String(pos) });
+    }
+  }
+
+  // Custom L1 tracks created by the user — also need their topics in allTopics
+  for (const cl1 of customL1Tracks) {
+    let pos = 0;
+    for (const ct of customTopics.filter(c => c.l1Id === cl1.id)) {
+      pos++;
+      allTopics.push({ id: ct.id, title: ct.title, hours: ct.hours, l1Id: cl1.id, l1Label: cl1.label, l1Color: cl1.color, serial: String(pos) });
     }
   }
 
