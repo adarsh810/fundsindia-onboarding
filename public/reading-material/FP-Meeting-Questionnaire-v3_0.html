@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fintech Primitives: Meeting Questionnaire v3.0</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.25rem;line-height:1.12;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.12rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.45rem;font-weight:700;color:var(--accent-dark);margin:50px 0 6px;letter-spacing:-.01em;padding-top:10px;}
+h3{font-size:1.05rem;font-weight:700;color:var(--accent-dark);margin:26px 0 4px;}
+p{margin:11px 0;}
+strong{font-weight:700;color:var(--ink);}
+.dlead{font-size:.95rem;color:var(--muted);font-style:italic;margin:2px 0 10px;}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.calm{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.calm .ck{color:var(--teal);}
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:.87rem;}
+th,td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.78rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+.q{border:1px solid var(--line-strong);border-radius:10px;padding:16px 24px 18px;margin:18px 0;background:var(--paper);}
+.q .qh{font-size:1.02rem;font-weight:700;color:var(--ink);margin:0 0 4px;line-height:1.45;}
+.q .qnum{color:var(--accent);font-weight:700;margin-right:.45em;}
+.q .facet{margin:9px 0;font-size:.93rem;}
+.q .fl{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+.q .facet.want .fl{color:var(--teal);}
+.q .facet.send .fl{color:var(--amber);}
+.q.db{border-color:#e0b6ac;}
+.q .facet.dbf{background:var(--red-soft);border-left:4px solid var(--red);border-radius:6px;padding:10px 14px;font-size:.9rem;}
+.q .facet.dbf .fl{color:var(--red);}
+.chip{display:inline-block;font-size:.65rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 10px;border-radius:20px;white-space:nowrap;vertical-align:middle;margin-left:6px;}
+.chip.p0{background:var(--red-soft);color:var(--red);border:1px solid #e8bcb0;}
+.chip.p1{background:var(--amber-soft);color:var(--amber);border:1px solid var(--amber-line);}
+.chip.p2{background:var(--teal-soft);color:var(--teal);border:1px solid #bcd9d5;}
+.notes{margin-top:12px;border-top:1px dashed var(--line-strong);padding-top:8px;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+.notes .rule{height:1px;background:var(--line);margin:14px 0;}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+.part-band{margin:58px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.22rem;font-weight:700;margin-top:2px;}
+ul.tight{margin:8px 0 8px 20px;padding:0;}
+ul.tight li{margin:5px 0;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.q,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:1.8rem;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Vendor Meeting</p>
+  <h1 class="title">Fintech Primitives: Meeting Questionnaire</h1>
+  <p class="subtitle">Version 3. We read your API reference, product guides, and security page before writing this, so the questions your documentation already answers have been taken out. What remains is what we could not learn on our own. Sixty-three questions across seven sessions and two tracks. That is not fewer than our earlier draft, and we want to be straight about why: eleven questions are retired outright, most of the rest have shrunk to the one gap your documentation left open, and the broad ones we split so that nobody is asked four things at once.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v3.0 &middot; Meeting-ready</b></div>
+    <div><span class="label">Date</span><b>July 2026</b></div>
+    <div><span class="label">Replaces</span><b>Questionnaire v2.0 (61 questions)</b></div>
+    <div><span class="label">Sessions</span><b>Seven, sequenced below</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">How to use this</p>
+    <p>Each question carries a priority. <span class="chip p0" style="margin-left:0;">P0</span> means we cannot launch on FP without a good answer, and where a specific answer would stop the deal, we say so plainly in the question. <span class="chip p1" style="margin-left:0;">P1</span> means a weak answer costs us extra build or an accepted risk, not the deal. <span class="chip p2" style="margin-left:0;">P2</span> shapes the roadmap conversation and blocks nothing.</p>
+    <p>Where we ask for something in writing, a verbal yes in the room does not close the question. That is not distrust; it is what our Compliance function will ask us for afterwards, and we would rather collect it once.</p>
+    <p><strong>Context you should have.</strong> We are rebuilding FundsIndia's platform for a March 2027 launch. We operate as a distributor (MFD), not an adviser. We serve resident, NRI, OCI, and minor investors from day one. We already have around two hundred thousand investors whose book migrates after launch. Mutual funds and SIF are both first-class at V1. Our platform reflects external truth and is never the system of record, which is why so many of these questions are about how faithfully we can see what you see.</p>
+  </div>
+
+  <h2>First, what we think we already know</h2>
+  <p class="dlead">Please correct anything here that is wrong. A correction is more useful to us than an answer to any question below.</p>
+  <div class="callout calm">
+    <p class="ck">Our reading of your documentation</p>
+    <ul class="tight">
+      <li><strong>Order states.</strong> Purchases, redemptions, and switches share one state machine: pending, confirmed, submitted, cancelled, successful, failed, reversed (plus under-review on ONDC). Rejections carry machine-readable failure codes. We are building our order spine against exactly this.</li>
+      <li><strong>Reversal is a real state.</strong> A previously successful order can be reversed and the units come back off. This matters to us more than you might expect, and we will ask about the procedure behind it.</li>
+      <li><strong>Mandate states.</strong> Created, received (BSE), submitted, approved, rejected, cancelled. We read "submitted" as the investor having authorised and the bank not yet having accepted. We are attaching orders to mandates on that reading.</li>
+      <li><strong>Mandate rails and limits.</strong> eNACH and UPI Autopay, both live via Razorpay and BillDesk. eNACH to one crore, UPI Autopay to one lakh. Above one lakh, the answer is eNACH rather than a per-debit approval flow.</li>
+      <li><strong>Failure codes are granular.</strong> A bank's internal debit cap being hit reads differently from an insufficient balance. Data problems on a first order read differently from payment problems. This was one of our bigger worries and your taxonomy answers it.</li>
+      <li><strong>The full transaction matrix exists.</strong> SIP, SWP, STP, switch, partial and full redemption, plus pause, skip, modify, and cancel on plans. STP is a switch plan with no mandate, which is correct: the buy leg funds itself from the sell leg.</li>
+      <li><strong>Distributor stamping.</strong> Partners carry the ARN and EUINs, and every order carries the EUIN and partner reference.</li>
+      <li><strong>Onboarding is composable.</strong> Nothing forces an FP-branded screen into our investor's path. We capture, you carry the registration onward. We plan to use our own identity vendor for capture.</li>
+      <li><strong>Sandbox has simulation.</strong> KYC, order, payment, mandate, and transaction simulation all exist. That is better than we expected and it shapes how we plan to test.</li>
+      <li><strong>Money never rests with you or us.</strong> Collection runs through the payment gateway to the AMC; redemptions settle from the AMC to the investor. You facilitate and never hold. This is the single most important thing we believe, and question 1.1 exists to get it in writing.</li>
+    </ul>
+  </div>
+</section>
+
+<div class="part-band"><div class="pk">Session 1</div><div class="pt">The money path</div></div>
+<p class="dlead">With our Compliance lead present. SEBI's no-pooling rule is the hardest constraint in our build, and this session exists to produce one signed document.</p>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">1.1</span> Walk us through a purchase, rupee by rupee. Which accounts does the money touch between the investor's bank and the fund house, and who legally holds each one?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We are never allowed to hold or pool investor money, even for a moment. We believe your flow already satisfies this. We need it in writing, account by account, because our Compliance function will not sign off on our reading of your website.</div>
+  <div class="facet want"><span class="fl">A good answer</span>A named account chain from investor to scheme, confirming that no account controlled by FundsIndia or by Cybrilla is ever in the path, and that this is the payment-aggregator route the no-pooling circular permits.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>Any variant where money rests, even briefly, in an account held or operated for us. Or an inability to put the flow in writing.</div>
+  <div class="facet send"><span class="fl">Please send</span>A signed fund-flow confirmation, the account-holder map, and the aggregator's co-mingling safeguards.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">1.2</span> Your docs mention a mode where the customer collects payment themselves and posts the UTR to you. We want that mode contractually excluded for us. Any reason not to?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>That mode is precisely the one that would put us in the chain of custody. We would rather close the door on paper than rely on nobody ever opening it.</div>
+  <div class="facet want"><span class="fl">A good answer</span>Yes, and here is how we switch it off at the account level as well as in the contract.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">1.3</span> Redemption money: does it ever touch an account other than the investor's own registered bank account? And for NRIs, how do you route proceeds to NRE versus NRO?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>The AMC pays the investor directly; we understand that. The part we could not find anywhere in your documentation is repatriability. Money from a repatriable folio must land in an NRE account and non-repatriable in an NRO account, and we need to know whether that is handled or whether it is our problem.</div>
+  <div class="facet want"><span class="fl">A good answer</span>Proceeds go from the fund house to the investor, you carry status only, and repatriability class drives the destination as standard practice.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>Redemption proceeds resting in an FP-controlled account. Or routing that ignores repatriability.</div>
+  <div class="facet send"><span class="fl">Please send</span>A real example of a repatriable redemption's settlement path.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">1.4</span> Show us how an investor pays ten lakh rupees for a single purchase. Which rail, what is its ceiling, and what does the investor see?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>SIF purchases start at ten lakh, which is above UPI's per-transaction cap. Your payments guide lists netbanking, UPI, eNACH, and UPI Autopay, and we could not find NEFT or RTGS as collection modes. NRI investors also need a non-UPI default. If the answer is "netbanking handles it," we want to know the real bank coverage and the real limits, not the theoretical ones.</div>
+  <div class="facet want"><span class="fl">A good answer</span>A named rail carrying high-value volume today, with limits, reconciliation, and a clear story for what happens when an investor picks a rail whose ceiling their order exceeds.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>No production-grade high-value payment path. That takes SIF off the table and hurts the NRI proposition, both of which are V1 scope.</div>
+  <div class="facet send"><span class="fl">Please send</span>Volume split by rail, limits table, and the reconciliation process per rail.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">1.5</span> If Razorpay has an outage during a month-start SIP window, what happens to our debits?<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>You integrate four gateways, so redundancy exists on paper. What we do not know is whether a debit can move between them mid-cycle in practice, or whether the posture is queue-and-wait. A mass failure on the first of the month would flood our plan-pause machinery with failures no investor caused.</div>
+  <div class="facet want"><span class="fl">A good answer</span>Either documented failover, or a queue-and-retry posture that never double-debits, plus an honest description of what the investor experiences.</div>
+  <div class="facet send"><span class="fl">Please send</span>The last gateway outage and how debits behaved through it.</div>
+</div>
+
+<div class="part-band"><div class="pk">Session 2</div><div class="pt">How we find out that something changed</div></div>
+<p class="dlead">The most important technical session. Our platform mirrors your state. Everything here is about whether the mirror can be trusted.</p>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">2.1</span> Your webhooks are documented under "Beta programs," and you say event order is not guaranteed. Give us the candid version. When does it become generally available, what are the delivery retries, and is there a dead-letter queue we can reach?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We hydrate our entire view of orders, folios, and mandates from your events. We are not troubled by out-of-order delivery; we can sort that out with timestamps. We are troubled by a missed event that is simply gone, and by building a March 2027 launch on something you label beta.</div>
+  <div class="facet want"><span class="fl">A good answer</span>A GA date, a retry schedule, signed payloads (we can see you already do this), and a way to recover events we never received.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>Best-effort delivery with no way to recover a missed event. We cannot mirror your truth from a lossy feed.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">2.2</span> We think your Events API is the real answer to replay: events are stored objects we can list and fetch. Is that the sanctioned pattern, and how long do you keep them?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>If we can poll the event log and reconcile, then the webhook is an accelerant rather than a single point of failure, and we design accordingly. The retention period is effectively our replay window, so the number matters.</div>
+  <div class="facet want"><span class="fl">A good answer</span>Yes, poll and reconcile, here is the retention period, and here is the rate limit you will run into if you sweep aggressively.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">2.3</span> Our request to you times out. We do not know whether the order exists. How do we find out, deterministically?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Duplicate orders are the most expensive mistake in this business: real money, angry investors, regulatory attention. We noticed <code>source_ref_id</code> on the order object. Can we use it as an idempotency key? Is uniqueness enforced? Can we query order status by our own reference?</div>
+  <div class="facet want"><span class="fl">A good answer</span>A client-supplied key with a retention window of at least a week, and a lookup by that key. The same question applies one layer up: when your request to the RTA times out, how do you resolve it, and what do we see meanwhile?</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>"Idempotency is handled internally, do not worry about it." That leaves the reconciliation burden with us and no way to discharge it.</div>
+  <div class="facet send"><span class="fl">Please send</span>The idempotency specification, and duplicate-order incidents from the last twelve months with root causes.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">2.4</span> Your order state <code>submitted</code> means "sent to the gateway." Can we tell, separately, that the RTA has accepted it?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Our spine has an Acknowledged state that means the RTA has it. If your <code>submitted</code> collapses "we sent it" and "they took it" into one signal, then our Acknowledged state is a lie, and every journey built on top inherits the lie.</div>
+  <div class="facet want"><span class="fl">A good answer</span>Either the two are distinguishable, or a straight admission that they are collapsed and why. We can design around a known collapse; we cannot design around a hidden one.</div>
+  <div class="facet send"><span class="fl">Please send</span>Sample event sequences for a clean purchase, a rejected purchase, and a reversed purchase.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">2.5</span> Can we tell, for a given order, that units are allotted but the money is not yet confirmed?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We only show an investor a confirmed holding when allotment and money agree. We think this is derivable by joining your order and payment objects. We want to be sure there is no path where an order goes <code>successful</code> while realisation is still open and nothing tells us.</div>
+  <div class="facet want"><span class="fl">A good answer</span>Two distinct, timestamped signals, or an order sub-state that carries the distinction.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>A single merged success signal with no way to see the gap.</div>
+  <div class="facet send"><span class="fl">Please send</span>Event payloads from a real order showing both signals, and how far apart they typically land.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">2.6</span> A payment dishonours after units were already allotted. Walk us through the unwind, step by step. Who does what, what do we see, and how long does it take?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>This is the costliest edge in the whole lifecycle, and the one our Compliance function asks about first. We can see you have a <code>reversed</code> state, which is more than most, so the state exists. What we need is proof the procedure behind it has a shape.</div>
+  <div class="facet want"><span class="fl">A good answer</span>A documented procedure, a reversal we can see as an explicit event linked to the original order, a typical duration, and clarity on who acts at each step (you, the RTA, the fund house).</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>The holding quietly disappearing with no reversal event, or the whole thing being handled by hand, differently each time.</div>
+  <div class="facet send"><span class="fl">Please send</span>The unwind runbook, an anonymised trace of a real one, and how often this happened last year.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">2.7</span> A first purchase creates the folio. If it fails, can we tell whether the folio was created anyway?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Your failure codes already tell us whether the problem was the data or the payment, which is most of what we needed. The remaining piece: if the order failed but the folio was minted, our retry logic has to know, or we mint a duplicate on the investor's very first transaction.</div>
+  <div class="facet want"><span class="fl">A good answer</span>A signal on the failed order, or a folio lookup that will reliably show it within a stated time.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">2.8</span> An investor's KYC gets downgraded to On Hold at the KRA. How do we learn about it without polling every PAN every day, and without waiting for their next order to fail?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>When a KYC downgrades, we proactively pause that investor's SIPs and tell them why. We can only do that if we hear about the downgrade. Your documentation shows a refetch endpoint, which is a pull, and we could not find a status-change event anywhere.</div>
+  <div class="facet want"><span class="fl">A good answer</span>Either an event on KYC status transitions, with the typical lag from the KRA change, or an honest "no, you will need to sweep for it," in which case tell us the best mechanism and the rate limits so we can build it.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>KYC status only discoverable when an order fails. That makes the whole proactive-pause design impossible and turns a compliance event into a customer-service incident.</div>
+</div>
+
+<div class="part-band"><div class="pk">Session 3</div><div class="pt">Folios, holders, and nomination</div></div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">3.1</span> Show us a live folio lookup for a PAN. We want to see four things on every folio: the investor, the fund house, the mode of holding, and whether it is repatriable.<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Those four attributes are exactly how we decide whether to reuse an existing folio or create a new one. Get it wrong and we either mint duplicates or try to put money into a folio the investor legally cannot share. We can see mode of holding is first-class in your investment-account model. Repatriability is the one we could not find, and it is the one that will hurt.</div>
+  <div class="facet want"><span class="fl">A good answer</span>A live lookup against a multi-folio test investor showing all four, current to your latest RTA feed.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>Folio lookups that return a number without mode and repatriability. We would be matching on guesswork.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">3.2</span> The nomination rules changed on 29 May 2026, and the nominate-or-opt-out gate becomes mandatory on 1 September 2026. Where are you on it?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Every folio we create will be created after that date. Three nominees maximum, name and relationship the only mandatory fields, an opt-out declaration for single holders, all-holder consent on joint folios. We can see nomination is enforced in your failure codes, so the gate exists; what we cannot see is whether it is the new gate or the old one.</div>
+  <div class="facet want"><span class="fl">A good answer</span>Already aligned, or a dated plan landing comfortably before September, covering the opt-out and joint-consent flows and not just the nominee list.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>No credible readiness. Folio creation is our marquee flow and it would be non-compliant on day one.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">3.3</span> Units arrive without a purchase, as in a transmission to an heir. Where is that folio born, and how does it reach us?<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We could not find a way to create a folio with no transaction attached, which suggests the RTA mints it and you reflect it. If that is right, the answer is simply "we reflect it, you mirror us," and we will build accordingly. We just want to hear it said.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">3.4</span> How do we see that a folio has gone dormant, and how does the investor revive it?<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We can see bank-account dormancy in your debit failure codes. Folio dormancy is a different thing, it is an RTA state, and it will block transactions on long-idle folios. We would rather build the revival step into the product than discover it in production.</div>
+  <div class="facet want"><span class="fl">A good answer</span>Dormancy visible on the folio, the RTA's definition documented, and reactivation either through your APIs or clearly described as somewhere we send the investor.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">3.5</span> Give us the honest support matrix by investor type: resident, NRI, OCI, minor with guardian, and joint holding. Where are the gaps?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>All of these are V1 for us. Your failure codes show real production machinery for joint holders and for minors, including the attaining-majority freeze, which is reassuring. But OCI does not appear anywhere in your documentation, and NRI onboarding looks thinner than NRI transacting, which is why the next session exists.</div>
+  <div class="facet want"><span class="fl">A good answer</span>Full support with an honest gap list where support is partial.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>No workable NRI or minor support. Neither can be deferred by a vendor gap; both are V1 personas.</div>
+  <div class="facet send"><span class="fl">Please send</span>The persona and holding-mode matrix, plus sample flows for a minor onboarding and a joint-folio purchase.</div>
+</div>
+
+<div class="part-band"><div class="pk">Session 4</div><div class="pt">The non-resident investor</div></div>
+<p class="dlead">A dedicated session, because your documentation points two ways on this and we need to know which way is true.</p>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">4.1</span> Your KYC Request object lists exactly one possible residential status: resident individual. So how does an NRI get onboarded?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>This is the finding that most surprised us. Your transaction rails clearly know about NRIs: there are failure codes for NRE and NRO account types, FIRC certificates, source-of-funds accounts, NRI addresses. But the digital KYC capture path appears to be resident-only, and your bulk folio migration is stated as resident-individuals-only too. We may be reading it wrong. If we are reading it right, we need to know what we are building ourselves.</div>
+  <div class="facet want"><span class="fl">A good answer</span>Either the capture path supports non-residents and the documentation is behind, or a clear map of which parts of NRI onboarding are ours, which are yours, and which are manual at the RTA.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>No production NRI support anywhere in the chain.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">4.2</span> Walk us through an NRI investing end to end: repatriable and non-repatriable money kept in separate folios, and proceeds routed to the right account type on the way out.<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Repatriable and non-repatriable money cannot share a folio. This is standard in the industry, and we want to know it is standard in your rails, not something we discover is our job in month eight.</div>
+  <div class="facet send"><span class="fl">Please send</span>NRI flow documentation and a production example of a repatriable redemption.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">4.3</span> The relaxation that lets NRIs transact at Registered KYC status lapses on 31 October 2026, before we launch. Is your NRI path built to the Validated standard?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We launch into the world after the lapse, so we are building to Validated from the start. If your path assumes the relaxation, we inherit a cliff.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">4.4</span> An investor moves abroad, or moves back. What happens on your side?<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>A residency change is many changes at once: the KYC record, the bank account class, the folio's repatriability, tax withholding, reporting. The return leg is the one the industry routinely under-builds. We have an open decision on how much of this we service ourselves, and your real capability is the input that decision needs.</div>
+  <div class="facet want"><span class="fl">A good answer</span>A described path in both directions, honest about which steps are manual at the RTA.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">4.5</span> On an NRI redemption, can you give us a pre-trade TDS or net-proceeds figure from the RTA?<span class="chip p2">P2</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We noticed a pre-redemption summary endpoint. If it can carry a reliable net figure for NRIs, we show it and the experience is better. If it cannot, we show gross and exit load and confirm the net at settlement, which is what we have already decided to do. A straight no is a perfectly good answer here. A vague maybe is not.</div>
+</div>
+
+<div class="part-band"><div class="pk">Session 5</div><div class="pt">Mandates, plans, and SIF</div></div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">5.1</span> One mandate backing several SIPs: can we see, for a given debit date, how much of the mandate's ceiling is already committed?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We authorise the investor once and run several plans inside that ceiling. Your docs say the mandate limit affects how many purchase plans can run in a day, so multi-plan clearly works. What we could not find is a way to ask "if I add a five thousand rupee SIP on the 5th, does that breach the ceiling?" Without it, we either block plans we should allow or allow plans that will fail.</div>
+  <div class="facet want"><span class="fl">A good answer</span>A headroom or committed-debits view per date. And tell us what happens when the combined debits on one date exceed the ceiling: does one instalment fail, or all of them?</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>Strict one-mandate-per-plan with no roadmap. That would mean re-authorising the investor for every single SIP.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">5.2</span> Is there any automatic payment retry on a failed instalment that we cannot see or switch off?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Our rule is precise: one failed instalment never stops a plan, three consecutive failures pause it. A hidden retry corrupts that count, and worse, risks a double debit. We can see instalments generate a day early and that an instalment on an unapproved mandate is simply marked failed, which is the behaviour we want.</div>
+  <div class="facet want"><span class="fl">A good answer</span>No hidden retry, or a retry that is idempotent, visible, and disableable.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>An automatic retry we cannot observe or turn off.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">5.3</span> When we pause a plan, can we attach our own reason to it?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We pause plans for two very different reasons: repeated payment failures, and a KYC downgrade. The investor needs to hear a different message in each case, and our systems need to treat them differently. If pause is a single undifferentiated state, we carry the reason ourselves, which is fine, but we need to know now.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">5.4</span> Do your mandate states each raise an event we can subscribe to, and how long does a mandate typically sit in each one?<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We attach an order to a mandate the moment the investor authorises it, hold while the bank decides, proceed when it is approved, and unwind cleanly if it is rejected. That contract needs an event on each transition, not just a state we can poll. The dwell times tell us what to say to the investor while they wait.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">5.5</span> Whose NPCI utility code are our mandates registered under: yours, the gateway's, or one we could hold ourselves?<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We have learned this lesson the hard way on our existing book. A mandate is bound to the collecting entity's utility code, not to our ARN and not to the investor's PAN, which means a mandate book does not follow the distributor. We are not asking you to solve it. We are asking you to name it, so that when we add a second rail later we know exactly what survives and what has to be re-registered.</div>
+  <div class="facet want"><span class="fl">A good answer</span>A clear statement of the registering entity per rail, and an honest account of what re-registers if debits later move. There may be no perfect answer here, and that is fine. We want the lock-in named and priced, not discovered.</div>
+  <div class="facet send"><span class="fl">Please send</span>The utility-code and sponsor-bank arrangement per mandate rail, in writing.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">5.6</span> If an investor sets up an eNACH mandate and later starts a SIP whose instalment sits above the rail's ceiling, do we find out at setup or on the first failed debit?<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We would rather stop the investor at setup with a clear reason than let them discover the problem monthly.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">5.7</span> Show us a SIF order, live, in your environment.<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>SIF is in our V1 scope on the understanding that you support it. We then went looking, and found no mention of SIF anywhere: not in your API reference, not in your product guides, not in public search. We may simply be looking in the wrong place. But this is important enough that we cannot take it on trust, and a demonstration settles it in ten minutes.</div>
+  <div class="facet want"><span class="fl">A good answer</span>A live SIF order, the ten-lakh per-PAN minimum enforced at a named layer (yours or ours), per-strategy redemption windows and thresholds available as data, and the list of fund houses whose SIF strategies are transactable today.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>SIF that exists on paper but cannot be shown.</div>
+</div>
+
+<div class="part-band"><div class="pk">Session 6</div><div class="pt">Scheme data, freshness, and reconciliation</div></div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">6.1</span> Does your scheme master carry each scheme's cut-off time and settlement cycle, and does it tell us when those change?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Your scheme master is rich on transaction mechanics: minimums, multiples, allowed SIP dates, lock-ins, mergers. What we could not find were cut-off times and settlement cycles per scheme. We made a deliberate decision never to hard-code those numbers, so we need them as data. We also need to know when a scheme's parameters move, and how often the whole master refreshes from the RTA.</div>
+  <div class="facet want"><span class="fl">A good answer</span>Daily-or-better refresh, the full attribute set, and change events when parameters move.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>A weekly-or-worse refresh, or missing cut-off and settlement data with no way to source it.</div>
+  <div class="facet send"><span class="fl">Please send</span>The scheme master schema, refresh logs, and a sample change event. Also tell us whether the newer V2 scheme API, which currently documents only the CybrillaPOA gateway, will extend to the RTA gateway.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">6.2</span> Can we tell, from your data, that a gold index fund taxes as a non-equity fund and an equity index fund taxes as equity?<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Your <code>fund_category</code> gives us Equity, Debt, Liquid, Others, which is not granular enough to derive the tax bucket for index funds with different underlyings. We think the answer is that we source this elsewhere. If so, just tell us plainly and we will budget for it.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">6.3</span> Does the scheme master tell us which schemes accept NRIs, and which accept investors based in the US and Canada?<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We show US-based investors only the funds that will take them, rather than letting them get rejected at the RTA. We can see you enforce this at rejection time (there are codes for it). What we want is the same fact as data, at browse time.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">6.4</span> For each thing we mirror from you (KYC status, folios, holdings, mandates, orders), how stale can our copy be at worst?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We check things before we accept an order, and we trust our mirrored copy inside an agreed freshness window. We can piece part of this together from your docs: orders reach the RTA within five minutes, your data platform serves yesterday by 6am, folios reflect daily from RTA feeds, KYC is a pull. What we cannot see is the lag on the way back: from the truth changing at the RTA to you knowing about it. Without honest numbers, our freshness windows are guesses.</div>
+  <div class="facet want"><span class="fl">A good answer</span>A table of cadence and worst-case lag per data class, separating what you push from what you batch, with month-start behaviour called out.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>Not being able to state the lag for any data class we gate transactions on.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">6.5</span> Can we see that units are under lien before we accept a redemption, or only when the RTA rejects it two days later?<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We can see the rejection codes for lien and lock-in, so we know it gets caught eventually. Catching it at our pre-check is a much better experience. If lien only surfaces at rejection, tell us, and we will design the post-acceptance path around that.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">6.6</span> When your records and the RTA's disagree, do we find out from you, or from an investor complaining?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Our ledger is a reconciliation of RTA truth, so discrepancies are inevitable and we plan for them. Your docs say a NAV discrepancy report is on the roadmap and proactive AMC follow-up is coming soon, with the interim being that we compare things ourselves via the data platform. We can live with that, but we want to know exactly which discrepancy classes you surface unasked, and which are ours to hunt.</div>
+  <div class="facet want"><span class="fl">A good answer</span>Daily automated reconciliation against the RTA, proactive reports, and a reconciliation surface we can run our own processes against. Where that is roadmap, a date.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>Reconciliation as a purely internal process with nothing customer-facing. At our volume, every discrepancy would become a support ticket.</div>
+  <div class="facet send"><span class="fl">Please send</span>A sample discrepancy report and last quarter's discrepancy rates.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">6.7</span> How long do you keep our records, is the audit trail immutable, and can we pull our full history ourselves?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>SEBI expects up to eight years on some record classes, and an inspection is not the moment to be raising a support ticket for our own data. We can see your admin-access logs are kept two years; we are asking about transaction and instruction records.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>Retention shorter than the regulation, or export that goes through your support queue.</div>
+  <div class="facet send"><span class="fl">Please send</span>The retention policy and a sample full-history export for a test investor.</div>
+</div>
+
+<div class="part-band"><div class="pk">Session 7</div><div class="pt">Scale, resilience, security, and the second rail</div></div>
+<p class="dlead">With our SRE, security, and Compliance leads present.</p>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">7.1</span> Walk us through your last month-start SIP window and your last NFO surge. Peak orders per second, queue depths, drain times, anything that degraded.<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Indian mutual fund load is spiky by design: the first days of the month, the March deadline, NFO opens. We would add materially to your peak. A platform that struggles in exactly the windows our investors transact is a platform that fails on a schedule.</div>
+  <div class="facet want"><span class="fl">A good answer</span>Real numbers from real events, a stated headroom multiple at current provisioning, and a plan for absorbing us with a capacity commitment in the contract.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>"No change needed" with no ceiling identified. Every system has one; not knowing yours is the concern.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">7.2</span> Give us P50, P95, P99, and P99.9 latency on your main endpoints over the last 90 days, split by read and write. And tell us our rate limits.<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>P99 is what investors feel and P99.9 sets how often we get paged. Reads and writes matter differently: order-write latency hits the confirmation screen, scheme-read latency hits browsing. On rate limits: if our reconciliation design leans on sweeping your Events API, the limit becomes an architectural constraint, so we need the number early.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">7.3</span> Your bulk migration works off our RTA reverse feeds and is documented as resident-individuals-only. Our book has NRIs and minors in it, and we need to move around two thousand accounts a day. Can this path carry that?<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>The feed-driven model is elegant and clearly production-proven, and we would rather use it than build an import path. Two concerns: the resident-only limit, and whether a daily feed cadence can absorb our migration pace or whether we need a special arrangement. On mandates, we already know they do not port; we are not asking you to make them.</div>
+  <div class="facet send"><span class="fl">Please send</span>A comparable migration case study with the throughput achieved.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">7.4</span> What is your uptime SLA, what have you achieved over 24 months, and is there a public status page?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Achieved beats contractual and methodology beats both. We found your published incident reports, which is more transparency than most vendors offer, but we could not find a status page or an uptime commitment. At our size the difference between 99.5 and 99.9 percent is about thirty-five hours a year of investors unable to transact.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>No public status page, or uptime measured at component level rather than as customers experience it.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">7.5</span> Your DR posture: what are your RTO and RPO, and when did you last run a full drill?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Your security page describes multi-AZ, cross-region replication, and well-tested restoration procedures, which is the right shape. Untested DR is not DR, though, and SEBI's framework wants demonstrated capability from critical vendors, not documented intent.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>No drill on record, or a single-availability-zone deployment.</div>
+  <div class="facet send"><span class="fl">Please send</span>The last drill report, the topology, and backup verification logs.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">7.6</span> When the RTA is down, or a KRA, or a payment gateway, can we see that programmatically?<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>You are a wrapper around other people's systems, so how you handle their failures is most of the product. We can see you model per-KRA errors and fall back to manual RTA submission when the RTA is down, which is good. What we want is to know which upstream is unwell without waiting for your status update, so our investors see an honest degraded state that we control.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">7.7</span> When you have a P0, how fast do we hear about it, and from whom?<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>When you have a P0, we have a P0. Learning at five minutes from your alert versus ninety minutes from our own escalation is the difference between managing an incident and being managed by one.</div>
+  <div class="facet send"><span class="fl">Please send</span>Your escalation matrix and the last three to five incident reviews under NDA.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">7.8</span> We will run a direct BSE StAR MF rail alongside you within months of launch. This is by design, not a threat. Does anything in your contract or your posture resist it?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We would rather find out now than at the second rail's go-live. Encouragingly, your product seems built for this already: every order carries a gateway, and you document moving flows between gateways yourself. So this is really a contract question.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>Exclusivity clauses, or export terms that make a parallel rail impractical.</div>
+  <div class="facet send"><span class="fl">Please send</span>The exclusivity and export clauses. And if you have a customer running dual-rail today, we would like to speak to them.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">7.9</span> Your security page says your programme is "aligned to" ISO 27001. Are you certified, and does the certificate cover production?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We noticed the careful wording, and SOC 2 is not mentioned anywhere. Alignment and certification are different things, and scope is where certificates go hollow: one covering the office network but not production is decoration. As a regulated intermediary we also need you mapped to SEBI's cyber framework, since its expectations flow down to critical vendors.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>No current certification covering production, and no committed audit date.</div>
+  <div class="facet send"><span class="fl">Please send</span>Certificates with their scope statements, the last audit report under NDA, and your CSCRF mapping.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">7.10</span> Where does Indian investor data physically live, and what is your DPDP posture?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We know you are on AWS. We could not find the region, an India residency attestation, a processing agreement, or anything about consent and data-subject requests. Our platform carries its own consent framework, and we need your consent artefacts to slot underneath ours rather than replace them. We also need to be able to discharge an erasure request for the data you hold.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>Indian investor data processed or stored outside India, or no path to honouring an erasure request.</div>
+  <div class="facet send"><span class="fl">Please send</span>The residency attestation, the DPA template, and your data-subject-request process.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">7.11</span> Your security page describes tenant isolation two ways: logically separated on shared infrastructure, and a separate database per tenant. Which is it?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>These are meaningfully different, and one is much stronger than the other. A leak between us and another FP customer would carry our name in the headline, so we would like to be precise. And whichever it is, we want to see a penetration test that specifically attacked the tenant boundary.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>Isolation enforced only in application code with no independent testing of it.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">7.12</span> Who at Cybrilla can touch our production data, under what process, and can we see the log? And tell us about your last security incident.<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Insider access is the vendor risk nobody discusses and SEBI increasingly probes. You already describe least privilege, quarterly access reviews, and masking, which is a good start. On incidents: every real company has had one. "Never" means either nobody is watching or nobody is telling, and how you handled the last one predicts how you will handle the next.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">7.13</span> You hold your own RTA licence, and CybrillaPOA is a distinct gateway. Which of our flows would run under your licence versus as pure middleware, and how does liability differ?<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Flows routed under your licence have a different regulatory character: different liability if an investor is harmed, and less migration optionality. We want the mode chosen per flow with eyes open, and the contract's liability terms to track the regulatory reality. We also noticed the newer V2 scheme API documents only CybrillaPOA, which we read as a signal about where your investment is going. Tell us if we are reading that right.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">7.14</span> How fast do you absorb a SEBI circular? Walk us through the last five, including the nomination one.<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Circulars are constant and binding, and your speed is our regulatory risk. The May nomination circular is a live, checkable example, which is why we asked about it directly in session 3.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">7.15</span> We get paid in commission. Show us the brokerage feed.<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We are a distributor, not an adviser: our revenue is commission, never an advisory fee. The stamping half of this is already settled from your docs (partners carry the ARN and EUINs, orders carry both). What we could not find is the commission or brokerage reporting feed, which is how the business gets paid and reconciled.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>No commission reporting path. The business model does not function.</div>
+  <div class="facet send"><span class="fl">Please send</span>A sample brokerage feed with its cadence and granularity.</div>
+</div>
+
+<div class="part-band"><div class="pk">Commercial track</div><div class="pt">Price, contract, exit, and your company</div></div>
+<p class="dlead">Run separately from the technical sessions, with our commercial and legal leads.</p>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">C.1</span> The complete price list: per call, per transaction, per folio, per mandate, platform fees, minimums, and volume tiers. Reads priced separately from writes.<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We need the full taxonomy to model five years against the alternatives. Per-call pricing on reads is the classic trap at our scale: NAV and scheme lookups will dwarf our writes by orders of magnitude.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>"We will work it out together" with no schedule. Unpriced is unbudgetable, and it usually means pricing power is being held in reserve.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">C.2</span> Price protection over the term: escalation caps, a locked rate card, favoured pricing on new modules, and a jointly built five-year cost model including every pass-through.<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Once we are integrated, you have pricing power over us; the contract is where that gets balanced. And the all-in number matters more than your fee: payment charges, KRA fees, mandate charges, and RTA fees often exceed the platform fee at scale.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">C.3</span> If we leave in 24 months, what do we get, in what format, how quickly, and can we export continuously rather than only on the way out?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>This is the single most important clause in the deal, and the good news is your product already does the hard part: the data platform gives us folios, orders, plans, transactions, mandates, KYC requests, and investor objects daily. So continuous export is a feature, not a concession. What remains is contractual.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>Export only at contract end, proprietary formats without a published schema, per-export charges, or categories excluded from export (KYC artefacts and audit logs especially).</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">C.4</span> Source-code escrow with real triggers, termination rights with a transition period, and IP protection for our configurations and our data.<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Escrow with insolvency as the only trigger is weak escrow. Termination without a transition period is a cliff. And default vendor terms often quietly claim broad rights over customer configurations and the aggregate data built from our flows.</div>
+</div>
+
+<div class="q db">
+  <p class="qh"><span class="qnum">C.5</span> Three years of financials under NDA, customer concentration, runway, and your two-to-three-year roadmap. Where does India mutual fund infrastructure sit in it?<span class="chip p0">P0</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>We are putting a foundational layer of our business on a privately held company, so your distress becomes our distress. Concentration cuts both ways: if your top three customers are most of your revenue, our own churn could destabilise the platform we depend on. On roadmap: your public roadmap page is currently empty, and your visible energy is going into the RTA licence, ONDC, and CybrillaPOA. All of that looks like real strategic ambition. We just need to know that plain India MF distribution infrastructure, which is what we are buying, stays central.</div>
+  <div class="facet dbf"><span class="fl">What would stop the deal</span>Refusal to share financials under NDA on a decision this foundational, or runway maths suggesting distress inside our contract term.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">C.6</span> We would be among your largest customers. What changes in how you serve us?<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Strategic-customer status should be concrete, not a slide. A company your size carries key-person risk by definition, and the honest mitigation is named people with replacement protocols.</div>
+  <div class="facet want"><span class="fl">A good answer</span>A written account plan: named engineers, a founder-level sponsor, quarterly reviews, a key-person clause, and a real channel into your roadmap.</div>
+</div>
+
+<div class="part-band"><div class="pk">Operations track</div><div class="pt">Living with you, day to day</div></div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">O.1</span> What can we see for ourselves: dashboards, logs, traces for our own requests, metrics?<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>At our volume we cannot operate through support tickets. Vendors who expose observability get a partnership; vendors who hide it get a ticket queue where their on-call is the only person who can see our state.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">O.2</span> Support: response times by severity, a direct channel with named people, and engineers reachable during a severe incident without ticket routing.<span class="chip p1">P1</span></p>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">O.3</span> Your sandbox has proper simulation APIs, which is better than we expected. Two things we still need: production-shaped test data covering the fund houses, and a load-testing path before we launch.<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Our delivery velocity to March 2027 rides on your test environments. Many fund houses have no sandbox of their own, so you have to simulate them. Also tell us the data refresh cadence.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">O.4</span> References: one customer at our scale, one at our regulatory complexity, one who has been with you four years or more, and one who left.<span class="chip p1">P1</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>The churn call is the most valuable one, because it reveals the failure modes no vendor volunteers. Your willingness to arrange it tells us as much as the call itself. A vendor whose every reference glows is curating too carefully.</div>
+</div>
+
+<div class="q">
+  <p class="qh"><span class="qnum">O.5</span> A half-day working session with our engineers: debug a real scenario, walk a real incident, design one of our integrations live. Senior people, real artefacts, no slides.<span class="chip p2">P2</span></p>
+  <div class="facet"><span class="fl">Why we are asking</span>Sales meetings are choreographed; working sessions are not. Two of the findings in this document (the webhook design and the NRI path) would make good material.</div>
+</div>
+
+<h2>What we would like sent before the sessions</h2>
+<p class="dlead">If any of these arrive in advance, the sessions get shorter and better.</p>
+<table>
+  <thead><tr><th style="width:38%;">Document</th><th>For</th></tr></thead>
+  <tbody>
+    <tr><td>Signed fund-flow confirmation with the account-holder map</td><td>Our Compliance sign-off. The one thing we cannot launch without.</td></tr>
+    <tr><td>Security certificates with scope statements, and the CSCRF mapping</td><td>Question 7.9. May well close it before we sit down.</td></tr>
+    <tr><td>India data-residency attestation and the DPA template</td><td>Question 7.10. Same.</td></tr>
+    <tr><td>Transaction support matrix by fund house</td><td>Confirms the gaps in the matrix we already believe you support.</td></tr>
+    <tr><td>Scheme master schema, and a sample change event</td><td>Question 6.1, so we arrive knowing what is and is not in there.</td></tr>
+    <tr><td>Order failure-code taxonomy and mandate state documentation</td><td>We have read the public versions. If there are fuller internal ones, we want those.</td></tr>
+    <tr><td>Webhook and Events API specification, including retention and rate limits</td><td>Session 2. This is the one we most want to read before talking.</td></tr>
+    <tr><td>Sample brokerage feed</td><td>Question 7.15.</td></tr>
+    <tr><td>Pricing schedule</td><td>Commercial track. Without it that session cannot happen.</td></tr>
+  </tbody>
+</table>
+
+<h2>Appendix: questions we removed, and why</h2>
+<p class="dlead">These were in our earlier draft. Your documentation answered them, so we are not spending meeting time on them. If any of our conclusions below are wrong, that correction is urgent.</p>
+<table>
+  <thead><tr><th style="width:30%;">What we were going to ask</th><th>Why we no longer need to</th></tr></thead>
+  <tbody>
+    <tr><td>Your full order state model</td><td>Published, and it maps cleanly onto ours. We kept only the one sharp edge: whether <code>submitted</code> hides the RTA acknowledgement (question 2.4).</td></tr>
+    <tr><td>Whether rejections are machine-readable, and whether a first-order failure tells us if the problem was data or payment</td><td>Your failure-code taxonomy is one of the better ones we have seen. Answered.</td></tr>
+    <tr><td>Whether a bank's internal debit cap looks different from an insufficient balance</td><td>It does. Distinct codes. Answered outright.</td></tr>
+    <tr><td>Which mandate rails are live and what their ceilings are</td><td>eNACH and UPI Autopay, both live, ceilings published. Answered.</td></tr>
+    <tr><td>Whether your mandate lifecycle exposes the states our order-attachment contract needs</td><td>It does, all four. We kept only the question of whether each transition raises an event (question 5.4).</td></tr>
+    <tr><td>Whether you support SIP, SWP, STP, switch, and partial redemption</td><td>All present. And STP is correctly modelled with no mandate, which was the detail we most wanted to check.</td></tr>
+    <tr><td>Whether ARN and EUIN are stamped on every order</td><td>They are, on the partner and the order object both. We kept only the brokerage feed half (question 7.15).</td></tr>
+    <tr><td>Whether we must use an FP-branded onboarding screen</td><td>We must not, and nothing suggests we would have to. Our capture, your rails.</td></tr>
+    <tr><td>Whether you have a usable sandbox</td><td>You have simulation APIs across KYC, orders, payments, mandates, and transactions. We kept only the test-data and load-test questions (O.3).</td></tr>
+    <tr><td>Whether you would resist us running a second rail</td><td>Your architecture clearly would not. We kept it as a contract question only (question 7.8).</td></tr>
+    <tr><td>Whether we can get our data out continuously</td><td>Your data platform already does this daily. We kept it as a contract question only (C.3).</td></tr>
+  </tbody>
+</table>
+
+<div class="callout verify">
+  <p class="ck">One thing worth saying out loud in the room</p>
+  <p>We did this homework because we want the meeting to be about the hard parts. Most of what we found in your documentation was reassuring, and several things (the reversal state, the failure-code taxonomy, the simulation APIs, the gateway abstraction, the daily data platform) are better than we expected going in.</p>
+  <p>The questions that remain are concentrated in four places: how we learn that something changed, how non-residents are onboarded, whether SIF is real, and where your security and data-protection paperwork stands. Those four are where we would like your most senior people in the room.</p>
+</div>
+
+<div class="footer">
+  <p><strong>Document control.</strong> Fintech Primitives Meeting Questionnaire, version 3.0, July 2026. Rebuilt from v2.0 (61 questions, twelve domains) after a pass of FP's public API reference, product guides, and security page. Questions answered by that documentation have been retired to the appendix; questions partially answered have been narrowed to their residual; questions the documentation raised have been added. Result: sixty-three live questions across seven working sessions plus commercial and operations tracks, with plain-language framing for use in the room. The count rose while the meeting time fell: eleven v2.0 questions are retired to the appendix, most survivors are narrowed to their residual, and several broad v2.0 questions were split into the specific asks that remained. Priorities and deal-breaker conditions carry over from v2.0 unchanged. Changelog: v3.0 initial meeting build.</p>
+</div>
+
+</div>
+</body>
+</html>
