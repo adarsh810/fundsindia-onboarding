@@ -2,19 +2,25 @@ import AppNav from '@/components/AppNav';
 import OnboardingScheduleView from '@/components/OnboardingScheduleView';
 import type { ScheduleTopic } from '@/components/OnboardingScheduleView';
 import { ONBOARDING_TOPICS, resolveMeta } from '@/lib/data';
-import { getAllProgress, getAllMetaOverrides, getCustomTopics, getHiddenTopics } from '@/lib/supabase';
+import { getAllProgress, getAllMetaOverrides, getCustomTopics, getHiddenTopics, getCustomL1Tracks } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
 
 export default async function OnboardingSchedule() {
-  const [progress, metas, customTopics, hiddenSet] = await Promise.all([
+  const [progress, metas, customTopics, hiddenSet, customL1Tracks] = await Promise.all([
     getAllProgress(),
     getAllMetaOverrides(),
     getCustomTopics('onboarding'),
     getHiddenTopics(),
+    getCustomL1Tracks('onboarding'),
   ]);
 
-  // Same merge logic as dashboard: static (minus hidden) + custom, in L1 order
+  // Valid L1 IDs: static tracks + existing custom tracks
+  const validL1Ids = new Set([
+    ...ONBOARDING_TOPICS.map(l => l.id),
+    ...customL1Tracks.map(l => l.id),
+  ]);
+
   const topics: ScheduleTopic[] = [
     ...ONBOARDING_TOPICS.flatMap(l1 =>
       l1.categories.flatMap(c =>
@@ -26,12 +32,15 @@ export default async function OnboardingSchedule() {
           })
       )
     ),
-    ...customTopics.map(ct => ({
-      id: ct.id,
-      title: metas[ct.id]?.title?.trim() || ct.title,
-      desc:  metas[ct.id]?.desc?.trim()  || ct.desc,
-      hours: ct.hours,
-    })),
+    // Only include custom topics whose parent track still exists
+    ...customTopics
+      .filter(ct => validL1Ids.has(ct.l1Id))
+      .map(ct => ({
+        id: ct.id,
+        title: metas[ct.id]?.title?.trim() || ct.title,
+        desc:  metas[ct.id]?.desc?.trim()  || ct.desc,
+        hours: ct.hours,
+      })),
   ];
 
   return (

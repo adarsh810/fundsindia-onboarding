@@ -19,6 +19,11 @@ export default async function OnboardingDashboard() {
   // Flat merged topic list: static (minus hidden) + custom, with per-track serial numbers
   type FlatTopic = { id: string; title: string; hours: number; l1Id: string; l1Label: string; l1Color: string; serial: string };
 
+  const validL1Ids = new Set([
+    ...ONBOARDING_TOPICS.map(l => l.id),
+    ...customL1Tracks.map(l => l.id),
+  ]);
+
   const allTopics: FlatTopic[] = [];
 
   // Static L1 tracks (from ONBOARDING_TOPICS)
@@ -32,7 +37,7 @@ export default async function OnboardingDashboard() {
         }
       }
     }
-    for (const ct of customTopics.filter(c => c.l1Id === l1.id)) {
+    for (const ct of customTopics.filter(c => c.l1Id === l1.id && validL1Ids.has(c.l1Id))) {
       pos++;
       allTopics.push({ id: ct.id, title: metas[ct.id]?.title?.trim() || ct.title, hours: ct.hours, l1Id: l1.id, l1Label: l1Overrides[l1.id]?.label || l1.label, l1Color: l1.color, serial: String(pos) });
     }
