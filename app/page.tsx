@@ -22,9 +22,9 @@ export default function Home() {
   const tiles = [
     {
       mode:       'pre-joining' as const,
-      title:      'Pre-joining KT',
+      title:      'Auxiliary',
       subtitle:   'June 8 → August 8, 2026',
-      desc:       'Self-paced learning plan across AI, Finance, FundsIndia & Software Dev — built for the weeks before you join.',
+      desc:       'Self-paced learning plan across AI, Finance, FundsIndia & Software Dev — broad context before you dive in.',
       color:      '#2D6A4F',
       colorDark:  '#1F5240',
       colorLight: '#3D8A65',
@@ -33,14 +33,14 @@ export default function Home() {
     },
     {
       mode:       'onboarding' as const,
-      title:      'Onboarding KT',
-      subtitle:   'Starting Day 1',
-      desc:       'Structured knowledge transfer for your first weeks at FundsIndia. Topics being set up.',
+      title:      'Core FundsIndia',
+      subtitle:   'Day 1 onwards',
+      desc:       'Deep knowledge transfer on FundsIndia flows, architecture, and strategy — the stuff that matters on the job.',
       color:      '#6B3FA0',
       colorDark:  '#52308A',
       colorLight: '#8B5BC0',
       accent:     '#D7BDE2',
-      stats:      'Topics coming soon',
+      stats:      'FundsIndia 101 · flows · architecture',
     },
   ];
 

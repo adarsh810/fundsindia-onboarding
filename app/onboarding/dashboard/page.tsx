@@ -53,9 +53,9 @@ export default async function OnboardingDashboard() {
 
         <div className="mb-8">
           <h1 className="font-[family-name:var(--font-playfair)] text-[30px] sm:text-[36px] font-bold tracking-tight text-[#1C1C1A] mb-1.5">
-            Onboarding KT
+            Core FundsIndia
           </h1>
-          <p className="text-sm text-[#6B6560]">Your structured knowledge transfer for Day 1 and beyond</p>
+          <p className="text-sm text-[#6B6560]">Deep knowledge transfer on flows, architecture, and strategy</p>
         </div>
 
         {/* Stats */}
@@ -146,7 +146,7 @@ export default async function OnboardingDashboard() {
         <div className="bg-[#1C1C1A] rounded-xl p-5 sm:p-6 text-[#FAF8F5]">
           <div className="flex items-center justify-between mb-1">
             <h2 className="font-[family-name:var(--font-playfair)] text-[18px] font-semibold">What to do now</h2>
-            <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: '#6B3FA0', color: '#D7BDE2' }}>Onboarding</span>
+            <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: '#6B3FA0', color: '#D7BDE2' }}>Core FundsIndia</span>
           </div>
           <p className="text-xs text-[#FAF8F5]/50 mb-5">Next topics from your onboarding plan</p>
           {nextTopics.length === 0 ? (

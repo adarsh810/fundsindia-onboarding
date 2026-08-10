@@ -29,7 +29,7 @@ export default function AppNav() {
               ? { background: '#D7BDE2', color: '#6B3FA0' }
               : { background: '#B7E4C7', color: '#2D6A4F' }}
           >
-            {isOnboarding ? 'Onboarding' : 'Pre-joining'}
+            {isOnboarding ? 'Core FundsIndia' : 'Auxiliary'}
           </span>
           {!isOnboarding && (
             <span className="hidden sm:block text-[11px] text-[#9B9590] tracking-[0.06em]">{TOTAL_HOURS} hrs · 10 weeks · {ALL_TOPICS.length} topics</span>

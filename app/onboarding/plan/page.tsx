@@ -26,7 +26,7 @@ export default async function OnboardingPlan({ searchParams }: Props) {
       <AppNav />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         <h1 className="font-[family-name:var(--font-playfair)] text-[28px] font-bold tracking-tight text-[#1C1C1A] mb-6">
-          Onboarding plan
+          Core FundsIndia
         </h1>
         <PlanView
           initialProgress={progress} initialTrack={track} overrides={{}} metas={metas}
