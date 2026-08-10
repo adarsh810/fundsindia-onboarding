@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { TOPICS, findTopicById, resolveMeta } from '@/lib/data';
+import type { L1Track } from '@/lib/types';
 import type { ProgressMap, Status } from '@/lib/types';
 import type { MetaOverrideMap, L1OverrideMap, CustomL1Track, CustomTopic } from '@/lib/supabase';
 import { SHADOW_RAISED } from '@/lib/elevation';
@@ -28,10 +29,11 @@ const PALETTE = [
 export default function PlanView({
   initialProgress, initialTrack, overrides, metas,
   l1Overrides = {}, customL1Tracks = [], customTopics = [], hiddenTopics = [], section = 'prejoining',
+  staticTracks = TOPICS,
 }: {
   initialProgress: ProgressMap; initialTrack?: string; overrides: OverrideMap; metas: MetaOverrideMap;
   l1Overrides?: L1OverrideMap; customL1Tracks?: CustomL1Track[]; customTopics?: CustomTopic[];
-  hiddenTopics?: string[]; section?: string;
+  hiddenTopics?: string[]; section?: string; staticTracks?: L1Track[];
 }) {
   const hidden = new Set(hiddenTopics);
   const [progress, setProgress] = useState<ProgressMap>(initialProgress);
@@ -39,13 +41,13 @@ export default function PlanView({
   // Merge static + custom L1 tracks; apply overrides + hidden filter
   type TrackMeta = { id: string; label: string; color: string; accent: string; isCustom?: boolean };
   const initTracks = (): TrackMeta[] => [
-    ...TOPICS
+    ...staticTracks
       .filter(l => !l1Overrides[l.id]?.hidden)
       .map(l => ({ id: l.id, label: l1Overrides[l.id]?.label ?? l.label, color: l.color, accent: l.accent })),
     ...customL1Tracks.map(c => ({ id: c.id, label: c.label, color: c.color, accent: c.accent, isCustom: true })),
   ];
   const [tracks, setTracks] = useState<TrackMeta[]>(initTracks);
-  const validTrack = tracks.find(l => l.id === initialTrack)?.id ?? tracks[0]?.id ?? TOPICS[0].id;
+  const validTrack = tracks.find(l => l.id === initialTrack)?.id ?? tracks[0]?.id ?? staticTracks[0]?.id;
   const [activeTrack, setActiveTrack] = useState<string>(validTrack);
 
   // L1 rename/add/remove state
@@ -128,7 +130,7 @@ export default function PlanView({
   }
 
   const activeTrackMeta = tracks.find(l => l.id === activeTrack);
-  const staticTrack = TOPICS.find(l => l.id === activeTrack);
+  const staticTrack = staticTracks.find(l => l.id === activeTrack);
   const activeColor  = activeTrackMeta?.color ?? '#2D6A4F';
   const activeAccent = activeTrackMeta?.accent ?? '#B7E4C7';
 
@@ -160,7 +162,7 @@ export default function PlanView({
       {/* Track tabs */}
       <div className="flex gap-2 flex-wrap mb-3">
         {tracks.map(l1 => {
-          const staticL1 = TOPICS.find(x => x.id === l1.id);
+          const staticL1 = staticTracks.find(x => x.id === l1.id);
           const l1Topics = (staticL1?.categories.flatMap(c => c.topics).filter(t => !localHidden.has(t.id)) ?? [])
             .concat(customTopicsList.filter(t => t.l1Id === l1.id) as never[]);
           const done = (l1Topics as { id: string }[]).filter(t => progress[t.id] === 'done').length;
@@ -176,6 +178,7 @@ export default function PlanView({
                   boxShadow: `${SHADOW_RAISED}, 0 4px 16px ${l1.color}35`,
                 } : { background: l1.accent, color: l1.color, borderColor: 'transparent' }}
               >
+
                 {editingL1 === l1.id ? (
                   <input autoFocus value={editL1Text} onChange={e => setEditL1Text(e.target.value)}
                     onKeyDown={e => { if (e.key === 'Enter') saveL1Label(l1.id); if (e.key === 'Escape') setEditingL1(null); }}

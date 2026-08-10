@@ -19,10 +19,6 @@ export default async function OnboardingDashboard() {
   const notStarted  = allTopics.filter(t => (progress[t.id] ?? 'not_started') === 'not_started');
   const nextTopics  = [...inProgress, ...notStarted].slice(0, 3);
 
-  const STATUS_DOT: Record<string, string> = {
-    not_started: '#C8C2BA', in_progress: '#F4C97A', done: '#6DB07A',
-  };
-
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
       <AppNav />
@@ -65,7 +61,7 @@ export default async function OnboardingDashboard() {
               const pctDone = l1topics.length ? Math.round((done / l1topics.length) * 100) : 0;
               const hasTopics = l1topics.length > 0;
               return (
-                <Link key={l1.id} href={`/onboarding/plan`} className="block group">
+                <Link key={l1.id} href={`/onboarding/plan?track=${l1.id}`} className="block group">
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-sm shrink-0" style={{ background: l1.color }} />
@@ -90,10 +86,13 @@ export default async function OnboardingDashboard() {
 
         {/* What to do now */}
         <div className="bg-[#1C1C1A] rounded-xl p-5 sm:p-6 text-[#FAF8F5]">
-          <h2 className="font-[family-name:var(--font-playfair)] text-[18px] font-semibold mb-1">What to do now</h2>
-          <p className="text-xs text-[#FAF8F5]/50 mb-5">Next topics from your onboarding schedule</p>
+          <div className="flex items-center justify-between mb-1">
+            <h2 className="font-[family-name:var(--font-playfair)] text-[18px] font-semibold">What to do now</h2>
+            <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: '#6B3FA0', color: '#D7BDE2' }}>Onboarding</span>
+          </div>
+          <p className="text-xs text-[#FAF8F5]/50 mb-5">Next topics from your onboarding plan</p>
           {nextTopics.length === 0 ? (
-            <p className="text-[13px] text-[#6B6560] py-4 text-center">All caught up! 🎉</p>
+            <p className="text-[13px] text-[#FAF8F5]/60 py-4 text-center">All caught up!</p>
           ) : (
             <div className="divide-y divide-[#2D2D2A]">
               {nextTopics.map(t => {
@@ -109,7 +108,9 @@ export default async function OnboardingDashboard() {
                       <p className="text-sm font-medium group-hover:underline">{meta.title}</p>
                       <p className="text-[11px] text-[#FAF8F5]/40 mt-0.5">{t.hours}h · {l1?.label ?? ''}</p>
                     </div>
-                    <div className="w-2 h-2 rounded-full shrink-0" style={{ background: STATUS_DOT[progress[t.id] ?? 'not_started'] }} />
+                    <svg className="w-4 h-4 text-[#4A4540] group-hover:text-[#FAF8F5] transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                   </Link>
                 );
               })}
