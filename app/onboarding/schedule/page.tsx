@@ -2,21 +2,32 @@ import AppNav from '@/components/AppNav';
 import OnboardingScheduleView from '@/components/OnboardingScheduleView';
 import type { ScheduleTopic } from '@/components/OnboardingScheduleView';
 import { ONBOARDING_TOPICS, resolveMeta } from '@/lib/data';
-import { getAllProgress, getAllMetaOverrides } from '@/lib/supabase';
+import { getAllProgress, getAllMetaOverrides, getCustomTopics, getHiddenTopics } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
 
 export default async function OnboardingSchedule() {
-  const [progress, metas] = await Promise.all([getAllProgress(), getAllMetaOverrides()]);
+  const [progress, metas, customTopics, hiddenSet] = await Promise.all([
+    getAllProgress(),
+    getAllMetaOverrides(),
+    getCustomTopics('onboarding'),
+    getHiddenTopics(),
+  ]);
 
-  const topics: ScheduleTopic[] = ONBOARDING_TOPICS.flatMap(l1 =>
-    l1.categories.flatMap(c =>
-      c.topics.map(t => {
-        const m = resolveMeta(t, metas);
-        return { id: t.id, title: m.title, desc: m.desc, hours: t.hours };
-      })
-    )
-  );
+  // Same merge logic as dashboard: static (minus hidden) + custom, in L1 order
+  const topics: ScheduleTopic[] = [
+    ...ONBOARDING_TOPICS.flatMap(l1 =>
+      l1.categories.flatMap(c =>
+        c.topics
+          .filter(t => !hiddenSet.has(t.id))
+          .map(t => {
+            const m = resolveMeta(t, metas);
+            return { id: t.id, title: m.title, desc: m.desc, hours: t.hours };
+          })
+      )
+    ),
+    ...customTopics.map(ct => ({ id: ct.id, title: ct.title, desc: ct.desc, hours: ct.hours })),
+  ];
 
   return (
     <div className="min-h-screen bg-[#FAF8F5]">
