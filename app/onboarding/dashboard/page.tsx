@@ -79,11 +79,13 @@ export default async function OnboardingDashboard() {
         <div className="bg-white border border-[#E8E4DE] rounded-xl p-5 sm:p-6 mb-6">
           <h2 className="font-[family-name:var(--font-playfair)] text-[18px] font-semibold mb-5">Progress by track</h2>
           <div className="space-y-5">
-            {ONBOARDING_TOPICS.map(l1 => {
+            {ONBOARDING_TOPICS
+              .filter(l1 => allTopics.some(t => t.l1Id === l1.id))
+              .map(l1 => {
               const l1Topics = allTopics.filter(t => t.l1Id === l1.id);
               const done   = l1Topics.filter(t => progress[t.id] === 'done').length;
               const active = l1Topics.filter(t => progress[t.id] === 'in_progress').length;
-              const pctDone = l1Topics.length ? Math.round((done / l1Topics.length) * 100) : 0;
+              const pctDone = Math.round((done / l1Topics.length) * 100);
               return (
                 <Link key={l1.id} href={`/onboarding/plan?track=${l1.id}`} className="block group">
                   <div className="flex items-center justify-between mb-1.5">
@@ -92,9 +94,6 @@ export default async function OnboardingDashboard() {
                       <span className="text-sm font-medium text-[#1C1C1A] group-hover:underline">{l1.label}</span>
                       {active > 0 && (
                         <span className="text-[10px] font-medium text-[#7A5010] bg-[#FEF0C7] px-2 py-0.5 rounded-full">{active} active</span>
-                      )}
-                      {l1Topics.length === 0 && (
-                        <span className="text-[10px] text-[#9B9590] bg-[#F0EDE8] px-2 py-0.5 rounded-full">Coming soon</span>
                       )}
                     </div>
                     <span className="text-xs text-[#9B9590]">{done}/{l1Topics.length}</span>
@@ -105,6 +104,9 @@ export default async function OnboardingDashboard() {
                 </Link>
               );
             })}
+            {!ONBOARDING_TOPICS.some(l1 => allTopics.some(t => t.l1Id === l1.id)) && (
+              <p className="text-[13px] text-[#9B9590] py-2">No topics added yet — go to Topics to add some.</p>
+            )}
           </div>
         </div>
 
