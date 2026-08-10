@@ -7,7 +7,8 @@ import ArtifactReviewer from '@/components/ArtifactReviewer';
 import ResourcesPanel from '@/components/ResourcesPanel';
 import TopicSidebar from '@/components/TopicSidebar';
 import EditableTopicHeader from '@/components/EditableTopicHeader';
-import { getAllProgress, getAllScheduleOverrides, getAllMetaOverrides, getCustomTopicById } from '@/lib/supabase';
+import { getAllProgress, getAllScheduleOverrides, getAllMetaOverrides, getCustomTopicById, getCustomTopics, getHiddenTopics } from '@/lib/supabase';
+import type { CustomTopic } from '@/lib/supabase';
 import { findTopicById, findTrackForTopic, TOPICS, ONBOARDING_TOPICS, ALL_TOPICS, resolveMeta } from '@/lib/data';
 import { getEffectivePositions, formatEffectiveWeekLabel } from '@/lib/schedule';
 import type { Status } from '@/lib/types';
@@ -48,10 +49,16 @@ export default async function TopicPage({ params }: Props) {
     ?? [...TOPICS, ...ONBOARDING_TOPICS].find(l => l.id === customTopic?.l1Id)
     ?? TOPICS[0];
 
-  const [progress, overrides, metas] = await Promise.all([
+  // Determine which section this track belongs to for sidebar data
+  const isOnboardingTrack = ONBOARDING_TOPICS.some(l => l.id === track.id);
+  const section = isOnboardingTrack ? 'onboarding' : 'prejoining';
+
+  const [progress, overrides, metas, sidebarCustomTopics, hiddenSet] = await Promise.all([
     getAllProgress(),
     getAllScheduleOverrides(),
     getAllMetaOverrides(),
+    getCustomTopics(section),
+    getHiddenTopics(),
   ]);
   const status: Status = (progress[id] as Status) ?? 'not_started';
 
@@ -161,7 +168,8 @@ export default async function TopicPage({ params }: Props) {
 
         </div>{/* end main content */}
 
-        <TopicSidebar track={track} currentId={id} progress={progress} metas={metas} />
+        <TopicSidebar track={track} currentId={id} progress={progress} metas={metas}
+          customTopics={sidebarCustomTopics} hiddenTopics={[...hiddenSet]} />
 
       </div>
     </div>

@@ -3,53 +3,99 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { L1Track, ProgressMap, Status } from '@/lib/types';
-import type { MetaOverrideMap } from '@/lib/supabase';
+import type { MetaOverrideMap, CustomTopic } from '@/lib/supabase';
 
-function TopicList({ track, currentId, progress, metas, onNavigate }: {
-  track: L1Track; currentId: string; progress: ProgressMap; metas: MetaOverrideMap; onNavigate?: () => void;
+const STATUS_DOT: Record<string, string> = {
+  done:        '#4CAF65',
+  in_progress: '#F4C97A',
+  not_started: '#D5CFC8',
+};
+
+interface SidebarTopic {
+  id: string;
+  title: string;
+  serial: string;
+}
+
+function buildTopicList(
+  track: L1Track,
+  metas: MetaOverrideMap,
+  customTopics: CustomTopic[],
+  hiddenTopics: string[],
+): SidebarTopic[] {
+  const hiddenSet = new Set(hiddenTopics);
+
+  const staticTopics: SidebarTopic[] = track.categories
+    .flatMap(c => c.topics)
+    .filter(t => !hiddenSet.has(t.id))
+    .map((t, i) => ({
+      id:     t.id,
+      title:  metas[t.id]?.title?.trim() || t.title,
+      serial: String(i + 1),
+    }));
+
+  const customForTrack: SidebarTopic[] = customTopics
+    .filter(ct => ct.l1Id === track.id)
+    .map((ct, i) => ({
+      id:     ct.id,
+      title:  ct.title,
+      serial: String(staticTopics.length + i + 1),
+    }));
+
+  return [...staticTopics, ...customForTrack];
+}
+
+function TopicList({ track, currentId, progress, metas, customTopics, hiddenTopics, onNavigate }: {
+  track: L1Track; currentId: string; progress: ProgressMap; metas: MetaOverrideMap;
+  customTopics: CustomTopic[]; hiddenTopics: string[]; onNavigate?: () => void;
 }) {
+  const topics = buildTopicList(track, metas, customTopics, hiddenTopics);
+
   return (
     <>
-      <p className="text-[10px] font-semibold uppercase tracking-[0.1em] mb-3" style={{ color: track.color }}>{track.label}</p>
-      <div className="space-y-4">
-        {track.categories.map(cat => (
-          <div key={cat.name}>
-            <p className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#C8C2BA] mb-1">{cat.name}</p>
-            <div className="space-y-0.5">
-              {cat.topics.map(t => {
-                const isCurrent = t.id === currentId;
-                const tStatus = (progress[t.id] as Status) ?? 'not_started';
-                return (
-                  <Link key={t.id} href={`/topic/${t.id}`} onClick={onNavigate}
-                    className="flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all group"
-                    style={isCurrent ? { background: track.accent } : {}}
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{
-                      background: tStatus === 'done' ? track.color : tStatus === 'in_progress' ? '#F4C97A' : '#D5CFC8',
-                    }} />
-                    <span className="font-mono text-[9px] shrink-0" style={{ color: isCurrent ? track.color : '#9B9590' }}>{t.id}</span>
-                    <span className={`text-[11px] truncate transition-colors ${isCurrent ? 'font-semibold' : 'text-[#6B6560] group-hover:text-[#1C1C1A]'}`}
-                      style={isCurrent ? { color: track.color } : {}}
-                    >{metas[t.id]?.title?.trim() || t.title}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+      <p className="text-[10px] font-semibold uppercase tracking-[0.1em] mb-3" style={{ color: track.color }}>
+        {track.label}
+      </p>
+      <p className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#C8C2BA] mb-1.5">Topics</p>
+      <div className="space-y-0.5">
+        {topics.map(t => {
+          const isCurrent = t.id === currentId;
+          const tStatus = (progress[t.id] as Status) ?? 'not_started';
+          return (
+            <Link key={t.id} href={`/topic/${t.id}`} onClick={onNavigate}
+              className="flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all group"
+              style={isCurrent ? { background: track.accent } : {}}
+            >
+              <span className="w-1.5 h-1.5 rounded-full shrink-0"
+                style={{ background: STATUS_DOT[tStatus] }} />
+              <span className="font-mono text-[9px] shrink-0 w-4 text-right"
+                style={{ color: isCurrent ? track.color : '#9B9590' }}>
+                {t.serial}
+              </span>
+              <span className={`text-[11px] truncate transition-colors ${isCurrent ? 'font-semibold' : 'text-[#6B6560] group-hover:text-[#1C1C1A]'}`}
+                style={isCurrent ? { color: track.color } : {}}>
+                {t.title}
+              </span>
+            </Link>
+          );
+        })}
+        {topics.length === 0 && (
+          <p className="text-[11px] text-[#C8C2BA] italic px-2 py-1">No topics yet</p>
+        )}
       </div>
     </>
   );
 }
 
-export default function TopicSidebar({ track, currentId, progress, metas }: {
+export default function TopicSidebar({ track, currentId, progress, metas, customTopics = [], hiddenTopics = [] }: {
   track: L1Track; currentId: string; progress: ProgressMap; metas: MetaOverrideMap;
+  customTopics?: CustomTopic[]; hiddenTopics?: string[];
 }) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      {/* Mobile trigger — fixed chevron top-right */}
+      {/* Mobile trigger */}
       <button
         onClick={() => setOpen(true)}
         className="lg:hidden fixed top-[4.75rem] right-4 z-30 w-8 h-8 rounded-full bg-white border border-[#E8E4DE] shadow-sm flex items-center justify-center"
@@ -74,7 +120,8 @@ export default function TopicSidebar({ track, currentId, progress, metas }: {
                 </svg>
               </button>
             </div>
-            <TopicList track={track} currentId={currentId} progress={progress} metas={metas} onNavigate={() => setOpen(false)} />
+            <TopicList track={track} currentId={currentId} progress={progress} metas={metas}
+              customTopics={customTopics} hiddenTopics={hiddenTopics} onNavigate={() => setOpen(false)} />
           </div>
         </div>
       )}
@@ -82,7 +129,8 @@ export default function TopicSidebar({ track, currentId, progress, metas }: {
       {/* Desktop sidebar */}
       <aside className="hidden lg:block w-52 shrink-0 self-stretch">
         <div className="sticky top-[4.5rem] max-h-[calc(100vh-5.5rem)] overflow-y-auto">
-          <TopicList track={track} currentId={currentId} progress={progress} metas={metas} />
+          <TopicList track={track} currentId={currentId} progress={progress} metas={metas}
+            customTopics={customTopics} hiddenTopics={hiddenTopics} />
         </div>
       </aside>
     </>
