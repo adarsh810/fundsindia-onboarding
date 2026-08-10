@@ -4,6 +4,11 @@ import { useEffect, useRef, useState } from 'react';
 
 type Field = 'title' | 'desc';
 
+function defaultSubtitle(title: string): string {
+  const t = title.trim().toLowerCase();
+  return `Core concepts and context around ${t}`;
+}
+
 interface Props {
   topicId: string;
   initialTitle: string;
@@ -169,24 +174,28 @@ export default function EditableTopicHeader({
         onMouseEnter={() => setHover('desc')}
         onMouseLeave={() => setHover(h => (h === 'desc' ? null : h))}
       >
-        <p
-          ref={descRef}
-          contentEditable={editing === 'desc'}
-          suppressContentEditableWarning
-          spellCheck={editing === 'desc'}
-          onClick={() => editing !== 'desc' && setEditing('desc')}
-          onBlur={e => editing === 'desc' && commit('desc', e.currentTarget.innerText)}
-          onKeyDown={e => handleKeyDown('desc', e)}
-          className={[
-            'text-sm text-[#6B6560] leading-relaxed px-1 rounded-md outline-none flex-1 min-w-0 transition-all duration-150',
-            editing === 'desc'
-              ? 'bg-white ring-2 cursor-text text-[#3A3530]'
-              : 'cursor-text hover:bg-[#F5F2EE]/70',
-          ].join(' ')}
-          style={editing === 'desc' ? { boxShadow: `0 0 0 2px ${trackColor}33` } : undefined}
-        >
-          {desc}
-        </p>
+        {editing === 'desc' ? (
+          <p
+            ref={descRef}
+            contentEditable
+            suppressContentEditableWarning
+            spellCheck
+            onBlur={e => commit('desc', e.currentTarget.innerText)}
+            onKeyDown={e => handleKeyDown('desc', e)}
+            className="text-sm text-[#3A3530] leading-relaxed px-1 rounded-md outline-none flex-1 min-w-0 bg-white ring-2 cursor-text"
+            style={{ boxShadow: `0 0 0 2px ${trackColor}33` }}
+          >{desc}</p>
+        ) : (
+          <p
+            onClick={() => setEditing('desc')}
+            className="text-sm leading-relaxed px-1 rounded-md flex-1 min-w-0 cursor-text hover:bg-[#F5F2EE]/70 transition-all duration-150"
+          >
+            {desc
+              ? <span className="text-[#6B6560]">{desc}</span>
+              : <span className="text-[#B5AFA8] italic">{defaultSubtitle(title)}</span>
+            }
+          </p>
+        )}
         <EditAffordance
           visible={editing !== 'desc'}
           emphasized={hover === 'desc'}
