@@ -95,6 +95,7 @@ export default function PlanView({
   }
 
   async function hideTopic(topicId: string, isCustom: boolean) {
+    if (!confirm('Remove this topic? This cannot be undone.')) return;
     if (isCustom) {
       await fetch('/api/topic-custom', { method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'hide', customId: topicId }) });
@@ -156,6 +157,14 @@ export default function PlanView({
   const doneCount  = allTopics.filter(t => progress[t.id] === 'done').length;
   const inProgCount = allTopics.filter(t => progress[t.id] === 'in_progress').length;
   const pct = allTopics.length ? Math.round((doneCount / allTopics.length) * 100) : 0;
+
+  // Serial numbers: trackIdx.topicIdx (1-based) — used for onboarding where IDs are opaque
+  const trackIdx = tracks.findIndex(l => l.id === activeTrack) + 1;
+  const serialMap: Record<string, string> = {};
+  let sn = 0;
+  for (const cat of mergedCats) {
+    for (const t of cat.topics) { sn++; serialMap[t.id] = `${trackIdx}.${sn}`; }
+  }
 
   return (
     <div>
@@ -251,12 +260,14 @@ export default function PlanView({
       <div className="bg-white border border-[#E8E4DE] rounded-xl overflow-hidden">
         {mergedCats.map((cat, ci) => (
           <div key={cat.name}>
-            <div className={`px-5 py-3 bg-[#F5F2EE] flex items-center gap-2 ${ci > 0 ? 'border-t border-[#EEE9E2]' : ''}`}>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#6B6560]">{cat.name}</p>
-              <span className="text-[10px] text-[#C8C2BA]">
-                {cat.topics.filter(t => progress[t.id] === 'done').length}/{cat.topics.length}
-              </span>
-            </div>
+            {mergedCats.length > 1 && (
+              <div className={`px-5 py-3 bg-[#F5F2EE] flex items-center gap-2 ${ci > 0 ? 'border-t border-[#EEE9E2]' : ''}`}>
+                <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#6B6560]">{cat.name}</p>
+                <span className="text-[10px] text-[#C8C2BA]">
+                  {cat.topics.filter(t => progress[t.id] === 'done').length}/{cat.topics.length}
+                </span>
+              </div>
+            )}
             <div className="divide-y divide-[#F5F2EE]">
               {(cat.topics as (typeof cat.topics[0] & { isCustom?: boolean })[]).map(t => {
                 const status: Status = (progress[t.id] as Status) ?? 'not_started';
@@ -275,7 +286,9 @@ export default function PlanView({
                     </button>
 
                     <span className="shrink-0 text-[10px] font-semibold px-1.5 py-0.5 rounded font-mono"
-                      style={{ background: activeAccent, color: activeColor }}>{t.id}</span>
+                      style={{ background: activeAccent, color: activeColor }}>
+                      {section === 'onboarding' ? (serialMap[t.id] ?? `${trackIdx}.?`) : t.id}
+                    </span>
 
                     <Link href={`/topic/${t.id}`} className="flex-1 min-w-0 group/link">
                       <p className={`text-[13px] font-medium group-hover/link:text-[#000] transition-colors truncate ${status === 'done' ? 'text-[#9B9590] line-through' : 'text-[#1C1C1A]'}`}>
@@ -317,7 +330,7 @@ export default function PlanView({
             ) : (
               <button onClick={() => setAddingTopic({ l1Id: activeTrack, cat: cat.name })}
                 className="w-full text-[11px] text-[#9B9590] hover:text-[#4A4540] py-2 border-t border-[#F5F2EE] hover:bg-[#FAF8F5] transition-colors">
-                + Add to {cat.name}
+                + Add topic{mergedCats.length > 1 ? ` to ${cat.name}` : ''}
               </button>
             )}
           </div>

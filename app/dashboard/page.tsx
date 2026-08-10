@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import AppNav from '@/components/AppNav';
 import TrackStatusPill from '@/components/TrackStatusPill';
-import { getAllProgress, getAllScheduleOverrides, getAllMetaOverrides } from '@/lib/supabase';
-import { TOPICS, ALL_TOPICS, TOTAL_HOURS, findTrackForTopic, resolveMeta } from '@/lib/data';
+import { getAllProgress, getAllScheduleOverrides, getAllMetaOverrides, getHiddenTopics } from '@/lib/supabase';
+import { TOPICS, ALL_TOPICS, findTrackForTopic, resolveMeta } from '@/lib/data';
 import {
   getEffectiveStartWeek,
   getEffectiveEndWeek,
@@ -19,16 +19,18 @@ const STATUS_DOT: Record<string, string> = {
 };
 
 export default async function Dashboard() {
-  const [progress, overrides, metas] = await Promise.all([
+  const [progress, overrides, metas, hiddenSet] = await Promise.all([
     getAllProgress(),
     getAllScheduleOverrides(),
     getAllMetaOverrides(),
+    getHiddenTopics(),
   ]);
 
-  const doneCount  = ALL_TOPICS.filter(t => progress[t.id] === 'done').length;
-  const activeCount = ALL_TOPICS.filter(t => progress[t.id] === 'in_progress').length;
-  const doneHours  = ALL_TOPICS.filter(t => progress[t.id] === 'done').reduce((a, t) => a + t.hours, 0);
-  const pct        = Math.round((doneCount / ALL_TOPICS.length) * 100);
+  const visibleTopics = ALL_TOPICS.filter(t => !hiddenSet.has(t.id));
+  const doneCount  = visibleTopics.filter(t => progress[t.id] === 'done').length;
+  const activeCount = visibleTopics.filter(t => progress[t.id] === 'in_progress').length;
+  const doneHours  = visibleTopics.filter(t => progress[t.id] === 'done').reduce((a, t) => a + t.hours, 0);
+  const pct        = Math.round((doneCount / visibleTopics.length) * 100);
 
   const WEEK1_START = new Date('2026-06-15T00:00:00+05:30');
   const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
@@ -37,7 +39,7 @@ export default async function Dashboard() {
   const dayOfWeek = Math.min(Math.floor((msElapsed % MS_PER_WEEK) / (24 * 60 * 60 * 1000)) + 1, 7);
   const weekProgress = dayOfWeek / 7;
 
-  const expectedHours = ALL_TOPICS.reduce((a, t) => {
+  const expectedHours = visibleTopics.reduce((a, t) => {
     const end = getEffectiveEndWeek(t, overrides);
     if (end < currentWeek) return a + t.hours;
     if (end === currentWeek) return a + t.hours * weekProgress;
@@ -47,7 +49,7 @@ export default async function Dashboard() {
   // In-progress topics count at 30% — fairer than 0%
   const adjustedDoneHours =
     doneHours +
-    ALL_TOPICS
+    visibleTopics
       .filter(t => progress[t.id] === 'in_progress')
       .reduce((a, t) => a + t.hours * 0.3, 0);
 
@@ -58,7 +60,7 @@ export default async function Dashboard() {
     ? { label: 'Slightly behind', bg: '#FEF3C7', text: '#92400E' }
     : { label: 'Off track', bg: '#FEE2E2', text: '#991B1B' };
 
-  const overdueTopics = ALL_TOPICS
+  const overdueTopics = visibleTopics
     .filter(t => getEffectiveEndWeek(t, overrides) <= currentWeek && progress[t.id] !== 'done')
     .sort((a, b) => getEffectiveEndWeek(a, overrides) - getEffectiveEndWeek(b, overrides))
     .map(t => ({
@@ -67,8 +69,8 @@ export default async function Dashboard() {
       week: formatEffectiveWeekLabel(getEffectivePositions(t, overrides)),
     }));
 
-  const inProgress = ALL_TOPICS.filter(t => progress[t.id] === 'in_progress');
-  const notStarted = ALL_TOPICS
+  const inProgress = visibleTopics.filter(t => progress[t.id] === 'in_progress');
+  const notStarted = visibleTopics
     .filter(t => (progress[t.id] ?? 'not_started') === 'not_started')
     .sort((a, b) => getEffectiveStartWeek(a, overrides) - getEffectiveStartWeek(b, overrides));
   const nextTopics = [...inProgress, ...notStarted].slice(0, 3);
@@ -95,9 +97,9 @@ export default async function Dashboard() {
         {/* Stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
           {[
-            { label: 'Topics done',   value: doneCount,   suffix: `/${ALL_TOPICS.length}`, color: '#6DB07A' },
+            { label: 'Topics done',   value: doneCount,   suffix: `/${visibleTopics.length}`, color: '#6DB07A' },
             { label: 'In progress',   value: activeCount, suffix: ' topics',               color: '#E6A020' },
-            { label: 'Hours covered', value: doneHours,   suffix: `/${TOTAL_HOURS}h`,      color: '#7B68C8' },
+            { label: 'Hours covered', value: doneHours,   suffix: `/${visibleTopics.reduce((a, t) => a + t.hours, 0)}h`, color: '#7B68C8' },
           ].map(m => (
             <div key={m.label} className="bg-white border border-[#E8E4DE] rounded-xl" style={{ borderTop: `3px solid ${m.color}` }}>
               <div className="p-4 sm:p-5">
@@ -134,7 +136,7 @@ export default async function Dashboard() {
           <h2 className="font-[family-name:var(--font-playfair)] text-[18px] font-semibold mb-5">Progress by track</h2>
           <div className="space-y-5">
             {TOPICS.map(l1 => {
-              const l1topics = l1.categories.flatMap(c => c.topics);
+              const l1topics = l1.categories.flatMap(c => c.topics).filter(t => !hiddenSet.has(t.id));
               const done = l1topics.filter(t => progress[t.id] === 'done').length;
               const active = l1topics.filter(t => progress[t.id] === 'in_progress').length;
               const pctDone = Math.round((done / l1topics.length) * 100);

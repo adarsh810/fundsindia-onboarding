@@ -680,7 +680,7 @@ export const ONBOARDING_TOPICS: L1Track[] = [
     id: 'ol3', label: 'FundsIndia 101', hours: 36, color: '#6B3FA0', accent: '#D7BDE2',
     categories: [
       {
-        name: 'Core Flows',
+        name: 'Topics',
         topics: [
           {
             id: 'ok3.1', title: 'KYC & Investor Flows', hours: 6, week: 'W1',
@@ -750,11 +750,6 @@ export const ONBOARDING_TOPICS: L1Track[] = [
             ],
             artifact: 'Redemption eligibility matrix: lock-in × exit load × redemption type — when is what blocked',
           },
-        ],
-      },
-      {
-        name: 'Architecture & Strategy',
-        topics: [
           {
             id: 'ok3.7', title: 'Architecture & Strategy Deep Dive', hours: 8, week: 'W3',
             desc: 'Detailed blueprint, architecture companion, build philosophy, build roadmap, mandate continuity, FP meeting questionnaire',
