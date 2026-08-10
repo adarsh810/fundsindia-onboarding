@@ -26,7 +26,12 @@ export default async function OnboardingSchedule() {
           })
       )
     ),
-    ...customTopics.map(ct => ({ id: ct.id, title: ct.title, desc: ct.desc, hours: ct.hours })),
+    ...customTopics.map(ct => ({
+      id: ct.id,
+      title: metas[ct.id]?.title?.trim() || ct.title,
+      desc:  metas[ct.id]?.desc?.trim()  || ct.desc,
+      hours: ct.hours,
+    })),
   ];
 
   return (

@@ -33,7 +33,7 @@ export default async function OnboardingDashboard() {
     }
     for (const ct of customTopics.filter(c => c.l1Id === l1.id)) {
       pos++;
-      allTopics.push({ id: ct.id, title: ct.title, hours: ct.hours, l1Id: l1.id, l1Label: l1.label, l1Color: l1.color, serial: String(pos) });
+      allTopics.push({ id: ct.id, title: metas[ct.id]?.title?.trim() || ct.title, hours: ct.hours, l1Id: l1.id, l1Label: l1.label, l1Color: l1.color, serial: String(pos) });
     }
   }
 
@@ -42,7 +42,7 @@ export default async function OnboardingDashboard() {
     let pos = 0;
     for (const ct of customTopics.filter(c => c.l1Id === cl1.id)) {
       pos++;
-      allTopics.push({ id: ct.id, title: ct.title, hours: ct.hours, l1Id: cl1.id, l1Label: cl1.label, l1Color: cl1.color, serial: String(pos) });
+      allTopics.push({ id: ct.id, title: metas[ct.id]?.title?.trim() || ct.title, hours: ct.hours, l1Id: cl1.id, l1Label: cl1.label, l1Color: cl1.color, serial: String(pos) });
     }
   }
 

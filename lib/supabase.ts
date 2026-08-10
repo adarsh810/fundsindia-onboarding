@@ -233,3 +233,7 @@ export async function getCustomTopicById(id: string): Promise<CustomTopic | null
 export async function hideCustomTopic(id: string): Promise<void> {
   await supabase.from('fi_topic_custom').update({ hidden: true }).eq('id', id).eq('user_id', USER_ID);
 }
+
+export async function hideCustomTopicsByL1(l1Id: string): Promise<void> {
+  await supabase.from('fi_topic_custom').update({ hidden: true }).eq('l1_id', l1Id).eq('user_id', USER_ID);
+}

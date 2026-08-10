@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { addCustomL1Track, deleteCustomL1Track } from '@/lib/supabase';
+import { addCustomL1Track, deleteCustomL1Track, hideCustomTopicsByL1 } from '@/lib/supabase';
 
 export async function POST(req: NextRequest) {
   const { action, section, label, color, accent, position, id } = (await req.json()) as {
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
   }
   if (action === 'delete') {
     if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 });
-    await deleteCustomL1Track(id);
+    await Promise.all([deleteCustomL1Track(id), hideCustomTopicsByL1(id)]);
     return NextResponse.json({ ok: true });
   }
   return NextResponse.json({ error: 'Unknown action' }, { status: 400 });

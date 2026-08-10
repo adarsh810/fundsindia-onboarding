@@ -155,7 +155,7 @@ export default function PlanView({
     let cat = mergedCats.find(c => c.name === ct.category);
     if (!cat) { cat = { name: ct.category, topics: [] }; mergedCats.push(cat); }
     (cat.topics as typeof cat.topics & { isCustom?: boolean }[]).push({
-      id: ct.id, title: ct.title, desc: ct.desc, hours: ct.hours, isCustom: true,
+      id: ct.id, title: metas[ct.id]?.title?.trim() || ct.title, desc: metas[ct.id]?.desc?.trim() || ct.desc, hours: ct.hours, isCustom: true,
       week: ct.week, done: ct.done, artifact: ct.artifact, resources: [],
     } as never);
   });

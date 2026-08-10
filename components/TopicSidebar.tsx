@@ -39,7 +39,7 @@ function buildTopicList(
     .filter(ct => ct.l1Id === track.id)
     .map((ct, i) => ({
       id:     ct.id,
-      title:  ct.title,
+      title:  metas[ct.id]?.title?.trim() || ct.title,
       serial: String(staticTopics.length + i + 1),
     }));
 
