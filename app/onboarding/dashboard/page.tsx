@@ -1,15 +1,16 @@
 import Link from 'next/link';
 import AppNav from '@/components/AppNav';
 import { ONBOARDING_TOPICS, resolveMeta } from '@/lib/data';
-import { getAllProgress, getAllMetaOverrides, getCustomTopics, getHiddenTopics, getCustomL1Tracks } from '@/lib/supabase';
+import { getAllProgress, getAllMetaOverrides, getAllL1Overrides, getCustomTopics, getHiddenTopics, getCustomL1Tracks } from '@/lib/supabase';
 import type { CustomL1Track } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
 
 export default async function OnboardingDashboard() {
-  const [progress, metas, customTopics, hiddenSet, customL1Tracks] = await Promise.all([
+  const [progress, metas, l1Overrides, customTopics, hiddenSet, customL1Tracks] = await Promise.all([
     getAllProgress(),
     getAllMetaOverrides(),
+    getAllL1Overrides('onboarding'),
     getCustomTopics('onboarding'),
     getHiddenTopics(),
     getCustomL1Tracks('onboarding'),
@@ -27,13 +28,13 @@ export default async function OnboardingDashboard() {
       for (const t of cat.topics) {
         if (!hiddenSet.has(t.id)) {
           pos++;
-          allTopics.push({ id: t.id, title: resolveMeta(t, metas).title, hours: t.hours, l1Id: l1.id, l1Label: l1.label, l1Color: l1.color, serial: String(pos) });
+          allTopics.push({ id: t.id, title: resolveMeta(t, metas).title, hours: t.hours, l1Id: l1.id, l1Label: l1Overrides[l1.id]?.label || l1.label, l1Color: l1.color, serial: String(pos) });
         }
       }
     }
     for (const ct of customTopics.filter(c => c.l1Id === l1.id)) {
       pos++;
-      allTopics.push({ id: ct.id, title: metas[ct.id]?.title?.trim() || ct.title, hours: ct.hours, l1Id: l1.id, l1Label: l1.label, l1Color: l1.color, serial: String(pos) });
+      allTopics.push({ id: ct.id, title: metas[ct.id]?.title?.trim() || ct.title, hours: ct.hours, l1Id: l1.id, l1Label: l1Overrides[l1.id]?.label || l1.label, l1Color: l1.color, serial: String(pos) });
     }
   }
 
@@ -42,7 +43,7 @@ export default async function OnboardingDashboard() {
     let pos = 0;
     for (const ct of customTopics.filter(c => c.l1Id === cl1.id)) {
       pos++;
-      allTopics.push({ id: ct.id, title: metas[ct.id]?.title?.trim() || ct.title, hours: ct.hours, l1Id: cl1.id, l1Label: cl1.label, l1Color: cl1.color, serial: String(pos) });
+      allTopics.push({ id: ct.id, title: metas[ct.id]?.title?.trim() || ct.title, hours: ct.hours, l1Id: cl1.id, l1Label: l1Overrides[cl1.id]?.label || cl1.label, l1Color: cl1.color, serial: String(pos) });
     }
   }
 
@@ -105,7 +106,7 @@ export default async function OnboardingDashboard() {
                     <div className="flex items-center justify-between mb-1.5">
                       <div className="flex items-center gap-2">
                         <div className="w-2 h-2 rounded-sm shrink-0" style={{ background: l1.color }} />
-                        <span className="text-sm font-medium text-[#1C1C1A] group-hover:underline">{l1.label}</span>
+                        <span className="text-sm font-medium text-[#1C1C1A] group-hover:underline">{l1Overrides[l1.id]?.label || l1.label}</span>
                         {active > 0 && (
                           <span className="text-[10px] font-medium text-[#7A5010] bg-[#FEF0C7] px-2 py-0.5 rounded-full">{active} active</span>
                         )}
@@ -130,7 +131,7 @@ export default async function OnboardingDashboard() {
                   <div className="flex items-center justify-between mb-1.5">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-sm shrink-0" style={{ background: l1.color }} />
-                      <span className="text-sm font-medium text-[#1C1C1A] group-hover:underline">{l1.label}</span>
+                      <span className="text-sm font-medium text-[#1C1C1A] group-hover:underline">{l1Overrides[l1.id]?.label || l1.label}</span>
                       {active > 0 && (
                         <span className="text-[10px] font-medium text-[#7A5010] bg-[#FEF0C7] px-2 py-0.5 rounded-full">{active} active</span>
                       )}

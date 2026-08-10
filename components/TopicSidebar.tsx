@@ -46,8 +46,8 @@ function buildTopicList(
   return [...staticTopics, ...customForTrack];
 }
 
-function TopicList({ track, currentId, progress, metas, customTopics, hiddenTopics, onNavigate }: {
-  track: L1Track; currentId: string; progress: ProgressMap; metas: MetaOverrideMap;
+function TopicList({ track, trackLabel, currentId, progress, metas, customTopics, hiddenTopics, onNavigate }: {
+  track: L1Track; trackLabel: string; currentId: string; progress: ProgressMap; metas: MetaOverrideMap;
   customTopics: CustomTopic[]; hiddenTopics: string[]; onNavigate?: () => void;
 }) {
   const topics = buildTopicList(track, metas, customTopics, hiddenTopics);
@@ -57,7 +57,7 @@ function TopicList({ track, currentId, progress, metas, customTopics, hiddenTopi
   return (
     <>
       <p className="text-[10px] font-semibold uppercase tracking-[0.1em] mb-3" style={{ color: track.color }}>
-        {track.label}
+        {trackLabel}
       </p>
       <p className="text-[9px] font-semibold uppercase tracking-[0.1em] text-[#C8C2BA] mb-1.5">Topics</p>
       <div className="space-y-0.5">
@@ -90,11 +90,12 @@ function TopicList({ track, currentId, progress, metas, customTopics, hiddenTopi
   );
 }
 
-export default function TopicSidebar({ track, currentId, progress, metas, customTopics = [], hiddenTopics = [] }: {
-  track: L1Track; currentId: string; progress: ProgressMap; metas: MetaOverrideMap;
+export default function TopicSidebar({ track, trackLabel, currentId, progress, metas, customTopics = [], hiddenTopics = [] }: {
+  track: L1Track; trackLabel?: string; currentId: string; progress: ProgressMap; metas: MetaOverrideMap;
   customTopics?: CustomTopic[]; hiddenTopics?: string[];
 }) {
   const [open, setOpen] = useState(false);
+  const resolvedLabel = trackLabel ?? track.label;
 
   return (
     <>
@@ -123,7 +124,7 @@ export default function TopicSidebar({ track, currentId, progress, metas, custom
                 </svg>
               </button>
             </div>
-            <TopicList track={track} currentId={currentId} progress={progress} metas={metas}
+            <TopicList track={track} trackLabel={resolvedLabel} currentId={currentId} progress={progress} metas={metas}
               customTopics={customTopics} hiddenTopics={hiddenTopics} onNavigate={() => setOpen(false)} />
           </div>
         </div>
@@ -132,7 +133,7 @@ export default function TopicSidebar({ track, currentId, progress, metas, custom
       {/* Desktop sidebar */}
       <aside className="hidden lg:block w-52 shrink-0 self-stretch">
         <div className="sticky top-[4.5rem] max-h-[calc(100vh-5.5rem)] overflow-y-auto">
-          <TopicList track={track} currentId={currentId} progress={progress} metas={metas}
+          <TopicList track={track} trackLabel={resolvedLabel} currentId={currentId} progress={progress} metas={metas}
             customTopics={customTopics} hiddenTopics={hiddenTopics} />
         </div>
       </aside>
