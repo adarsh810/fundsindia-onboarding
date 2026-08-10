@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FundsIndia · Strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --stone:#ece4d6;
+  --stone-deep:#e3d9c7;
+  --ink:#241c14;
+  --ink-soft:#4a4034;
+  --ink-faint:#7a6f5e;
+  --terracotta:#a8472a;
+  --terracotta-lt:#cd6442;
+  --ochre:#c08a2d;
+  --amber:#d99a4e;
+  --olive:#5e6342;
+  --night:#241b12;
+  --night-2:#2f2417;
+  --cream:#f4eee2;
+  --rule:#cdc1ad;
+  --rule-soft:#dbd2c0;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{
+  font-family:'Newsreader',serif;
+  color:var(--ink);
+  background:#0e131c;
+  -webkit-font-smoothing:antialiased;
+}
+.deck{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth;}
+.snap{height:100vh;scroll-snap-align:start;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;}
+.snap.stone{background:var(--stone);}
+.snap.cream{background:var(--cream);}
+.snap.night{background:radial-gradient(125% 95% at 80% 6%, var(--night-2) 0%, var(--night) 62%);color:#ece2d2;}
+
+.stage{
+  position:relative;
+  width:1180px;height:720px;flex:none;
+  transform:scale(var(--s,1));transform-origin:center center;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:56px 72px 80px;
+}
+.stage.top{justify-content:flex-start;padding-top:84px;}
+.stage.center{align-items:center;text-align:center;justify-content:center;}
+.stage > *{width:100%;}
+
+/* ---- shared type ---- */
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--terracotta);margin-bottom:24px;
+}
+.night .eyebrow{color:var(--amber);}
+.eyebrow .sep{opacity:0.5;margin:0 4px;}
+
+h1.display{
+  font-family:'Fraunces',serif;font-weight:300;
+  font-size:88px;line-height:0.96;letter-spacing:-0.02em;
+  text-wrap:balance;
+}
+h1.display em{font-style:italic;color:var(--terracotta);}
+.night h1.display em{color:var(--amber);}
+
+h2.head{
+  font-family:'Fraunces',serif;font-weight:400;
+  font-size:50px;line-height:1.04;letter-spacing:-0.018em;max-width:24ch;
+  text-wrap:balance;
+}
+h2.head em{font-style:italic;color:var(--terracotta);}
+.night h2.head{color:var(--cream);}
+.night h2.head em{color:var(--amber);}
+
+h2.head.sm{font-size:42px;max-width:26ch;}
+h2.head.xs{font-size:36px;line-height:1.05;max-width:30ch;}
+
+.lead{
+  font-style:italic;font-family:'Newsreader',serif;
+  font-size:22px;line-height:1.5;color:var(--ink-soft);
+  max-width:78ch;margin-top:22px;text-wrap:pretty;
+}
+.night .lead{color:#cabda8;}
+
+.body{font-size:18.5px;line-height:1.6;color:var(--ink-soft);max-width:82ch;margin-top:18px;text-wrap:pretty;}
+.night .body{color:#c4b7a3;}
+.body strong{color:var(--ink);font-weight:500;}
+.night .body strong{color:var(--cream);}
+
+/* ---- meta dots row ---- */
+.metarow{
+  margin-top:32px;font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;letter-spacing:0.04em;color:var(--ink-soft);
+  display:flex;flex-wrap:wrap;gap:9px 26px;
+}
+.night .metarow{color:#a99c88;}
+.metarow span::before{
+  content:"";display:inline-block;width:5px;height:5px;
+  background:var(--amber);border-radius:50%;margin-right:9px;vertical-align:middle;
+}
+
+/* ---- numbered principle rows ---- */
+.principles{list-style:none;margin-top:26px;max-width:none;width:100%;}
+.principles li{
+  position:relative;padding:14px 0 14px 56px;border-top:1px solid var(--rule);
+}
+.principles li:first-child{border-top:none;}
+.principles li .pn{
+  position:absolute;left:0;top:50%;transform:translateY(-50%);
+  font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--terracotta);
+  letter-spacing:0.05em;
+}
+.principles.tight li{padding:11px 0 11px 56px;}
+.principles.tight li b{font-size:20px;margin-bottom:2px;}
+.principles.tight li span{font-size:15.5px;line-height:1.45;}
+.night .principles li{border-color:rgba(255,240,220,0.1);}
+.night .principles li .pn{color:var(--amber);}
+.principles li b{font-family:'Fraunces',serif;font-weight:500;font-size:21px;color:var(--ink);display:block;margin-bottom:3px;letter-spacing:-0.01em;}
+.night .principles li b{color:var(--cream);}
+.principles li span{font-size:16.5px;line-height:1.5;color:var(--ink-soft);max-width:92ch;display:block;text-wrap:pretty;}
+.night .principles li span{color:#a99c88;}
+
+/* ---- trade-off block ---- */
+.tradeoff{
+  margin-top:30px;border-left:3px solid var(--terracotta);
+  padding:4px 0 4px 20px;max-width:none;width:100%;
+}
+.tradeoff .tl{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--terracotta);margin-bottom:9px;
+}
+.tradeoff p{font-size:16.5px;line-height:1.55;color:var(--ink-soft);max-width:94ch;text-wrap:pretty;}
+.tradeoff p + p{margin-top:8px;}
+.tradeoff b{color:var(--ink);font-weight:500;}
+.tradeoff .against{color:var(--ink-soft);}
+.night .tradeoff{border-color:var(--amber);}
+.night .tradeoff .tl{color:var(--amber);}
+.night .tradeoff p{color:#c4b7a3;}.night .against{color:#c4b7a3;}
+.night .tradeoff b{color:var(--cream);}
+
+/* ---- two column compare ---- */
+.compare{display:flex;gap:30px;margin-top:30px;width:100%;max-width:none;}
+.col{flex:1 1 0;border:1px solid var(--rule);border-radius:4px;padding:24px 24px 22px;background:var(--cream);}
+.col.them{background:transparent;}
+.col .ctag{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;margin-bottom:16px;}
+.col.them .ctag{color:var(--ink-faint);}
+.col.us .ctag{color:var(--terracotta);}
+.col ul{list-style:none;}
+.col li{font-size:16px;line-height:1.5;padding:8px 0;border-top:1px solid var(--rule-soft);color:var(--ink-soft);}
+.col li:first-child{border-top:none;}
+.col.us li{color:var(--ink);}
+.col.us li::before{content:"";display:inline-block;width:5px;height:5px;background:var(--terracotta);border-radius:50%;margin-right:11px;vertical-align:middle;}
+.col.them li{padding-left:16px;position:relative;}
+.col.them li::before{content:"\00B7";position:absolute;left:0;color:var(--ink-faint);}
+
+/* ---- won't cards ---- */
+.wonts{display:flex;gap:20px;margin-top:34px;width:100%;flex-wrap:wrap;}
+.wont{flex:1 1 calc(50% - 10px);min-width:340px;background:var(--cream);border:1px solid var(--rule);border-radius:4px;padding:22px 24px;}
+.wont .wno{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--terracotta);border:1px solid #e0c5b3;border-radius:20px;padding:4px 13px;margin-bottom:13px;}
+.wont h3{font-family:'Fraunces',serif;font-weight:500;font-size:21px;color:var(--ink);margin-bottom:7px;letter-spacing:-0.01em;}
+.wont p{font-size:15.5px;line-height:1.5;color:var(--ink-soft);}
+
+/* ---- roadmap ---- */
+.road{margin-top:8px;width:100%;max-width:none;}
+.arc{font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0.06em;color:var(--ink-soft);margin-bottom:30px;}
+.arc b{color:var(--terracotta);font-weight:500;}
+.bands{display:flex;gap:10px;align-items:stretch;}
+.band{flex:1 1 0;border:1px solid var(--rule);border-radius:4px;padding:16px 16px 18px;background:var(--cream);position:relative;}
+.band.seq{background:transparent;border-style:dashed;border-color:#c9bba2;}
+.band .bk{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.04em;color:var(--terracotta);margin-bottom:8px;}
+.band.seq .bk{color:var(--ink-faint);}
+.band .bt{font-family:'Fraunces',serif;font-weight:500;font-size:18px;color:var(--ink);line-height:1.12;margin-bottom:6px;}
+.band.center-txt{text-align:center;}
+.band .bd{font-size:13.5px;line-height:1.42;color:var(--ink-soft);}
+.bandfoot{display:flex;margin-top:14px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-faint);letter-spacing:0.04em;gap:10px;}
+
+/* ---- dated spine ---- */
+.spine{list-style:none;margin-top:30px;max-width:none;width:100%;}
+.spine li{display:flex;gap:22px;padding:13px 0;border-top:1px solid var(--rule);align-items:baseline;}
+.spine li:first-child{border-top:none;}
+.spine .when{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--terracotta);flex:0 0 132px;letter-spacing:0.03em;}
+.spine .what b{font-weight:500;color:var(--ink);font-family:'Fraunces',serif;font-size:18px;}
+.spine .what{color:var(--ink-soft);font-size:16px;line-height:1.45;}
+
+/* ---- open flags ---- */
+.flags{list-style:none;margin-top:26px;max-width:none;width:100%;}
+.flags li{padding:15px 0;border-top:1px solid rgba(255,240,220,0.1);font-size:17px;line-height:1.5;color:#c4b7a3;}
+.flags li:first-child{border-top:none;}
+.flags li b{font-family:'Fraunces',serif;color:var(--cream);font-weight:500;}
+.flags li .fb{color:var(--amber);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;margin-right:10px;}
+
+/* ---- lifecycle arc inline ---- */
+.arcline{margin-top:30px;display:flex;flex-wrap:wrap;gap:6px 0;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.04em;color:var(--ink-soft);align-items:center;}
+.night .arcline{color:#a99c88;}
+.arcline .pt{white-space:nowrap;}
+.arcline .pt b{color:var(--terracotta);font-weight:500;}
+.night .arcline .pt b{color:var(--amber);}
+.arcline .sep{margin:0 13px;color:var(--rule);}
+.night .arcline .sep{color:rgba(255,240,220,0.2);}
+
+/* ---- footer ---- */
+.foot{
+  position:absolute;left:84px;right:84px;bottom:38px;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:0.06em;color:var(--ink-faint);
+}
+.night .foot{color:#8a7d6a;}
+.foot .mk{display:flex;align-items:center;gap:9px;}
+.foot .mk b{width:9px;height:9px;border-radius:2px;background:var(--terracotta);display:inline-block;}
+.night .foot .mk b{background:var(--amber);}
+
+.navhint{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.04em;color:#cbd2dd;background:rgba(18,24,34,0.8);padding:6px 15px;border-radius:20px;z-index:50;transition:opacity .6s;}
+
+@media print{
+  body,.deck{height:auto;overflow:visible;background:#fff;}
+  .deck{scroll-snap-type:none;}
+  .snap{height:720px;display:block;page-break-after:always;overflow:hidden;}
+  .stage{transform:none!important;}
+  .navhint{display:none;}
+  @page{size:1180px 720px;margin:0;}
+}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- 01 COVER -->
+<section class="snap night"><div class="stage center">
+  <div class="eyebrow">FundsIndia <span class="sep">·</span> Platform Strategy <span class="sep">·</span> June 2026</div>
+  <h1 class="display">The relationship is<br>the <em>franchise.</em></h1>
+  <p class="lead" style="max-width:54ch;margin-top:30px">Everything else, the AUM, the transactions, the three businesses, is an outcome of getting one thing right: being the most trusted financial relationship in an investor's life, and holding it across decades.</p>
+  <div class="metarow" style="justify-content:center;margin-top:40px">
+    <span>Strategy &amp; positioning</span>
+    <span>The calls behind the build</span>
+    <span>Roadmap, team &amp; how</span>
+  </div>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>Avijit Shukla &nbsp;·&nbsp; for the Group CEO</span></div>
+</div></section>
+
+<!-- 02 SECTION OPENER: POSITIONING -->
+<section class="snap night"><div class="stage">
+  <div class="eyebrow">01 <span class="sep">·</span> Where this starts</div>
+  <h2 class="head">Consumer obsession is not enough.<br>You have to know <em>which company</em><br>is doing the obsessing.</h2>
+  <p class="body" style="max-width:78ch">Search means something different at Google than at Amazon, though the verb is the same. So before a single feature, this is what FundsIndia <strong>is</strong>: the positioning every later choice inherits its legitimacy from.</p>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>02</span></div>
+</div></section>
+
+<!-- 03 POSITIONING DETAIL -->
+<section class="snap stone"><div class="stage top">
+  <div class="eyebrow">Positioning <span class="sep">·</span> What FundsIndia is</div>
+  <h2 class="head xs">Relationship quality is the foundation.<br><em>AUM and transactions are outcomes.</em></h2>
+  <ol class="principles">
+    <li><span class="pn">01</span><b>We hold a household's financial story across decades.</b><span>Not a transaction, not an account: the financial life of a household, carried across generations. The horizon is the lifetime and beyond it.</span></li>
+    <li><span class="pn">02</span><b>Our incentives align with the investor's growth and protection.</b><span>We win when they grow and stay protected. The moment our interest and theirs diverge, the franchise is already lost.</span></li>
+    <li><span class="pn">03</span><b>One unified stack, not three verticalised ones.</b><span>B2C, B2B and Private Wealth run on a common backend with a single intelligence; the surfaces are the tip of the iceberg. Vertical ownership lives in <strong>Product</strong>, never in Tech.</span></li>
+    <li><span class="pn">04</span><b>One Investor ID across all three businesses.</b><span>A single investor may hold a B2C RM, a B2B IFA and a Wealth RM at once, all hanging off one identity. One person, one record, many relationships.</span></li>
+  </ol>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>03</span></div>
+</div></section>
+
+<!-- 04 SECTION OPENER: THE INVESTOR -->
+<section class="snap night"><div class="stage">
+  <div class="eyebrow">02 <span class="sep">·</span> The investor we are building for</div>
+  <h2 class="head">Indians don't pick a restaurant<br>without asking a friend.<br><em>The stakes here are higher.</em></h2>
+  <p class="body" style="max-width:78ch">Our conviction in advice isn't a value, it's a market fact. Despite years of discount-execution marketing from Groww and AngelOne, roughly <strong>70% of MF assets still sit in Regular plans</strong>. People pay for guidance because they want the reassurance. That single fact earns the entire model.</p>
+  <div class="metarow">
+    <span>SEBI Investor Survey, Jan 2026</span>
+    <span>~70&ndash;30 Regular vs Direct, by assets</span>
+  </div>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>04</span></div>
+</div></section>
+
+<!-- 05 INVESTOR RESPONSIBILITIES -->
+<section class="snap stone"><div class="stage top">
+  <div class="eyebrow">Investor centricity <span class="sep">·</span> What the relationship owes them</div>
+  <h2 class="head xs" style="margin-bottom:2px">They trust us with their money.<br><em>We owe them more than a screen.</em></h2>
+  <ol class="principles tight">
+    <li><span class="pn">01</span><b>Protect first; never mis-sell.</b><span>Do what is truly best for them. The protection posture is not just ethics, it is what lets the MFD relationship become a regulated advisory one later, with no discontinuity the investor can feel.</span></li>
+    <li><span class="pn">02</span><b>Celebrate the redemption; teach the goal.</b><span>A redemption that fulfils a goal is the defining win, not churn. Each fulfilled goal earns the next, and earns the investor's family as the next investors. Advocacy is the growth engine.</span></li>
+    <li><span class="pn">03</span><b>They call us for the small things; we call them for the big.</b><span>Inbound on demand for P2 / P3. Proactive outreach from us on P0 / P1. The service asymmetry is a rule, not a vibe.</span></li>
+    <li><span class="pn">04</span><b>The more you hold, the calmer the screen.</b><span>Information architecture for comfort, not overwhelm. More AUM means a quieter surface, detail one click away, the opposite of the industry's more-for-more reflex.</span></li>
+  </ol>
+  <p class="body" style="max-width:78ch;margin-top:18px;font-style:italic;color:var(--terracotta)">Establish trust, and AUM is the outcome, never the target.</p>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>05</span></div>
+</div></section>
+
+<!-- 06 CONSUMER-INTERNET POSTURE -->
+<section class="snap stone"><div class="stage top">
+  <div class="eyebrow">The product posture <span class="sep">·</span> Foundational &amp; horizontal</div>
+  <h2 class="head xs">A consumer-internet product,<br><em>not a wealth-management one.</em></h2>
+  <p class="body" style="max-width:78ch;margin-top:10px">Reference points: Amazon, Flipkart, Groww, not the incumbent wealth apps. This is the posture every call below is made within, so it comes first.</p>
+  <div class="compare" style="margin-top:22px">
+    <div class="col them">
+      <div class="ctag">The wealth-management default</div>
+      <ul>
+        <li>The app exists to gather assets</li>
+        <li>Transaction first, craft second</li>
+        <li>Reliability is somebody else's problem</li>
+        <li>Service means raising a ticket</li>
+      </ul>
+    </div>
+    <div class="col us">
+      <div class="ctag">The way we build</div>
+      <ul>
+        <li>Delight weighted equally with the transaction</li>
+        <li>Real discovery: filter, sort, compare, explain the why</li>
+        <li>Hard latency &amp; uptime bars on money-moving flows</li>
+        <li>Goals embedded in the experience, not bolted on</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tradeoff" style="margin-top:20px">
+    <div class="tl">Chosen against / the cost</div>
+    <p><span class="against">Chosen against treating the app as a means to gather assets.</span> <b>The cost:</b> a standing engineering-and-design investment most wealth firms never make, which is exactly what becomes the moat.</p>
+  </div>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>06</span></div>
+</div></section>
+
+<!-- 07 SECTION OPENER: THE CALLS -->
+<section class="snap night"><div class="stage">
+  <div class="eyebrow">03 <span class="sep">·</span> The calls behind the build</div>
+  <h2 class="head">Strategy is what you<br><em>say no to.</em></h2>
+  <p class="body" style="max-width:78ch">Six calls that shaped the platform. Each is named with the road we did not take and the price we chose to pay, because a decision you can't price isn't a decision, it's a hope.</p>
+  <div class="arcline" style="margin-top:34px">
+    <span class="pt"><b>1</b> MFD &rarr; RIA, one stack</span><span class="sep">/</span>
+    <span class="pt"><b>2</b> One brain, not three</span><span class="sep">/</span>
+    <span class="pt"><b>3</b> Goals at the centre</span><span class="sep">/</span>
+    <span class="pt"><b>4</b> Buy the rails, build the brain</span><span class="sep">/</span>
+    <span class="pt"><b>5</b> A narrow shelf, on purpose</span><span class="sep">/</span>
+    <span class="pt"><b>6</b> Natural persons first</span>
+  </div>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>07</span></div>
+</div></section>
+
+<!-- 08 CALL 1: MFD -> RIA -->
+<section class="snap stone"><div class="stage top">
+  <div class="eyebrow">Call 01 <span class="sep">·</span> Posture</div>
+  <h2 class="head sm">MFD now. RIA later.<br><em>On one stack.</em></h2>
+  <p class="body" style="max-width:78ch">V1 is a distributor business. The advisory line, fee-for-plan on Direct, comes as a fresh regulated build once the stack is unified and legacy is decommissioned. This is a <strong>bandwidth call before it is anything else</strong>: a clean regulated line cannot be built on a half-migrated stack with a team this size.</p>
+  <div class="arcline" style="margin-top:26px">
+    <span class="pt"><b>Step 1</b> &nbsp;Distribute &middot; MFD, today</span><span class="sep">&rarr;</span>
+    <span class="pt"><b>Step 2</b> &nbsp;Unify &middot; migrate &amp; decommission</span><span class="sep">&rarr;</span>
+    <span class="pt"><b>Step 3</b> &nbsp;Advise &middot; RIA, regulated</span>
+  </div>
+  <div class="tradeoff" style="margin-top:30px">
+    <div class="tl">Chosen against / the cost</div>
+    <p><span class="against">Chosen against phasing RIA in early, on a half-migrated stack.</span> <b>The cost:</b> ~two years of an unused licence while Scripbox and ET Money sit in subscription advice. <b>What de-risks the wait:</b> the protection posture means we already run MFD to advisory ethical standards, so RIA, when it lands, formalises a relationship the investor has had all along. No discontinuity to cross.</p>
+  </div>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>08</span></div>
+</div></section>
+
+<!-- 09 CALL 2: ONE BRAIN -->
+<section class="snap stone"><div class="stage top">
+  <div class="eyebrow">Call 02 <span class="sep">·</span> Intelligence</div>
+  <h2 class="head sm">One brain.<br><em>Three faces.</em></h2>
+  <p class="body" style="max-width:78ch">A single intelligence reasons over every investor's goals, holdings and life events, and expresses itself differently for the investor, the RM and the IFA. Same brain, three surfaces. This is the architectural expression of the unified, singular view of the investor.</p>
+  <div class="arcline" style="margin-top:26px">
+    <span class="pt"><b>One intelligence</b></span><span class="sep">&rarr;</span>
+    <span class="pt">Investor surface</span><span class="sep">·</span>
+    <span class="pt">RM surface</span><span class="sep">·</span>
+    <span class="pt">IFA surface</span>
+  </div>
+  <div class="tradeoff" style="margin-top:30px">
+    <div class="tl">Chosen against / the cost</div>
+    <p><span class="against">Chosen against building separate intelligence per business line, the conventional structure, easier to ship line by line.</span> <b>The cost:</b> one engine must serve three very different surfaces without forking, and persona-appropriate expression must be enforced centrally rather than per app. We carry the harder build to avoid three diverging brains later.</p>
+  </div>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>09</span></div>
+</div></section>
+
+<!-- 10 CALL 3: GOALS CENTRAL -->
+<section class="snap stone"><div class="stage top">
+  <div class="eyebrow">Call 03 <span class="sep">·</span> The investor experience</div>
+  <h2 class="head sm">Goals are the index.<br><em>Not instruments.</em></h2>
+  <p class="body" style="max-width:78ch">Navigation is built around goals, not a list of funds. In V1 this is concrete and buildable: every scheme carries a <strong>risk score and a growth score</strong> derived from Alpha, Beta, Sharpe and the rest, then maps to the goal cohorts it suits. Goal creation (RM-enabled), the catalog's scheme intelligence, and the celebratory redemption all ship in V1.</p>
+  <div class="tradeoff" style="margin-top:26px">
+    <div class="tl">Chosen against / the cost</div>
+    <p><span class="against">Chosen against the industry's fund-first navigation.</span> <b>The cost:</b> goal-led is a founding architectural choice, not a feature bolted on later, and it only pays off if we become world-class at getting people to set real goals.</p>
+  </div>
+  <div class="tradeoff" style="margin-top:14px">
+    <div class="tl">Deliberately still open</div>
+    <p>Whether the <b>RM book is valued on goals fulfilled</b> is a real call with comp-plan consequences. Since V1 does not build for the RM, I am deferring it, not hand-waving it, to a deep deliberation in the Oct&ndash;Dec window.</p>
+  </div>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>10</span></div>
+</div></section>
+
+<!-- 11 CALL 4: BUY THE RAILS -->
+<section class="snap stone"><div class="stage top">
+  <div class="eyebrow">Call 04 <span class="sep">·</span> Architecture</div>
+  <h2 class="head sm">Buy what's commodity.<br><em>Build what compounds.</em></h2>
+  <div class="compare" style="margin-top:26px">
+    <div class="col us">
+      <div class="ctag">Build &middot; what compounds</div>
+      <ul>
+        <li>Investor identity &middot; one record, for life</li>
+        <li>The event spine &middot; every change, remembered</li>
+        <li>The ledger &middot; the line we never cross on money</li>
+        <li>The intelligence &middot; the brain that learns</li>
+      </ul>
+    </div>
+    <div class="col them">
+      <div class="ctag">Buy &middot; what doesn't</div>
+      <ul>
+        <li>KYC</li>
+        <li>Payments</li>
+        <li>RTA integration</li>
+        <li>Execution rails &middot; behind clean adapters, swappable</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tradeoff" style="margin-top:24px">
+    <div class="tl">Chosen against / the cost</div>
+    <p><span class="against">Chosen against building commodity rails for control, or buying an end-to-end platform for speed.</span> <b>The cost:</b> a dependency on vendors who sit on the riskiest external clocks. We accept it so every unit of the team's attention goes to what makes us different. The line is drawn at differentiation, not at cost.</p>
+  </div>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>11</span></div>
+</div></section>
+
+<!-- 12 CALL 5: NARROW SHELF + EQUITY -->
+<section class="snap stone"><div class="stage top">
+  <div class="eyebrow">Call 05 <span class="sep">·</span> Scope</div>
+  <h2 class="head sm">A narrow shelf, expanded on purpose.<br><em>Equity comes last, or not at all.</em></h2>
+  <p class="body" style="max-width:78ch">MF and SIF first, then FD and bonds, each phase proving on real customers before the next opens, on a schema that is multi-asset-ready from day one. Equity is not the next shelf item: it is derivatives, real-time settlement, an order-of-magnitude more scale, and elite incumbents. It is attempted with single-minded, well-funded focus, or not attempted at all.</p>
+  <div class="arcline" style="margin-top:24px">
+    <span class="pt"><b>MF · SIF</b></span><span class="sep">&rarr;</span>
+    <span class="pt">FD · Bonds</span><span class="sep">&rarr;</span>
+    <span class="pt">RIA</span><span class="sep">&rarr;</span>
+    <span class="pt" style="opacity:0.7">Equity &middot; its own discipline, last</span>
+  </div>
+  <div class="tradeoff" style="margin-top:26px">
+    <div class="tl">Chosen against / the cost</div>
+    <p><span class="against">Chosen against a broad multi-asset launch, or launching equity under-resourced to check a box.</span> <b>The cost:</b> deferring a large, high-frequency, younger-investor segment for years. We would rather arrive properly than arrive early and lose to Zerodha, Groww and AngelOne.</p>
+  </div>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>12</span></div>
+</div></section>
+
+<!-- 13 CALL 6: NATURAL PERSONS -->
+<section class="snap stone"><div class="stage top">
+  <div class="eyebrow">Call 06 <span class="sep">·</span> Personas</div>
+  <h2 class="head sm">Natural persons first.<br><em>Entities later.</em></h2>
+  <p class="body" style="max-width:78ch">V1 serves the personas that make up the mass-affluent base: resident individuals, minors operated by a guardian, and NRI / OCI investors. HUF and non-individual entities are deferred to the lines that need them, Private Wealth and B2B.</p>
+  <div class="arcline" style="margin-top:24px">
+    <span class="pt"><b>In V1</b> &nbsp;Resident individual</span><span class="sep">·</span>
+    <span class="pt">Minor, guardian-operated</span><span class="sep">·</span>
+    <span class="pt">NRI / OCI</span>
+  </div>
+  <div class="arcline" style="margin-top:10px">
+    <span class="pt" style="opacity:0.7"><b style="opacity:0.7">Deferred</b> &nbsp;HUF</span><span class="sep">·</span>
+    <span class="pt" style="opacity:0.7">Entities &amp; non-individuals</span>
+  </div>
+  <div class="tradeoff" style="margin-top:26px">
+    <div class="tl">Chosen against / the cost</div>
+    <p><span class="against">Chosen against carrying the full persona set, including HUF and entities, in V1.</span> <b>The cost:</b> a meaningful slice of Indian wealth waits for a later phase. They are deferred by relevance to the V1 segment, not by difficulty, they arrive when the line that needs them does.</p>
+  </div>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>13</span></div>
+</div></section>
+
+<!-- 14 SECTION OPENER + WON'TS -->
+<section class="snap night"><div class="stage">
+  <div class="eyebrow">04 <span class="sep">·</span> What we will not build</div>
+  <h2 class="head sm" style="margin-bottom:6px">What we refuse to build<br><em>says who we are.</em></h2>
+  <div class="wonts" style="margin-top:24px">
+    <div class="wont" style="background:rgba(255,240,220,0.045);border-color:rgba(255,240,220,0.13)">
+      <div class="wno">We won't</div>
+      <h3 style="color:var(--cream)">Sell what doesn't protect</h3>
+      <p style="color:#c4b7a3">No crypto, no digital gold, no unregulated or speculative classes, whatever the demand or the trend. Only instruments that structurally protect the investor.</p>
+    </div>
+    <div class="wont" style="background:rgba(255,240,220,0.045);border-color:rgba(255,240,220,0.13)">
+      <div class="wno">We won't</div>
+      <h3 style="color:var(--cream)">Oversell or mis-cross-sell</h3>
+      <p style="color:#c4b7a3">No overselling, and no cross-sell that isn't squarely in the customer's interest. Loan-against-MF is an honest, investor-initiated product, never a redemption-blocking retention trick.</p>
+    </div>
+    <div class="wont" style="background:rgba(255,240,220,0.045);border-color:rgba(255,240,220,0.13)">
+      <div class="wno">We won't</div>
+      <h3 style="color:var(--cream)">Gamify investing</h3>
+      <p style="color:#c4b7a3">No streaks, no badges, no market-movement pings engineered for compulsion. It is not a game, and we will not make it one.</p>
+    </div>
+    <div class="wont" style="background:rgba(255,240,220,0.045);border-color:rgba(255,240,220,0.13)">
+      <div class="wno">We won't</div>
+      <h3 style="color:var(--cream)">Use dark patterns</h3>
+      <p style="color:#c4b7a3">Redemption is as smooth as investment. We never trap money behind friction. The platform does not infantilise the investor.</p>
+    </div>
+  </div>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>14</span></div>
+</div></section>
+
+<!-- 15 SECTION OPENER: ROADMAP -->
+<section class="snap night"><div class="stage">
+  <div class="eyebrow">05 <span class="sep">·</span> The roadmap that falls out</div>
+  <h2 class="head">Distribute. Unify. Advise.<br><em>Trade.</em></h2>
+  <p class="body" style="max-width:78ch">The sequence isn't a wish-list of features, it's the order the calls force. Prove and scale as an MFD play, decommission legacy into one substrate, and only then stand up the regulated advisory line and the heavyweight equity track. Each band is one coherent idea.</p>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>15</span></div>
+</div></section>
+
+<!-- 16 ROADMAP TIMELINE -->
+<section class="snap stone"><div class="stage">
+  <div class="eyebrow">The plan <span class="sep">·</span> One substrate, then two deliberate builds</div>
+  <h2 class="head xs" style="margin-bottom:4px">From a clean launch to one unified platform,<br><em>then two deliberate builds.</em></h2>
+  <div class="vis" style="width:100%;margin-top:24px">
+    <svg viewBox="0 0 1180 416" width="100%" style="display:block" font-family="'IBM Plex Mono',monospace">
+      <!-- THE ARC header -->
+      <text x="0" y="14" font-size="12" letter-spacing="0.18em" fill="#7a6f5e">THE ARC</text>
+      <text x="0" y="46" font-size="23" fill="#241c14" font-family="Fraunces,serif" font-weight="500" letter-spacing="-0.01em">Distribute &#8202;&rarr;&#8202; unify &#8202;&rarr;&#8202; advise &#8202;&rarr;&#8202; trade</text>
+
+      <!-- ===== ROW 1 : V1 -> V3 TIMELINE (full width) ===== -->
+      <!-- baseline axis -->
+      <line x1="70" y1="134" x2="1180" y2="134" stroke="#cdc1ad" stroke-width="1.5"/>
+      <line x1="760" y1="128" x2="760" y2="174" stroke="#cdc1ad"/>
+
+      <!-- V1 launch marker -->
+      <polygon points="56,100 84,100 70,118" fill="#a8472a"/>
+      <text x="70" y="90" text-anchor="middle" font-size="12.5" fill="#a8472a" font-weight="500">MFD &middot; MF &amp; SIF</text>
+      <text x="70" y="150" text-anchor="middle" font-size="17" fill="#a8472a" font-family="Fraunces,serif" font-weight="600">V1</text>
+      <text x="70" y="171" text-anchor="middle" font-size="12" fill="#a8472a" font-weight="500">Mar 2027</text>
+
+      <!-- V1.5 -->
+      <text x="200" y="90" text-anchor="middle" font-size="12.5" fill="#241c14">FD &amp; Bonds</text>
+      <rect x="130" y="112" width="140" height="46" rx="8" fill="#f4eee2" stroke="#a8472a" stroke-width="1.5"/>
+      <text x="200" y="142" text-anchor="middle" font-size="18" fill="#a8472a" font-family="Fraunces,serif" font-weight="600">V1.5</text>
+      <text x="200" y="171" text-anchor="middle" font-size="12" fill="#7a6f5e">Jun 2027</text>
+
+      <!-- V2 -->
+      <text x="510" y="90" text-anchor="middle" font-size="12.5" fill="#241c14">RM &middot; Wealth &middot; IFA &middot; CRM + migration</text>
+      <rect x="290" y="112" width="440" height="46" rx="8" fill="#f4eee2" stroke="#a8472a" stroke-width="1.5"/>
+      <text x="510" y="142" text-anchor="middle" font-size="18" fill="#a8472a" font-family="Fraunces,serif" font-weight="600">V2</text>
+      <text x="510" y="171" text-anchor="middle" font-size="12" fill="#7a6f5e">Jul 2027 – Mar 2028</text>
+
+      <!-- V3 -->
+      <text x="965" y="90" text-anchor="middle" font-size="12.5" fill="#241c14">Unified &middot; legacy retired</text>
+      <rect x="750" y="112" width="430" height="46" rx="8" fill="#e7ddca" stroke="#a8472a" stroke-width="1.5"/>
+      <text x="965" y="142" text-anchor="middle" font-size="18" fill="#a8472a" font-family="Fraunces,serif" font-weight="600">V3</text>
+      <text x="965" y="171" text-anchor="middle" font-size="12" fill="#7a6f5e">Apr – Jun 2028</text>
+
+      <!-- Row 1 descriptions, CENTER-ALIGNED under each block -->
+      <g font-family="'Newsreader',serif" fill="#4a4034" text-anchor="middle">
+        <text x="70"  y="202" font-size="15">MF &amp; SIF on</text>
+        <text x="70"  y="222" font-size="15">the MFD licence.</text>
+
+        <text x="200" y="202" font-size="15">FD &amp; bonds, plus</text>
+        <text x="200" y="222" font-size="15">migration tooling.</text>
+
+        <text x="510" y="202" font-size="15">Workstations released; the full book migrated.</text>
+        <text x="510" y="222" font-size="15">Intelligence reaches the investor &amp; RM.</text>
+
+        <text x="965" y="202" font-size="15">Legacy decommissioned. One platform,</text>
+        <text x="965" y="222" font-size="15">one ledger, one audit trail.</text>
+      </g>
+
+      <!-- year row for the dated spine -->
+      <text x="410" y="258" text-anchor="middle" font-size="13" fill="#7a6f5e" letter-spacing="0.1em">2027</text>
+      <text x="965" y="258" text-anchor="middle" font-size="13" fill="#7a6f5e" letter-spacing="0.1em">2028</text>
+
+      <!-- divider before sequenced builds -->
+      <line x1="0" y1="290" x2="1180" y2="290" stroke="#cdc1ad" stroke-opacity="0.6"/>
+      <text x="0" y="278" font-size="12" letter-spacing="0.18em" fill="#c08a2d">BEYOND, SEQUENCED &middot; ON THE UNIFIED STACK</text>
+
+      <!-- ===== ROW 2 : RIA ===== -->
+      <rect x="0" y="310" width="158" height="48" rx="8" fill="#f6ece2" stroke="#c08a2d" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <text x="79" y="333" text-anchor="middle" font-size="17" fill="#c08a2d" font-family="Fraunces,serif" font-weight="600">RIA</text>
+      <text x="79" y="350" text-anchor="middle" font-size="10.5" fill="#c08a2d" opacity="0.85">sequenced</text>
+      <text x="196" y="340" font-size="15.5" fill="#4a4034" font-family="Newsreader,serif"><tspan fill="#241c14" font-weight="500">Regulated advisory.</tspan> A fresh fee-for-plan build on the unified stack, client-segregated, never merged into MFD. Its own regulatory clock.</text>
+
+      <!-- ===== ROW 3 : EQUITY ===== -->
+      <rect x="0" y="368" width="158" height="48" rx="8" fill="#f6ece2" stroke="#c08a2d" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <text x="79" y="391" text-anchor="middle" font-size="17" fill="#c08a2d" font-family="Fraunces,serif" font-weight="600">Equity</text>
+      <text x="79" y="408" text-anchor="middle" font-size="10.5" fill="#c08a2d" opacity="0.85">sequenced</text>
+      <text x="196" y="398" font-size="15.5" fill="#4a4034" font-family="Newsreader,serif"><tspan fill="#241c14" font-weight="500">Direct equity.</tspan> The heaviest build: derivatives, real-time settlement, an order more scale. Placed last, after everything else converges.</text>
+    </svg>
+  </div>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>16</span></div>
+</div></section>
+
+<!-- 17 DATED SPINE -->
+<section class="snap stone"><div class="stage top">
+  <div class="eyebrow">The next nine months <span class="sep">·</span> The part that is real</div>
+  <h2 class="head xs">The slow clocks are<br><em>already running.</em></h2>
+  <p class="body" style="max-width:78ch;margin-top:8px">Time is precise on the left; later bands are an ordered sequence, not dated commitments. The external onboarding nobody can rush, execution, payments, KYC, is already in motion.</p>
+  <ul class="spine">
+    <li><span class="when">1 Jul 2026</span><span class="what"><b>Head of Engineering in</b> &nbsp;Already joined.</span></li>
+    <li><span class="when">17 Aug 2026</span><span class="what"><b>Full team lands</b> &nbsp;The cohort joins.</span></li>
+    <li><span class="when">17 Aug &ndash; 30 Sep</span><span class="what"><b>Design &amp; architecture locked</b> &nbsp;Contracts and designs nailed. No feature code.</span></li>
+    <li><span class="when">Oct 2026</span><span class="what"><b>Build starts</b> &nbsp;Substrate, then the internal transaction path.</span></li>
+    <li><span class="when">Gate</span><span class="what"><b>Internal users on real rails</b> &nbsp;Before any customer surface.</span></li>
+    <li><span class="when">Mar 2027</span><span class="what"><b>V1 launch</b> &nbsp;Net-new only. The carried anchor.</span></li>
+  </ul>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>17</span></div>
+</div></section>
+
+<!-- 18 SECTION OPENER + TEAM -->
+<section class="snap night"><div class="stage">
+  <div class="eyebrow">06 <span class="sep">·</span> The team &amp; how we build</div>
+  <h2 class="head xs" style="margin-bottom:6px">Fifteen people, built to ship<br><em>what used to take forty.</em></h2>
+  <p class="body" style="max-width:78ch;margin-top:8px">Distributed-systems seniors paired with product engineers who think in entities and events, with AI tooling as a real multiplier, not a perk. A profile structured to deliver what needed thirty-to-forty engineers three years ago.</p>
+  <ol class="principles tight" style="margin-top:22px">
+    <li><span class="pn">01</span><b>Tech stays unified; Product carries the verticals.</b><span>The single rule that keeps the stack singular. Vertical-level ownership and change originate in Product, never inside Tech.</span></li>
+    <li><span class="pn">02</span><b>Insulated from BAU, reviewed on architecture.</b><span>Not pulled into firefighting, not measured on quarterly metrics. Reviewed on architecture milestones, the single biggest defence against the build quietly becoming a second support team.</span></li>
+  </ol>
+  <div class="tradeoff" style="margin-top:18px">
+    <div class="tl">Chosen against / the cost</div>
+    <p><span class="against">Chosen against a larger conventional team, or a BAU-integrated build.</span> <b>The cost:</b> key-person concentration and lower raw throughput, accepted, because the insulation is what protects the horizon.</p>
+  </div>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>18</span></div>
+</div></section>
+
+<!-- 19 OPEN FLAGS -->
+<section class="snap night"><div class="stage">
+  <div class="eyebrow">07 <span class="sep">·</span> What I am carrying in the open</div>
+  <h2 class="head sm">The flags,<br><em>before you have to find them.</em></h2>
+  <ul class="flags">
+    <li><span class="fb">Anchor</span><b>March 2027 is a carried date, not yet a confirmed one.</b> Everything to its right is an ordered sequence, not a dated commitment.</li>
+    <li><span class="fb">Open call</span><b>The RM scorecard: goals-fulfilled vs AUM.</b> Deliberately deferred to the Oct&ndash;Dec deep-dive, not decided in the hallway.</li>
+    <li><span class="fb">Confirming</span><b>SIF rail support with the execution partner.</b> Cleanly cuttable from V1 if it slips, the way the held-away picture is for its dependency.</li>
+    <li><span class="fb">Closing</span><b>The recommendation-policing rule, with Compliance.</b> Where the goal-nudge meets the MFD boundary: states and informs, never prescribes.</li>
+  </ul>
+  <p class="body" style="max-width:78ch;margin-top:22px;font-style:italic;color:var(--amber)">I would rather you see these now than discover them later.</p>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>19</span></div>
+</div></section>
+
+<!-- 20 CLOSER -->
+<section class="snap night"><div class="stage center">
+  <div class="eyebrow">The horizon</div>
+  <h1 class="display" style="font-size:64px;max-width:18ch">Win the relationship,<br>and the <em>rest follows.</em></h1>
+  <p class="lead" style="max-width:52ch;margin-top:28px">Get one thing right, being the most trusted financial relationship in an investor's life, and the AUM, the three businesses, and the decades are outcomes, not targets. That is the whole strategy. The rest is execution.</p>
+  <div class="metarow" style="justify-content:center;margin-top:38px">
+    <span>Built once</span><span>Built well</span><span>Built to last</span>
+  </div>
+  <div class="foot"><span class="mk"><b></b>FundsIndia</span><span>20</span></div>
+</div></section>
+
+</div>
+<div class="navhint" id="hint">Arrow keys or scroll &nbsp;·&nbsp; press P to print</div>
+<script>
+function fit(){var s=Math.min(window.innerWidth/1180, window.innerHeight/720);document.documentElement.style.setProperty('--s',s);}
+window.addEventListener('resize',fit);fit();
+const deck=document.getElementById('deck');const snaps=[...deck.querySelectorAll('.snap')];let idx=0;
+function go(n){idx=Math.max(0,Math.min(snaps.length-1,n));snaps[idx].scrollIntoView({behavior:'smooth'});}
+document.addEventListener('keydown',e=>{if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){e.preventDefault();go(idx+1);}else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();go(idx-1);}else if(e.key==='Home'){e.preventDefault();go(0);}else if(e.key==='End'){e.preventDefault();go(snaps.length-1);}else if(e.key==='p'||e.key==='P'){window.print();}});
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting)idx=snaps.indexOf(en.target);}),{root:deck,threshold:0.5});snaps.forEach(s=>io.observe(s));
+setTimeout(()=>{const h=document.getElementById('hint');if(h)h.style.opacity='0';},5000);
+</script>
+</body>
+</html>

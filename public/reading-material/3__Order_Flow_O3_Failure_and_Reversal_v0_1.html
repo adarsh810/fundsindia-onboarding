@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order Flow O3: Failure, Rejection and Reversal</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;
+  --line:#e6ddcd;--line-strong:#c9bda4;--amber:#9a6a16;--amber-soft:#fbf2dd;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1240px;margin:0 auto;padding:64px 52px 96px;background:var(--paper);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.35rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.5rem;font-weight:700;color:var(--accent-dark);margin:50px 0 6px;letter-spacing:-.01em;}
+p{margin:12px 0;}
+strong{font-weight:700;color:var(--ink);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 28px;margin:18px 0;padding:20px 24px;background:var(--cream);border:1px solid var(--line);border-radius:9px;font-size:.88rem;}
+.legend .item{display:flex;align-items:center;gap:10px;}
+.sw{width:28px;height:19px;border-radius:4px;flex-shrink:0;display:inline-block;}
+.sw.dia{width:20px;height:20px;transform:rotate(45deg);border-radius:3px;}
+.sw.oval{border-radius:10px;}
+.sw.cir{width:21px;height:21px;border-radius:50%;}
+.sw.ln{height:0;border-top:3px solid;width:30px;border-radius:0;}
+.frame{margin:26px 0;border:1px solid var(--line);border-radius:10px;background:var(--paper);overflow-x:auto;padding:18px;}
+.frame svg{display:block;min-width:1900px;width:100%;height:auto;}
+.hint{font-size:.84rem;color:var(--soft-muted);font-style:italic;margin-top:-8px;}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:7px 0;}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+th,td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+.footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+@media print{@page{size:A3 landscape;margin:12mm;} body{background:#fff;} .wrap{max-width:none;padding:0;} .frame{page-break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Order Layer &middot; Granular Companion to the Order Reference and J6</p>
+  <h1 class="title">Order Flow O3: Failure, Rejection and Reversal</h1>
+  <p class="subtitle">One question decides the whole diagram: were units allotted or proceeds paid? Everything else follows from which side of that line the order sits.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.1 &middot; drawn on the series standard</b></div>
+    <div><span class="label">Date</span><b>August 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Granular flow diagram, hand-authored SVG</b></div>
+    <div><span class="label">Register</span><b>Open Decisions Register v0.17</b></div>
+    <div><span class="label">Sits under</span><b>J6 &middot; granular flow tier</b></div>
+  </div>
+</header>

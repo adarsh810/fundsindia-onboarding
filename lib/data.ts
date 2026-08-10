@@ -271,7 +271,7 @@ export const TOPICS: L1Track[] = [
               { label: 'SEBI Survey — FundsIndia Brief', url: '/reading-material/C-sebi_survey_fundsindia_brief.html' },
               { label: 'India Wealthtech Landscape', url: '/reading-material/B-India_wealthtech_landscape.html' },
               { label: 'PMS & AIF Landscape (India)', url: '/reading-material/E-india_pms_aif_landscape.html' },
-              { label: 'FundsIndia Strategy Deck (high level)', url: '/reading-material/4_FundsIndia_Strategy_Deck.html' },
+              { label: 'FundsIndia Strategy Deck (Group CEO)', url: '/reading-material/4_FundsIndia_Strategy_Deck_Group_CEO.html' },
             ],
             artifact: 'Two-part one-pager: (1) India wealthtech landscape — key players, regulators, PMS/AIF space; (2) FI business model — 3 tiers, revenue per tier, growth lever per tier',
           },
@@ -352,6 +352,9 @@ export const TOPICS: L1Track[] = [
               { label: 'Blueprint original + revised (internal)' },
               { label: 'Blueprint diff analysis (internal)' },
               { label: 'Blueprint Executive Summary v2.1', url: '/reading-material/1.1_FundsIndia_Blueprint_Executive_Summary_v2_1.html' },
+              { label: 'Blueprint Detailed v1.2 (full)', url: '/reading-material/1_2_FundsIndia_Blueprint_Detailed_v1_2.html' },
+              { label: 'Architecture Companion v2.1', url: '/reading-material/6_FundsIndia_Architecture_Companion_v2_1.html' },
+              { label: 'Build Philosophy & Tech Constitution', url: '/reading-material/3_Build_Philosophy___Tech_Constitution.html' },
             ],
             artifact: 'Pass 1: strategy one-pager | Pass 2: entity diagram | Pass 3: 20 Day-1 questions',
           },
@@ -383,12 +386,13 @@ export const TOPICS: L1Track[] = [
             resources: [
               { label: 'V1-0 — The Key Calls', url: '/reading-material/V1-0-FundsIndia_The_Key_Calls_V1.html' },
               { label: 'V1-1 — Stage 0 Lock List', url: '/reading-material/V1-1-FundsIndia_V1_Stage0_LockList.html' },
-              { label: 'V1-2 — Build Strategy', url: '/reading-material/V1-2-FundsIndia_V1_Build_Strategy_v2_1.html' },
-              { label: 'V1-3 — Big Block Map', url: '/reading-material/V1-3-FundsIndia-V1-Big-Block-Map-v2.html' },
+              { label: 'V1-2 — Build Strategy (v2.3)', url: '/reading-material/V1-2-FundsIndia_V1_Build_Strategy_v2_3.html' },
+              { label: 'V1-3 — Big Block Map (v2.1)', url: '/reading-material/V1-3-FundsIndia-V1-Big-Block-Map-v2_1.html' },
               { label: 'V1-4 — Documentation Index', url: '/reading-material/V1-4-FundsIndia_V1_Documentation_Index.html' },
               { label: 'V1-5 — Technical Strategy View', url: '/reading-material/V1-5-FundsIndia-V1-Technical-Strategy-View.html' },
               { label: 'V1-6 — Technical Architecture View', url: '/reading-material/V1-6-FundsIndia-V1-Technical-Architecture-View.html' },
-              { label: 'V1-8 — Open Decisions Register', url: '/reading-material/V1-8-Open-Decisions-Register-v0_16.html' },
+              { label: 'V1-7 — Technical Scaffolding Checklist', url: '/reading-material/V1-7-FundsIndia-V1-Technical-Scaffolding-Checklist.html' },
+              { label: 'V1-8 — Open Decisions Register (v0.17)', url: '/reading-material/V1-8-Open-Decisions-Register-v0_17.html' },
             ],
             artifact: 'V1 open-decisions one-pager: your take on 3–5 decisions ready to discuss with Avijit',
           },
@@ -670,18 +674,120 @@ export const ALL_TOPICS = TOPICS.flatMap(l1 => l1.categories.flatMap(c => c.topi
 export const TOTAL_HOURS = TOPICS.reduce((a, l) => a + l.hours, 0);
 
 export const ONBOARDING_TOPICS: L1Track[] = [
-  { id: 'l1', label: 'AI 101',    hours: 0, color: '#2D6A4F', accent: '#B7E4C7', categories: [] },
-  { id: 'l2', label: 'Finance 101', hours: 0, color: '#1B4F72', accent: '#AED6F1', categories: [] },
-  { id: 'l3', label: 'FundsIndia 101',  hours: 0, color: '#6B3FA0', accent: '#D7BDE2', categories: [] },
-  { id: 'l4', label: 'Software dev 101', hours: 0, color: '#B7410E', accent: '#FAD7A0', categories: [] },
+  { id: 'ol1', label: 'AI 101',    hours: 0, color: '#2D6A4F', accent: '#B7E4C7', categories: [] },
+  { id: 'ol2', label: 'Finance 101', hours: 0, color: '#1B4F72', accent: '#AED6F1', categories: [] },
+  {
+    id: 'ol3', label: 'FundsIndia 101', hours: 36, color: '#6B3FA0', accent: '#D7BDE2',
+    categories: [
+      {
+        name: 'Core Flows',
+        topics: [
+          {
+            id: 'ok3.1', title: 'KYC & Investor Flows', hours: 6, week: 'W1',
+            desc: 'Granular KYC flow (OCI), lifecycle events: downgrade/restore, registry failure modes, attaining majority, residency',
+            done: 'Walk through what happens when an investor\'s KYC is downgraded mid-portfolio and how the platform reacts',
+            resources: [
+              { label: '1 — KYC Granular Flow (OCI)', url: '/reading-material/1__KYC_Granular_Flow_OCI_v0_1.html' },
+              { label: '5 — KYC Lifecycle L1: Downgrade & Restore', url: '/reading-material/5__KYC_Lifecycle_L1_Downgrade_and_Restore_v0_1.html' },
+              { label: '5 — KYC Lifecycle L2: Registry Failure Modes', url: '/reading-material/5__KYC_Lifecycle_L2_Registry_Failure_Modes_v0_1.html' },
+              { label: '5 — KYC Lifecycle L3: Attaining Majority', url: '/reading-material/5__KYC_Lifecycle_L3_Attaining_Majority_v0_1.html' },
+              { label: '5 — KYC Lifecycle L5: Anticipated Events & Residency', url: '/reading-material/5__KYC_Lifecycle_L5_Anticipated_Events_and_Residency_v0_1.html' },
+            ],
+            artifact: 'KYC state machine diagram: every status, every transition, every downstream consequence',
+          },
+          {
+            id: 'ok3.2', title: 'Instrument Management', hours: 4, week: 'W1',
+            desc: 'How instruments are ingested, how changes propagate across the platform, and how they are served to surfaces',
+            done: 'Explain what happens when an AMC changes a scheme\'s TER — how that flows through FI\'s instrument layer',
+            resources: [
+              { label: '2 — Instrument Flow I1: Ingestion', url: '/reading-material/2__Instrument_Flow_I1_Ingestion_v0_1.html' },
+              { label: '2 — Instrument Flow I2: Change Propagation', url: '/reading-material/2__Instrument_Flow_I2_Change_Propagation_v0_1.html' },
+              { label: '2 — Instrument Flow I3: Serving', url: '/reading-material/2__Instrument_Flow_I3_Serving_v0_1.html' },
+            ],
+            artifact: 'Instrument lifecycle flow: from RTA/BSE feed to investor-facing display — every hop',
+          },
+          {
+            id: 'ok3.3', title: 'Order Lifecycle', hours: 5, week: 'W1–2',
+            desc: 'Placement & preflight checks, execution & settlement, failure modes and reversals',
+            done: 'Trace a lump-sum purchase from investor intent to units credited — every state, every failure mode',
+            resources: [
+              { label: '3 — Order Flow O1: Placement & Preflight', url: '/reading-material/3__Order_Flow_O1_Placement_and_Preflight_v0_1.html' },
+              { label: '3 — Order Flow O2: Execution & Settlement', url: '/reading-material/3__Order_Flow_O2_Execution_and_Settlement_v0_1.html' },
+              { label: '3 — Order Flow O3: Failure & Reversal', url: '/reading-material/3__Order_Flow_O3_Failure_and_Reversal_v0_1.html' },
+            ],
+            artifact: 'Order flow diagram: happy path + 3 failure modes + reversal mechanics for each',
+          },
+          {
+            id: 'ok3.4', title: 'Standing Instructions', hours: 5, week: 'W2',
+            desc: 'Mandate registration, persona & account variants, debit cycle, non-bank instructions (SI5)',
+            done: 'Explain why a NACH mandate registered today may not work on its first SIP date — and what FI does about it',
+            resources: [
+              { label: '4 — Standing Instruction S1: Mandate Registration', url: '/reading-material/4__Standing_Instruction_S1_Mandate_Registration_v0_1.html' },
+              { label: '4 — Standing Instruction S2: Persona & Account Variants', url: '/reading-material/4__Standing_Instruction_S2_Persona_and_Account_Variants_v0_1.html' },
+              { label: '4 — Standing Instruction S3: The Debit Cycle', url: '/reading-material/4__Standing_Instruction_S3_The_Debit_Cycle_v0_1.html' },
+              { label: '4 — Standing Instruction S5: Non-Bank Instructions', url: '/reading-material/4__Standing_Instruction_S5_Non_Bank_Instructions_v0_1.html' },
+            ],
+            artifact: 'SIP debit flow: from mandate setup to instalment execution — timing, fallbacks, edge cases',
+          },
+          {
+            id: 'ok3.5', title: 'Folio Operations', hours: 4, week: 'W2',
+            desc: 'Folio resolution & creation, ownership & operation modes, nomination mechanics',
+            done: 'Explain the difference between a jointly-held folio and a single-holder folio and what that means for nominations',
+            resources: [
+              { label: '6 — Folio F1: Resolution & Creation', url: '/reading-material/6__Folio_F1_Resolution_and_Creation_v0_1.html' },
+              { label: '6 — Folio F2: Ownership & Operation Modes', url: '/reading-material/6__Folio_F2_Ownership_and_Operation_Modes_v0_1.html' },
+              { label: '6 — Folio F3: Nomination', url: '/reading-material/6__Folio_F3_Nomination_v0_1.html' },
+            ],
+            artifact: 'Folio entity model: ownership modes, operation modes, nomination rules — one diagram',
+          },
+          {
+            id: 'ok3.6', title: 'Redemption', hours: 4, week: 'W2–3',
+            desc: 'Pre-trade gates & eligibility screens, the payout tail after units are allotted',
+            done: 'Explain what happens when an investor tries to redeem a scheme with a lock-in and an exit load on the same day',
+            resources: [
+              { label: '9 — Redemption R1: Gates & Pre-Trade Screen', url: '/reading-material/9__Redemption_R1_Gates_and_Pre_Trade_Screen_v0_1.html' },
+              { label: '9 — Redemption R2: The Payout Tail', url: '/reading-material/9__Redemption_R2_The_Payout_Tail_v0_1.html' },
+            ],
+            artifact: 'Redemption eligibility matrix: lock-in × exit load × redemption type — when is what blocked',
+          },
+        ],
+      },
+      {
+        name: 'Architecture & Strategy',
+        topics: [
+          {
+            id: 'ok3.7', title: 'Architecture & Strategy Deep Dive', hours: 8, week: 'W3',
+            desc: 'Detailed blueprint, architecture companion, build philosophy, build roadmap, mandate continuity, FP meeting questionnaire',
+            done: 'Ask 5 informed questions about V1 build decisions in your first architecture review',
+            resources: [
+              { label: 'Blueprint Detailed v1.2', url: '/reading-material/1_2_FundsIndia_Blueprint_Detailed_v1_2.html' },
+              { label: 'Architecture Companion v2.1', url: '/reading-material/6_FundsIndia_Architecture_Companion_v2_1.html' },
+              { label: 'Build Philosophy & Tech Constitution', url: '/reading-material/3_Build_Philosophy___Tech_Constitution.html' },
+              { label: 'Build Roadmap (D-series)', url: '/reading-material/D-FundsIndia-Build-Roadmap-v0_3_rev.html' },
+              { label: 'Mandate Continuity Decision Note', url: '/reading-material/FundsIndia_Mandate_Continuity_Decision_Note_v0_2.html' },
+              { label: 'FP Meeting Questionnaire v3.0', url: '/reading-material/FP-Meeting-Questionnaire-v3_0.html' },
+            ],
+            artifact: '5 architecture questions for your first V1 review meeting, grounded in the docs',
+          },
+        ],
+      },
+    ],
+  },
+  { id: 'ol4', label: 'Software dev 101', hours: 0, color: '#B7410E', accent: '#FAD7A0', categories: [] },
 ];
 
+export const ALL_ONBOARDING_TOPICS = ONBOARDING_TOPICS.flatMap(l1 => l1.categories.flatMap(c => c.topics));
+
 export function findTopicById(id: string) {
-  return ALL_TOPICS.find(t => t.id === id) ?? null;
+  return ALL_TOPICS.find(t => t.id === id) ?? ALL_ONBOARDING_TOPICS.find(t => t.id === id) ?? null;
 }
 
 export function findTrackForTopic(topicId: string) {
-  return TOPICS.find(l => l.categories.some(c => c.topics.some(t => t.id === topicId))) ?? null;
+  return (
+    TOPICS.find(l => l.categories.some(c => c.topics.some(t => t.id === topicId))) ??
+    ONBOARDING_TOPICS.find(l => l.categories.some(c => c.topics.some(t => t.id === topicId))) ??
+    null
+  );
 }
 
 type MetaOverride = { title?: string; desc?: string };

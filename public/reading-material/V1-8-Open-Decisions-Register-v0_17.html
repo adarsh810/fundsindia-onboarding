@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decisions Register: Plain-Language Edition</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;--accent-line:#d8cae9;
+  --line:#e6ddcd;--line-strong:#d8cdb8;--amber:#9a6a16;--amber-soft:#fbf2dd;--amber-line:#e8d2a0;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--grey:#6f6878;--grey-soft:#efece5;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:400;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:880px;margin:0 auto;padding:64px 60px 96px;background:var(--paper);box-shadow:0 1px 0 rgba(0,0,0,0.02);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.45rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.16rem;color:var(--muted);font-weight:400;margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.62rem;font-weight:700;color:var(--accent-dark);margin:58px 0 6px;letter-spacing:-.01em;padding-top:14px;}
+h3{font-size:1.14rem;font-weight:700;color:var(--accent-dark);margin:34px 0 4px;}
+p{margin:12px 0;}
+strong{font-weight:700;color:var(--ink);}
+.lead{font-size:1.05rem;color:#39333f;}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;letter-spacing:.02em;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+.persona{border:1px solid var(--line-strong);border-radius:10px;padding:8px 28px 22px;margin:26px 0;background:var(--paper);}
+.persona h3{border-bottom:2px solid var(--accent-soft);padding-bottom:8px;}
+.facet{margin:13px 0;}
+.facet .fl{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);display:block;margin-bottom:1px;}
+.facet.todo{background:var(--amber-soft);border-left:4px solid var(--amber);border-radius:6px;padding:12px 16px;}
+.facet.todo .fl{color:var(--amber);}
+code,.mono{font-family:'Source Code Pro',monospace;font-size:.84em;background:var(--accent-soft);padding:1px 5px;border-radius:4px;color:var(--code);}
+.footer{margin-top:70px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+.chip{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 11px;border-radius:20px;white-space:nowrap;vertical-align:middle;margin-left:8px;}
+.chip.closed{background:var(--teal-soft);color:var(--teal);border:1px solid #bcd9d5;}
+.chip.follow{background:var(--amber-soft);color:var(--amber);border:1px solid var(--amber-line);}
+.chip.open{background:var(--red-soft);color:var(--red);border:1px solid #e8bcb0;}
+.chip.deferred{background:var(--grey-soft);color:var(--grey);border:1px solid var(--line-strong);}
+.part-band{margin:72px 0 0;padding:14px 22px;background:var(--accent);color:#fff;border-radius:7px;}
+.part-band .pk{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;opacity:.82;font-weight:700;}
+.part-band .pt{font-size:1.3rem;font-weight:700;margin-top:2px;}
+@media print{
+  @page{size:A4;margin:18mm 16mm;}
+  body{background:#fff;}
+  .wrap{box-shadow:none;max-width:none;padding:0;background:#fff;}
+  .part-band{background:var(--accent)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  thead th{background:var(--accent-dark)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .callout,.persona,table,tr{page-break-inside:avoid;}
+  h2,h3{page-break-after:avoid;}
+}
+@media(max-width:720px){.wrap{padding:36px 22px 60px;}h1.title{font-size:1.9rem;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Decision Register</p>
+  <h1 class="title">Decisions Register: Plain-Language Edition</h1>
+  <p class="subtitle">Every decision the V1 platform build has raised, written so that an incoming PM, engineer, or designer can read it cold: what the question was, what was decided, and what still needs doing and where.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.17: Full plain-language rewrite after the July 2026 closure pass</b></div>
+    <div><span class="label">Date</span><b>July 2026</b></div>
+    <div><span class="label">Audience</span><b>Product, Engineering, Design, Business, Compliance</b></div>
+    <div><span class="label">Type</span><b>Decision register (not a reference, not a PRD)</b></div>
+  </div>
+</header>
+
+<section>
+  <div class="callout">
+    <p class="ck">What this is, and how to read it</p>
+    <p>As the platform was designed, every open question was logged here rather than decided silently. Most have now been settled with the business, Compliance, and Engineering. This edition rewrites all forty-nine in plain language and presents them in numerical order, each carrying one of four statuses:</p>
+    <p><span class="chip closed" style="margin-left:0;">Closed</span>&nbsp; Decided. The Decision section states the answer.</p>
+    <p><span class="chip follow" style="margin-left:0;">Closed &middot; follow-ups</span>&nbsp; Decided, but something named must still happen: a confirmation in a PRD, a check with a vendor or the RTA, or a sign-off. The amber box in the block says exactly what and where.</p>
+    <p><span class="chip open" style="margin-left:0;">Open</span>&nbsp; Not yet decided. The block says who can decide and what it holds up.</p>
+    <p><span class="chip deferred" style="margin-left:0;">Deferred</span>&nbsp; Not a V1 question. Parked with a note on when it returns.</p>
+    <p>Some terms recur. The <strong>RTA</strong> (registrar and transfer agent) is the fund industry's record-keeper: it owns the official register of who holds what, and our platform reflects that record rather than replacing it. A <strong>folio</strong> is the account number a fund house gives an investor. A <strong>mandate</strong> is a standing permission on a bank account to pull money automatically. <strong>FP</strong> is Fintech Primitives (Cybrilla), the transaction infrastructure V1 runs on. <strong>SIF</strong> is a Specialised Investment Fund, a newer SEBI category above mutual funds with a &#8377;10 lakh minimum.</p>
+  </div>
+
+  <h3>Where things stand</h3>
+  <table>
+    <thead><tr><th>Status</th><th style="width:12%;">Count</th><th>Decisions</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Closed</strong></td><td>17</td><td>D2, D3, D5, D6, D12, D15, D16, D18, D23, D30, D35, D39, D40, D41, D42, D45, D49</td></tr>
+      <tr><td><strong>Closed with follow-ups</strong></td><td>23</td><td>D1, D4, D7, D8, D9, D10, D11, D13, D14, D20, D26, D27, D29, D31, D32, D33, D34, D36, D37, D38, D43, D44, D46 (each block's amber box says what and where; all gathered in the ledger below)</td></tr>
+      <tr><td><strong>Open</strong></td><td>4</td><td>D17 (tax date), D28 (encumbrance feed, part-settled), D47 (residency change), D48 (heir claims)</td></tr>
+      <tr><td><strong>Deferred</strong></td><td>5</td><td>D19, D21, D22, D24, D25 (all tied to investor types or asset classes outside V1)</td></tr>
+    </tbody>
+  </table>
+  <p>The journey design phase raised forty-nine decisions; forty of them are now settled. Of the four open items, two (D47, D48) are scope rulings for Product, one (D17) is a single question for Tax counsel, and one (D28) is deliberately parked until lending features arrive. Nothing open blocks the start of PRD writing, provided the follow-up ledger below travels with the PRDs.</p>
+</section>
+
+<h2 id="hooks">The follow-up ledger: what each future document inherits</h2>
+<div class="callout verify">
+  <p class="ck">Why this section exists</p>
+  <p>Many decisions were closed by promising a check or a callout in a named future document. Promises like that tend to evaporate between now and PRD writing, so this ledger names each one once, grouped by destination. When one of these documents is drafted, its row here is a checklist: the item is done when it is written into the document, not when someone remembers it.</p>
+</div>
+<table>
+  <thead><tr><th style="width:26%;">Destination</th><th>What it inherits</th><th style="width:12%;">From</th></tr></thead>
+  <tbody>
+    <tr><td><strong>FP engagement: requirement document and assessment questionnaire</strong></td><td>Obtain Cybrilla's written confirmation of the fund flow, plus Compliance sign-off on the three no-pooling specifics. Include the payment-bounced-after-provisional-allotment unwind as an explicit use case. Verify SIF transaction support first-hand. Ask how FP handles a debit that hits a bank's internal cap. Ask whether FP supports creating a folio with no transaction attached.</td><td>D1, D8, D13, D31, D38</td></tr>
+    <tr><td><strong>Order PRD</strong></td><td>State that the 2026 SEBI Mutual Fund Regulations leave order, cut-off, and settlement mechanics unchanged, confirmed against the operational circulars. Document the order-to-mandate attachment contract from the order side. Design order pre-checks to the agreed data-freshness windows. Record that pay-now money paths belong to the Order journey, per the D44 boundary.</td><td>D7, D43, D37, D44</td></tr>
+    <tr><td><strong>Mandate PRD</strong></td><td>Document the attachment contract from the mandate side. Confirm per-bank effective caps beneath the headline UPI and e-mandate ceilings with the banking partner. Confirm bank-level support for eNACH and UPI autopay. Resolve the D44 follow-on: what happens when a new SIP would push a shared mandate past its ceiling on a debit date.</td><td>D43, D31, D4, D44</td></tr>
+    <tr><td><strong>Folio PRD</strong></td><td>Confirm the RTA's dormant-folio definition and the reactivation step, and bake both into the product. Decide whether a provisional allotment is shown to the investor at all. Design folio-state reads to the agreed freshness windows.</td><td>D29, D36, D37</td></tr>
+    <tr><td><strong>Instruments / Catalog PRD</strong></td><td>Model the per-scheme SIF attribute set (cut-offs, windows, settlement, below-threshold handling). Carry each scheme's tax bucket as an AMC-defined attribute, never a labelled default, for SIFs and index funds alike. Model the US and Canada accepting-fund-house set and PFIC expectation per scheme. Make NRI and OCI eligibility a first-class per-scheme attribute for every scheme, MF and SIF. Write in the standing constraint: we are a distributor, not an adviser, so recommendations are suitability, never advice for a fee.</td><td>D14, D16, D18, D20, D32, D33, standing</td></tr>
+    <tr><td><strong>Recommendation surface PRD</strong></td><td>Write in the same distributor-not-adviser constraint explicitly, paired with the Catalog PRD's copy.</td><td>standing</td></tr>
+    <tr><td><strong>Redemption PRD</strong></td><td>Carry the SIF forced-redemption special case, read from the per-scheme attribute set. Design the NRI pre-trade screen to the D45 ruling: gross and exit load shown, tax withholding noted, net confirmed at settlement.</td><td>D33, D45</td></tr>
+    <tr><td><strong>Transmission PRD</strong></td><td>Confirm the current documentation value bands against the operative master circular, and model the thresholds so future revisions are a data change, not a rebuild. Carry the who-prevails boundary (nominee and survivor receive in trust; heirs' rights can prevail) into the heir-claim servicing design.</td><td>D11, D48</td></tr>
+    <tr><td><strong>SIP / Plans PRD</strong></td><td>Re-confirm the pause threshold (currently three consecutive failures, held as a parameter) at implementation time. Model the two pause types (payment failure and KYC downgrade) as distinct states with distinct messages, including the stacking case where both apply at once. Build the SWP KYC-pause as a P0 servicing event: explicit notification to the investor plus an outbound RM call.</td><td>D9, D46</td></tr>
+    <tr><td><strong>NRI PRD</strong></td><td>Build the graceful flow for repatriable and non-repatriable folio segregation on NRE and NRO accounts. Offer non-UPI payment paths as the NRI default in V1.</td><td>D27, D23</td></tr>
+    <tr><td><strong>Nomination form build</strong></td><td>Before the form is built, Compliance confirms the operative provisions against the primary text of the 29 May 2026 SEBI circular: three nominees maximum, name and relationship the only mandatory fields, all-holder consent on joint folios.</td><td>D10</td></tr>
+    <tr><td><strong>Engineering session</strong></td><td>Confirm the reflected-data freshness windows and reconciliation cadence against the RTA and depository feed cycles. Settle the D44 ceiling-breach follow-on (block at setup versus allow and let it fail, noting the second option feeds the D9 failure counter). Confirm the pause-stacking rule from D46.</td><td>D37, D44, D46</td></tr>
+    <tr><td><strong>Journey document updates</strong></td><td>Financial Picture journey: redraw the returns display to the D49 ruling (gross only, clearly qualified), which supersedes the earlier indicative-tax draft. SIP journey: record the confirmed three-failure threshold. KYC Lifecycle journey: record the D46 ruling and the SWP P0 servicing requirement. Folio Creation and First Investment journeys: reword the standalone folio path as an internal capability, not an investor-facing screen.</td><td>D49, D9, D46, D38</td></tr>
+  </tbody>
+</table>
+
+<div class="part-band"><div class="pk">The Register</div><div class="pt">All forty-nine decisions, in order</div></div>
+
+<div class="persona">
+  <h3>D1. Which rails carry our orders and our money? <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>Every purchase needs two paths: an order path that tells the fund house what to buy, and a money path that moves the investor's payment. A hard SEBI rule shapes both: the firm must never hold or pool investor money. The money has to travel from the investor's bank account to the fund house without ever sitting in an account we control.</div>
+  <div class="facet"><span class="fl">Decision</span>V1 launches on Fintech Primitives (Cybrilla) as the transaction infrastructure, with Razorpay as its paired payment provider. A direct BSE StAR MF integration follows soon after launch as the second rail. The money design satisfies the no-pooling rule by construction: payment is collected from the investor's pre-registered account and routed to the fund house through Razorpay's validated-payment and routing products, so the firm never takes custody of the money. This is the payment-aggregator route the SEBI circular expressly permits.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; FP engagement</span>Two procedural items, both part of the FP engagement: obtain Cybrilla's written confirmation of the exact fund flow, and get Compliance sign-off on three specifics, that collection runs through the aggregator products rather than any account of ours, that the co-mingling safeguards under the AMFI guidelines are in place, and that redemption money travels from the scheme's account directly to the investor's registered bank account.</div>
+</div>
+
+<div class="persona">
+  <h3>D2. Can NRI and OCI investors onboard without full KYC validation? <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>KYC records sit on a status ladder. "Validated" is the highest rung and works everywhere; "Registered" is a rung below and only works where the investor already has a relationship. A temporary regulatory relaxation has been letting NRI and OCI investors transact at Registered status.</div>
+  <div class="facet"><span class="fl">Decision</span>Compliance has confirmed the relaxation is extended again, now to 31 October 2026. We build for the stricter world anyway: new NRI and OCI onboarding is designed to reach Validated status, since our March 2027 launch very likely lands after the relaxation lapses. Existing investors transacting on their own folios at Registered status continue to work while the relaxation holds.</div>
+</div>
+
+<div class="persona">
+  <h3>D3. How are holdings held: statement form or demat? <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>Mutual fund units can be held in two ways: as an entry on the RTA's register backed by a statement of account (SOA), or in a demat account like shares. The choice ripples through folio design, transactions, and servicing.</div>
+  <div class="facet"><span class="fl">Decision</span>V1 is SOA only. No demat accounts, no demat fork anywhere in the folio or order design. Demat arrives only when direct equities do, in a much later phase. This was settled early and every journey is drawn to it.</div>
+</div>
+
+<div class="persona">
+  <h3>D4. Which mandate rails do we support, and where is the no-authentication line? <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>A SIP needs a mandate: standing permission on the investor's bank account to pull money automatically. Two rails exist for this, eNACH and UPI Autopay. Regulation allows automatic debits without a fresh approval each time, but only up to a ceiling (currently &#8377;1 lakh per debit for mutual fund subscriptions); above it, the investor must approve every debit.</div>
+  <div class="facet"><span class="fl">Decision</span>Support both eNACH and UPI Autopay. Keep default SIP amounts and mandate ceilings within the &#8377;1 lakh no-authentication limit so the common case runs silently, and flag any SIP above &#8377;1 lakh as one that will ask the investor to approve each instalment.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; Mandate PRD</span>Confirm bank-level support for both rails with the banking partner. This pairs with D31, since individual banks can set their own limits below the headline ceiling.</div>
+</div>
+
+<div class="persona">
+  <h3>D5. Order cut-off times <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>Each scheme type has a daily cut-off time that decides which day's price an order gets. These times are set by regulation and operations, and they can change.</div>
+  <div class="facet"><span class="fl">Decision</span>Cut-off times are never hard-coded. They live as parameters, fetched fresh from the RTA daily, so a regulatory change is a data update rather than a code change.</div>
+</div>
+
+<div class="persona">
+  <h3>D6. Settlement timelines <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>After an order, money and units take a defined number of days to settle: broadly two days for equity funds, one for liquid and overnight funds, one to two for debt funds. These cycles have been shortening industry-wide and will shorten again.</div>
+  <div class="facet"><span class="fl">Decision</span>Same treatment as cut-offs: settlement cycles are parameters kept current from the RTA, with the industry's shortening tracked as a data change, never assumed away. The current figures stand as the design baseline.</div>
+</div>
+
+<div class="persona">
+  <h3>D7. Do the 2026 SEBI Mutual Fund Regulations change how orders work? <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>SEBI approved new Mutual Fund Regulations in December 2025, replacing the 1996 framework. The headline changes are to expense ratios and cost caps, but we had to check whether anything touched order, cut-off, or settlement mechanics.</div>
+  <div class="facet"><span class="fl">Decision</span>Nothing operational changes. FundsIndia's current implementation is compliant with the 2026 regulations, and the new build adheres to the same mechanics.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; Order PRD</span>The Order PRD must state this explicitly and confirm it against the operational circulars issued under the new regulations, so the assumption is on record rather than in someone's head.</div>
+</div>
+
+<div class="persona">
+  <h3>D8. How is a purchase unwound when the payment bounces after units were provisionally allotted? <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>The most expensive edge case in the order lifecycle: units get allotted provisionally, then the payment dishonours. The allotment must be rescinded and the units backed off the register by a compensating correction, never a quiet deletion, because units existed and the record changed. How that unwind runs in practice differs by execution rail, and V1 will eventually run two (FP at launch, BSE StAR MF after).</div>
+  <div class="facet"><span class="fl">Decision</span>Confirm the unwind mechanics separately for each rail, at the time each rail is integrated, rather than assuming one answer covers both.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; FP requirement document, then BSE build</span>This goes in as an explicit ask in the FP engagement and an explicit use case in the FP requirement document. It repeats as a named use case when the BSE StAR MF execution flow is built.</div>
+</div>
+
+<div class="persona">
+  <h3>D9. What happens when a SIP payment fails? <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>Money is pulled from the investor's account automatically every month. Sometimes the pull fails, usually because the balance was short that day. No regulation says what happens next; it is entirely our call. The guiding principle: one bad month is a hiccup, not a reason to kill the plan.</div>
+  <div class="facet"><span class="fl">Decision</span>A failed instalment is marked as that instalment failed; the plan keeps running. Only three consecutive failures pause the plan. A failed instalment is not retried in any way that could invest twice. For SWPs (the withdrawal mirror of a SIP): if holdings run too low to generate a withdrawal, no money moved and nothing failed at the bank, so it is recorded as information, does not count toward any failure tally, and a holding running to zero simply completes the plan. The three-failure threshold is held as a parameter, not hard-coded. This pause is caused by payments and is entirely separate from the KYC-caused pause in D46: two distinct checks, two distinct states, two distinct messages.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; SIP / Plans PRD</span>Re-confirm the threshold value of three at implementation PRD time, as an explicit task, along with the retry behaviour.</div>
+</div>
+
+<div class="persona">
+  <h3>D10. The nomination rule we build to <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>A nominee is the person who receives an investor's units on death. The rules governing how many nominees and what details are required were in flux through 2026, which made building the capture form risky. A SEBI circular dated 29 May 2026, effective 1 September 2026, settled the framework.</div>
+  <div class="facet"><span class="fl">Decision</span>Build to the circular: a maximum of three nominees, with only name and relationship mandatory; where no shares are specified, units split equally with any odd lot going to the first nominee; on jointly held folios, every holder must consent to set or change a nomination. The nominee count stays a parameter (currently three) so a future revision is a data change. Single-holder folios must either nominate or formally opt out at creation, per the same framework.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; before the nomination form is built</span>Compliance confirms these provisions against the primary circular text, one pass, before the form build starts.</div>
+</div>
+
+<div class="persona">
+  <h3>D11. What documents does a family need for transmission, by value? <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>Transmission is the transfer of units after an investor's death. The documents required step up with the total value involved, under industry (AMFI) guidelines that get revised from time to time.</div>
+  <div class="facet"><span class="fl">Decision</span>The current bands are confirmed: up to &#8377;5 lakh (totalled across the deceased's PAN), a simplified document set; &#8377;5 to &#8377;10 lakh, notarised attestation and affidavits, or a will or no-objection; above &#8377;10 lakh, a probated will or letter of administration.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; Transmission PRD</span>Re-confirm the figures against the operative master circular at PRD time, and model the bands as data so a future revision does not mean a rebuild.</div>
+</div>
+
+<div class="persona">
+  <h3>D12. Who operates a joint folio, and who receives the units on death? <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>Two questions were tangled here. During life: who gets to transact on a jointly held folio? After death: when a registered nominee, a surviving joint holder, and legal heirs all have claims, who prevails?</div>
+  <div class="facet"><span class="fl">Decision</span>The during-life question is settled as per law: the primary holder of a joint folio operates the account within its registered mode of operation, and the platform supports human-assisted handling of these situations in the servicing experience. One legal boundary constrains this regardless of operation mode: changing a nomination on a joint folio needs every holder's consent, per D10. The after-death question (nominee and survivor receive the units in trust, while legal heirs' underlying rights can still prevail) is not an abstract rule to state but a servicing flow to design, so that residual now lives inside D48, the heir-claim build.</div>
+</div>
+
+<div class="persona">
+  <h3>D13. Do SIFs run on the same rails as mutual funds? <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>SIF is a young category, and it was not safe to assume it transacts on ordinary mutual fund rails rather than through dedicated fund-house platforms. If routing differed, our order adapter and servicing would both change shape.</div>
+  <div class="facet"><span class="fl">Decision</span>Per the information available, Fintech Primitives supports SIF transactions out of the box, so SIF rides the same rail as mutual funds in V1.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; FP assessment questionnaire</span>Verify this first-hand with FP; it is currently confirmed from their documentation, not from an engagement conversation.</div>
+</div>
+
+<div class="persona">
+  <h3>D14. SIF cut-offs, redemption windows, and settlement vary by strategy <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>Unlike ordinary funds, a SIF strategy can restrict redemptions to defined windows, and its cut-off and settlement mechanics are set per strategy in its offer document. Assuming mutual fund norms carry over would misdraw SIF flows.</div>
+  <div class="facet"><span class="fl">Decision</span>Each SIF scheme's mechanics are captured as distinct attributes in the Catalog, populated from the fund house's information and refreshed periodically. Flows read the attributes; nothing is assumed from the MF defaults.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; Catalog PRD</span>The per-scheme SIF attribute set must be specified in the Catalog PRD.</div>
+</div>
+
+<div class="persona">
+  <h3>D15. How does an investor pay for a &#8377;10 lakh SIF purchase? <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>SIF carries a &#8377;10 lakh minimum per investor, but UPI tops out at &#8377;5 lakh per transaction even under the enhanced capital-markets limit. The everyday payment rail cannot carry the entry ticket.</div>
+  <div class="facet"><span class="fl">Decision</span>RTGS, NEFT, and netbanking are supported out of the box for high-value purchases. UPI is off-limits for SIF transactions above &#8377;10 lakh until the UPI limits are revised to cover them.</div>
+</div>
+
+<div class="persona">
+  <h3>D16. How is a SIF taxed? <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>A fund's tax treatment follows its orientation (equity-oriented funds get the equity regime, others the debt or residual regime). For a derivative-heavy SIF strategy, whether it reliably qualifies as equity-oriented was unconfirmed, and hard-coding an assumption would misstate outcomes to investors.</div>
+  <div class="facet"><span class="fl">Decision</span>Tax classification follows each scheme's own document, captured per scheme as a Catalog attribute. Nothing is hard-coded from the category label.</div>
+</div>
+
+<div class="persona">
+  <h3>D17. When did the tax change for gold and international funds take effect? <span class="chip open">Open</span></h3>
+  <div class="facet"><span class="fl">Background</span>Recent capital-gains changes moved gold and international funds into a different holding-period and rate bucket. Published sources disagree on whether parts of the change took effect from April 2025 or April 2026.</div>
+  <div class="facet"><span class="fl">Why it is open</span>Tagging these funds with the wrong effective date means computing the wrong holding period and rate for anyone who bought in the ambiguous window. This is a single factual question that only Tax counsel can settle; it has not yet been asked and answered.</div>
+  <div class="facet"><span class="fl">Recommended position</span>Confirm the operative date with Tax counsel before relying on the new bucket for these funds.</div>
+  <div class="facet"><span class="fl">What it holds up</span>The Catalog's tax tagging for gold and international funds, and any capital-gains display that reads it.</div>
+  <div class="facet"><span class="fl">Owner</span>Tax counsel and Compliance. A confirmation of external fact.</div>
+</div>
+
+<div class="persona">
+  <h3>D18. Index funds: tax follows the underlying <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>An index fund is not a tax class of its own. An equity index fund is taxed as equity; a debt or target-maturity index fund as debt; an international index fund in the international bucket. The risk was a lazy catalog default taxing everything labelled "index fund" the same way.</div>
+  <div class="facet"><span class="fl">Decision</span>Every fund's tax bucket is derived from the attribute the fund house defines for that scheme, never from a labelled default. This is a build discipline the Catalog enforces, and it applies to every scheme type.</div>
+</div>
+
+<div class="persona">
+  <h3>D19. Tracing the owners behind companies and trusts <span class="chip deferred">Deferred</span></h3>
+  <div class="facet"><span class="fl">Background and status</span>When a company, trust, or partnership invests, anti-money-laundering law requires tracing and verifying the real people who control it, with different thresholds and document sets per entity type. V1 serves individual investors only (per D41), so no entity ever onboards in V1 and this question has no V1 surface. It returns with the entity investor types in the Private Wealth phase, where Compliance defines the tracing depth and the per-entity document sets.</div>
+</div>
+
+<div class="persona">
+  <h3>D20. US and Canada-based investors: which fund houses accept them? <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>US and Canadian tax law makes their residents burdensome for Indian fund houses, so only a subset of fund houses accepts them, and US investors face punitive home-country tax treatment (PFIC rules) on most Indian funds. Getting this wrong onboards an investor into funds they cannot legally or sensibly hold.</div>
+  <div class="facet"><span class="fl">Decision</span>Checked and confirmed: fund houses publish this information, and the RTA enforces acceptance automatically at their end. Our job is to model it properly, per scheme, in the Catalog, so US and Canada-based investors only see funds that accept them, with the PFIC expectation captured alongside.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; Catalog PRD</span>The accepting-fund-house set and PFIC handling must be modelled per scheme in the Catalog PRD.</div>
+</div>
+
+<div class="persona">
+  <h3>D21. Foreign nationals living in India <span class="chip deferred">Deferred</span></h3>
+  <div class="facet"><span class="fl">Background and status</span>An expatriate who is a tax resident of India is a narrow investor type with condition-laden eligibility and a tricky exit when their residency reverses. The population is small for a mass-affluent platform. Last known position: recommended out of the initial V1 investor set, with the reverse-residency exit to be defined if the type is later brought in. The final confirmation of that exclusion was not part of the July closure pass, so the recommendation stands awaiting a formal yes from Compliance. Treat as out of V1 unless someone rules otherwise.</div>
+</div>
+
+<div class="persona">
+  <h3>D22. Can securities KYC be reused for fixed deposits? <span class="chip deferred">Deferred</span></h3>
+  <div class="facet"><span class="fl">Background and status</span>Mutual fund KYC runs on the securities-market framework; fixed deposits run on banking KYC under the RBI. Whether documents captured for one satisfy the other is unconfirmed. Fixed deposits are a V1.5 asset class, so this waits until then and is confirmed with the partner bank at that point. Nothing in V1 needs it.</div>
+</div>
+
+<div class="persona">
+  <h3>D23. Can NRIs pay by UPI from abroad? <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>Cross-border UPI exists but coverage is uneven across countries and banks, so it cannot be the assumed payment path for non-resident investors.</div>
+  <div class="facet"><span class="fl">Decision</span>V1 offers non-UPI payment flows (netbanking and bank transfer rails) as the path for NRI investors. Cross-border UPI is revisited only if adoption reaches critical mass.</div>
+</div>
+
+<div class="persona">
+  <h3>D24. What can a minor's demat account do? <span class="chip deferred">Deferred</span></h3>
+  <div class="facet"><span class="fl">Background and status</span>Inside a guardian-operated demat account for a minor, the set of permitted equity actions is constrained and must be confirmed with the depository. V1 has no demat (D3) and no equities, so nothing here applies until the equity phase. Confirm the permitted-action set with Compliance and the depository when that phase is scoped.</div>
+</div>
+
+<div class="persona">
+  <h3>D25. What can a charitable trust invest in? <span class="chip deferred">Deferred</span></h3>
+  <div class="facet"><span class="fl">Background and status</span>A charitable trust keeps its tax exemption only if its investments stay within legally permitted modes, so the permitted list and its interaction with equity-oriented funds must be confirmed before ever serving one. Trusts are entity investors, deferred with all entity types (D41) to the Private Wealth phase; Legal and Tax counsel confirm the list then.</div>
+</div>
+
+<div class="persona">
+  <h3>D26. Accredited Investor thresholds <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>Accredited Investor is a SEBI status for people above set net-worth or income thresholds, unlocking lighter rules such as a waiver of the SIF minimum ticket. The exact figures move over time, so the references deliberately never quoted them.</div>
+  <div class="facet"><span class="fl">Decision</span>Non-blocking for V1. The accredited overlay is not on the first path.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; when the accredited overlay is built</span>Operations confirms the then-current net-worth and income thresholds and the certificate validity at build time.</div>
+</div>
+
+<div class="persona">
+  <h3>D27. NRI money: keeping repatriable and non-repatriable holdings apart <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>An NRI's money comes in two flavours: repatriable (can be taken back abroad, typically from an NRE account) and non-repatriable (stays in India, typically from an NRO account). These must never mix in one folio, because the classification determines where redemption money can go.</div>
+  <div class="facet"><span class="fl">Decision</span>Confirmed as standard industry practice for NRE and NRO account handling: repatriable and non-repatriable holdings live in separate folios, and the platform builds a graceful flow around that segregation rather than surfacing it as friction.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; NRI PRD</span>The graceful segregation flow is designed in the NRI PRD.</div>
+</div>
+
+<div class="persona">
+  <h3>D28. How do we learn that units are pledged or under lien? <span class="chip open">Open &middot; part-settled</span></h3>
+  <div class="facet"><span class="fl">Background</span>Units can be encumbered: pledged against a loan or placed under a lien, which blocks their redemption. The order pre-check needs to know, so it does not accept a redemption the RTA will reject. The feed that tells us differs by holding form (a lien on a statement-form folio versus a pledge on a demat holding).</div>
+  <div class="facet"><span class="fl">What is settled</span>V1 definitely builds an encumbrance check into the claim and redemption flows. That scope ruling is made.</div>
+  <div class="facet"><span class="fl">Why it stays open</span>The feed mechanics, exactly how a lien versus a pledge is surfaced to us, are deliberately parked until loan-against-mutual-funds or pledging enters scope. It reopens as a named item at the start of that build.</div>
+  <div class="facet"><span class="fl">Owner</span>RTA, depository, and lender, when the lending phase arrives. A confirmation of external operational fact.</div>
+</div>
+
+<div class="persona">
+  <h3>D29. When is a folio dormant, and how is it revived? <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>A folio left untouched long enough goes dormant on the RTA's books, and a dormant folio may need a reactivation step before it can transact. The order pre-check reads this state, so the platform needs the RTA's exact definition and revival procedure.</div>
+  <div class="facet"><span class="fl">Decision</span>The dormancy definition and reactivation step will be confirmed with the RTA and baked into the product as understood behaviour, not discovered in production.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; RTA check, then Folio PRD</span>Run the confirmation with the RTA and cover the dormant state and revival flow explicitly in the Folio PRD.</div>
+</div>
+
+<div class="persona">
+  <h3>D30. A joint folio with an NRI and a resident: whose rules apply? <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>A jointly held folio can mix residency statuses, and the two statuses carry different rules on eligible funds, repatriation, and reporting. The platform needed one rule for whose constraints govern.</div>
+  <div class="facet"><span class="fl">Decision</span>The first holder's status governs. If the primary holder is an NRI, NRI eligibility dictates which funds the folio can transact in; if the primary holder is a resident, all funds are available. Blocked-country handling is enforced regardless, and US and Canada restrictions apply at the fund-house level per the published acceptance list (see D20). This rule also feeds the repatriability leg of the folio-matching key in D42.</div>
+</div>
+
+<div class="persona">
+  <h3>D31. Bank-specific limits below the headline payment ceilings <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>The regulators set headline ceilings (UPI at &#8377;5 lakh per transaction for capital markets; e-mandates at &#8377;1 lakh without per-debit approval), but individual banks may set internal limits below them. A bank's lower cap can silently fail a large lumpsum or SIP debit that the headline numbers said was fine.</div>
+  <div class="facet"><span class="fl">Decision</span>Held open by design until Mandate PRD time, when the per-bank effective limits are confirmed with the banking partner. Deliberately not chased earlier, since the answer is only actionable when the mandate flows are being specified.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; Mandate PRD, and FP questionnaire</span>Confirm per-bank caps with the banking partner at Mandate PRD time. Separately, ask FP whether their platform already handles a cap-hit gracefully; this goes in the FP assessment questionnaire.</div>
+</div>
+
+<div class="persona">
+  <h3>D32. Can NRIs and OCIs invest in SIFs? <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>NRI and OCI eligibility for the new SIF category was not settled at the category level, and US and Canada-based investors carry extra restrictions everywhere.</div>
+  <div class="facet"><span class="fl">Decision</span>SIF handling is the same as mutual funds, and it can differ scheme by scheme. So NRI and OCI eligibility, including the specific US and Canada handling, becomes a first-class per-scheme attribute in the Catalog for every scheme, mutual fund and SIF alike. Eligibility is read from the attribute, never assumed from the category.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; Catalog PRD</span>Specify the eligibility attribute and its per-scheme population in the Catalog PRD.</div>
+</div>
+
+<div class="persona">
+  <h3>D33. What happens when a SIF holding falls below the &#8377;10 lakh minimum? <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>SIF's &#8377;10 lakh minimum is measured across the investor's holdings at a fund house. Market movement or partial redemption can push a holding below it, and what follows (forced redemption, a block on further redemption, or nothing) is defined by each scheme, not by one category-wide rule.</div>
+  <div class="facet"><span class="fl">Decision</span>Below-threshold behaviour is captured in a dedicated per-scheme attribute set, and the flows read it. Where a scheme mandates forced redemption, that runs as a special case of the redemption flow.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; Catalog PRD and Redemption PRD</span>Specify the attribute set in the Instruments / Catalog PRD, and carry the forced-redemption special case in the Redemption PRD.</div>
+</div>
+
+<div class="persona">
+  <h3>D34. Account Aggregator: pulling the investor's outside holdings <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>The Financial Picture feature shows an investor everything they hold, including assets held away from us, pulled with their consent through the Account Aggregator framework. Using it requires the firm to stand properly as a Financial Information User (FIU) in that ecosystem.</div>
+  <div class="facet"><span class="fl">Decision</span>In scope for V1. The current setup already pulls mutual fund, SIF, and bank holdings through Finvu (our V1 Account Aggregator) and MF Central, and V1 continues on that stack. The coverage question is answered; what remained was the firm's formal standing.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; Compliance, in flight</span>Sahamati registration is in progress and expected to complete in July 2026, tracked with Compliance. The residual is confirmation of the firm's FIU standing and registration posture for pulling investor data over the AA rails.</div>
+</div>
+
+<div class="persona">
+  <h3>D35. MF Central and CAS as the held-away data source <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>Alongside the Account Aggregator, the industry's own utilities (MF Central and the Consolidated Account Statement) provide a view of an investor's mutual fund holdings everywhere, and they cover ground the AA rails do not.</div>
+  <div class="facet"><span class="fl">Decision</span>Continue with the existing integration: Finvu plus MF Central together give the end-to-end consolidated view of an investor's mutual fund, bank, and deposit holdings, and V1 carries that pairing forward as the held-away rail.</div>
+</div>
+
+<div class="persona">
+  <h3>D36. Should the investor see units before the payment has cleared? <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>There is a dangerous window in every purchase: units allotted provisionally, payment not yet confirmed. If we show a confirmed holding in that window and the payment then bounces, the allotment is reversed and we have to explain a holding we displayed as real.</div>
+  <div class="facet"><span class="fl">Decision</span>A confirmed holding is shown only once the payment is confirmed as cleared. A purchase is final only when allotment and payment agree.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; Folio PRD</span>Whether a provisional allotment is shown to the investor at all (as a clearly marked in-progress state) or simply not surfaced until settled is decided at Folio PRD time.</div>
+</div>
+
+<div class="persona">
+  <h3>D37. How fresh must our copy of external records be? <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>We are not the system of record. KYC status, folio state, and encumbrances live with external parties, and we hold a reflected copy that can lag the truth. Every order runs a pre-check against that copy, so a stale copy can pass an order that then bounces at the RTA. Demanding perfect freshness would block good orders or force expensive real-time integration; too loose a window bounces first orders and burdens reconciliation.</div>
+  <div class="facet"><span class="fl">Decision</span>Design the data flows to the RTA and depository feed cycles (largely daily and batch), with buffers baked in and fetch flows written to that cadence. Reflected state is trusted inside the agreed window, and the rare post-acceptance rejection is handled as a defined edge, not a surprise.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; Order, Folio, and Transactions PRDs; Engineering session</span>The concrete freshness windows and reconciliation cadence are confirmed with Engineering and the feed providers, and each of those PRDs designs its reads to them. This item is flagged as a standing reminder for all three.</div>
+</div>
+
+<div class="persona">
+  <h3>D38. When is a folio created? <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>The intuitive model, open the account first and then invest into it, is not how folios work. For a brand-new investor at a fund house, the RTA issues the folio number at the first allotment: the first purchase carries a "create a folio for this person" instruction and the folio comes back with the units. Forcing a separate create-account step would model a sequence the rail does not require.</div>
+  <div class="facet"><span class="fl">Decision</span>The fused path is the main flow: a new investor simply makes their first investment and the folio is born inside it. A discrete create-a-folio-without-investing path is retained, but as an internal capability, not an investor-facing screen. Its real users are flows where units arrive without a purchase (chiefly transmission, where an heir needs a folio minted to receive units) and the recovery state where a fused first order half-succeeds. No "create folio" button exists anywhere in V1.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; FP questionnaire, and journey wording</span>Ask FP whether their API supports folio creation with no transaction attached; if it does not, the transmission case is handled by reflecting the RTA-minted folio rather than creating it ourselves. Separately, the Folio Creation and First Investment journey documents should adopt the internal-capability wording so nobody reads the discrete path as a screen to build.</div>
+</div>
+
+<div class="persona">
+  <h3>D39. Must KYC finish before the first order? <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>Only a fully Validated KYC clears the order pre-check for a first purchase. The design choice was whether to strictly require Validated first, or to let an eager investor place an order that sits on hold until their KYC clears. The second option would require a new "captured but not yet placed" order state that the platform's order model does not carry.</div>
+  <div class="facet"><span class="fl">Decision</span>KYC first, always: the identity must reach Validated before an order is routed. The order-held-pending-KYC idea stays a possible future conversion enhancement, and can only be taken up if a pre-placement draft state is deliberately added to the order model. It is not in V1.</div>
+</div>
+
+<div class="persona">
+  <h3>D40. Do existing FundsIndia customers migrate in V1? <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>The firm has an existing book of roughly two hundred thousand investors. Whether V1 imports their folios and history, or serves only new sign-ups, changes how common the "investor already has folios" path is in every journey.</div>
+  <div class="facet"><span class="fl">Decision</span>Migration of the existing book is a distinct phase that follows V1.5, with proper migration tooling built for it. V1 journeys are designed for new investors first, with the existing-folio paths modelled but not exercised at scale until the migration phase.</div>
+</div>
+
+<div class="persona">
+  <h3>D41. Which investor types does V1 serve? <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>The universe of possible investors spans individuals (resident, NRI, OCI, minors) and entities (HUFs, companies, trusts, partnerships), each with its own onboarding, documentation, and servicing weight.</div>
+  <div class="facet"><span class="fl">Decision</span>V1 covers natural persons only: Resident, NRI, OCI, and Minor, with joint holding as an overlay on any of them. All entity types, including HUF, are deferred to the Private Wealth phase, since even HUF is a private-wealth rather than mass-affluent concern.</div>
+</div>
+
+<div class="persona">
+  <h3>D42. When do we reuse an existing folio, and when is a new one correct? <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>One investor can legitimately hold several folios at the same fund house: a solo and a joint folio can never share a number, an NRI's repatriable and non-repatriable money must sit apart, and history leaves duplicates. The platform shows one consolidated view per PAN, but it can never assume one investor means one folio per fund house. Getting reuse wrong in one direction scatters money across needless duplicates; wrong in the other direction, it crams holdings into a folio they legally cannot share.</div>
+  <div class="facet"><span class="fl">Decision</span>Reuse an existing folio only when all four of these match: same investor, same fund house, same holding mode (solo versus joint, and with whom), and same repatriability class. If all four match, invest into the existing folio; if any one differs, a separate folio is correct and intentional. Two folios where all four match are an accidental duplicate: a data-cleanup matter, never something to preserve. For mixed-residency joint folios, the repatriability leg follows the first holder, per D30.</div>
+</div>
+
+<div class="persona">
+  <h3>D43. How an order attaches to its mandate <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>A SIP instalment needs a mandate to debit against, but a mandate goes through its own lifecycle (registered, authenticated by the investor, activated by the bank, or rejected). The design question was when an order may attach to a mandate that is not yet fully active, and what happens if that mandate is then rejected.</div>
+  <div class="facet"><span class="fl">Decision</span>An order may attach once the mandate is authenticated, holds while the mandate is pending activation, proceeds when the mandate goes active, and unwinds cleanly if the mandate is rejected. This contract was exercised by the SIP journey and held.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; Order PRD and Mandate PRD</span>Document the attachment contract on both sides: the Order PRD from the order's view, the Mandate PRD from the mandate's.</div>
+</div>
+
+<div class="persona">
+  <h3>D44. Can one mandate fund several SIPs? <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>An investor with one mandate on their account starts three SIPs: do all three run off that single mandate, or does each SIP need its own, meaning three separate bank authorisations? And a boundary question rides along: paying once, right now, is just a payment; but scheduling a single future debit needs a registered instruction, which makes it mandate territory. Every money path needs exactly one owning journey.</div>
+  <div class="facet"><span class="fl">Decision</span>One mandate can back multiple SIPs on the same bank account, as long as the debits fit within its limit: authorise once, start as many plans as you like. The boundary is fixed as: anything registered now to debit later belongs to the Mandate journey; paying immediately belongs to the Order journey.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; Engineering session, then Mandate PRD</span>One follow-on the multi-plan answer creates: when a new SIP would push the combined debits past the mandate's ceiling on a shared date, do we block it at setup or allow it and let the instalment fail? The second option knowingly feeds the D9 failure counter with a failure the investor was set up for, so the leaning is block-at-setup with a clear message to raise the ceiling or register a fresh mandate. Settle in the Engineering session and record in the Mandate PRD.</div>
+</div>
+
+<div class="persona">
+  <h3>D45. What does an NRI see before confirming a redemption? <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>A resident's redemption is simple: what you get is the amount less any exit load. For an NRI, capital-gains tax is withheld at source on every redemption, and computing it needs the original purchase cost of the units sold, which the platform does not hold in V1. The fund house and RTA compute the tax; we reflect the net that arrives. So what do we show a non-resident before they press confirm?</div>
+  <div class="facet"><span class="fl">Decision</span>Residents see an exact net. NRIs see the gross amount and the exit load, with a clear note that capital-gains tax is withheld at source and the final net is confirmed at settlement. An exact pre-trade tax figure is shown only where the RTA reliably provides one; the platform never presents its own estimate implying a precision the V1 data cannot support. This applies to the Redemption journey and repeats every cycle of the SWP journey.</div>
+</div>
+
+<div class="persona">
+  <h3>D46. What happens to a running SIP if the investor's KYC is suspended? <span class="chip follow">Closed &middot; follow-ups</span></h3>
+  <div class="facet"><span class="fl">Background</span>If an investor's KYC drops to On Hold (a document lapses, a detail fails re-verification), new investments are blocked. But a SIP already running generates a fresh order every month, and each order checks KYC. Without a rule, the downgrade would surface as month after month of "your payment failed" messages when the bank account was fine all along, and those false failures would trip the three-strike pause from D9 for a reason that was never true.</div>
+  <div class="facet"><span class="fl">Decision</span>The plan pauses immediately when KYC drops to On Hold, with a message naming the real cause: a KYC issue, not a payment problem. The plan resumes when KYC is restored. The KYC-pause and the payment-failure-pause (D9) are two separate states in the system, with separate messages, and they never mix. For SWPs the ruling is stronger: a KYC-paused withdrawal plan is a P0 servicing event, triggering an explicit notification to the investor and an outbound call from their relationship manager, since a paused income stream is something the investor must hear about, not discover.</div>
+  <div class="facet todo"><span class="fl">Still to do &middot; Engineering session, then SIP / Plans PRD</span>Confirm the stacking rule: a plan can be in both pauses at once (KYC drops while already payment-paused, or vice versa), so resuming requires both to clear, and instalment generation is gated while either is active. Record the two-state model, the messages, and the SWP P0 flow in the Plans PRD.</div>
+</div>
+
+<div class="persona">
+  <h3>D47. Serving an investor whose residency changes <span class="chip open">Open</span></h3>
+  <div class="facet"><span class="fl">Background</span>When a resident becomes an NRI, or an NRI returns home, it is not one change but many at once: the KYC record moves, the bank account class changes, folios need re-tagging for repatriability, tax residency and withholding shift, and international reporting obligations kick in. The return leg (NRI back to resident) is the case the industry routinely under-builds. Mishandling any of it routes a person's money and tax wrongly.</div>
+  <div class="facet"><span class="fl">Why it is open</span>The blast radius makes this a plausible journey of its own, and no journey currently owns it as a flow; the KYC Lifecycle journey only notes the trigger. Whether the full servicing flow is in V1 scope, and whether it earns a dedicated journey, is a ruling nobody has yet made. This decision was not part of the July closure pass and is restated here at its last known status so it does not fall through the gap.</div>
+  <div class="facet"><span class="fl">Recommended position</span>Keep the trigger noted in the KYC Lifecycle journey, defer the full servicing flow to a dedicated later journey, and rule explicitly on whether that journey is in V1. Build the return leg deliberately rather than discover it.</div>
+  <div class="facet"><span class="fl">What it holds up</span>The scope of the PRD list itself: this ruling decides whether a residency-change PRD exists. Also NRI servicing, the bank-account and repatriability machinery, and tax-residency handling.</div>
+  <div class="facet"><span class="fl">Owner</span>Product and Compliance. A V1 scope ruling with a compliance dimension.</div>
+</div>
+
+<div class="persona">
+  <h3>D48. Helping heirs claim units after a death <span class="chip open">Open</span></h3>
+  <div class="facet"><span class="fl">Background</span>Transmission is facilitated by the firm and executed by the RTA. The straightforward case, a registered nominee claiming, is drawn. The hard cases are the no-nominee path, where legal heirs claim with tiered documentation, and the contested claim, where claimants disagree. Both need a servicing flow: collecting the right documents for the value band, tracking a claim that can stretch across many folios and several fund houses, and routing any dispute to legal escalation, while the firm never adjudicates. One boundary this build must respect, inherited from D12: the nominee and the surviving holder receive units in trust, and the legal heirs' underlying rights can prevail; how the platform behaves when they differ is answered inside this servicing design.</div>
+  <div class="facet"><span class="fl">Why it is open</span>How far the platform builds here is a real choice: full tracking and guidance, or a near-manual back-office matter with minimal surface. Transmission is where a wealth relationship is most tested, so the build extent has relationship consequences, and no ruling has been recorded.</div>
+  <div class="facet"><span class="fl">Recommended position</span>Build the tracking and guidance: capture the claim path and the value-band documents, show progress across multiple folios faithfully rather than as one done-or-not state, and route any contest to legal escalation. Never adjudicate a disputed claim.</div>
+  <div class="facet"><span class="fl">What it holds up</span>The Transmission PRD's scope, the nominee and heir experience in the Nomination journey, and the operations model for death-claim handling.</div>
+  <div class="facet"><span class="fl">Owner</span>Product and Operations, with a Compliance view on the escalation path. An internal build-extent choice.</div>
+</div>
+
+<div class="persona">
+  <h3>D49. How the Financial Picture shows returns <span class="chip closed">Closed</span></h3>
+  <div class="facet"><span class="fl">Background</span>The Financial Picture compares an investor's holdings against a benchmark and the firm's strategy, and the comparison is most meaningful net of costs and tax. But a faithful after-tax figure needs the original purchase cost and holding period of every lot, which the platform does not hold in V1, least of all for outside assets pulled through the Account Aggregator. Indian tax treatment also depends on so much individual context that a per-instrument tax figure shown in isolation can never be confidently right.</div>
+  <div class="facet"><span class="fl">Decision</span>Show gross returns only, with a clear qualifier. No after-tax or after-cost figure is presented in V1; instead, a plain disclaimer notes that switching from an existing portfolio carries cost elements, tax and exit load among them, that the displayed figure does not capture. This is the honest and simple treatment: keeping it gross avoids implying a precision the data cannot support. A precise after-tax view remains the target state for when the platform acquires cost-basis data, which is the same root as the NRI pre-trade gap in D45. Note for the journey layer: this ruling supersedes the earlier draft of the Financial Picture journey, which showed an indicative tax view; that document needs redrawing to gross-only.</div>
+</div>
+
+<div class="footer">
+  <p><strong>Document control.</strong> Decisions Register, Plain-Language Edition. Version v0.17, July 2026. Builds on v0.16 by recording the July 2026 consolidated closure pass and rewriting all forty-nine decisions in plain language for incoming Product, Engineering, and Design readers. Statuses now stand at forty settled (seventeen closed outright and twenty-three closed with named follow-ups), four open (D17, D28, D47, D48), and five deferred (D19, D21, D22, D24, D25). Material changes recorded in this pass: D2 updated with the relaxation extension to 31 October 2026 while the build stays Validated-first; D9 closed at the three-consecutive-failure threshold, held as a parameter, with SWP non-generation recorded as information only; D9 and D46 confirmed as two distinct pause types with distinct causes and messages, and the earlier cross-dependency language between them dropped; D46 extended with the SWP P0 servicing ruling (notification plus RM outbound call); D44 closed on multi-plan cardinality with the ceiling-breach follow-on routed to the Engineering session; D38 closed with the discrete folio path reframed as an internal capability rather than an investor-facing surface; D45 closed on the gross-plus-note treatment for NRI redemptions; D49 closed on gross-only display, superseding the indicative-tax treatment the Financial Picture journey was drawn to; D12 closed for the operating-mode aspect with the post-death precedence residual carried into D48; D13, D20, D30, and D32 closed on confirmed external positions; D1, D34 narrowed to procedural residuals. D47, absent from the consolidated closure document, is restated at its last known open status. The follow-up ledger at the head of the document gathers every closure-time commitment by destination PRD, vendor engagement, or session; each is discharged by being written into its destination, not by being remembered. The prior v0.16 recorded the June and July stakeholder closure pass at twenty-two closed and twenty-seven open and introduced the PRD hook ledger; the full revision history of earlier versions is preserved in v0.16 and its predecessors.</p>
+</div>
+
+</div>
+</body>
+</html>

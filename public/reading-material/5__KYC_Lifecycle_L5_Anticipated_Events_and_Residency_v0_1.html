@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KYC Lifecycle L5: Anticipated Events and the Residency Blast Radius</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;
+  --line:#e6ddcd;--line-strong:#c9bda4;--amber:#9a6a16;--amber-soft:#fbf2dd;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1240px;margin:0 auto;padding:64px 52px 96px;background:var(--paper);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.35rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.5rem;font-weight:700;color:var(--accent-dark);margin:50px 0 6px;letter-spacing:-.01em;}
+p{margin:12px 0;}
+strong{font-weight:700;color:var(--ink);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 28px;margin:18px 0;padding:20px 24px;background:var(--cream);border:1px solid var(--line);border-radius:9px;font-size:.88rem;}
+.legend .item{display:flex;align-items:center;gap:10px;}
+.sw{width:28px;height:19px;border-radius:4px;flex-shrink:0;display:inline-block;}
+.sw.dia{width:20px;height:20px;transform:rotate(45deg);border-radius:3px;}
+.sw.oval{border-radius:10px;}
+.sw.cir{width:21px;height:21px;border-radius:50%;}
+.sw.ln{height:0;border-top:3px solid;width:30px;border-radius:0;}
+.frame{margin:26px 0;border:1px solid var(--line);border-radius:10px;background:var(--paper);overflow-x:auto;padding:18px;}
+.frame svg{display:block;min-width:1900px;width:100%;height:auto;}
+.hint{font-size:.84rem;color:var(--soft-muted);font-style:italic;margin-top:-8px;}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:7px 0;}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+th,td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+.footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+@media print{@page{size:A3 landscape;margin:12mm;} body{background:#fff;} .wrap{max-width:none;padding:0;} .frame{page-break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Journey Layer &middot; Granular Companion to J2</p>
+  <h1 class="title">KYC Lifecycle L5: Anticipated Events and the Residency Blast Radius</h1>
+  <p class="subtitle">The routine events that change a value rather than reroute a record, each of which can downgrade it. And the one event that is bulleted only because nobody has ruled on it yet.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.1 &middot; drawn on the series standard</b></div>
+    <div><span class="label">Date</span><b>August 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Granular flow diagram, hand-authored SVG</b></div>
+    <div><span class="label">Register</span><b>Open Decisions Register v0.17</b></div>
+    <div><span class="label">Sits under</span><b>J2 &middot; granular flow tier</b></div>
+  </div>
+</header>
+
+
+<div class="callout">
+  <p class="ck">What this is</p>
+  <p>Two halves. The first is the set of events that change a value or add a check without rerouting the record: periodic re-KYC, contact and bank changes, dormancy, accreditation. They share one property worth drawing, which is that <strong>each carries a verification step that can itself fail, and a failed verification is a downgrade</strong>. The second half is residency change, which is on this page only because it has not been ruled on, and which is drawn as a blast radius rather than as a design.</p>
+</div>
+
+
+<h2>Drawing standard</h2>
+<p>Fixed across the series. Five of these are checked when the diagram is built, and the file is not written if any check fails.</p>
+<ul class="tight">
+  <li><strong>Orthogonal only.</strong> Every connector segment is exactly horizontal or vertical. No diagonals. <em>Checked.</em></li>
+  <li><strong>Turns at the midpoint.</strong> Where a connector needs two turns, the crossing run sits at the exact midpoint of the span, so both legs are equal.</li>
+  <li><strong>Edge attachment, separated.</strong> Connectors leave and enter only on a shape's edge, never at a corner and never inside it. Where several arrows meet the same shape they attach at different points along that edge rather than stacking on the midpoint, so each stays traceable. On a decision diamond that means a point along the relevant slanted face.</li>
+  <li><strong>No connector crosses a shape.</strong> <em>Checked.</em></li>
+  <li><strong>Every arrowhead lands on a shape outline.</strong> Never in empty space. This matters most on a decision diamond, whose bounding box is not its outline, so a point that looks like the top edge floats clear of the shape. <em>Checked.</em></li>
+  <li><strong>No two arrowheads coincide.</strong> Same-colour heads must also stand clear of each other. <em>Checked.</em></li>
+  <li><strong>Phase bands occupy clear strips.</strong> A band is placed only in a horizontal strip containing no shape at all, so a band label can never collide with a box. Placement is computed, not eyeballed. <em>Checked.</em></li>
+  <li><strong>Colour carries meaning.</strong> Purple is the main path, amber is remediation, red is a blocking failure, teal is a shortcut or handoff.</li>
+  <li><strong>Room over compactness.</strong> Height is unconstrained, so type stays large and nothing is crowded.</li>
+</ul>
+
+<h2>Reading the diagram</h2>
+<div class="legend">
+  <div class="item"><span class="sw oval" style="background:#473073;"></span>Terminal, start or end state</div>
+  <div class="item"><span class="sw" style="background:#fffdf8;border:2px solid #c9bda4;"></span>Process or capture step</div>
+  <div class="item"><span class="sw dia" style="background:#efe9f7;border:2px solid #6a4a9c;"></span>Decision</div>
+  <div class="item"><span class="sw" style="background:#fbf2dd;border-left:5px solid #9a6a16;"></span>Special attention, recoverable</div>
+  <div class="item"><span class="sw" style="background:#f8e7e3;border-left:5px solid #9d2f2f;"></span>Blocked or rejected</div>
+  <div class="item"><span class="sw" style="background:#e3f0ee;border-left:5px solid #1f6f6a;"></span>Handoff to another journey</div>
+  <div class="item"><span class="sw cir" style="background:#efe9f7;border:2px solid #6a4a9c;"></span>Page connector</div>
+  <div class="item"><span class="sw ln" style="border-color:#6a4a9c;"></span>Main path</div>
+  <div class="item"><span class="sw ln" style="border-color:#9a6a16;"></span>Remediation</div>
+  <div class="item"><span class="sw ln" style="border-color:#9d2f2f;"></span>Blocking failure</div>
+  <div class="item"><span class="sw ln" style="border-color:#1f6f6a;"></span>Shortcut or handoff</div>
+</div>
+<p class="hint">Numbered badges are discussion reference points, not state identifiers.</p>
+
+
+<h2>The flow</h2>
+<div class="frame">
+<svg viewBox="0 0 2900 5600" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3',sans-serif">
+<defs>
+<marker id="ah-accent" markerWidth="11" markerHeight="11" refX="8.5" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#6a4a9c"/></marker>
+<marker id="ah-amber" markerWidth="11" markerHeight="11" refX="8.5" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#9a6a16"/></marker>
+<marker id="ah-red" markerWidth="11" markerHeight="11" refX="8.5" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#9d2f2f"/></marker>
+<marker id="ah-teal" markerWidth="11" markerHeight="11" refX="8.5" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#1f6f6a"/></marker>
+<marker id="ah-blue" markerWidth="11" markerHeight="11" refX="8.5" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#2a5c8a"/></marker>
+</defs>
+<rect width="2900" height="5600" fill="#fffdf8"/>
+<rect x="34" y="87.0" width="2832" height="46" rx="8" fill="#efe9f7" opacity="0.5"/>
+<text x="58" y="116.0" font-size="15" font-weight="700" letter-spacing="1.8" fill="#473073">STAGE 1 · THE ANTICIPATED AND THE ROUTINE</text>
+<rect x="34" y="1445.0" width="2832" height="46" rx="8" fill="#efe9f7" opacity="0.5"/>
+<text x="58" y="1474.0" font-size="15" font-weight="700" letter-spacing="1.8" fill="#473073">STAGE 2 · EVERY ONE OF THEM CAN DOWNGRADE THE RECORD</text>
+<rect x="34" y="2797.0" width="2832" height="46" rx="8" fill="#efe9f7" opacity="0.5"/>
+<text x="58" y="2826.0" font-size="15" font-weight="700" letter-spacing="1.8" fill="#473073">STAGE 3 · RESIDENCY CHANGE · BLAST RADIUS, NOT A DESIGN</text>
+<rect x="34" y="3897.0" width="2832" height="46" rx="8" fill="#efe9f7" opacity="0.5"/>
+<text x="58" y="3926.0" font-size="15" font-weight="700" letter-spacing="1.8" fill="#473073">STAGE 4 · WHAT IS OWED EVEN WITHOUT A RULING</text>
+<polyline points="1450.0,240.0 1450.0,405.0" fill="none" stroke="#1f6f6a" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-teal)"/>
+<polyline points="1450.0,575.0 1450.0,725.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="1450.0,935.0 1450.0,995.0 380.0,995.0 380.0,1055.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="1450.0,935.0 1450.0,995.0 1130.0,995.0 1130.0,1055.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="1450.0,935.0 1450.0,995.0 1930.0,995.0 1930.0,1055.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="1450.0,935.0 1450.0,995.0 2670.0,995.0 2670.0,1055.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="380.0,1305.0 380.0,1470.0 1450.0,1470.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round"/>
+<polyline points="1130.0,1305.0 1130.0,1470.0 1450.0,1470.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round"/>
+<polyline points="1930.0,1305.0 1930.0,1470.0 1450.0,1470.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round"/>
+<polyline points="2670.0,1305.0 2670.0,1470.0 1450.0,1470.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round"/>
+<polyline points="1450.0,1470.0 1450.0,1515.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="1820.0,1620.0 1850.0,1620.0" fill="none" stroke="#9d2f2f" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-red)"/>
+<polyline points="2510.0,1620.0 2588.0,1620.0" fill="none" stroke="#9d2f2f" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-red)"/>
+<polyline points="1450.0,1725.0 1450.0,1885.0" fill="none" stroke="#1f6f6a" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-teal)"/>
+<polyline points="1450.0,2035.0 1450.0,2205.0" fill="none" stroke="#9d2f2f" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-red)"/>
+<polyline points="1450.0,2395.0 1450.0,2535.0" fill="none" stroke="#9d2f2f" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-red)"/>
+<polyline points="1000.0,2640.0 760.0,2640.0 760.0,2865.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="1900.0,2640.0 2140.0,2640.0 2140.0,2865.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="760.0,3055.0 760.0,3180.0 1030.0,3180.0 1030.0,3205.0" fill="none" stroke="#9d2f2f" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-red)"/>
+<polyline points="2140.0,3055.0 2140.0,3180.0 1870.0,3180.0 1870.0,3205.0" fill="none" stroke="#9d2f2f" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-red)"/>
+<polyline points="1450.0,3435.0 1450.0,3590.0" fill="none" stroke="#9d2f2f" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-red)"/>
+<polyline points="1820.0,3700.0 1850.0,3700.0" fill="none" stroke="#9d2f2f" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-red)"/>
+<polyline points="1080.0,3700.0 770.0,3700.0" fill="none" stroke="#9a6a16" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-amber)"/>
+<polyline points="1450.0,3810.0 1450.0,4020.0" fill="none" stroke="#1f6f6a" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-teal)"/>
+<polyline points="1450.0,4100.0 1450.0,4187.5 600.0,4187.5 600.0,4275.0" fill="none" stroke="#1f6f6a" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-teal)"/>
+<polyline points="1450.0,4100.0 1450.0,4275.0" fill="none" stroke="#1f6f6a" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-teal)"/>
+<polyline points="1450.0,4100.0 1450.0,4187.5 2300.0,4187.5 2300.0,4275.0" fill="none" stroke="#1f6f6a" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-teal)"/>
+<rect x="600.0" y="160.0" width="1700" height="80" rx="40.0" fill="#473073" stroke="#473073" stroke-width="2"/>
+<text x="1450.0" y="205.2" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">An event that changes a value, or adds a check, without rerouting the record</text>
+<rect x="300.0" y="405.0" width="2300" height="170" rx="8" fill="#e3f0ee" stroke="#1f6f6a" stroke-width="2"/>
+<rect x="300.0" y="405.0" width="7" height="170" rx="3" fill="#1f6f6a"/>
+<text x="1454.0" y="467.6" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">The draw-or-bullet test, and why these are on one page</text>
+<text x="1454.0" y="485.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">A transition that reroutes the path gets its own diagram. One that changes a value or adds a check does</text>
+<text x="1454.0" y="503.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">not. All of these sit on the second side of that line, and they share one property worth drawing: each</text>
+<text x="1454.0" y="521.9" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">carries a verification step that can itself fail, and a failed verification is a downgrade.</text>
+<polygon points="1450,725.0 1950.0,830 1450,935.0 950.0,830" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2.2"/>
+<text x="1450.0" y="835.2" text-anchor="middle" font-size="15" font-weight="700" fill="#473073">Which event?</text>
+<circle cx="948.0" cy="723.0" r="17" fill="#473073"/>
+<text x="948.0" y="727.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">1</text>
+<rect x="60.0" y="1055.0" width="640" height="250" rx="8" fill="#fffdf8" stroke="#c9bda4" stroke-width="2"/>
+<text x="380.0" y="1134.1" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">Periodic re-KYC</text>
+<text x="380.0" y="1150.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">Time-bound and risk-based: broadly two</text>
+<text x="380.0" y="1167.6" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">years for high risk, eight for medium, ten</text>
+<text x="380.0" y="1184.4" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">for low, with the registry layering its own</text>
+<text x="380.0" y="1201.1" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">triggers on top. A scheduler keyed to the</text>
+<text x="380.0" y="1217.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">risk band belongs in the model, so these</text>
+<text x="380.0" y="1234.6" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">arrive as anticipated events.</text>
+<circle cx="58.0" cy="1053.0" r="17" fill="#473073"/>
+<text x="58.0" y="1057.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">1a</text>
+<rect x="810.0" y="1055.0" width="640" height="250" rx="8" fill="#fffdf8" stroke="#c9bda4" stroke-width="2"/>
+<text x="1130.0" y="1142.5" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">Contact or bank change</text>
+<text x="1130.0" y="1159.2" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">Mobile, email and the bank account are</text>
+<text x="1130.0" y="1176.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">validated attributes, so changing one</text>
+<text x="1130.0" y="1192.8" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">triggers re-validation of that attribute.</text>
+<text x="1130.0" y="1209.5" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">The bank account also underpins payouts</text>
+<text x="1130.0" y="1226.2" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">and every mandate sitting on it.</text>
+<circle cx="808.0" cy="1053.0" r="17" fill="#473073"/>
+<text x="808.0" y="1057.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">1b</text>
+<rect x="1610.0" y="1055.0" width="640" height="250" rx="8" fill="#fffdf8" stroke="#c9bda4" stroke-width="2"/>
+<text x="1930.0" y="1142.5" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">Dormancy and reactivation</text>
+<text x="1930.0" y="1159.2" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">A long-inactive record can be marked</text>
+<text x="1930.0" y="1176.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">dormant. This is a state on the record,</text>
+<text x="1930.0" y="1192.8" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">not a KYC downgrade, and reactivation</text>
+<text x="1930.0" y="1209.5" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">may itself prompt a re-KYC if the</text>
+<text x="1930.0" y="1226.2" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">dormancy outlasted a verification window.</text>
+<circle cx="1608.0" cy="1053.0" r="17" fill="#473073"/>
+<text x="1608.0" y="1057.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">1c</text>
+<rect x="2350.0" y="1055.0" width="640" height="250" rx="8" fill="#fffdf8" stroke="#c9bda4" stroke-width="2"/>
+<text x="2670.0" y="1134.1" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">Accreditation</text>
+<text x="2670.0" y="1150.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">Meeting or ceasing to meet the</text>
+<text x="2670.0" y="1167.6" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">thresholds, or a certificate</text>
+<text x="2670.0" y="1184.4" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">expiring, toggles access to</text>
+<text x="2670.0" y="1201.1" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">accredited-only treatment.</text>
+<text x="2670.0" y="1217.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">A capability flag, not a</text>
+<text x="2670.0" y="1234.6" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">status move.</text>
+<circle cx="2348.0" cy="1053.0" r="17" fill="#473073"/>
+<text x="2348.0" y="1057.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">1d</text>
+<polygon points="1450,1515.0 1820.0,1620 1450,1725.0 1080.0,1620" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2.2"/>
+<text x="1450.0" y="1615.4" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Did the verification step</text>
+<text x="1450.0" y="1634.8" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">attached to it pass?</text>
+<circle cx="1078.0" cy="1513.0" r="17" fill="#473073"/>
+<text x="1078.0" y="1517.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">2</text>
+<rect x="1850.0" y="1510.0" width="660" height="220" rx="8" fill="#f8e7e3" stroke="#9d2f2f" stroke-width="2"/>
+<rect x="1850.0" y="1510.0" width="7" height="220" rx="3" fill="#9d2f2f"/>
+<text x="2184.0" y="1572.3" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">A failed re-validation is itself a downgrade, and this</text>
+<text x="2184.0" y="1589.7" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">is the connection worth drawing. An investor updating</text>
+<text x="2184.0" y="1607.1" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">a mobile number is doing routine housekeeping; if the</text>
+<text x="2184.0" y="1624.5" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">new number cannot be verified, the record moves and</text>
+<text x="2184.0" y="1642.0" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">they are suddenly blocked by an action they took to</text>
+<text x="2184.0" y="1659.4" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">keep things tidy. The message must connect the two,</text>
+<text x="2184.0" y="1676.8" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">or the downgrade looks arbitrary.</text>
+<circle cx="2620" cy="1620" r="32" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2.5"/>
+<text x="2620.0" y="1627.3" text-anchor="middle" font-size="21" font-weight="700" fill="#473073">L1</text>
+<rect x="700.0" y="1885.0" width="1500" height="150" rx="8" fill="#e3f0ee" stroke="#1f6f6a" stroke-width="2"/>
+<text x="1450.0" y="1946.6" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">The value changes, the check is recorded, and the clock is reset</text>
+<text x="1450.0" y="1964.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">The record's status is untouched. What moved is an attribute or a capability, and where the event</text>
+<text x="1450.0" y="1982.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">was a re-KYC, the next scheduled date is set from the current risk classification.</text>
+<circle cx="698.0" cy="1883.0" r="17" fill="#473073"/>
+<text x="698.0" y="1887.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">3</text>
+<rect x="250.0" y="2205.0" width="2400" height="190" rx="8" fill="#f8e7e3" stroke="#9d2f2f" stroke-width="2"/>
+<rect x="250.0" y="2205.0" width="7" height="190" rx="3" fill="#9d2f2f"/>
+<text x="1454.0" y="2268.5" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">And then there is residency change, which is on this page only because it has not been ruled on</text>
+<text x="1454.0" y="2286.6" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">Every other event here changes one thing. A residency change is not one status change but several at</text>
+<text x="1454.0" y="2304.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">once, in different systems, owned by different parts of the platform. It is bulleted rather than drawn in</text>
+<text x="1454.0" y="2322.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">the governing journey precisely because servicing it properly may be a journey of its own, and whether</text>
+<text x="1454.0" y="2340.9" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">that is in V1 at all is an open scope decision. What follows is the blast radius, not a design.</text>
+<polygon points="1450,2535.0 1900.0,2640 1450,2745.0 1000.0,2640" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2.2"/>
+<text x="1450.0" y="2645.2" text-anchor="middle" font-size="15" font-weight="700" fill="#473073">Which direction?</text>
+<circle cx="998.0" cy="2533.0" r="17" fill="#473073"/>
+<text x="998.0" y="2537.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">4</text>
+<rect x="260.0" y="2865.0" width="1000" height="190" rx="8" fill="#fffdf8" stroke="#c9bda4" stroke-width="2"/>
+<text x="760.0" y="2938.4" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">Resident becoming non-resident</text>
+<text x="760.0" y="2955.8" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">The leg teams build. The investor announces it, often</text>
+<text x="760.0" y="2973.3" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">at the point of moving, and the platform has a natural</text>
+<text x="760.0" y="2990.7" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">prompt to act on.</text>
+<circle cx="258.0" cy="2863.0" r="17" fill="#473073"/>
+<text x="258.0" y="2867.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">4a</text>
+<rect x="1640.0" y="2865.0" width="1000" height="190" rx="8" fill="#fffdf8" stroke="#c9bda4" stroke-width="2"/>
+<text x="2140.0" y="2929.7" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">Non-resident coming home</text>
+<text x="2140.0" y="2947.1" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">The leg teams forget. The reference flags it as</text>
+<text x="2140.0" y="2964.6" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">routinely under-built, and it has no natural prompt: an</text>
+<text x="2140.0" y="2982.0" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">investor who moves back rarely thinks to tell their</text>
+<text x="2140.0" y="2999.4" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">distributor, so the record silently misstates their status.</text>
+<circle cx="1638.0" cy="2863.0" r="17" fill="#473073"/>
+<text x="1638.0" y="2867.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">4b</text>
+<rect x="250.0" y="3205.0" width="2400" height="230" rx="8" fill="#f8e7e3" stroke="#9d2f2f" stroke-width="2"/>
+<rect x="250.0" y="3205.0" width="7" height="230" rx="3" fill="#9d2f2f"/>
+<text x="1454.0" y="3281.0" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">The blast radius · five things move, in four different places</text>
+<text x="1454.0" y="3298.4" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">The KYC record itself moves, because residency is an attribute the registry holds.</text>
+<text x="1454.0" y="3315.8" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">The bank account class changes, from a resident account to NRE or NRO, or back the other way.</text>
+<text x="1454.0" y="3333.3" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">The folio's repatriability tag is re-cut, and repatriable and non-repatriable holdings sit on separate folios.</text>
+<text x="1454.0" y="3350.7" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">Tax residency and the withholding regime change, which alters what is deducted at every redemption.</text>
+<text x="1454.0" y="3368.1" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">FATCA and CRS reporting is pulled in, or dropped, depending on the direction of travel.</text>
+<polygon points="1450,3590.0 1820.0,3700 1450,3810.0 1080.0,3700" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2.2"/>
+<text x="1450.0" y="3695.5" text-anchor="middle" font-size="14" font-weight="700" fill="#473073">OPEN · is servicing this in V1 scope,</text>
+<text x="1450.0" y="3714.3" text-anchor="middle" font-size="14" font-weight="700" fill="#473073">and is it its own journey?</text>
+<circle cx="1078.0" cy="3588.0" r="17" fill="#473073"/>
+<text x="1078.0" y="3592.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">5</text>
+<rect x="1850.0" y="3585.0" width="660" height="230" rx="8" fill="#f8e7e3" stroke="#9d2f2f" stroke-width="2"/>
+<rect x="1850.0" y="3585.0" width="7" height="230" rx="3" fill="#9d2f2f"/>
+<text x="2184.0" y="3652.3" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">Still open with Product and Compliance. The</text>
+<text x="2184.0" y="3669.7" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">recommendation on record is to keep the trigger</text>
+<text x="2184.0" y="3687.1" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">bulleted here, defer the full servicing flow to a</text>
+<text x="2184.0" y="3704.6" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">dedicated journey, and rule separately on whether that</text>
+<text x="2184.0" y="3722.0" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">journey is in V1. Whatever is decided, the homecoming</text>
+<text x="2184.0" y="3739.4" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">leg is the one to name explicitly in the ruling, because</text>
+<text x="2184.0" y="3756.8" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">it is the one that gets dropped when scope tightens.</text>
+<rect x="150.0" y="3590.0" width="620" height="220" rx="8" fill="#fbf2dd" stroke="#9a6a16" stroke-width="2"/>
+<rect x="150.0" y="3590.0" width="7" height="220" rx="3" fill="#9a6a16"/>
+<text x="464.0" y="3654.1" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">What is needed even at minimum scope</text>
+<text x="464.0" y="3670.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">Whatever the ruling, the platform must detect a</text>
+<text x="464.0" y="3687.6" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">mismatch when one surfaces, refuse to transact on</text>
+<text x="464.0" y="3704.4" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">a record it knows is wrong, and route the investor</text>
+<text x="464.0" y="3721.1" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">to a human. Doing nothing is not the low-scope</text>
+<text x="464.0" y="3737.9" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">option; it is the option where the record quietly</text>
+<text x="464.0" y="3754.6" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">lies about the investor's tax position.</text>
+<rect x="700.0" y="4020.0" width="1500" height="80" rx="40.0" fill="#473073" stroke="#473073" stroke-width="2"/>
+<text x="1450.0" y="4065.6" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">Record current, or routed to a human</text>
+<rect x="270.0" y="4275.0" width="660" height="130" rx="8" fill="#e3f0ee" stroke="#1f6f6a" stroke-width="2"/>
+<rect x="270.0" y="4275.0" width="7" height="130" rx="3" fill="#1f6f6a"/>
+<text x="604.0" y="4335.8" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">→ L1 Downgrade and restore</text>
+<text x="604.0" y="4353.3" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">where a failed re-validation lands</text>
+<rect x="1120.0" y="4275.0" width="660" height="130" rx="8" fill="#e3f0ee" stroke="#1f6f6a" stroke-width="2"/>
+<rect x="1120.0" y="4275.0" width="7" height="130" rx="3" fill="#1f6f6a"/>
+<text x="1454.0" y="4335.8" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">→ NRI and OCI onboarding</text>
+<text x="1454.0" y="4353.3" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">the status the departure leg creates</text>
+<rect x="1970.0" y="4275.0" width="660" height="130" rx="8" fill="#e3f0ee" stroke="#1f6f6a" stroke-width="2"/>
+<rect x="1970.0" y="4275.0" width="7" height="130" rx="3" fill="#1f6f6a"/>
+<text x="2304.0" y="4336.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">→ S4 Mandate amendment</text>
+<text x="2304.0" y="4352.8" text-anchor="middle" font-size="12.5" font-weight="400" fill="#26222e">a changed bank account moves the authority</text>
+<rect x="1819.6" y="1607.0" width="30.8" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="1835.0" y="1624.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#9d2f2f">no</text>
+<text x="2620.0" y="1678.4" text-anchor="middle" font-size="12.5" font-weight="600" fill="#6f6878">the downgrade-and-restore loop</text>
+<rect x="1430.9" y="1792.0" width="38.2" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="1450.0" y="1809.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f6f6a">yes</text>
+<rect x="838.7" y="2627.0" width="82.6" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="880.0" y="2644.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#6a4a9c">departure</text>
+<rect x="1960.2" y="2627.0" width="119.6" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="2020.0" y="2644.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#6a4a9c">the homecoming</text>
+<rect x="1790.0" y="3687.0" width="90.0" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="1835.0" y="3704.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#9d2f2f">unresolved</text>
+<rect x="891.1" y="3687.0" width="67.8" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="925.0" y="3704.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#9a6a16">minimum</text>
+</svg>
+</div>
+
+
+<div class="callout principle">
+  <p class="ck">Where this sits in the KYC lifecycle set</p>
+  <p><strong>L1 Downgrade and restore</strong> &middot; <strong>L2 Registry failure modes</strong> &middot; <strong>L3 Attaining majority</strong> &middot; <strong>L4 Standing plans under a downgrade</strong> &middot; <strong>L5 Anticipated events and the residency blast radius</strong>. J1 drew the front door; this set owns everything that happens to a transactable identity afterwards. It invents no status and no transition: the ladder and the transition table belong to the Investor reference, the registries and their failure modes belong to the Rails reference, and the pre-flight gate that consumes the status belongs to the Order reference.</p>
+</div>
+
+<div class="callout flag">
+  <p class="ck">The routine event that downgrades a record</p>
+  <p>An investor updating a mobile number is doing housekeeping. Mobile, email and bank account are validated attributes, so the change triggers a re-validation, and if the new number cannot be verified the record moves. <strong>The investor is then blocked by an action they took to keep things tidy.</strong> The message has to connect the two explicitly, or the downgrade looks arbitrary and the investor has no way to work out what they did.</p>
+</div>
+
+<div class="callout flag">
+  <p class="ck">Residency change: five things move, in four different places</p>
+  <p>The KYC record moves, because residency is an attribute the registry holds. The bank account class changes, from resident to NRE or NRO or back. The folio's repatriability tag is re-cut, and repatriable and non-repatriable holdings must sit on separate folios. Tax residency and the withholding regime change, altering what is deducted at every redemption. And FATCA and CRS reporting is pulled in or dropped depending on direction.</p>
+  <p><strong>The homecoming leg is the one that gets dropped.</strong> Teams build the departure, because the investor announces it and there is a natural prompt. The return leg has no prompt: an investor who moves back rarely thinks to tell their distributor, so the record silently misstates their status and keeps doing so. The reference flags this as routinely under-built and it is worth naming explicitly in whatever ruling is made.</p>
+</div>
+
+<div class="callout verify">
+  <p class="ck">The open decision, and what is owed regardless</p>
+  <p><strong>D47 is still open with Product and Compliance:</strong> whether the residency-change servicing flow is in V1 scope, and whether it is its own journey. The recommendation on record is to keep the trigger bulleted, defer the full flow to a dedicated journey, and rule separately on V1 scope. This page deliberately draws the blast radius rather than a design, so that it is useful for making the decision rather than presupposing it.</p>
+  <p>One thing I would argue is owed even at minimum scope, and it is a position rather than a documented requirement: the platform must detect a mismatch when one surfaces, refuse to transact on a record it knows is wrong, and route the investor to a human. Doing nothing is not the low-scope option. It is the option where the record quietly lies about the investor's tax position and the platform keeps transacting on it.</p>
+</div>
+
+<div class="callout verify">
+  <p class="ck">Grounded against</p>
+  <p>J2, section 4, for the special cases bulleted rather than drawn, and section 6 for D47 and its recommendation. The Investor reference for the risk-based re-KYC bands and the accreditation toggle. The re-KYC intervals, broadly two years for high risk, eight for medium and ten for low, are carried as stated in J2 and are worth confirming against current guidance before a scheduler is built to them.</p>
+</div>
+
+
+<div class="footer">
+  <p><strong>Document control.</strong> KYC Lifecycle L5: Anticipated Events and the Residency Blast Radius. Version v0.1, August 2026. Fifth of five drawn from J2. D47 remains open; the residency half is drawn as a blast radius to inform that decision rather than presuppose it. The minimum-scope obligation is a position taken here, not a documented requirement.</p>
+</div>
+
+</div>
+</body>
+</html>

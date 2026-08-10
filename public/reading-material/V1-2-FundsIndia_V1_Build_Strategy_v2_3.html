@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FundsIndia V1 Build Strategy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 20mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 11pt;
+    line-height: 1.55;
+    color: #2B2A26;
+    background: #FBFAF6;
+    margin: 0;
+    padding: 0;
+  }
+  .page {
+    max-width: 980px;
+    margin: 0 auto;
+    background: #FFFFFF;
+    padding: 64px 84px 72px;
+    box-shadow: 0 2px 24px rgba(0,0,0,0.05);
+  }
+  .doc-title { font-size: 27pt; font-weight: 600; color: #1A1A18; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .doc-sub { font-size: 12.5pt; font-weight: 400; color: #5F5E5A; margin: 0 0 10px; }
+  .doc-meta { font-size: 10pt; color: #888780; margin: 0 0 8px; padding-bottom: 22px; border-bottom: 2px solid #534AB7; }
+  h1 {
+    font-size: 18pt; font-weight: 600; color: #2B2A26;
+    margin: 44px 0 18px; padding-bottom: 10px;
+    border-bottom: 1px solid #D3D1C7; scroll-margin-top: 20px;
+  }
+  h1 .num { color: #534AB7; font-weight: 600; margin-right: 10px; }
+  h2 { font-size: 13.5pt; font-weight: 600; color: #2B2A26; margin: 26px 0 10px; }
+  h3 { font-size: 12pt; font-weight: 600; color: #5F5E5A; margin: 20px 0 8px; }
+  p { margin: 0 0 12px; }
+  em { font-style: italic; color: #3D3D3A; }
+  strong { font-weight: 600; color: #1A1A18; }
+  ul, ol { margin: 0 0 14px; padding-left: 22px; }
+  li { margin: 0 0 7px; }
+  a { color: #534AB7; }
+
+  .lead { font-size: 11.5pt; color: #444441; border-left: 3px solid #534AB7; padding: 4px 0 4px 18px; margin: 0 0 18px; }
+  .caveat {
+    background: #FCF6EC; border-left: 3px solid #BA7517; border-radius: 0 6px 6px 0;
+    padding: 11px 18px; margin: 14px 0; font-size: 10.5pt; color: #4A3F2E;
+  }
+  .caveat strong { color: #633806; }
+  .note { background: #F1EFE8; border-radius: 6px; padding: 11px 18px; margin: 14px 0; font-size: 10.5pt; color: #444441; }
+
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 18px; font-size: 10pt; table-layout: fixed; }
+  th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid #E3E1D8; overflow-wrap: break-word; word-wrap: break-word; }
+  thead th { background: #F4F2EB; color: #2C2C2A; font-weight: 600; border-bottom: 1.5px solid #C9C7BD; }
+  td.k { font-weight: 600; color: #1A1A18; }
+  tbody tr:last-child td { border-bottom: 1px solid #C9C7BD; }
+
+  .scope-grid { display: grid; grid-template-columns: 1fr; gap: 0; }
+  .scope-block { margin: 0 0 18px; }
+  .scope-block h3 { margin-top: 8px; }
+  .badge {
+    display: inline-block; font-size: 8.5pt; font-weight: 600; letter-spacing: 0.04em;
+    padding: 2px 9px; border-radius: 20px; text-transform: uppercase; vertical-align: middle; margin-left: 2px;
+  }
+  .badge.in { background: #E1F5EE; color: #085041; }
+  .badge.def { background: #FAEEDA; color: #633806; }
+  .badge.out { background: #FBEAF0; color: #72243E; }
+
+  figure { margin: 22px 0 18px; padding: 22px 18px 10px; background: #FCFBF7; border: 1px solid #E3E1D8; border-radius: 10px; }
+  figure svg { width: 100%; height: auto; display: block; }
+  figcaption { font-size: 9.5pt; color: #5F5E5A; margin-top: 12px; text-align: left; line-height: 1.45; }
+
+  .stage { margin: 0 0 14px; padding-left: 16px; border-left: 2px solid #CECBF6; }
+  .stage h3 { margin: 0 0 5px; color: #3C3489; }
+  .gate-rule {
+    text-align: center; color: #854F0B; font-weight: 600; font-size: 10.5pt;
+    letter-spacing: 0.03em; margin: 16px 0; padding: 7px;
+    background: #FAEEDA; border-radius: 6px;
+  }
+
+  .toc { background: #FAF9F4; border: 1px solid #E3E1D8; border-radius: 10px; padding: 18px 26px; margin: 26px 0 8px; }
+  .toc h2 { margin: 0 0 10px; font-size: 11pt; color: #5F5E5A; text-transform: uppercase; letter-spacing: 0.05em; }
+  .toc ol { columns: 2; column-gap: 40px; margin: 0; padding-left: 18px; font-size: 10pt; }
+  .toc li { margin: 0 0 6px; }
+  .toc a { color: #444441; text-decoration: none; }
+  .toc a:hover { color: #534AB7; }
+
+  @media print {
+    body { background: #fff; }
+    .page { box-shadow: none; max-width: none; padding: 0; }
+    h1 { page-break-after: avoid; }
+    figure, .stage { page-break-inside: avoid; }
+    tr { page-break-inside: avoid; }
+    thead { display: table-header-group; }
+  }
+  @media (max-width: 720px) {
+    .page { padding: 32px 22px; }
+    .toc ol { columns: 1; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="doc-title">FundsIndia V1 Build Strategy</p>
+  <p class="doc-sub">Mass-Affluent Investor Platform</p>
+  <p class="doc-meta">v2.3 &middot; August 2026 &middot; migration-sequencing correction and team restatement over the v2.2 pointer refresh, reconciled against the five entity references, the thirteen journeys (J1 to J13), the Open Decisions Register (v0.17), and the Big-Block Map (v2.1) &middot; grounded in the Build Philosophy and Tech Constitution &middot; Spec 1, Spec 2, and the Architecture Companion are in rewrite and are not load-bearing for this document</p>
+
+  <div class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#s1">Purpose and intent</a></li>
+      <li><a href="#s2">Scope: in, deferred, out</a></li>
+      <li><a href="#s3">How V1 sits against the blueprint, and the two gates</a></li>
+      <li><a href="#s4">The substrate, at principle altitude</a></li>
+      <li><a href="#s5">Architecture view of completed V1</a></li>
+      <li><a href="#s6">Vendor and build-vs-buy strategy</a></li>
+      <li><a href="#s7">The experience layer</a></li>
+      <li><a href="#s8">Non-functional requirements</a></li>
+      <li><a href="#s9">Team, sequencing, and timeline</a></li>
+      <li><a href="#s10">Consolidated risks and caveats</a></li>
+      <li><a href="#s11">Open decisions, and where they live</a></li>
+      <li><a href="#s12">What follows V1</a></li>
+    </ol>
+  </div>
+
+  <h1 id="s1"><span class="num">1</span>Purpose and intent</h1>
+  <p class="lead">V1 replaces the existing investor surfaces for the mass-affluent segment with a new platform built on a clean canonical substrate.</p>
+  <p>It delivers a goal-led, mutual-fund-centric investing experience across web, iOS, and Android, and establishes the foundational core (entity model, event spine, canonical ledger, anti-corruption layer) that every later phase depends on.</p>
+  <p>V1 serves natural personas only: Resident Individual, NRI, OCI, and Minor (guardian-operated), with Joint as a holding-mode overlay rather than a persona of its own. The Foreign National resident is recommended out of the initial set, pending confirmation. HUF and the other non-individual entities are deferred to the Private Wealth phase, since even HUF is a private-wealth rather than a mass-affluent concern. This boundary (decided as D41) bounds the whole onboarding build.</p>
+  <p>Two further scoping intents are deliberate. The Private Wealth (Tier 3) calm experience is deferred to a later release. The advisor and RM persona and workstation are deferred to V2; the RM <em>attribution substrate</em>, the Commercial Relationship entity, is in V1, but the RM-facing surface is not.</p>
+  <div class="caveat"><strong>Caveat on segment choice.</strong> The blueprint's Phase 1 fully realises the <em>entry</em> tier within a single tier-aware app. V1 consciously chooses mass-affluent as the launch cohort instead. This is a deliberate departure, not an oversight, and should be owned as such.</div>
+
+  <h1 id="s2"><span class="num">2</span>Scope: in, deferred, out</h1>
+
+  <div class="scope-block">
+    <h3>In V1 <span class="badge in">In</span></h3>
+    <ul>
+      <li>Native investor surfaces: one web codebase and one Flutter codebase covering iOS and Android, each surface fronted by its own BFF.</li>
+      <li>Goal-led product experience, with <strong>Goal as a first-class, mandatory domain entity</strong>; a default goal is auto-created so no investor is blocked, and holdings render as a view beneath goals.</li>
+      <li>Identity resolution and KYC (check, do, fetch), with Fintech Primitives on the KYC rail and the identity vendor on the verification rail.</li>
+      <li>Catalog: strongly-typed, multi-asset-ready instrument schema, carrying tier-eligibility and goal-suitability fields from day one. V1 instruments are regular-plan mutual funds and SIFs (Specialised Investment Funds).</li>
+      <li>Mutual fund transactions routed through Fintech Primitives for execution and reporting, with the money path running through the FP-native payment port so the firm stays out of the flow of funds.</li>
+      <li>A <strong>canonical, double-entry, immutable, bitemporal ledger</strong> owned by the platform, sitting above FP and any future rail.</li>
+      <li>The domain event spine, plus a separate clickstream and behavioural analytics plane.</li>
+      <li>Anti-corruption layer for all third parties, and the translation layer to legacy where needed.</li>
+      <li><strong>Account Aggregator in V1</strong>, with the firm onboarded as a Financial Information User, powering the consent-based held-away financial picture (bank, mutual funds, NPS, with fixed deposits as a likely data category). See the Sahamati caveat in &sect;9.</li>
+      <li>Held-away holdings served through three complementary reads: the MF Central and CAS OTP pull for mutual fund and demat positions, and the AA rail for the broader, fresher picture.</li>
+      <li><strong>Financial-picture aggregation (J13)</strong> as a non-transactional value-add: gross returns only, clearly qualified, with no after-tax or after-cost figure in V1 per the closed D49 ruling.</li>
+      <li>Goal allocation guidance and a what-if calculator: research-driven, cohortised allocation guidance with genuine alternatives, the bridge from goal to instrument. MFD-incidental, not advice-for-a-fee, and Compliance-gated.</li>
+      <li>Portfolio dissection: deterministic decomposition only (holdings, value, XIRR, overlap, sectoral, concentration, cap split, benchmark with disclaimer), which states and never judges.</li>
+      <li>Discovery: goal-anchored, with sort and filter levers and a governed business-intervention ranking console.</li>
+      <li>Key mappings: the Commercial Relationship entity (client-to-RM attribution) and the inferred or declared relationship graph (nominee, family), modelled as two distinct things, ingested to the legacy CRM in V1; the new CRM surface is V2.</li>
+      <li>Referral, built on the relationship graph and event spine.</li>
+      <li>Servicing and account lifecycle: periodic re-KYC, attaining majority (minor to major), nomination management, and transmission on death. Residency-change servicing and heir-claim servicing depth are out of V1 (see Deferred).</li>
+      <li>Consent ledger, DPDP rights tooling, and PII tokenization, from the beginning.</li>
+      <li>End-user identity (AuthN, session, device binding, RBAC and ABAC), which no vendor provides.</li>
+      <li>MarTech instrumentation: SEO, ASO, SEM, and performance-marketing hooks for Meta, Google, and LinkedIn.</li>
+      <li>Observability, reconciliation tooling, and ops and DR independent of any vendor.</li>
+      <li><strong>Migration-readiness, not migration.</strong> V1 launches net-new only and builds no migration tooling. What V1 owes migration is a stable, well-understood target schema and a clean ACL seam, nothing more. The tooling and the translation layer are built in V1.5 and the book moves in V2 (see the migration-readiness gate in &sect;3).</li>
+    </ul>
+  </div>
+
+  <div class="scope-block">
+    <h3>Deferred <span class="badge def">Deferred</span></h3>
+    <ul>
+      <li><strong>Migration tooling and the translation layer, to V1.5.</strong> Built once V1 is live and its schema has stopped moving, so the translation layer is mapped against a stable new schema and a properly understood legacy schema rather than against a moving target. Execution of the book migration sits in V2.</li>
+      <li>Direct rails: BSE StAR MF direct, as a V1.5 fast-follow for rail resilience behind the same ACL port.</li>
+      <li>Multi-AA gateway (a TSP-orchestrated layer in front of several Account Aggregators) as a V1.5 coverage and resilience upgrade over the single-AA V1 integration.</li>
+      <li>Fixed deposits as a <em>transactable instrument</em>: V1.5. FDs survive in V1 only as an AA data category that is read, never booked.</li>
+      <li>NPS as a <em>transactable instrument</em>: V1.5 or V2. NPS is in V1 only as an AA held-away data category, and the retirement goal can exist from day one backed by retirement-oriented mutual funds.</li>
+      <li>OBPP bonds: V1.5, contingent on the registration path resolving.</li>
+      <li>PMS and AIF: V2.</li>
+      <li>RM persona and workstation, and the Tier 3 Private Wealth calm experience: later releases.</li>
+      <li>Residency-status-change servicing (the resident-to-non-resident and return-leg flow, D47): V2, given its blast radius across KYC, bank class, repatriability, tax residency, and FATCA and CRS.</li>
+      <li>Cost-basis lot accounting: V2, reconstructable later via the shared entry id.</li>
+      <li>Heir-claim and contested-claim servicing depth (D48): a later stage. Handled operationally on a case basis in the interim.</li>
+    </ul>
+  </div>
+
+  <div class="scope-block">
+    <h3>Out of this horizon <span class="badge out">Out</span></h3>
+    <ul>
+      <li>Replacing FP with a new in-house transaction <em>execution</em> core. That is a later-phase decision, not V1.</li>
+    </ul>
+  </div>
+
+  <h1 id="s3"><span class="num">3</span>How V1 sits against the blueprint, and the two gates</h1>
+  <p>V1 collapses the blueprint's Phase 0 (substrate) and Phase 1 (experience) into a single delivery. That is acceptable as a delivery construct, but the constitution's discipline is preserved through two hard gates rather than one.</p>
+  <p>The first is the <strong>internal substrate gate</strong>. The principle behind it is the constitution's own (<em>a correct system built too early is more dangerous than a delayed system built deliberately</em>), and it matters more, not less, with a brand-new team that is likelier to make substrate mistakes worth catching by dogfooding. The substrate and the full transaction path are proven by internal transacting on the real rails before any customer-facing layer goes live.</p>
+  <p>The second is the <strong>migration-readiness gate</strong>. V1 opens to net-new investors only and carries no migration tooling. The tooling and the translation layer are built in V1.5, against a V1 schema that has stopped moving, and the book migrates in V2 at a deliberately throttled 1,000 to 2,000 investors a day rather than in a single cutover. The gate is therefore a build gate before it is a migration gate: migration opens once the tooling is built and proven on a pilot slice, not on a calendar date. On the current sequence that lands after V1.5, most likely July 2027, but the dependency is the tooling and not the month. The gate exists for the same reason as the first: a stable system migrated deliberately is safer than a fast cutover onto a platform whose edges are not yet proven at volume.</p>
+
+  <h1 id="s4"><span class="num">4</span>The substrate, at principle altitude</h1>
+  <p>This section commits to the durable architectural principles and deliberately stops short of the entity, event, and ledger detail. That detail belongs to Spec 1 (the domain entity model and event spine) and Spec 2 (the canonical ledger), both of which are being rewritten after the competitive research and the lower-level product decisions. Pitching this section at principle altitude is what keeps the Build Strategy stable across that spec work rather than baking in detail that is about to move.</p>
+
+  <h3>The canonical ledger</h3>
+  <p>A platform-owned, double-entry, immutable, bitemporal ledger is the canonical internal books. It is a reconciliation projection of RTA truth, not a replacement for it, and not the legal system of record, since the firm holds no client money under the no-pooling rule. Holdings are derived from it, not asserted alongside it. The wall rule is absolute: nothing a rail returns becomes truth until it has posted through these books, and Fintech Primitives is a source reconciled against the ledger rather than the record itself. Corrections are compensating postings, never edits. Reconciliation is batch in V1, with microbatch deferred to V2. The customer-money ledger records investment money movement only; it charges no advisory fee, consistent with the MFD posture in &sect;7.</p>
+
+  <h3>The event spine and the second plane</h3>
+  <p>A typed, durable, replayable domain event spine records what happened, with stable schemas, clear provenance, and bitemporal timestamps. A separate clickstream and behavioural plane sits beside it and is never merged into it; the two are deliberately kept apart so the spine stays the auditable record of fact and the clickstream stays lossy-tolerant analytics.</p>
+
+  <h3>ACL purity</h3>
+  <p>Every external dependency sits behind a clean adapter, and the rule is one adapter per domain even when a single vendor spans two. The MF execution rail, the payment rail, the KYC rail, the held-away reads, and the Account Aggregator each sit behind their own adapter, written to a vendor-neutral domain interface rather than to a vendor's wire shapes. This is what lets the V1.5 rails (BSE StAR MF direct, and a multi-AA gateway) plug in as new sources without a domain rewrite. ACL purity is sacrosanct: it is the single most important thing that keeps V1.5 from becoming a forklift.</p>
+
+  <h3>The intelligence boundary on held-away data</h3>
+  <p>Held-away positions are an external read-model and never a posting. The boundary on them follows the four-flow rule: capture-write on, internal-read on, investor-facing read off until governed, and action and write-back off. The platform reflects and reasons over held-away data; it does not transact on it.</p>
+
+  <h3>Identity, access, and consent</h3>
+  <p>End-user AuthN, session lifecycle, device binding, MFA, and tier-aware RBAC and ABAC, none of which any vendor supplies. The consent ledger (purpose-bound, time-bound, revocable) and the PII tokenization vault, both mandatory for AA and DPDP, and both rail-agnostic, since KYC, ordinary data use, the CAS pull, and the AA fetch all cite a live consent.</p>
+
+  <h3>Reconciliation and operations</h3>
+  <p>Platform-wide reconciliation (ledger against FP, FP against the payment gateway, mandate state, plan active-versus-cancelled truth). Observability across the saga and the vendor calls with SLOs. DR and BCP with an RTO and RPO that does not assume any vendor's availability.</p>
+
+  <div class="note"><strong>What is not pinned here.</strong> The entity shapes, the event catalog and its naming, the chart of accounts, and the posting rules are owned by Spec 1 and Spec 2 and are in rewrite. This document commits to the principles above and does not fix the detail, so a change in the specs does not invalidate the build strategy.</div>
+
+  <h1 id="s5"><span class="num">5</span>Architecture view of completed V1</h1>
+  <p>The end-state once V1 ships, read top to bottom: the platform-owned stack (purple), the bought external rails (teal), what is deferred (grey), and the substrate gate (amber) sitting between the canonical core and anything a customer touches. The anti-corruption layer is the visible seam between what the platform owns and what it rents; the two event planes sit side by side rather than stacked because they are deliberately never merged.</p>
+
+  <figure>
+  <svg viewBox="0 0 680 802" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>FundsIndia V1 completed architecture</title>
+  <desc>A layered architecture of the completed V1 platform, read top to bottom: client surfaces, the investor backend-for-frontend, the experience layer, then the internal substrate gate, then the canonical substrate, the two-plane event architecture, the anti-corruption layer, and the external rails used in V1. Platform-owned layers are purple, bought external rails are teal, deferred items are grey, the substrate gate is amber, and cross-cutting planes run beneath.</desc>
+  <style>
+    text { font-family: 'Source Sans 3', sans-serif; }
+    .lbl { font-size: 14px; font-weight: 600; fill: #2B2A26; }
+    .th { font-size: 14px; font-weight: 600; }
+    .ts { font-size: 12px; font-weight: 400; }
+    .leg { font-size: 12px; fill: #5F5E5A; }
+    .pur rect { fill: #EEEDFE; stroke: #534AB7; }
+    .pur .th { fill: #3C3489; } .pur .ts { fill: #534AB7; }
+    .tea rect { fill: #E1F5EE; stroke: #0F6E56; }
+    .tea .th { fill: #085041; } .tea .ts { fill: #0F6E56; }
+    .gry rect { fill: #F1EFE8; stroke: #5F5E5A; }
+    .gry .th { fill: #2C2C2A; } .gry .ts { fill: #5F5E5A; }
+    .amb rect { fill: #FAEEDA; stroke: #854F0B; }
+    .amb .th { fill: #633806; } .amb .ts { fill: #854F0B; }
+  </style>
+
+  <rect x="40" y="44" width="14" height="12" rx="3" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+  <text class="leg" x="60" y="54">Build &middot; owned</text>
+  <rect x="170" y="44" width="14" height="12" rx="3" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+  <text class="leg" x="190" y="54">Buy &middot; external</text>
+  <rect x="312" y="44" width="14" height="12" rx="3" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5" stroke-dasharray="4 3"/>
+  <text class="leg" x="332" y="54">Deferred</text>
+  <rect x="424" y="44" width="14" height="12" rx="3" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+  <text class="leg" x="444" y="54">Gate</text>
+
+  <text class="lbl" x="40" y="78">Client surfaces</text>
+  <g class="pur"><rect x="40" y="86" width="186" height="46" rx="8" stroke-width="0.5"/>
+  <text class="th" x="133" y="109" text-anchor="middle" dominant-baseline="central">Web</text></g>
+  <g class="pur"><rect x="247" y="86" width="186" height="46" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="109" text-anchor="middle" dominant-baseline="central">iOS</text></g>
+  <g class="pur"><rect x="454" y="86" width="186" height="46" rx="8" stroke-width="0.5"/>
+  <text class="th" x="547" y="109" text-anchor="middle" dominant-baseline="central">Android</text></g>
+
+  <text class="lbl" x="40" y="156">Backend for frontend</text>
+  <g class="pur"><rect x="40" y="164" width="600" height="42" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="177" text-anchor="middle" dominant-baseline="central">Investor BFF</text>
+  <text class="ts" x="340" y="194" text-anchor="middle" dominant-baseline="central">tier-aware shaping</text></g>
+
+  <text class="lbl" x="40" y="230">Experience layer</text>
+  <g class="pur"><rect x="40" y="238" width="132" height="50" rx="8" stroke-width="0.5"/>
+  <text class="th" x="106" y="255" text-anchor="middle" dominant-baseline="central">Goals</text>
+  <text class="ts" x="106" y="272" text-anchor="middle" dominant-baseline="central">first-class</text></g>
+  <g class="pur"><rect x="196" y="238" width="132" height="50" rx="8" stroke-width="0.5"/>
+  <text class="th" x="262" y="255" text-anchor="middle" dominant-baseline="central">Discovery</text>
+  <text class="ts" x="262" y="272" text-anchor="middle" dominant-baseline="central">goal-anchored</text></g>
+  <g class="pur"><rect x="352" y="238" width="132" height="50" rx="8" stroke-width="0.5"/>
+  <text class="th" x="418" y="255" text-anchor="middle" dominant-baseline="central">Portfolio</text>
+  <text class="ts" x="418" y="272" text-anchor="middle" dominant-baseline="central">dissection + picture</text></g>
+  <g class="pur"><rect x="508" y="238" width="132" height="50" rx="8" stroke-width="0.5"/>
+  <text class="th" x="574" y="255" text-anchor="middle" dominant-baseline="central">Referral</text>
+  <text class="ts" x="574" y="272" text-anchor="middle" dominant-baseline="central">graph-based</text></g>
+
+  <g class="amb"><rect x="40" y="306" width="600" height="44" rx="8" stroke-width="1" stroke-dasharray="6 4"/>
+  <text class="th" x="340" y="320" text-anchor="middle" dominant-baseline="central">Internal substrate gate</text>
+  <text class="ts" x="340" y="337" text-anchor="middle" dominant-baseline="central">proven internally before customer go-live</text></g>
+
+  <text class="lbl" x="40" y="374">Canonical substrate</text>
+  <g class="pur"><rect x="40" y="382" width="132" height="50" rx="8" stroke-width="0.5"/>
+  <text class="th" x="106" y="399" text-anchor="middle" dominant-baseline="central">Entity graph</text>
+  <text class="ts" x="106" y="416" text-anchor="middle" dominant-baseline="central">core entities</text></g>
+  <g class="pur"><rect x="196" y="382" width="132" height="50" rx="8" stroke-width="0.5"/>
+  <text class="th" x="262" y="399" text-anchor="middle" dominant-baseline="central">Ledger</text>
+  <text class="ts" x="262" y="416" text-anchor="middle" dominant-baseline="central">double-entry</text></g>
+  <g class="pur"><rect x="352" y="382" width="132" height="50" rx="8" stroke-width="0.5"/>
+  <text class="th" x="418" y="399" text-anchor="middle" dominant-baseline="central">Orchestration</text>
+  <text class="ts" x="418" y="416" text-anchor="middle" dominant-baseline="central">order saga</text></g>
+  <g class="pur"><rect x="508" y="382" width="132" height="50" rx="8" stroke-width="0.5"/>
+  <text class="th" x="574" y="399" text-anchor="middle" dominant-baseline="central">Identity</text>
+  <text class="ts" x="574" y="416" text-anchor="middle" dominant-baseline="central">consent + vault</text></g>
+
+  <text class="lbl" x="40" y="456">Event architecture</text>
+  <g class="pur"><rect x="40" y="464" width="288" height="48" rx="8" stroke-width="0.5"/>
+  <text class="th" x="184" y="480" text-anchor="middle" dominant-baseline="central">Domain event spine</text>
+  <text class="ts" x="184" y="497" text-anchor="middle" dominant-baseline="central">typed, durable, replayable</text></g>
+  <g class="pur"><rect x="352" y="464" width="288" height="48" rx="8" stroke-width="0.5"/>
+  <text class="th" x="496" y="480" text-anchor="middle" dominant-baseline="central">Clickstream plane</text>
+  <text class="ts" x="496" y="497" text-anchor="middle" dominant-baseline="central">analytics, lossy-tolerant</text></g>
+
+  <g class="pur"><rect x="40" y="530" width="600" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="544" text-anchor="middle" dominant-baseline="central">Anti-corruption layer</text>
+  <text class="ts" x="340" y="561" text-anchor="middle" dominant-baseline="central">every external dependency behind a clean adapter, one per domain</text></g>
+
+  <text class="lbl" x="40" y="598">External rails &middot; V1</text>
+  <g class="tea"><rect x="40" y="606" width="132" height="50" rx="8" stroke-width="0.5"/>
+  <text class="th" x="106" y="623" text-anchor="middle" dominant-baseline="central">FP &middot; MF</text>
+  <text class="ts" x="106" y="640" text-anchor="middle" dominant-baseline="central">execution + Razorpay</text></g>
+  <g class="tea"><rect x="196" y="606" width="132" height="50" rx="8" stroke-width="0.5"/>
+  <text class="th" x="262" y="623" text-anchor="middle" dominant-baseline="central">Account Aggregator</text>
+  <text class="ts" x="262" y="640" text-anchor="middle" dominant-baseline="central">held-away picture</text></g>
+  <g class="tea"><rect x="352" y="606" width="132" height="50" rx="8" stroke-width="0.5"/>
+  <text class="th" x="418" y="623" text-anchor="middle" dominant-baseline="central">CAS &middot; MF Central</text>
+  <text class="ts" x="418" y="640" text-anchor="middle" dominant-baseline="central">held-away MF + demat</text></g>
+  <g class="tea"><rect x="508" y="606" width="132" height="50" rx="8" stroke-width="0.5"/>
+  <text class="th" x="574" y="623" text-anchor="middle" dominant-baseline="central">Identity</text>
+  <text class="ts" x="574" y="640" text-anchor="middle" dominant-baseline="central">KYC verification</text></g>
+
+  <g class="gry"><rect x="40" y="674" width="600" height="44" rx="8" stroke-width="0.5" stroke-dasharray="6 4"/>
+  <text class="th" x="340" y="688" text-anchor="middle" dominant-baseline="central">Deferred</text>
+  <text class="ts" x="340" y="705" text-anchor="middle" dominant-baseline="central">BSE StAR direct &middot; multi-AA gateway &middot; FD &amp; NPS instruments &middot; OBPP &middot; PMS / AIF &rarr; V1.5 / V2</text></g>
+
+  <g class="gry"><rect x="40" y="734" width="600" height="44" rx="8" stroke-width="0.5"/>
+  <text class="th" x="340" y="748" text-anchor="middle" dominant-baseline="central">Cross-cutting planes</text>
+  <text class="ts" x="340" y="765" text-anchor="middle" dominant-baseline="central">security &middot; DPDP &amp; consent &middot; observability &middot; reconciliation</text></g>
+  </svg>
+  <figcaption>Completed V1 architecture. Everything beneath the amber gate must be proven by internal transacting before the customer-facing layers above it go live. Account Aggregator is a V1 rail powering the held-away picture, sitting alongside the CAS and MF Central reads. The grey dashed band marks the deliberate boundary of V1: the direct rails, the multi-AA gateway, FD and NPS as transactable instruments, OBPP, and PMS and AIF are out of frame by design. Cross-cutting planes apply to every layer above them.</figcaption>
+  </figure>
+
+  <h1 id="s6"><span class="num">6</span>Vendor and build-vs-buy strategy</h1>
+  <p>The references and journeys stay vendor-neutral by convention, since naming a counterparty there implies endorsement and completeness in a fast-moving market. This document is the one place a vendor is named, because choosing build-versus-buy is its job.</p>
+  <table>
+    <thead><tr><th style="width:21%">Layer</th><th style="width:21%">Decision</th><th style="width:58%">Notes and caveats</th></tr></thead>
+    <tbody>
+      <tr><td class="k">MF execution, reporting, KYC</td><td>Fintech Primitives (Cybrilla)</td><td>Behind the ACL. FP is execution and reporting, <em>not</em> the ledger. Webhooks are beta, so status is polled today; design ingestion to swap to push later without domain change.</td></tr>
+      <tr><td class="k">Money path</td><td>Razorpay (FP-native)</td><td>Razorpay Payments under Third Party Validation, plus Razorpay Route to the AMC, so the firm never takes custody of investor money. This is the payment-aggregator route the SEBI no-pooling circular permits (D1). Residual is procedural: Cybrilla's written fund-flow confirmation and Compliance sign-off.</td></tr>
+      <tr><td class="k">Identity verification</td><td>HyperVerge</td><td>On the identity rail, behind its own adapter.</td></tr>
+      <tr><td class="k">RTA reads</td><td>CAMS, KFin</td><td>The registrars the reflected state is read from. The platform is not the system of record; it reads a projection.</td></tr>
+      <tr><td class="k">Held-away (MF and demat)</td><td>MF Central, CAS</td><td>Customer-OTP pull of mutual fund and demat positions, the latter including equities as a read. Needs no FIU and no Sahamati certification. The always-available held-away read.</td></tr>
+      <tr><td class="k">Account Aggregator</td><td>Incumbent AA (single-AA in V1)</td><td>The firm is the FIU; the AA sits behind a vendor-neutral AA adapter. The bank and FD pulls are already live, so the clearances exist; Sahamati certification is in progress (see &sect;9). Single-AA coverage is the risk; the adapter abstraction is what makes the V1.5 multi-AA move cheap.</td></tr>
+      <tr><td class="k">Multi-AA gateway</td><td>V1.5 (Finarkein or Setu) &middot; assess</td><td>A TSP-orchestrated layer routing across several AAs by coverage, success rate, and latency, which also carries the Sahamati certification lift. Pull into V1 only if the financial picture is treated as a must-be-world-class launch surface; otherwise it is a clean V1.5 upgrade behind the ACL. The real assessment axes are FIP coverage for mass-affluent holdings and pricing.</td></tr>
+      <tr><td class="k">Ledger, event spine, entity graph, goals, recommendation, referral, discovery, consent, identity</td><td>Build</td><td>The differentiating substrate. Compounds in value.</td></tr>
+      <tr><td class="k">Direct equity and ETFs</td><td>Deferred to Post-V1</td><td>Not a V1 transactable surface. Held-away equity is read through CAS (above); transactable direct equity and ETFs sit beyond V1.5.</td></tr>
+      <tr><td class="k">Fixed deposits</td><td>Deferred to V1.5</td><td>FD as a transactable instrument is out of V1; the earlier Setu FD plan moves with it. FD survives in V1 only as an AA data category.</td></tr>
+      <tr><td class="k">NPS</td><td>AA data category in V1; instrument deferred</td><td>The retirement goal runs on retirement MFs in V1. FP's NPS GA date is a soft, unverified sales date; do not make it load-bearing.</td></tr>
+      <tr><td class="k">BSE StAR MF direct</td><td>V1.5 fast-follow</td><td>A second rail on the same rail-agnostic ACL port, FP-independent, for resilience. BSE membership (the firm is on the BSE Brokers' Forum) is a tailwind that lowers the barrier on this rail.</td></tr>
+      <tr><td class="k">MarTech / clickstream</td><td>Build / integrate separately</td><td>Entirely platform-owned; separate from the domain.</td></tr>
+    </tbody>
+  </table>
+
+  <h1 id="s7"><span class="num">7</span>The experience layer</h1>
+  <div class="caveat"><strong>MFD-incidental, not RIA.</strong> The mass-affluent V1 is regulatorily a distributor proposition under the MFD licence. Allocation guidance is MFD-incidental, not advice-for-a-fee, and no advisory fee is charged. The MFD-RIA boundary is under live SEBI review, so the guidance surfaces are built for the conservative case and clear a strict Compliance gate. The ledger reflects only the consequence (no advisory-fee posting); the framing governs every guidance and ranking surface below, and the copy and comparison carry Compliance sign-off.</div>
+  <h3>Goal-led navigation</h3>
+  <p>Home is organised around goals and next actions; holdings are a view underneath goals. The retirement goal can exist from day one backed by retirement-oriented mutual funds, with NPS added as a later instrument if and when it lands.</p>
+  <h3>Discovery</h3>
+  <p>Reframed from a product-list-with-filters (an eCommerce reflex) to goal-and-suitability-anchored discovery. Sort and filter levers are retained. The business-intervention ranking console is permitted but must carry suitability and SEBI mis-selling governance from day one, never ranking purely on commercial incentive.</p>
+  <h3>Goal allocation guidance</h3>
+  <p>Research-driven, cohortised allocation guidance with genuine alternatives, paired with a what-if calculator, is the bridge from a goal to an instrument for a mass-affluent investor who needs help getting from intent to instrument. It is the most compliance-loaded surface in V1, which is why it sits inside the MFD-incidental envelope and clears the Compliance gate. The lookup is shaped at the seam as <em>(Investor + Goal + eligible instruments + engine output)</em> so the real intelligence engine drops in later without a rewrite, and risk-profiling carries SEBI suitability weight.</p>
+  <h3>Portfolio dissection</h3>
+  <p>Deterministic decomposition only: holdings, value, XIRR, overlap, sectoral, concentration, cap split, and a category-appropriate benchmark carried with a disclaimer. Dissection states and never judges: <em>"Stock is 8% of equity,"</em> never <em>"too much weightage."</em> This is distinct from the allocation guidance above; dissection describes what is held, guidance helps decide what to hold.</p>
+  <h3>Financial picture</h3>
+  <p>The consent-based held-away view (J13), assembled from the AA rail and the CAS and MF Central reads, shows an after-cost view and an indicative, clearly-disclaimed tax view (D49). Under the MFD posture it offers generic guidance and comparison only, with Compliance sign-off on the copy.</p>
+  <div class="caveat"><strong>Highest-risk compliance surfaces.</strong> Three surfaces carry the most MFD-licence risk and must be governed from day one, not bolted on: the FI Strategy back-test where it is hindsight-constructed from present-day fund selection, the long-horizon (25-year) forward projection, and the missed-gains or switch nudge. Each needs suitability and mis-selling governance designed in.</div>
+  <h3>Servicing and account lifecycle</h3>
+  <p>The long tail that earns trust: periodic re-KYC, attaining majority, nomination management, and transmission on death, drawn in J2, J4, and J12. Several of these carry decisions still open with Legal and Compliance. Residency-change servicing is deferred to V2, and heir-claim servicing depth is out of V1, handled operationally on a case basis until a later stage builds it.</p>
+  <h3>Referral</h3>
+  <p>Built on the relationship graph and event spine for clean attribution, not as a standalone silo.</p>
+  <h3>Surfaces</h3>
+  <p>Web, iOS, Android, each with its own BFF for surface-specific shaping over shared canonical services.</p>
+
+  <h1 id="s8"><span class="num">8</span>Non-functional requirements</h1>
+  <p>Idempotency everywhere money moves. India data residency and DPDP (confirm FP's and the AA's region and sub-processors). Encryption and tokenization of all PII the platform holds (PAN, bank, contact, the entity graph). Per-vendor rate-limit and quota handling. Vendor-outage resilience (queue and replay, graceful degradation). Auditability and SEBI-horizon retention. Per-aggregate event ordering, at-least-once delivery with idempotent consumers, a schema registry and versioning, replayability, dead-letter handling. Consent that is purpose-bound, time-bound, and revocable, with revocation propagating downstream, and AA fetches that stay within the consent's fetch frequency. A clean ACL seam so the V1.5 rails (BSE direct, the multi-AA gateway) plug in as new sources without a domain rewrite.</p>
+
+  <h1 id="s9"><span class="num">9</span>Team, sequencing, and timeline</h1>
+  <h3>Team</h3>
+  <p>Fifteen people: the Head of Engineering, the Head of Product, two PMs, one designer, nine engineers, and the Head of New Platform. Onboarding begins 1 July, with the bulk cohort joining 17 August, and the build proper starts in September. The team carries no BAU; a parallel BAU track runs independently under a separate team, which is a structural advantage for focus.</p>
+  <div class="caveat"><strong>The UI throughput ceiling is the hardest sequencing constraint, and its exact size is an open allocation.</strong> The experience layer cannot be parallelised the way backend work can, so whatever slice of the nine engineers carries UI sets the ceiling for every customer-facing surface in V1. The split of the nine across backend, UI, and infra is not yet fixed and is owed by the Head of Engineering before the lock window closes. The sequence bends around the constraint rather than wishing it away regardless of where the split lands: non-load-bearing UI scaffolding runs early and in parallel, and customer-facing surfaces are staged so the UI surface area is never the thing that blocks a gate.</div>
+
+  <h3>The ramp window (1 July to 17 August)</h3>
+  <p>Two lanes run in parallel with defined scope, and no heavy PRD work happens in this window. The engineering lane locks integrations, ACL patterns, and hygiene (CI and CD, version-control policy, the monorepo), and drafts the rail HLDs on the domain-then-adapter-then-rail sequence. The PM lane runs competitive research and persona pressure-tests, which is what later sharpens the spec rewrite and the Blueprint refresh.</p>
+
+  <h2>The build sequence</h2>
+  <p>The order is dependency-driven, following the constitution's principle that sequencing is itself a design discipline: identity before intelligence, reconciliation before automation, survivability before elegance. Five stages, with the substrate gate (defined in &sect;3) sitting between the invisible core and anything a customer touches, and the migration-readiness gate sitting after go-live.</p>
+
+  <div class="stage">
+    <h3>Stage 0 &middot; Lock and scaffold (the ramp window)</h3>
+    <p>The lock-list (entity model, event-versus-not taxonomy, ACL contract shapes for FP, the payment gateway, KYC, the held-away reads, and the AA), plus the infra skeleton: cloud, CI and CD, secrets and KMS, observability scaffolding. Critically, every external onboarding clock starts here on day one (FP and Cybrilla, the Razorpay rail, the KYC vendor, and the AA FIU plus Sahamati certification), because those run on counterparties' calendars and do not compress with engineering speed. No feature code in this stage.</p>
+  </div>
+  <div class="stage">
+    <h3>Stage 1 &middot; Canonical core (invisible substrate)</h3>
+    <p>Entity model implementation; the domain event spine and the separate clickstream plane; the canonical double-entry bitemporal ledger; the FP anti-corruption adapter (KYC, orders, payments, reporting) against sandbox; identity, access, consent ledger, and PII vault; catalog ingestion of the FP scheme master; basic observability and reconciliation tooling. Nothing customer-facing exists yet.</p>
+  </div>
+  <div class="stage">
+    <h3>Stage 2 &middot; Prove the transaction path end-to-end, internally</h3>
+    <p>The saga layer for the full MF lifecycle (purchase, SIP, redemption, switch) through FP; payment and mandate flows; ledger postings reconciling against FP; the money-movement edge cases (payment-success-order-fail, late authorisation, mandate failure) with compensating actions. Internal users transact on the real substrate, not mocks. This stage culminates in the substrate gate.</p>
+  </div>
+  <div class="gate-rule">&bull;&nbsp;&nbsp;Internal substrate gate&nbsp;&nbsp;&bull;</div>
+  <div class="stage">
+    <h3>Stage 3 &middot; Experience layer (customer-facing, after the gate)</h3>
+    <p>Goal-led surfaces across web, iOS, Android with their BFFs; onboarding and KYC at the sub-five-minute happy-path bar; goals UX; goal-anchored discovery; portfolio review and the research-driven ideal-portfolio recommendation; the AA-powered financial picture; referral; MarTech instrumentation.</p>
+    <div class="note">Non-load-bearing scaffolding (design system, BFF skeletons, surface shells) can proceed in parallel with Stages 1 and 2 to keep the team productive. What the gate governs is <em>go-live</em>, and specifically the transaction-dependent flows, not whether anyone may touch UI code before it.</div>
+  </div>
+  <div class="stage">
+    <h3>Stage 4 &middot; Hardening and launch (March go-live)</h3>
+    <p>Load and resilience testing, DR and BCP drills, reconciliation at volume, SEBI and compliance review (suitability and the ranking-console governance), a limited-cohort soft launch, and NFR sign-off. Go-live is planned for March, net-new only.</p>
+  </div>
+  <div class="gate-rule">&bull;&nbsp;&nbsp;Migration-readiness gate&nbsp;&nbsp;&bull;</div>
+  <div class="stage">
+    <h3>Stage 5 &middot; Migrate the existing book (post-tooling, outside V1)</h3>
+    <p>The existing book migrates at a throttled 1,000 to 2,000 investors a day, across roughly six months against the ~200k base. This stage sits outside V1 in both build and execution: the tooling and the translation layer are built in V1.5 and the migration itself runs inside V2. Migration opens once the tooling is built and proven on a pilot slice with reconciliation passing and rollback exercised, not on a date. The throttle is what keeps the reconciliation and idempotency load survivable at volume, and clean-streak resets mean not every day advances the count, which is why the six months carries buffer.</p>
+  </div>
+
+  <h2>Timeline reality</h2>
+  <div class="caveat"><strong>The timeline is conditional, and anchored to a March go-live.</strong> Account for new-team ramp (months one and two below steady-state). The binding constraint is the external critical path: FP and Cybrilla onboarding, the Razorpay rail, the KYC vendor cycle, and the AA FIU and Sahamati certification. These run on counterparties' clocks and do not compress with engineering speed. FP's choice meaningfully compresses the MF integration path, which is why it helps the timeline.</div>
+  <div class="caveat"><strong>AA certification assumption, flagged to Compliance.</strong> This plan assumes Sahamati FIU certification completes in time for the March go-live; per the register's D34 record, registration is in progress and expected to complete in July 2026, tracked with Compliance. The explicit confirmation is still owed by the Compliance officer, on two points: first, that certification will land before March; and second, whether the reciprocity principle (an FIU joining also as an FIP where it holds the data) binds the firm as a SEBI broker and MFD FIU, or is the recommended-not-mandatory version. If certification slips, the AA-powered financial picture is the cleanly-cuttable element, since it sits off the money path behind the ACL; it becomes a fast-follow rather than a launch blocker, and the CAS and MF Central reads still carry a held-away view in the interim.</div>
+
+  <h1 id="s10"><span class="num">10</span>Consolidated risks and caveats</h1>
+  <ol>
+    <li><strong>FP as system-of-record drift.</strong> If FP's data model leaks into the domain, V1.5 multi-asset becomes a forklift. Mitigation: strict ACL, own canonical ledger projection.</li>
+    <li><strong>FP webhooks are beta.</strong> Polling-based status sync today; design ingestion to swap to push later without domain change.</li>
+    <li><strong>Single-AA coverage.</strong> One AA cannot reach every FIP, and the coverage hole differs per customer. Mitigation: a vendor-neutral AA adapter now, and the V1.5 multi-AA gateway. The blast radius is contained because the financial picture sits off the money path.</li>
+    <li><strong>Sahamati FIU certification timing.</strong> Assumed to land for the March go-live; explicit Compliance confirmation pending. If it slips, the financial picture fast-follows rather than blocking launch.</li>
+    <li><strong>Reciprocity obligation.</strong> Confirm with Compliance whether the FIP-first principle binds a SEBI broker and MFD FIU, or is recommended only.</li>
+    <li><strong>New-team ramp on a tight clock.</strong> Front-load the lock-list; hold the substrate gate.</li>
+    <li><strong>Experience-layer throughput.</strong> Two UI developers cap the customer-facing build; sequence the surfaces so that ceiling never gates a release, and keep non-load-bearing UI scaffolding running in parallel from early.</li>
+    <li><strong>SEBI mis-selling exposure</strong> concentrated in the FI Strategy back-test, the 25-year projection, and the switch nudge. Govern with suitability constraints from day one.</li>
+    <li><strong>Migration at volume.</strong> The 1,000-to-2,000-a-day book migration carries reconciliation and idempotency load. Mitigation: the migration-readiness gate and the throttle.</li>
+    <li><strong>DPDP and data residency.</strong> Confirm FP and AA posture; own the consent ledger and PII vault regardless.</li>
+  </ol>
+
+  <h1 id="s11"><span class="num">11</span>Open decisions, and where they live</h1>
+  <p>Open decisions are tracked in the Open Decisions Register (v0.17), not duplicated here, so the two cannot drift. After the July 2026 closure pass the register stands at forty settled, four open (D17, D28, D47, D48), and five deferred. The journey-level and product-level calls (the D5 to D49 range) live in the Register and the journeys. What sits at build-strategy altitude, and is therefore worth surfacing in this document, is short:</p>
+  <ul>
+    <li><strong>AA certification and reciprocity</strong> (Compliance): the two-part question in &sect;9.</li>
+    <li><strong>The V1.5 multi-AA gateway provider</strong> (Finarkein, Setu, or staying single-AA): pending a FIP-coverage and pricing assessment; reversible behind the ACL, so it does not gate V1.</li>
+    <li><strong>FP data residency, SLAs, egress, portability, and pricing</strong>: confirmation owed, and the pricing drives the eventual direct-rails economics.</li>
+    <li><strong>Whether the financial picture is a must-be-world-class launch surface</strong>: if yes, the multi-AA gateway is pulled into V1; if it is a value-add, it stays a V1.5 upgrade.</li>
+  </ul>
+
+  <h1 id="s12"><span class="num">12</span>What follows V1</h1>
+  <ul>
+    <li><strong>V1.5:</strong> the BSE StAR MF direct rail; the multi-AA gateway over the single-AA integration; fixed deposits as a transactable instrument; NPS as a transactable instrument; bonds and OBPP.</li>
+    <li><strong>V2:</strong> PMS and AIF; the RM and IFA workstation and the new CRM surface; residency-change servicing (D47); heir-claim and contested-claim servicing depth (D48); voice intelligence (transcribe, summarise); microbatch reconciliation; the capital-gains statement and cost-basis lot accounting; the Tier 3 Private Wealth calm experience.</li>
+    <li><strong>Post-V1:</strong> the intelligence and recommendation engine; agentic surfaces; richer experience builds and an added UI hire; direct equities and ETFs; HUF and the entity personas (Private Wealth); the new transaction execution core replacing FP; progressive cohort migration to completion; legacy retirement.</li>
+  </ul>
+
+  <div class="note" style="margin-top:34px;">
+    <strong>Document control.</strong> v2.3, August 2026. Two corrections. First, migration sequencing: the migration tooling and the translation layer move out of V1 and into V1.5, and the book migration itself runs in V2, aligning this document with the Build Roadmap v0.3 and the Blueprint Detailed v1.1, which both already carried the V1.5 position. V1 now owes migration only a stable target schema and a clean ACL seam. Consequently the migration-open trigger is restated everywhere as once the tooling is built and proven on a pilot slice, rather than as a month or as a post-launch stability interval; on the current sequence that lands after V1.5, most likely July 2027, but the dependency is the tooling. Migration duration is stated as roughly six months against the ~200k base. Second, the team is restated to fifteen: Head of Engineering, Head of Product, two PMs, one designer, nine engineers, and the Head of New Platform. The two-UI-dev ceiling is reframed as an open allocation of the nine engineers, owed by the Head of Engineering before the lock window closes. The v2.2 changelog follows. v2.2, July 2026. Pointer and status refresh against the Open Decisions Register v0.17: the register pointer moves from v0.15 to v0.17 with the closure-pass counts recorded in &sect;11; the J13 financial-picture description in &sect;2 moves from the indicative-tax draft to the closed D49 gross-only ruling; the &sect;9 Sahamati caveat carries the D34 record (registration in progress, expected complete July 2026); and the Map catch-up note below is corrected, since the Map v2 already carries the multi-AA gateway and NPS-as-instrument in its V1.5 band, and the Map v2.1 marks residency change and heir claim in its Servicing block as open scope rulings (D47, D48) rather than settled V1 inclusions, matching the open register status this document defers to. v2.1, June 2026. Reconciles v2.0 against the Big-Block Map (v2): the "Ideal Portfolio recommendation" framing is retired and split into a Goal allocation guidance block (MFD-incidental, Compliance-gated, the bridge from goal to instrument) and a deterministic Portfolio dissection block (states, never judges); direct equity and ETFs move to Post-V1 and the legacy-equity V1 exception is dropped, with held-away equity retained as a CAS read; the ledger is reframed as a reconciliation projection of RTA truth rather than the system of record, with batch reconciliation in V1 and microbatch deferred; a Servicing and account-lifecycle block is added to V1 scope (re-KYC, attaining majority, nomination, transmission); the two-UI-dev throughput ceiling is named as the hardest sequencing constraint, with the team broken to roughly 9 backend, 2 UI, and 3 PMs; the deferred buckets are aligned to the Map's V1.5, V2, and Post-V1 taxonomy with the Map's items folded in; and Flutter, the legacy-CRM ingestion, the auto-created default goal, the what-if calculator, and the Foreign National pending-confirmation note are added. Of the four Map catch-ups this session parked, two (the multi-AA gateway and NPS-as-instrument into the deferred set) are present in the Map v2 as shipped, and the remaining two (residency change and heir claim) are handled at Map v2.1 by marking them open scope rulings, D47 and D48, in the Servicing block rather than settled V1 inclusions, since both remain open in the register. v2.0, June 2026, was a full rewrite of the pre-team v1 build strategy, reconciled against the five entity references, the thirteen journeys (J1 to J13), and the Open Decisions Register (v0.15). Principal changes from v1: Account Aggregator moved into V1 (the specs had deferred it) via an FIU behind a vendor-neutral adapter, with Sahamati certification assumed by the March go-live and flagged to Compliance; fixed deposits as a transactable instrument moved to V1.5, surviving in V1 only as an AA data category; the money path fixed to FP and Cybrilla plus Razorpay, with Cashfree dropped; persona scope bounded to natural persons per D41; the customer-migration capability added (net-new at launch, book migration post-stability at 1,000 to 2,000 a day) under a new migration-readiness gate; the substrate section re-pitched to principle altitude because Spec 1 and Spec 2 are in rewrite and not load-bearing here; the MFD-not-RIA constraint written into the experience layer; the open-decisions section converted to a pointer to the Register to prevent drift; and team and timeline updated to the roughly 15-person team, the July and August ramp, and the March go-live. Spec 1, Spec 2, the Strategic Blueprint, and the Architecture Companion are reconciled separately; this document does not rest on them.
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Order Flow O2: Execution, Pricing and Settlement</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Code+Pro:wght@400;600&display=swap');
+:root{
+  --cream:#faf6ec;--paper:#fffdf8;--ink:#26222e;--muted:#6f6878;--soft-muted:#8a8494;
+  --accent:#6a4a9c;--accent-dark:#473073;--accent-soft:#efe9f7;
+  --line:#e6ddcd;--line-strong:#c9bda4;--amber:#9a6a16;--amber-soft:#fbf2dd;
+  --teal:#1f6f6a;--teal-soft:#e3f0ee;--red:#9d2f2f;--red-soft:#f8e7e3;--code:#5a4730;
+}
+*{box-sizing:border-box;}
+html{font-size:16px;}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:'Source Sans 3',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.62;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1240px;margin:0 auto;padding:64px 52px 96px;background:var(--paper);}
+.cover{border-bottom:3px solid var(--accent);padding-bottom:34px;margin-bottom:14px;}
+.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 14px;}
+h1.title{font-size:2.35rem;line-height:1.1;font-weight:700;margin:0 0 10px;color:var(--accent-dark);letter-spacing:-.01em;}
+.subtitle{font-size:1.1rem;color:var(--muted);margin:0 0 26px;}
+.meta-grid{display:flex;flex-wrap:wrap;gap:26px 46px;font-size:.86rem;color:var(--muted);}
+.meta-grid b{display:block;color:var(--ink);font-weight:600;font-size:.95rem;margin-top:2px;}
+.meta-grid .label{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft-muted);font-weight:700;}
+h2{font-size:1.5rem;font-weight:700;color:var(--accent-dark);margin:50px 0 6px;letter-spacing:-.01em;}
+p{margin:12px 0;}
+strong{font-weight:700;color:var(--ink);}
+.callout{border-radius:8px;padding:16px 20px 16px 22px;margin:20px 0;border-left:4px solid var(--accent);background:var(--accent-soft);}
+.callout .ck{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--accent-dark);margin:0 0 6px;}
+.callout p{margin:6px 0;}
+.callout.verify{border-left-color:var(--amber);background:var(--amber-soft);}
+.callout.verify .ck{color:var(--amber);}
+.callout.principle{border-left-color:var(--teal);background:var(--teal-soft);}
+.callout.principle .ck{color:var(--teal);}
+.callout.flag{border-left-color:var(--red);background:var(--red-soft);}
+.callout.flag .ck{color:var(--red);}
+.legend{display:flex;flex-wrap:wrap;gap:14px 28px;margin:18px 0;padding:20px 24px;background:var(--cream);border:1px solid var(--line);border-radius:9px;font-size:.88rem;}
+.legend .item{display:flex;align-items:center;gap:10px;}
+.sw{width:28px;height:19px;border-radius:4px;flex-shrink:0;display:inline-block;}
+.sw.dia{width:20px;height:20px;transform:rotate(45deg);border-radius:3px;}
+.sw.oval{border-radius:10px;}
+.sw.cir{width:21px;height:21px;border-radius:50%;}
+.sw.ln{height:0;border-top:3px solid;width:30px;border-radius:0;}
+.frame{margin:26px 0;border:1px solid var(--line);border-radius:10px;background:var(--paper);overflow-x:auto;padding:18px;}
+.frame svg{display:block;min-width:1900px;width:100%;height:auto;}
+.hint{font-size:.84rem;color:var(--soft-muted);font-style:italic;margin-top:-8px;}
+ul.tight{margin:10px 0;padding-left:22px;}
+ul.tight li{margin:7px 0;}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;}
+th,td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;}
+thead th{background:var(--accent-dark);color:#fff;font-weight:600;font-size:.82rem;border-bottom:none;}
+thead th:first-child{border-top-left-radius:6px;}
+thead th:last-child{border-top-right-radius:6px;}
+tbody tr:nth-child(even){background:var(--cream);}
+.footer{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:.82rem;color:var(--soft-muted);}
+@media print{@page{size:A3 landscape;margin:12mm;} body{background:#fff;} .wrap{max-width:none;padding:0;} .frame{page-break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="cover">
+  <p class="eyebrow">Wealth Platform &middot; Order Layer &middot; Granular Companion to the Order Reference and J6</p>
+  <h1 class="title">Order Flow O2: Execution, Pricing and Settlement</h1>
+  <p class="subtitle">From routing to settled: why the applicable NAV cannot be known at placement, and the window where units look real before the money is certain.</p>
+  <div class="meta-grid">
+    <div><span class="label">Status</span><b>v0.1 &middot; drawn on the series standard</b></div>
+    <div><span class="label">Date</span><b>August 2026</b></div>
+    <div><span class="label">Audience</span><b>Engineering &amp; Product</b></div>
+    <div><span class="label">Type</span><b>Granular flow diagram, hand-authored SVG</b></div>
+    <div><span class="label">Register</span><b>Open Decisions Register v0.17</b></div>
+    <div><span class="label">Sits under</span><b>J6 &middot; granular flow tier</b></div>
+  </div>
+</header>
+
+
+<div class="callout">
+  <p class="ck">What this is</p>
+  <p>The part the firm watches rather than controls. Once an order is routed, every state that follows is learned from a feed. The diagram is built around two facts that are counter-intuitive and that most order defects trace back to: <strong>the price is not set when the investor taps confirm</strong>, and <strong>a purchase is not final when units appear</strong>.</p>
+  <p class="ck" style="margin-top:14px;">Why the states are named rather than inferred</p>
+  <p>Placed, RoutedToRail, Acknowledged, Allotted, Settled exist as explicit states precisely so the platform can answer "where is my money" correctly at any moment. Inferring them from timestamps is how that answer becomes wrong.</p>
+</div>
+
+
+<h2>Drawing standard</h2>
+<p>Fixed across the series. Five of these are checked when the diagram is built, and the file is not written if any check fails.</p>
+<ul class="tight">
+  <li><strong>Orthogonal only.</strong> Every connector segment is exactly horizontal or vertical. No diagonals. <em>Checked.</em></li>
+  <li><strong>Turns at the midpoint.</strong> Where a connector needs two turns, the crossing run sits at the exact midpoint of the span, so both legs are equal.</li>
+  <li><strong>Edge attachment, separated.</strong> Connectors leave and enter only on a shape's edge, never at a corner and never inside it. Where several arrows meet the same shape they attach at different points along that edge rather than stacking on the midpoint, so each stays traceable. On a decision diamond that means a point along the relevant slanted face.</li>
+  <li><strong>No connector crosses a shape.</strong> <em>Checked.</em></li>
+  <li><strong>Every arrowhead lands on a shape outline.</strong> Never in empty space. This matters most on a decision diamond, whose bounding box is not its outline, so a point that looks like the top edge floats clear of the shape. <em>Checked.</em></li>
+  <li><strong>No two arrowheads coincide.</strong> Same-colour heads must also stand clear of each other. <em>Checked.</em></li>
+  <li><strong>Phase bands occupy clear strips.</strong> A band is placed only in a horizontal strip containing no shape at all, so a band label can never collide with a box. Placement is computed, not eyeballed. <em>Checked.</em></li>
+  <li><strong>Colour carries meaning.</strong> Purple is the main path, amber is remediation, red is a blocking failure, teal is a shortcut or handoff.</li>
+  <li><strong>Room over compactness.</strong> Height is unconstrained, so type stays large and nothing is crowded.</li>
+</ul>
+
+<h2>Reading the diagram</h2>
+<div class="legend">
+  <div class="item"><span class="sw oval" style="background:#473073;"></span>Terminal, start or end state</div>
+  <div class="item"><span class="sw" style="background:#fffdf8;border:2px solid #c9bda4;"></span>Process or capture step</div>
+  <div class="item"><span class="sw dia" style="background:#efe9f7;border:2px solid #6a4a9c;"></span>Decision</div>
+  <div class="item"><span class="sw" style="background:#fbf2dd;border-left:5px solid #9a6a16;"></span>Special attention, recoverable</div>
+  <div class="item"><span class="sw" style="background:#f8e7e3;border-left:5px solid #9d2f2f;"></span>Blocked or rejected</div>
+  <div class="item"><span class="sw" style="background:#e3f0ee;border-left:5px solid #1f6f6a;"></span>Handoff to another journey</div>
+  <div class="item"><span class="sw cir" style="background:#efe9f7;border:2px solid #6a4a9c;"></span>Page connector</div>
+  <div class="item"><span class="sw ln" style="border-color:#6a4a9c;"></span>Main path</div>
+  <div class="item"><span class="sw ln" style="border-color:#9a6a16;"></span>Remediation</div>
+  <div class="item"><span class="sw ln" style="border-color:#9d2f2f;"></span>Blocking failure</div>
+  <div class="item"><span class="sw ln" style="border-color:#1f6f6a;"></span>Shortcut or handoff</div>
+</div>
+<p class="hint">Numbered badges are discussion reference points, not state identifiers.</p>
+
+
+<h2>The flow</h2>
+<div class="frame">
+<svg viewBox="0 0 2900 5900" xmlns="http://www.w3.org/2000/svg" font-family="'Source Sans 3',sans-serif">
+<defs>
+<marker id="ah-accent" markerWidth="11" markerHeight="11" refX="8.5" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#6a4a9c"/></marker>
+<marker id="ah-amber" markerWidth="11" markerHeight="11" refX="8.5" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#9a6a16"/></marker>
+<marker id="ah-red" markerWidth="11" markerHeight="11" refX="8.5" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#9d2f2f"/></marker>
+<marker id="ah-teal" markerWidth="11" markerHeight="11" refX="8.5" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#1f6f6a"/></marker>
+<marker id="ah-blue" markerWidth="11" markerHeight="11" refX="8.5" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#2a5c8a"/></marker>
+</defs>
+<rect width="2900" height="5900" fill="#fffdf8"/>
+<rect x="34" y="87.0" width="2832" height="46" rx="8" fill="#efe9f7" opacity="0.5"/>
+<text x="58" y="116.0" font-size="15" font-weight="700" letter-spacing="1.8" fill="#473073">STAGE 1 · ROUTING & THE MONEY LEG</text>
+<rect x="34" y="1715.0" width="2832" height="46" rx="8" fill="#efe9f7" opacity="0.5"/>
+<text x="58" y="1744.0" font-size="15" font-weight="700" letter-spacing="1.8" fill="#473073">STAGE 2 · CUT-OFF, REALISATION & THE APPLICABLE NAV</text>
+<rect x="34" y="3650.0" width="2832" height="46" rx="8" fill="#efe9f7" opacity="0.5"/>
+<text x="58" y="3679.0" font-size="15" font-weight="700" letter-spacing="1.8" fill="#473073">STAGE 3 · ALLOTMENT & THE DANGEROUS WINDOW</text>
+<rect x="34" y="4677.0" width="2832" height="46" rx="8" fill="#efe9f7" opacity="0.5"/>
+<text x="58" y="4706.0" font-size="15" font-weight="700" letter-spacing="1.8" fill="#473073">STAGE 4 · SETTLEMENT & RECONCILIATION</text>
+<polyline points="1450.0,240.0 1450.0,375.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="1450.0,545.0 1450.0,680.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="950.0,730.0 780.0,730.0" fill="none" stroke="#1f6f6a" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-teal)"/>
+<polyline points="1790.0,1010.0 1820.0,1010.0" fill="none" stroke="#9d2f2f" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-red)"/>
+<polyline points="1450.0,780.0 1450.0,915.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="1790.0,1320.0 1820.0,1320.0" fill="none" stroke="#9d2f2f" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-red)"/>
+<polyline points="1450.0,1105.0 1450.0,1225.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="1450.0,1415.0 1450.0,1535.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="1450.0,1645.0 1450.0,1780.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="1040.0,1880.0 1000.0,1880.0 1000.0,2100.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="1000.0,2300.0 1000.0,2455.0" fill="none" stroke="#1f6f6a" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-teal)"/>
+<polyline points="810.0,2612.5 810.0,2720.0 400.0,2720.0 400.0,2775.0" fill="none" stroke="#9a6a16" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-amber)"/>
+<polyline points="1860.0,1880.0 2100.0,1880.0 2100.0,2100.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="2100.0,2300.0 2100.0,2460.0" fill="none" stroke="#1f6f6a" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-teal)"/>
+<polyline points="1000.0,2665.0 1000.0,3130.0 1187.5,3130.0 1187.5,3185.0" fill="none" stroke="#9a6a16" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-amber)"/>
+<polyline points="2100.0,2660.0 2100.0,3130.0 1712.5,3130.0 1712.5,3185.0" fill="none" stroke="#1f6f6a" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-teal)"/>
+<polyline points="1450.0,3335.0 1450.0,3480.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="1450.0,3600.0 1450.0,3740.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="1780.0,3840.0 1820.0,3840.0" fill="none" stroke="#9d2f2f" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-red)"/>
+<polyline points="1450.0,3940.0 1450.0,4080.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="1040.0,4180.0 880.0,4180.0 880.0,4425.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="1860.0,4180.0 2020.0,4180.0 2020.0,4425.0" fill="none" stroke="#6a4a9c" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-accent)"/>
+<polyline points="880.0,4615.0 880.0,4690.0 1152.5,4690.0 1152.5,4765.0" fill="none" stroke="#1f6f6a" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-teal)"/>
+<polyline points="2020.0,4615.0 2020.0,4690.0 1747.5,4690.0 1747.5,4765.0" fill="none" stroke="#1f6f6a" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-teal)"/>
+<polyline points="1450.0,4955.0 1450.0,5060.0" fill="none" stroke="#1f6f6a" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-teal)"/>
+<polyline points="1780.0,5160.0 1820.0,5160.0" fill="none" stroke="#9a6a16" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-amber)"/>
+<polyline points="1450.0,5260.0 1450.0,5410.0" fill="none" stroke="#1f6f6a" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-teal)"/>
+<polyline points="1450.0,5490.0 1450.0,5567.5 650.0,5567.5 650.0,5645.0" fill="none" stroke="#1f6f6a" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-teal)"/>
+<polyline points="1450.0,5490.0 1450.0,5567.5 2250.0,5567.5 2250.0,5645.0" fill="none" stroke="#1f6f6a" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-teal)"/>
+<polyline points="2460.0,1010.0 2620.0,1010.0" fill="none" stroke="#9d2f2f" stroke-width="2.4" stroke-linejoin="round"/>
+<polyline points="2460.0,1320.0 2620.0,1320.0" fill="none" stroke="#9d2f2f" stroke-width="2.4" stroke-linejoin="round"/>
+<polyline points="2500.0,3840.0 2620.0,3840.0" fill="none" stroke="#9d2f2f" stroke-width="2.4" stroke-linejoin="round"/>
+<polyline points="2460.0,5160.0 2620.0,5160.0" fill="none" stroke="#9a6a16" stroke-width="2.4" stroke-linejoin="round"/>
+<polyline points="2620.0,1010.0 2620.0,5418.0" fill="none" stroke="#9d2f2f" stroke-width="2.4" stroke-linejoin="round" marker-end="url(#ah-red)"/>
+<rect x="900.0" y="160.0" width="1100" height="80" rx="40.0" fill="#473073" stroke="#473073" stroke-width="2"/>
+<text x="1450.0" y="205.6" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">Placed · a valid order handed to execution</text>
+<rect x="700.0" y="375.0" width="1500" height="170" rx="8" fill="#fffdf8" stroke="#c9bda4" stroke-width="2"/>
+<text x="1450.0" y="437.6" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">Hand the order to the execution rail, and initiate the money leg where there is one</text>
+<text x="1450.0" y="455.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">Fintech Primitives carries V1; BSE StAR MF joins at V1.5, and the two rails do not behave identically.</text>
+<text x="1450.0" y="473.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">Money never rests with the firm. It moves directly between the investor's bank and the AMC, which is</text>
+<text x="1450.0" y="491.9" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">why the firm initiates and tracks the instruction but is not the system of record for the money.</text>
+<circle cx="698.0" cy="373.0" r="17" fill="#473073"/>
+<text x="698.0" y="377.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">1</text>
+<rect x="950.0" y="680.0" width="1000" height="100" rx="8" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2"/>
+<text x="1450.0" y="735.2" text-anchor="middle" font-size="15" font-weight="700" fill="#26222e">RoutedToRail · the order is in an external party's hands</text>
+<rect x="160.0" y="650.0" width="620" height="160" rx="8" fill="#e3f0ee" stroke="#1f6f6a" stroke-width="2"/>
+<rect x="160.0" y="650.0" width="7" height="160" rx="3" fill="#1f6f6a"/>
+<text x="474.0" y="698.5" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">From here the firm is waiting, not acting.</text>
+<text x="474.0" y="716.6" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">Every state that follows is learned from a</text>
+<text x="474.0" y="734.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">feed, not decided internally, which is why</text>
+<text x="474.0" y="752.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">they are named states rather than inferred</text>
+<text x="474.0" y="770.9" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">from timestamps.</text>
+<polygon points="1450,915.0 1790.0,1010 1450,1105.0 1110.0,1010" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2.2"/>
+<text x="1450.0" y="1005.4" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Did the money leg</text>
+<text x="1450.0" y="1024.8" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">succeed?</text>
+<circle cx="1108.0" cy="913.0" r="17" fill="#473073"/>
+<text x="1108.0" y="917.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">2</text>
+<rect x="1820.0" y="920.0" width="640" height="180" rx="8" fill="#f8e7e3" stroke="#9d2f2f" stroke-width="2"/>
+<rect x="1820.0" y="920.0" width="7" height="180" rx="3" fill="#9d2f2f"/>
+<text x="2144.0" y="978.5" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">Insufficient funds, an inactive or exceeded mandate,</text>
+<text x="2144.0" y="996.6" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">a bank decline. No units exist and no proceeds have</text>
+<text x="2144.0" y="1014.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">been paid, so any money that moved is returned and</text>
+<text x="2144.0" y="1032.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">the order fails cleanly. A redemption has no incoming</text>
+<text x="2144.0" y="1050.9" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">money leg and skips this gate entirely.</text>
+<polygon points="1450,1225.0 1790.0,1320 1450,1415.0 1110.0,1320" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2.2"/>
+<text x="1450.0" y="1315.4" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Did the rail accept and</text>
+<text x="1450.0" y="1334.8" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">time-stamp the order?</text>
+<circle cx="1108.0" cy="1223.0" r="17" fill="#473073"/>
+<text x="1108.0" y="1227.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">3</text>
+<rect x="1820.0" y="1245.0" width="640" height="150" rx="8" fill="#f8e7e3" stroke="#9d2f2f" stroke-width="2"/>
+<rect x="1820.0" y="1245.0" width="7" height="150" rx="3" fill="#9d2f2f"/>
+<text x="2144.0" y="1306.6" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">A rail may reject on receipt for a malformed or not-in-</text>
+<text x="2144.0" y="1324.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">good-order instruction. This is still a clean failure:</text>
+<text x="2144.0" y="1342.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">nothing has been registered with the RTA.</text>
+<rect x="850.0" y="1535.0" width="1200" height="110" rx="8" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2"/>
+<text x="1450.0" y="1595.2" text-anchor="middle" font-size="15" font-weight="700" fill="#26222e">Acknowledged · the order is registered with the RTA and time-stamped</text>
+<polygon points="1450,1780.0 1860.0,1880 1450,1980.0 1040.0,1880" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2.2"/>
+<text x="1450.0" y="1875.2" text-anchor="middle" font-size="15" font-weight="700" fill="#473073">Is this a purchase or</text>
+<text x="1450.0" y="1895.3" text-anchor="middle" font-size="15" font-weight="700" fill="#473073">a redemption?</text>
+<circle cx="1038.0" cy="1778.0" r="17" fill="#473073"/>
+<text x="1038.0" y="1782.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">4</text>
+<rect x="590.0" y="2100.0" width="820" height="200" rx="8" fill="#e3f0ee" stroke="#1f6f6a" stroke-width="2"/>
+<text x="1000.0" y="2159.5" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">Read the cut-off parameters</text>
+<text x="1000.0" y="2177.6" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">Fetched fresh from the RTA daily and held as</text>
+<text x="1000.0" y="2195.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">parameters, never hard-coded, so a regulatory</text>
+<text x="1000.0" y="2213.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">change is a data update rather than a release.</text>
+<text x="1000.0" y="2231.9" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">Liquid and overnight funds carry an earlier</text>
+<text x="1000.0" y="2249.9" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">purchase cut-off than everything else.</text>
+<circle cx="588.0" cy="2098.0" r="17" fill="#473073"/>
+<text x="588.0" y="2102.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">5</text>
+<polygon points="1000,2455.0 1380.0,2560 1000,2665.0 620.0,2560" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2.2"/>
+<text x="1000.0" y="2555.5" text-anchor="middle" font-size="14" font-weight="700" fill="#473073">On which day were the funds</text>
+<text x="1000.0" y="2574.3" text-anchor="middle" font-size="14" font-weight="700" fill="#473073">realised and available to the AMC?</text>
+<circle cx="618.0" cy="2453.0" r="17" fill="#473073"/>
+<text x="618.0" y="2457.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">6</text>
+<rect x="50.0" y="2775.0" width="700" height="250" rx="8" fill="#fbf2dd" stroke="#9a6a16" stroke-width="2"/>
+<rect x="50.0" y="2775.0" width="7" height="250" rx="3" fill="#9a6a16"/>
+<text x="404.0" y="2834.9" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">The realisation rule, in full. The applicable NAV is</text>
+<text x="404.0" y="2852.3" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">the NAV of the day the money reached the fund,</text>
+<text x="404.0" y="2869.7" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">regardless of when the order was placed or how large</text>
+<text x="404.0" y="2887.1" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">it was. The click commits the intent; the money</text>
+<text x="404.0" y="2904.6" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">landing fixes the price. An older rule applying this</text>
+<text x="404.0" y="2922.0" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">only above two lakh was retired in early 2021, so any</text>
+<text x="404.0" y="2939.4" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">assumption that small purchases price on the time-</text>
+<text x="404.0" y="2956.8" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">stamp day is stale and will misprice. The rail's speed</text>
+<text x="404.0" y="2974.2" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">is therefore a pricing input, not a convenience.</text>
+<polygon points="2100,2100.0 2460.0,2200 2100,2300.0 1740.0,2200" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2.2"/>
+<text x="2100.0" y="2195.5" text-anchor="middle" font-size="14" font-weight="700" fill="#473073">Was it registered before the</text>
+<text x="2100.0" y="2214.3" text-anchor="middle" font-size="14" font-weight="700" fill="#473073">redemption cut-off?</text>
+<circle cx="1738.0" cy="2098.0" r="17" fill="#473073"/>
+<text x="1738.0" y="2102.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">7</text>
+<rect x="1750.0" y="2460.0" width="700" height="200" rx="8" fill="#e3f0ee" stroke="#1f6f6a" stroke-width="2"/>
+<rect x="1750.0" y="2460.0" width="7" height="200" rx="3" fill="#1f6f6a"/>
+<text x="2104.0" y="2528.5" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">A redemption takes the same day's NAV if registered</text>
+<text x="2104.0" y="2546.6" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">before the cut-off, and there is no realisation</text>
+<text x="2104.0" y="2564.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">dependency because no incoming money has to clear.</text>
+<text x="2104.0" y="2582.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">The complication on this side is settlement timing,</text>
+<text x="2104.0" y="2600.9" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">not pricing.</text>
+<rect x="700.0" y="3185.0" width="1500" height="150" rx="8" fill="#fffdf8" stroke="#c9bda4" stroke-width="2"/>
+<text x="1450.0" y="3246.1" text-anchor="middle" font-size="14" font-weight="400" fill="#26222e">The applicable NAV becomes determinable</text>
+<text x="1450.0" y="3264.9" text-anchor="middle" font-size="14" font-weight="400" fill="#26222e">Not at Placed, and that is precisely why Placed and Acknowledged are separate states.</text>
+<text x="1450.0" y="3283.7" text-anchor="middle" font-size="14" font-weight="400" fill="#26222e">For a purchase it needs acknowledgement and confirmed realisation together.</text>
+<circle cx="698.0" cy="3183.0" r="17" fill="#473073"/>
+<text x="698.0" y="3187.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">8</text>
+<rect x="800.0" y="3480.0" width="1300" height="120" rx="8" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2"/>
+<text x="1450.0" y="3545.1" text-anchor="middle" font-size="14.5" font-weight="700" fill="#26222e">Allotted · the AMC has struck the NAV and the RTA has allotted units or computed the payout</text>
+<polygon points="1450,3740.0 1780.0,3840 1450,3940.0 1120.0,3840" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2.2"/>
+<text x="1450.0" y="3835.4" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Purchase: is the payment</text>
+<text x="1450.0" y="3854.8" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">confirmed realised?</text>
+<circle cx="1118.0" cy="3738.0" r="17" fill="#473073"/>
+<text x="1118.0" y="3742.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">9</text>
+<rect x="1820.0" y="3715.0" width="680" height="250" rx="8" fill="#f8e7e3" stroke="#9d2f2f" stroke-width="2"/>
+<rect x="1820.0" y="3715.0" width="7" height="250" rx="3" fill="#9d2f2f"/>
+<text x="2164.0" y="3783.6" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">The most dangerous window in the lifecycle. Units</text>
+<text x="2164.0" y="3801.0" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">appear to exist, the investor may see a holding, and</text>
+<text x="2164.0" y="3818.4" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">the money is not yet certain. A confirmed holding is</text>
+<text x="2164.0" y="3835.8" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">shown only once the payment is confirmed cleared:</text>
+<text x="2164.0" y="3853.3" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">a purchase is final only when allotment and payment</text>
+<text x="2164.0" y="3870.7" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">agree. Whether a provisional allotment is surfaced at</text>
+<text x="2164.0" y="3888.1" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">all, as a clearly marked in-progress state, is decided</text>
+<text x="2164.0" y="3905.5" text-anchor="middle" font-size="13" font-weight="400" fill="#26222e">at Folio PRD time and is not settled here.</text>
+<polygon points="1450,4080.0 1860.0,4180 1450,4280.0 1040.0,4180" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2.2"/>
+<text x="1450.0" y="4185.2" text-anchor="middle" font-size="15" font-weight="700" fill="#473073">Which settlement applies?</text>
+<circle cx="1038.0" cy="4078.0" r="17" fill="#473073"/>
+<text x="1038.0" y="4082.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">10</text>
+<rect x="500.0" y="4425.0" width="760" height="190" rx="8" fill="#fffdf8" stroke="#c9bda4" stroke-width="2"/>
+<text x="880.0" y="4488.5" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">Purchase settlement</text>
+<text x="880.0" y="4506.6" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">There is no separate payout. Settlement is</text>
+<text x="880.0" y="4524.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">the allotment becoming final and reconciled:</text>
+<text x="880.0" y="4542.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">units on the register and payment confirmed</text>
+<text x="880.0" y="4560.9" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">realised, the two having to agree.</text>
+<circle cx="498.0" cy="4423.0" r="17" fill="#473073"/>
+<text x="498.0" y="4427.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">10a</text>
+<rect x="1640.0" y="4425.0" width="760" height="190" rx="8" fill="#fffdf8" stroke="#c9bda4" stroke-width="2"/>
+<text x="2020.0" y="4488.5" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">Redemption settlement</text>
+<text x="2020.0" y="4506.6" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">Proceeds reach the registered bank account on</text>
+<text x="2020.0" y="4524.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">a scheme-dependent cycle counted from the day</text>
+<text x="2020.0" y="4542.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">of the applicable NAV. The cycles are operational</text>
+<text x="2020.0" y="4560.9" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">parameters to confirm, not numbers to hard-code.</text>
+<circle cx="1638.0" cy="4423.0" r="17" fill="#473073"/>
+<text x="1638.0" y="4427.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">10b</text>
+<rect x="600.0" y="4765.0" width="1700" height="190" rx="8" fill="#e3f0ee" stroke="#1f6f6a" stroke-width="2"/>
+<text x="1450.0" y="4837.6" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">Reconcile the firm's projection against the RTA mailback feed</text>
+<text x="1450.0" y="4855.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">Holdings and reconciliation arrive separately from the transaction rail, through daily mailback files.</text>
+<text x="1450.0" y="4873.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">The two flows are distinct and the firm needs both: one to transact, one to know what is true.</text>
+<text x="1450.0" y="4891.9" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">The firm's ledger is a reconciliation projection of the RTA's register, never a replacement for it.</text>
+<circle cx="598.0" cy="4763.0" r="17" fill="#473073"/>
+<text x="598.0" y="4767.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">11</text>
+<polygon points="1450,5060.0 1780.0,5160 1450,5260.0 1120.0,5160" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2.2"/>
+<text x="1450.0" y="5155.4" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">Does the projection</text>
+<text x="1450.0" y="5174.8" text-anchor="middle" font-size="14.5" font-weight="700" fill="#473073">reconcile?</text>
+<circle cx="1118.0" cy="5058.0" r="17" fill="#473073"/>
+<text x="1118.0" y="5062.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">12</text>
+<rect x="1820.0" y="5070.0" width="640" height="180" rx="8" fill="#fbf2dd" stroke="#9a6a16" stroke-width="2"/>
+<rect x="1820.0" y="5070.0" width="7" height="180" rx="3" fill="#9a6a16"/>
+<text x="2144.0" y="5128.5" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">A reconciliation break is surfaced, never absorbed</text>
+<text x="2144.0" y="5146.6" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">by a silent retry. Folio mismatches and not-in-good-</text>
+<text x="2144.0" y="5164.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">order rejections are the usual causes, and the RTA</text>
+<text x="2144.0" y="5182.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">integration is the one whose failures most need</text>
+<text x="2144.0" y="5200.9" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">visible handling.</text>
+<rect x="900.0" y="5410.0" width="1100" height="80" rx="40.0" fill="#473073" stroke="#473073" stroke-width="2"/>
+<text x="1450.0" y="5455.6" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">Settled · terminal, happy path</text>
+<rect x="350.0" y="5645.0" width="600" height="110" rx="8" fill="#e3f0ee" stroke="#1f6f6a" stroke-width="2"/>
+<rect x="350.0" y="5645.0" width="7" height="110" rx="3" fill="#1f6f6a"/>
+<text x="654.0" y="5695.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">→ Ledger and Folio</text>
+<text x="654.0" y="5713.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">posting and holding reflection</text>
+<rect x="1950.0" y="5645.0" width="600" height="110" rx="8" fill="#e3f0ee" stroke="#1f6f6a" stroke-width="2"/>
+<rect x="1950.0" y="5645.0" width="7" height="110" rx="3" fill="#1f6f6a"/>
+<text x="2254.0" y="5695.7" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">→ Portfolio surfaces</text>
+<text x="2254.0" y="5713.8" text-anchor="middle" font-size="13.5" font-weight="400" fill="#26222e">holding shown once payment agrees</text>
+<circle cx="2620" cy="5450" r="32" fill="#efe9f7" stroke="#6a4a9c" stroke-width="2.5"/>
+<text x="2620.0" y="5457.4" text-anchor="middle" font-size="21" font-weight="700" fill="#473073">O3</text>
+<rect x="1789.6" y="997.0" width="30.8" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="1805.0" y="1014.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#9d2f2f">no</text>
+<rect x="1789.6" y="1307.0" width="30.8" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="1805.0" y="1324.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#9d2f2f">no</text>
+<rect x="1430.9" y="1152.0" width="38.2" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="1450.0" y="1169.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#6a4a9c">yes</text>
+<rect x="1430.9" y="1462.0" width="38.2" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="1450.0" y="1479.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#6a4a9c">yes</text>
+<rect x="982.4" y="1867.0" width="75.2" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="1020.0" y="1884.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#6a4a9c">purchase</text>
+<rect x="567.4" y="2707.0" width="75.2" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="605.0" y="2724.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#9a6a16">the rule</text>
+<rect x="1935.0" y="1867.0" width="90.0" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="1980.0" y="1884.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#6a4a9c">redemption</text>
+<rect x="962.4" y="2884.5" width="75.2" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="1000.0" y="2902.2" text-anchor="middle" font-size="13.5" font-weight="700" fill="#9a6a16">realised</text>
+<rect x="1766.1" y="3827.0" width="67.8" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="1800.0" y="3844.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#9d2f2f">not yet</text>
+<rect x="1430.9" y="3997.0" width="38.2" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="1450.0" y="4014.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#6a4a9c">yes</text>
+<rect x="922.4" y="4167.0" width="75.2" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="960.0" y="4184.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#6a4a9c">purchase</text>
+<rect x="1895.0" y="4167.0" width="90.0" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="1940.0" y="4184.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#6a4a9c">redemption</text>
+<rect x="1784.6" y="5147.0" width="30.8" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="1800.0" y="5164.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#9a6a16">no</text>
+<rect x="1430.9" y="5322.0" width="38.2" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="1450.0" y="5339.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f6f6a">yes</text>
+<text x="2620.0" y="5508.4" text-anchor="middle" font-size="12.5" font-weight="600" fill="#6f6878">failure, rejection and reversal</text>
+<rect x="2504.7" y="3201.0" width="230.6" height="24" rx="5" fill="#fffdf8" opacity="0.94"/>
+<text x="2620.0" y="3218.7" text-anchor="middle" font-size="13.5" font-weight="700" fill="#9d2f2f">every exception collects here</text>
+</svg>
+</div>
+
+
+<div class="callout principle">
+  <p class="ck">Where this sits in the Order set</p>
+  <p><strong>O1 Placement and pre-flight</strong> &middot; <strong>O2 Execution, pricing and settlement</strong> &middot; <strong>O3 Failure, rejection and reversal</strong> &middot; <strong>O4 Systematic plans</strong> &middot; <strong>O5 Switch and STP</strong>. One order spine with typed gates, plus the three things that refuse to sit on it: a plan is not its instalments, a switch is two orders with a dependency, and Failed and Reversed are separated by the allotment line. Mandate registration and authentication are deliberately absent throughout: anything registered now to debit later belongs to the Mandate journey, and these diagrams show only the attachment contract.</p>
+</div>
+
+<div class="callout flag">
+  <p class="ck">The realisation rule, and the stale assumption it kills</p>
+  <p>For a purchase, the applicable NAV is the NAV of the day the funds are realised and available to the AMC, regardless of when the order was placed or how large it was. The click commits the intent; the money landing fixes the price. An older rule applying realisation pricing only to purchases above two lakh was retired in early 2021, so <strong>any legacy assumption that small purchases price on the time-stamp day is stale and will misprice</strong>. There is one uniform rule for every ticket size. The consequence the model has to encode is that the applicable NAV is not determinable at Placed, which is exactly why Placed and Acknowledged are separate states, and that the payment rail's speed is a pricing input rather than a convenience.</p>
+</div>
+
+<div class="callout flag">
+  <p class="ck">The dangerous window</p>
+  <p>Between provisional allotment and confirmed realisation, units appear to exist and the money is not yet certain. The recorded position is that a confirmed holding is shown only once payment is confirmed cleared, and a purchase is final only when allotment and payment agree. What is <em>not</em> settled is whether a provisional allotment is surfaced at all, as a clearly marked in-progress state, or simply not shown until settled. That is a Folio PRD call and the diagram marks it rather than choosing.</p>
+</div>
+
+<div class="callout verify">
+  <p class="ck">Grounded against, and what to confirm</p>
+  <p>The Order reference for the lifecycle, cut-off and realisation rules, settlement and attribution; the Rails reference for the separation between the transaction rail and the daily mailback reconciliation feed. The register for D5 on cut-offs as daily-fetched parameters, D6 on settlement timelines, D36 on showing units before clearance, D37 on freshness, and D1 on the rail choice. <strong>Both the exact cut-off clock times and the per-scheme settlement cycles are drawn as parameters, not values</strong>, because the reference flags each as an operational figure to confirm with the RTA and operations rather than hard-code, and the settlement cycles continue to track a cash market moving toward shorter settlement.</p>
+</div>
+
+
+<div class="footer">
+  <p><strong>Document control.</strong> Order Flow O2: Execution, Pricing and Settlement. Version v0.1, August 2026. Second of five order diagrams. Cut-off times and settlement cycles appear as fetched parameters rather than values, per the register and the reference. The provisional-allotment display question is marked as a Folio PRD call and is not decided here.</p>
+</div>
+
+</div>
+</body>
+</html>
