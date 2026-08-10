@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!topic) return { title: 'Topic not found' };
   const metas = await getAllMetaOverrides();
   const { title } = resolveMeta(topic, metas);
-  return { title: `${title} — FI Prep` };
+  return { title: `${title} — Gyaan` };
 }
 
 export default async function TopicPage({ params }: Props) {

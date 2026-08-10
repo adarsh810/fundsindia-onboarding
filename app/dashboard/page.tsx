@@ -85,7 +85,7 @@ export default async function Dashboard() {
             <h1 className="font-[family-name:var(--font-playfair)] text-[30px] sm:text-[36px] font-bold tracking-tight text-[#1C1C1A] mb-1.5">
               Auxiliary
             </h1>
-            <p className="text-sm text-[#6B6560]">June 8 → August 8, 2026 · broad context across AI, Finance & Software Dev</p>
+            <p className="text-sm text-[#6B6560]">Broad context across AI, Finance & Software Dev</p>
           </div>
           <div className="flex items-center gap-2 bg-white border border-[#E8E4DE] rounded-xl px-4 py-2.5 self-start shrink-0">
             <div className="w-2 h-2 rounded-full bg-[#2D6A4F]" />

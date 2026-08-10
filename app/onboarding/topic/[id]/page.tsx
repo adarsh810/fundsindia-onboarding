@@ -22,10 +22,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const topic = findTopicById(id);
   if (topic) {
     const metas = await getAllMetaOverrides();
-    return { title: `${resolveMeta(topic, metas).title} — FI Prep` };
+    return { title: `${resolveMeta(topic, metas).title} — Gyaan` };
   }
   const custom = await getCustomTopicById(id);
-  return { title: custom ? `${custom.title} — FI Prep` : 'Topic not found' };
+  return { title: custom ? `${custom.title} — Gyaan` : 'Topic not found' };
 }
 
 export default async function OnboardingTopicPage({ params }: Props) {

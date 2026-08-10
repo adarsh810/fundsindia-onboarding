@@ -21,7 +21,7 @@ export default function AppNav() {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 flex items-center justify-between h-14">
         <div className="flex items-center gap-3">
           <Link href="/" className="font-[family-name:var(--font-playfair)] text-[17px] font-bold tracking-tight text-[#1C1C1A]">
-            FI Prep
+            Gyaan
           </Link>
           <span
             className="text-[10px] font-semibold px-2 py-0.5 rounded-full"

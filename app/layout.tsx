@@ -6,10 +6,10 @@ const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfa
 const dmSans   = DM_Sans({ subsets: ['latin'], variable: '--font-dm', display: 'swap' });
 
 export const metadata: Metadata = {
-  title: 'FI Prep — 8-week onboarding',
+  title: 'Gyaan — 8-week onboarding',
   description: '144 hours · 8 weeks · 32 topics — FundsIndia PM onboarding tracker',
   manifest: '/manifest.json',
-  appleWebApp: { capable: true, statusBarStyle: 'default', title: 'FI Prep' },
+  appleWebApp: { capable: true, statusBarStyle: 'default', title: 'Gyaan' },
   icons: { apple: '/icons/icon-192.png' },
 };
 

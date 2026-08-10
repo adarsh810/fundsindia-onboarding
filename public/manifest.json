@@ -1,8 +1,8 @@
 {
-  "name": "FI Prep — 8-week onboarding",
-  "short_name": "FI Prep",
-  "description": "FundsIndia PM onboarding tracker — 144 hours, 32 topics",
-  "start_url": "/dashboard",
+  "name": "Gyaan",
+  "short_name": "Gyaan",
+  "description": "FundsIndia PM knowledge tracker",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#FAF8F5",
   "theme_color": "#FAF8F5",

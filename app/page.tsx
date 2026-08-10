@@ -23,7 +23,7 @@ export default function Home() {
     {
       mode:       'pre-joining' as const,
       title:      'Auxiliary',
-      subtitle:   'June 8 → August 8, 2026',
+      subtitle:   'Self-paced · 10 weeks',
       desc:       'Self-paced learning plan across AI, Finance, FundsIndia & Software Dev — broad context before you dive in.',
       color:      '#2D6A4F',
       colorDark:  '#1F5240',
@@ -50,7 +50,7 @@ export default function Home() {
         <div className="mb-12 text-center">
           <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#9B9590] mb-4">FundsIndia</p>
           <h1 className="font-[family-name:var(--font-playfair)] text-[42px] sm:text-[52px] font-bold tracking-tight text-[#1C1C1A] mb-3 leading-[1.1]">
-            FI Prep
+            Gyaan
           </h1>
           <p className="text-[14px] text-[#6B6560]">Choose your learning mode to continue</p>
         </div>
