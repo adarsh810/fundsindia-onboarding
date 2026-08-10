@@ -228,11 +228,13 @@ function DropWeekOverlay({ weekNum, active }: { weekNum: number; active: boolean
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function ScheduleView({ progress, initialOverrides, metas }: {
+export default function ScheduleView({ progress, initialOverrides, metas, hiddenTopics = [] }: {
   progress: ProgressMap;
   initialOverrides: OverrideMap;
   metas: MetaOverrideMap;
+  hiddenTopics?: string[];
 }) {
+  const hiddenSet = new Set(hiddenTopics);
   const currentWeek = getCurrentWeek();
   const isFuture = Date.now() < WEEK1_START.getTime();
   const [openWeek, setOpenWeek] = useState<number | null>(currentWeek);
@@ -297,10 +299,12 @@ export default function ScheduleView({ progress, initialOverrides, metas }: {
           const isCurrent = weekNum === currentWeek;
           const isOpen = openWeek === weekNum;
           const bucket = buckets[weekNum];
-          const allPills: PillRef[] = [...bucket.weekdayPills, ...bucket.weekendPills];
+          const weekdayPills = bucket.weekdayPills.filter(p => !hiddenSet.has(p.topicId));
+          const weekendPills = bucket.weekendPills.filter(p => !hiddenSet.has(p.topicId));
+          const allPills: PillRef[] = [...weekdayPills, ...weekendPills];
           const doneCount = allPills.filter(p => progress[p.topicId] === 'done').length;
-          const weekdayHours = sumPillHours(bucket.weekdayPills, overrides);
-          const weekendHours = sumPillHours(bucket.weekendPills, overrides);
+          const weekdayHours = sumPillHours(weekdayPills, overrides);
+          const weekendHours = sumPillHours(weekendPills, overrides);
           const totalHours = weekdayHours + weekendHours;
 
           return (
@@ -377,10 +381,10 @@ export default function ScheduleView({ progress, initialOverrides, metas }: {
                   </div>
                   <DaySection emoji="⏱" dayLabels={['Mon', 'Tue', 'Wed', 'Thu', 'Fri']}
                     hoursPerDay={Math.max(2, Math.ceil(weekdayHours / 5))}
-                    pills={bucket.weekdayPills} progress={progress} overrides={overrides} metas={metas} />
+                    pills={weekdayPills} progress={progress} overrides={overrides} metas={metas} />
                   <DaySection emoji="🌿" dayLabels={['Sat', 'Sun']}
                     hoursPerDay={Math.max(3, Math.ceil(weekendHours / 2))}
-                    pills={bucket.weekendPills} progress={progress} overrides={overrides} metas={metas} />
+                    pills={weekendPills} progress={progress} overrides={overrides} metas={metas} />
                   <div className="border-t border-[#EEE9E2] pt-3">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[#9B9590] mb-1.5">📄 Artifacts due</p>
                     <p className="text-[11px] text-[#6B6560] leading-relaxed">{w.artifacts}</p>
