@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
 import AppNav from '@/components/AppNav';
 import StatusToggle from '@/components/StatusToggle';
@@ -34,6 +34,12 @@ export default async function TopicPage({ params }: Props) {
   const staticTopic = findTopicById(id);
   const customTopic = staticTopic ? null : await getCustomTopicById(id);
   if (!staticTopic && !customTopic) notFound();
+
+  // Onboarding topics belong at /onboarding/topic/[id] — redirect there
+  const isOnboardingTopic = staticTopic
+    ? ONBOARDING_TOPICS.some(l => l.categories.some(c => c.topics.some(t => t.id === id)))
+    : !!customTopic;
+  if (isOnboardingTopic) redirect(`/onboarding/topic/${id}`);
 
   // Unified shape for rendering
   const isCustom = !staticTopic;

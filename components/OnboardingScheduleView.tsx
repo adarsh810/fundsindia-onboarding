@@ -73,11 +73,11 @@ export default function OnboardingScheduleView({
           {topics.map((t, i) => {
             const status = progress[t.id] ?? 'not_started';
             return (
-              <Link key={t.id} href={`/topic/${t.id}`}
+              <Link key={t.id} href={`/onboarding/topic/${t.id}`}
                 className="text-[10px] px-2 py-0.5 rounded-full border hover:brightness-95 transition-all"
                 style={{ borderColor: COLOR, color: statusText(status), background: statusBg(status) }}
               >
-                {t.id}{status === 'done' ? ' ✓' : status === 'in_progress' ? ' ~' : ''}
+                {i + 1}{status === 'done' ? ' ✓' : status === 'in_progress' ? ' ~' : ''}
               </Link>
             );
           })}
@@ -122,18 +122,17 @@ export default function OnboardingScheduleView({
                   </div>
                 );
                 const status = progress[t.id] ?? 'not_started';
-                const label = t.id.split('-')[1] ?? t.id;
                 return (
                   <div key={day} className="flex flex-col items-stretch gap-1">
                     <p className="text-[10px] font-semibold text-center text-[#9B9590]">{day}</p>
-                    <Link href={`/topic/${t.id}`}
+                    <Link href={`/onboarding/topic/${t.id}`}
                       className="rounded-lg flex items-center justify-center overflow-hidden hover:brightness-95 transition-all"
                       style={{ height: 56, background: statusBg(status) }}
                       title={`${t.title} · ${t.hours}h`}
                     >
                       <span className="text-[9px] font-bold leading-none text-center px-0.5"
                         style={{ color: statusText(status) }}>
-                        {label}
+                        {i + 1}
                       </span>
                     </Link>
                     <p className="text-[9px] text-center text-[#C8C2BA]">{t.hours}h</p>
@@ -148,7 +147,7 @@ export default function OnboardingScheduleView({
             {topics.map((t, i) => {
               const status = progress[t.id] ?? 'not_started';
               return (
-                <Link key={t.id} href={`/topic/${t.id}`} className="flex items-center gap-2 text-[11px] group">
+                <Link key={t.id} href={`/onboarding/topic/${t.id}`} className="flex items-center gap-2 text-[11px] group">
                   <span className="w-2.5 h-2.5 rounded-sm shrink-0"
                     style={{ background: statusBg(status), border: `1.5px solid ${COLOR}` }} />
                   <span className="font-mono text-[10px] text-[#9B9590] w-7 shrink-0">{DAYS[i]}</span>

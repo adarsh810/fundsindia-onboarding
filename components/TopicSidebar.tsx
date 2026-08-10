@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import type { L1Track, ProgressMap, Status } from '@/lib/types';
 import type { MetaOverrideMap, CustomTopic } from '@/lib/supabase';
+import { ONBOARDING_TOPICS } from '@/lib/data';
 
 const STATUS_DOT: Record<string, string> = {
   done:        '#4CAF65',
@@ -50,6 +51,8 @@ function TopicList({ track, currentId, progress, metas, customTopics, hiddenTopi
   customTopics: CustomTopic[]; hiddenTopics: string[]; onNavigate?: () => void;
 }) {
   const topics = buildTopicList(track, metas, customTopics, hiddenTopics);
+  const isOnboarding = ONBOARDING_TOPICS.some(l => l.id === track.id);
+  const topicBase = isOnboarding ? '/onboarding/topic/' : '/topic/';
 
   return (
     <>
@@ -62,7 +65,7 @@ function TopicList({ track, currentId, progress, metas, customTopics, hiddenTopi
           const isCurrent = t.id === currentId;
           const tStatus = (progress[t.id] as Status) ?? 'not_started';
           return (
-            <Link key={t.id} href={`/topic/${t.id}`} onClick={onNavigate}
+            <Link key={t.id} href={`${topicBase}${t.id}`} onClick={onNavigate}
               className="flex items-center gap-2 px-2 py-1.5 rounded-lg transition-all group"
               style={isCurrent ? { background: track.accent } : {}}
             >

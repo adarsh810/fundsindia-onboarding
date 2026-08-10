@@ -13,22 +13,25 @@ export default async function OnboardingDashboard() {
     getHiddenTopics(),
   ]);
 
-  // Flat merged topic list: static (minus hidden) + custom
-  type FlatTopic = { id: string; title: string; hours: number; l1Id: string; l1Label: string; l1Color: string };
+  // Flat merged topic list: static (minus hidden) + custom, with per-track serial numbers
+  type FlatTopic = { id: string; title: string; hours: number; l1Id: string; l1Label: string; l1Color: string; serial: string };
 
-  const allTopics: FlatTopic[] = [
-    ...ONBOARDING_TOPICS.flatMap(l1 =>
-      l1.categories.flatMap(c =>
-        c.topics
-          .filter(t => !hiddenSet.has(t.id))
-          .map(t => ({ id: t.id, title: resolveMeta(t, metas).title, hours: t.hours, l1Id: l1.id, l1Label: l1.label, l1Color: l1.color }))
-      )
-    ),
-    ...customTopics.map(ct => {
-      const l1 = ONBOARDING_TOPICS.find(l => l.id === ct.l1Id);
-      return { id: ct.id, title: ct.title, hours: ct.hours, l1Id: ct.l1Id, l1Label: l1?.label ?? '', l1Color: l1?.color ?? '#6B3FA0' };
-    }),
-  ];
+  const allTopics: FlatTopic[] = [];
+  for (const l1 of ONBOARDING_TOPICS) {
+    let pos = 0;
+    for (const cat of l1.categories) {
+      for (const t of cat.topics) {
+        if (!hiddenSet.has(t.id)) {
+          pos++;
+          allTopics.push({ id: t.id, title: resolveMeta(t, metas).title, hours: t.hours, l1Id: l1.id, l1Label: l1.label, l1Color: l1.color, serial: String(pos) });
+        }
+      }
+    }
+    for (const ct of customTopics.filter(c => c.l1Id === l1.id)) {
+      pos++;
+      allTopics.push({ id: ct.id, title: ct.title, hours: ct.hours, l1Id: l1.id, l1Label: l1.label, l1Color: l1.color, serial: String(pos) });
+    }
+  }
 
   const doneCount   = allTopics.filter(t => progress[t.id] === 'done').length;
   const activeCount = allTopics.filter(t => progress[t.id] === 'in_progress').length;
@@ -117,10 +120,10 @@ export default async function OnboardingDashboard() {
           ) : (
             <div className="divide-y divide-[#2D2D2A]">
               {nextTopics.map(t => (
-                <Link key={t.id} href={`/topic/${t.id}`} className="flex items-center gap-3 py-3.5 group">
-                  <div className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-[10px] font-bold text-white"
+                <Link key={t.id} href={`/onboarding/topic/${t.id}`} className="flex items-center gap-3 py-3.5 group">
+                  <div className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-[11px] font-bold text-white"
                     style={{ background: t.l1Color }}>
-                    {t.id}
+                    {t.serial}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium group-hover:underline">{t.title}</p>

@@ -297,7 +297,7 @@ export default function PlanView({
                       {section === 'onboarding' ? (serialMap[t.id] ?? `${trackIdx}.?`) : t.id}
                     </span>
 
-                    <Link href={`/topic/${t.id}`} className="flex-1 min-w-0 group/link">
+                    <Link href={`${section === 'onboarding' ? '/onboarding' : ''}/topic/${t.id}`} className="flex-1 min-w-0 group/link">
                       <p className={`text-[13px] font-medium group-hover/link:text-[#000] transition-colors truncate ${status === 'done' ? 'text-[#9B9590] line-through' : 'text-[#1C1C1A]'}`}>
                         {t.title}
                       </p>
