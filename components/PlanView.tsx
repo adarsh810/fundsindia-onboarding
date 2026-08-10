@@ -342,6 +342,28 @@ export default function PlanView({
             )}
           </div>
         ))}
+
+        {/* Empty-track fallback: custom track with no topics yet */}
+        {mergedCats.length === 0 && (
+          addingTopic?.l1Id === activeTrack ? (
+            <div className="px-5 py-3 bg-[#FAF8F5] flex items-center gap-2">
+              <input autoFocus value={newTopicTitle} onChange={e => setNewTopicTitle(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && addTopicToTrack()} placeholder="Topic title…"
+                className="flex-1 text-[12px] bg-white border border-[#D8D3CC] rounded-md px-2 py-1 focus:outline-none focus:border-[#9B9590]" />
+              <input type="number" min={1} max={20} value={newTopicHours} onChange={e => setNewTopicHours(Number(e.target.value))}
+                className="w-12 text-[12px] text-center bg-white border border-[#D8D3CC] rounded-md px-1 py-1 focus:outline-none" />
+              <span className="text-[11px] text-[#9B9590]">h</span>
+              <button onClick={addTopicToTrack} disabled={!newTopicTitle.trim()}
+                className="text-[11px] font-semibold px-2 py-1 rounded bg-[#1C1C1A] text-white disabled:opacity-40">Add</button>
+              <button onClick={() => { setAddingTopic(null); setNewTopicTitle(''); }} className="text-[11px] text-[#9B9590]">Cancel</button>
+            </div>
+          ) : (
+            <button onClick={() => setAddingTopic({ l1Id: activeTrack, cat: 'Topics' })}
+              className="w-full text-[11px] text-[#9B9590] hover:text-[#4A4540] py-5 hover:bg-[#FAF8F5] transition-colors">
+              + Add first topic to this track
+            </button>
+          )
+        )}
       </div>
     </div>
   );

@@ -1,16 +1,18 @@
 import Link from 'next/link';
 import AppNav from '@/components/AppNav';
 import { ONBOARDING_TOPICS, resolveMeta } from '@/lib/data';
-import { getAllProgress, getAllMetaOverrides, getCustomTopics, getHiddenTopics } from '@/lib/supabase';
+import { getAllProgress, getAllMetaOverrides, getCustomTopics, getHiddenTopics, getCustomL1Tracks } from '@/lib/supabase';
+import type { CustomL1Track } from '@/lib/supabase';
 
 export const dynamic = 'force-dynamic';
 
 export default async function OnboardingDashboard() {
-  const [progress, metas, customTopics, hiddenSet] = await Promise.all([
+  const [progress, metas, customTopics, hiddenSet, customL1Tracks] = await Promise.all([
     getAllProgress(),
     getAllMetaOverrides(),
     getCustomTopics('onboarding'),
     getHiddenTopics(),
+    getCustomL1Tracks('onboarding'),
   ]);
 
   // Flat merged topic list: static (minus hidden) + custom, with per-track serial numbers
@@ -79,13 +81,39 @@ export default async function OnboardingDashboard() {
         <div className="bg-white border border-[#E8E4DE] rounded-xl p-5 sm:p-6 mb-6">
           <h2 className="font-[family-name:var(--font-playfair)] text-[18px] font-semibold mb-5">Progress by track</h2>
           <div className="space-y-5">
+            {/* Static L1 tracks that have topics */}
             {ONBOARDING_TOPICS
               .filter(l1 => allTopics.some(t => t.l1Id === l1.id))
               .map(l1 => {
+                const l1Topics = allTopics.filter(t => t.l1Id === l1.id);
+                const done   = l1Topics.filter(t => progress[t.id] === 'done').length;
+                const active = l1Topics.filter(t => progress[t.id] === 'in_progress').length;
+                const pctDone = Math.round((done / l1Topics.length) * 100);
+                return (
+                  <Link key={l1.id} href={`/onboarding/plan?track=${l1.id}`} className="block group">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-sm shrink-0" style={{ background: l1.color }} />
+                        <span className="text-sm font-medium text-[#1C1C1A] group-hover:underline">{l1.label}</span>
+                        {active > 0 && (
+                          <span className="text-[10px] font-medium text-[#7A5010] bg-[#FEF0C7] px-2 py-0.5 rounded-full">{active} active</span>
+                        )}
+                      </div>
+                      <span className="text-xs text-[#9B9590]">{done}/{l1Topics.length}</span>
+                    </div>
+                    <div className="h-1.5 bg-[#E8E4DE] rounded-full overflow-hidden">
+                      <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pctDone}%`, background: l1.color }} />
+                    </div>
+                  </Link>
+                );
+              })}
+
+            {/* Custom L1 tracks — always shown even with 0 topics */}
+            {customL1Tracks.map(l1 => {
               const l1Topics = allTopics.filter(t => t.l1Id === l1.id);
               const done   = l1Topics.filter(t => progress[t.id] === 'done').length;
               const active = l1Topics.filter(t => progress[t.id] === 'in_progress').length;
-              const pctDone = Math.round((done / l1Topics.length) * 100);
+              const pctDone = l1Topics.length ? Math.round((done / l1Topics.length) * 100) : 0;
               return (
                 <Link key={l1.id} href={`/onboarding/plan?track=${l1.id}`} className="block group">
                   <div className="flex items-center justify-between mb-1.5">
@@ -94,6 +122,9 @@ export default async function OnboardingDashboard() {
                       <span className="text-sm font-medium text-[#1C1C1A] group-hover:underline">{l1.label}</span>
                       {active > 0 && (
                         <span className="text-[10px] font-medium text-[#7A5010] bg-[#FEF0C7] px-2 py-0.5 rounded-full">{active} active</span>
+                      )}
+                      {l1Topics.length === 0 && (
+                        <span className="text-[10px] text-[#9B9590] bg-[#F0EDE8] px-2 py-0.5 rounded-full">No topics yet</span>
                       )}
                     </div>
                     <span className="text-xs text-[#9B9590]">{done}/{l1Topics.length}</span>
@@ -104,7 +135,8 @@ export default async function OnboardingDashboard() {
                 </Link>
               );
             })}
-            {!ONBOARDING_TOPICS.some(l1 => allTopics.some(t => t.l1Id === l1.id)) && (
+
+            {!ONBOARDING_TOPICS.some(l1 => allTopics.some(t => t.l1Id === l1.id)) && customL1Tracks.length === 0 && (
               <p className="text-[13px] text-[#9B9590] py-2">No topics added yet — go to Topics to add some.</p>
             )}
           </div>
