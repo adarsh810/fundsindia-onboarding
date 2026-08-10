@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { TOPICS, findTopicById, resolveMeta } from '@/lib/data';
 import type { L1Track } from '@/lib/types';
@@ -49,6 +49,13 @@ export default function PlanView({
   const [tracks, setTracks] = useState<TrackMeta[]>(initTracks);
   const validTrack = tracks.find(l => l.id === initialTrack)?.id ?? tracks[0]?.id ?? staticTracks[0]?.id;
   const [activeTrack, setActiveTrack] = useState<string>(validTrack);
+
+  // Keep URL in sync so refresh lands on the same track
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('track', activeTrack);
+    window.history.replaceState({}, '', url.toString());
+  }, [activeTrack]);
 
   // L1 rename/add/remove state
   const [editingL1, setEditingL1] = useState<string | null>(null);

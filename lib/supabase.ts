@@ -215,6 +215,21 @@ export async function addCustomTopic(
   };
 }
 
+export async function getCustomTopicById(id: string): Promise<CustomTopic | null> {
+  const { data } = await supabase
+    .from('fi_topic_custom')
+    .select('id, l1_id, category, title, desc, hours, week, done, artifact, position, hidden')
+    .eq('id', id)
+    .single();
+  if (!data) return null;
+  return {
+    id: data.id as string, l1Id: data.l1_id as string, category: data.category as string,
+    title: data.title as string, desc: data.desc as string, hours: data.hours as number,
+    week: data.week as string, done: data.done as string, artifact: data.artifact as string,
+    position: data.position as number, hidden: data.hidden as boolean,
+  };
+}
+
 export async function hideCustomTopic(id: string): Promise<void> {
   await supabase.from('fi_topic_custom').update({ hidden: true }).eq('id', id).eq('user_id', USER_ID);
 }
