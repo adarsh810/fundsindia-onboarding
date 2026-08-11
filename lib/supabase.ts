@@ -248,3 +248,20 @@ export async function getResourceDoneCount(topicIds: string[]): Promise<number> 
     .in('topic_id', topicIds);
   return count ?? 0;
 }
+
+// Returns topic_id → total resource count from fi_resource_config
+export async function getResourceConfigCounts(topicIds: string[]): Promise<Record<string, number>> {
+  if (!topicIds.length) return {};
+  const { data } = await supabase
+    .from('fi_resource_config')
+    .select('topic_id, primary_resources, additional_resources')
+    .eq('user_id', USER_ID)
+    .in('topic_id', topicIds);
+  const result: Record<string, number> = {};
+  for (const row of data ?? []) {
+    const p = Array.isArray(row.primary_resources)    ? (row.primary_resources as unknown[]).length    : 0;
+    const a = Array.isArray(row.additional_resources) ? (row.additional_resources as unknown[]).length : 0;
+    result[row.topic_id as string] = p + a;
+  }
+  return result;
+}

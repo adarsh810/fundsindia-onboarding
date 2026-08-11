@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import AppNav from '@/components/AppNav';
 import TrackStatusPill from '@/components/TrackStatusPill';
-import { getAllProgress, getAllScheduleOverrides, getAllMetaOverrides, getHiddenTopics, getResourceDoneCount } from '@/lib/supabase';
+import { getAllProgress, getAllScheduleOverrides, getAllMetaOverrides, getHiddenTopics, getResourceDoneCount, getResourceConfigCounts } from '@/lib/supabase';
 import OverallProgress from '@/components/OverallProgress';
 import { TOPICS, ALL_TOPICS, findTrackForTopic, resolveMeta } from '@/lib/data';
 import {
@@ -32,8 +32,16 @@ export default async function Dashboard() {
   const activeCount = visibleTopics.filter(t => progress[t.id] === 'in_progress').length;
   const doneHours   = visibleTopics.filter(t => progress[t.id] === 'done').reduce((a, t) => a + t.hours, 0);
 
-  const totalResources  = visibleTopics.reduce((sum, t) => sum + t.resources.length, 0);
-  const resourceDone    = await getResourceDoneCount(visibleTopics.map(t => t.id));
+  const topicIds = visibleTopics.map(t => t.id);
+  const [resourceDone, configCounts] = await Promise.all([
+    getResourceDoneCount(topicIds),
+    getResourceConfigCounts(topicIds),
+  ]);
+  // Use fi_resource_config count when available, else fall back to static resource count
+  const totalResources = visibleTopics.reduce((sum, t) => {
+    if (configCounts[t.id] !== undefined) return sum + configCounts[t.id];
+    return sum + t.resources.length;
+  }, 0);
 
   const WEEK1_START = new Date('2026-06-15T00:00:00+05:30');
   const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;

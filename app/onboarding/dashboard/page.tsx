@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import AppNav from '@/components/AppNav';
 import { ONBOARDING_TOPICS, resolveMeta } from '@/lib/data';
-import { getAllProgress, getAllMetaOverrides, getAllL1Overrides, getCustomTopics, getHiddenTopics, getCustomL1Tracks, getResourceDoneCount } from '@/lib/supabase';
+import { getAllProgress, getAllMetaOverrides, getAllL1Overrides, getCustomTopics, getHiddenTopics, getCustomL1Tracks, getResourceDoneCount, getResourceConfigCounts } from '@/lib/supabase';
 import type { CustomL1Track } from '@/lib/supabase';
 import OverallProgress from '@/components/OverallProgress';
 
@@ -58,14 +58,21 @@ export default async function OnboardingDashboard() {
   const doneHours   = allTopics.filter(t => progress[t.id] === 'done').reduce((a, t) => a + t.hours, 0);
   const totalHours  = allTopics.reduce((a, t) => a + t.hours, 0);
 
-  // Resource-level completion: use static topic resources (custom topics have 0)
-  const staticTopicIds = ONBOARDING_TOPICS.flatMap(l1 =>
-    l1.categories.flatMap(c => c.topics.filter(t => !hiddenSet.has(t.id)).map(t => t.id))
+  // Resource-level completion: all visible topic IDs (static + custom)
+  const allTopicIds = allTopics.map(t => t.id);
+  const [resourceDone, configCounts] = await Promise.all([
+    getResourceDoneCount(allTopicIds),
+    getResourceConfigCounts(allTopicIds),
+  ]);
+
+  // Total docs: fi_resource_config count if present, else static resource count, else 0
+  const staticTopicResourceMap = Object.fromEntries(
+    ONBOARDING_TOPICS.flatMap(l1 => l1.categories.flatMap(c => c.topics)).map(t => [t.id, t.resources.length])
   );
-  const totalResources = ONBOARDING_TOPICS.flatMap(l1 =>
-    l1.categories.flatMap(c => c.topics.filter(t => !hiddenSet.has(t.id)))
-  ).reduce((sum, t) => sum + t.resources.length, 0);
-  const resourceDone = await getResourceDoneCount(staticTopicIds);
+  const totalResources = allTopics.reduce((sum, t) => {
+    if (configCounts[t.id] !== undefined) return sum + configCounts[t.id];
+    return sum + (staticTopicResourceMap[t.id] ?? 0);
+  }, 0);
 
   const nextTopics = [
     ...allTopics.filter(t => progress[t.id] === 'in_progress'),
