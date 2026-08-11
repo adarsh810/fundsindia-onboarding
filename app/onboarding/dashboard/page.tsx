@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import AppNav from '@/components/AppNav';
 import { ONBOARDING_TOPICS, resolveMeta } from '@/lib/data';
-import { getAllProgress, getAllMetaOverrides, getAllL1Overrides, getCustomTopics, getHiddenTopics, getCustomL1Tracks } from '@/lib/supabase';
+import { getAllProgress, getAllMetaOverrides, getAllL1Overrides, getCustomTopics, getHiddenTopics, getCustomL1Tracks, getResourceDoneCount } from '@/lib/supabase';
 import type { CustomL1Track } from '@/lib/supabase';
+import OverallProgress from '@/components/OverallProgress';
 
 export const dynamic = 'force-dynamic';
 
@@ -56,7 +57,15 @@ export default async function OnboardingDashboard() {
   const activeCount = allTopics.filter(t => progress[t.id] === 'in_progress').length;
   const doneHours   = allTopics.filter(t => progress[t.id] === 'done').reduce((a, t) => a + t.hours, 0);
   const totalHours  = allTopics.reduce((a, t) => a + t.hours, 0);
-  const pct         = allTopics.length ? Math.round((doneCount / allTopics.length) * 100) : 0;
+
+  // Resource-level completion: use static topic resources (custom topics have 0)
+  const staticTopicIds = ONBOARDING_TOPICS.flatMap(l1 =>
+    l1.categories.flatMap(c => c.topics.filter(t => !hiddenSet.has(t.id)).map(t => t.id))
+  );
+  const totalResources = ONBOARDING_TOPICS.flatMap(l1 =>
+    l1.categories.flatMap(c => c.topics.filter(t => !hiddenSet.has(t.id)))
+  ).reduce((sum, t) => sum + t.resources.length, 0);
+  const resourceDone = await getResourceDoneCount(staticTopicIds);
 
   const nextTopics = [
     ...allTopics.filter(t => progress[t.id] === 'in_progress'),
@@ -81,7 +90,6 @@ export default async function OnboardingDashboard() {
             { label: 'Topics done',   value: doneCount,   suffix: `/${allTopics.length}`, color: '#6DB07A' },
             { label: 'In progress',   value: activeCount, suffix: ' topics',              color: '#E6A020' },
             { label: 'Hours covered', value: doneHours,   suffix: `/${totalHours}h`,      color: '#7B68C8' },
-            { label: 'Overall',       value: `${pct}%`,   suffix: '',                     color: '#4B9E85' },
           ].map(m => (
             <div key={m.label} className="bg-white border border-[#E8E4DE] rounded-xl p-4 sm:p-5"
               style={{ borderTop: `3px solid ${m.color}` }}>
@@ -92,6 +100,13 @@ export default async function OnboardingDashboard() {
               </p>
             </div>
           ))}
+          <div className="bg-white border border-[#E8E4DE] rounded-xl p-4 sm:p-5" style={{ borderTop: '3px solid #4B9E85' }}>
+            <OverallProgress
+              topicDone={doneCount} topicTotal={allTopics.length}
+              resourceDone={resourceDone} resourceTotal={totalResources}
+              color="#4B9E85"
+            />
+          </div>
         </div>
 
         {/* Track progress */}

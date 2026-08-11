@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import AppNav from '@/components/AppNav';
 import TrackStatusPill from '@/components/TrackStatusPill';
-import { getAllProgress, getAllScheduleOverrides, getAllMetaOverrides, getHiddenTopics } from '@/lib/supabase';
+import { getAllProgress, getAllScheduleOverrides, getAllMetaOverrides, getHiddenTopics, getResourceDoneCount } from '@/lib/supabase';
+import OverallProgress from '@/components/OverallProgress';
 import { TOPICS, ALL_TOPICS, findTrackForTopic, resolveMeta } from '@/lib/data';
 import {
   getEffectiveStartWeek,
@@ -27,10 +28,12 @@ export default async function Dashboard() {
   ]);
 
   const visibleTopics = ALL_TOPICS.filter(t => !hiddenSet.has(t.id));
-  const doneCount  = visibleTopics.filter(t => progress[t.id] === 'done').length;
+  const doneCount   = visibleTopics.filter(t => progress[t.id] === 'done').length;
   const activeCount = visibleTopics.filter(t => progress[t.id] === 'in_progress').length;
-  const doneHours  = visibleTopics.filter(t => progress[t.id] === 'done').reduce((a, t) => a + t.hours, 0);
-  const pct        = Math.round((doneCount / visibleTopics.length) * 100);
+  const doneHours   = visibleTopics.filter(t => progress[t.id] === 'done').reduce((a, t) => a + t.hours, 0);
+
+  const totalResources  = visibleTopics.reduce((sum, t) => sum + t.resources.length, 0);
+  const resourceDone    = await getResourceDoneCount(visibleTopics.map(t => t.id));
 
   const WEEK1_START = new Date('2026-06-15T00:00:00+05:30');
   const MS_PER_WEEK = 7 * 24 * 60 * 60 * 1000;
@@ -111,13 +114,14 @@ export default async function Dashboard() {
             </div>
           ))}
 
-          {/* Overall card with track status pill */}
+          {/* Overall card with toggle */}
           <div className="bg-white border border-[#E8E4DE] rounded-xl" style={{ borderTop: '3px solid #4B9E85' }}>
             <div className="p-4 sm:p-5">
-              <p className="text-[10px] text-[#9B9590] uppercase tracking-[0.08em] mb-2">Overall</p>
-              <p className="font-[family-name:var(--font-playfair)] text-[26px] sm:text-[30px] font-bold leading-none text-[#4B9E85] mb-2">
-                {pct}%
-              </p>
+              <OverallProgress
+                topicDone={doneCount} topicTotal={visibleTopics.length}
+                resourceDone={resourceDone} resourceTotal={totalResources}
+                color="#4B9E85"
+              />
               <TrackStatusPill
                 label={trackStatus.label}
                 bg={trackStatus.bg}

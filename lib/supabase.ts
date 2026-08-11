@@ -237,3 +237,14 @@ export async function hideCustomTopic(id: string): Promise<void> {
 export async function hideCustomTopicsByL1(l1Id: string): Promise<void> {
   await supabase.from('fi_topic_custom').update({ hidden: true }).eq('l1_id', l1Id).eq('user_id', USER_ID);
 }
+
+export async function getResourceDoneCount(topicIds: string[]): Promise<number> {
+  if (!topicIds.length) return 0;
+  const { count } = await supabase
+    .from('fi_resource_progress')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', USER_ID)
+    .eq('done', true)
+    .in('topic_id', topicIds);
+  return count ?? 0;
+}
