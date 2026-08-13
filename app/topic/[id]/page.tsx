@@ -7,7 +7,7 @@ import ArtifactReviewer from '@/components/ArtifactReviewer';
 import ResourcesPanel from '@/components/ResourcesPanel';
 import TopicSidebar from '@/components/TopicSidebar';
 import EditableTopicHeader from '@/components/EditableTopicHeader';
-import { getAllProgress, getAllScheduleOverrides, getAllMetaOverrides, getCustomTopicById, getCustomTopics, getHiddenTopics } from '@/lib/supabase';
+import { getAllProgress, getAllScheduleOverrides, getAllMetaOverrides, getAllL1Overrides, getCustomTopicById, getCustomTopics, getHiddenTopics } from '@/lib/supabase';
 import type { CustomTopic } from '@/lib/supabase';
 import { findTopicById, findTrackForTopic, TOPICS, ONBOARDING_TOPICS, ALL_TOPICS, resolveMeta } from '@/lib/data';
 import { getEffectivePositions, formatEffectiveWeekLabel } from '@/lib/schedule';
@@ -59,13 +59,16 @@ export default async function TopicPage({ params }: Props) {
   const isOnboardingTrack = ONBOARDING_TOPICS.some(l => l.id === track.id);
   const section = isOnboardingTrack ? 'onboarding' : 'prejoining';
 
-  const [progress, overrides, metas, sidebarCustomTopics, hiddenSet] = await Promise.all([
+  const [progress, overrides, metas, l1Overrides, sidebarCustomTopics, hiddenSet] = await Promise.all([
     getAllProgress(),
     getAllScheduleOverrides(),
     getAllMetaOverrides(),
+    getAllL1Overrides(section),
     getCustomTopics(section),
     getHiddenTopics(),
   ]);
+
+  const resolvedTrackLabel = l1Overrides[track.id]?.label || track.label;
   const status: Status = (progress[id] as Status) ?? 'not_started';
 
   const effectiveWeek = staticTopic ? formatEffectiveWeekLabel(getEffectivePositions(staticTopic, overrides)) : '';
@@ -99,7 +102,7 @@ export default async function TopicPage({ params }: Props) {
         <div className="flex items-center gap-1.5 text-xs text-[#9B9590] mb-5">
           <Link href={backHref} className="hover:text-[#1C1C1A] transition-colors">Topics</Link>
           <svg className="w-3 h-3 text-[#C8C2BA]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-          <span style={{ color: track.color }}>{track.label}</span>
+          <span style={{ color: track.color }}>{resolvedTrackLabel}</span>
           <svg className="w-3 h-3 text-[#C8C2BA]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
           <span className="text-[#6B6560]">{isCustom ? effectiveTitle : id}</span>
         </div>
@@ -115,7 +118,7 @@ export default async function TopicPage({ params }: Props) {
               {effectiveWeek && <span className="text-[11px] text-[#9B9590]">{effectiveWeek} · </span>}
               <span className="text-[11px] text-[#9B9590]">{topicHours}h</span>
               <span className="text-[11px] text-[#9B9590]">·</span>
-              <span className="text-[11px]" style={{ color: track.color }}>{track.label}</span>
+              <span className="text-[11px]" style={{ color: track.color }}>{resolvedTrackLabel}</span>
             </div>
             <EditableTopicHeader
               topicId={id}
@@ -174,7 +177,7 @@ export default async function TopicPage({ params }: Props) {
 
         </div>{/* end main content */}
 
-        <TopicSidebar track={track} currentId={id} progress={progress} metas={metas}
+        <TopicSidebar track={track} trackLabel={resolvedTrackLabel} currentId={id} progress={progress} metas={metas}
           customTopics={sidebarCustomTopics} hiddenTopics={[...hiddenSet]} />
 
       </div>
