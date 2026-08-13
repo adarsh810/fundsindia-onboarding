@@ -44,7 +44,7 @@ export default function PlanView({
     ...staticTracks
       .filter(l => !l1Overrides[l.id]?.hidden)
       .map(l => ({ id: l.id, label: l1Overrides[l.id]?.label ?? l.label, color: l.color, accent: l.accent })),
-    ...customL1Tracks.map(c => ({ id: c.id, label: c.label, color: c.color, accent: c.accent, isCustom: true })),
+    ...customL1Tracks.map(c => ({ id: c.id, label: l1Overrides[c.id]?.label ?? c.label, color: c.color, accent: c.accent, isCustom: true })),
   ];
   const [tracks, setTracks] = useState<TrackMeta[]>(initTracks);
   const validTrack = tracks.find(l => l.id === initialTrack)?.id ?? tracks[0]?.id ?? staticTracks[0]?.id;
