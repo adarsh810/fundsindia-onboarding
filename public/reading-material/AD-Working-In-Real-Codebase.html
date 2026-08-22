@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Working in a Real Codebase — A Primer</title>
+<style>
+:root {
+  --ink: #1A2332;
+  --slate: #33414F;
+  --blue: #1F5C8B;
+  --teal: #0F7C73;
+  --amber: #B5731A;
+  --rule: #C9D4DE;
+  --lightblue: #E8F0F6;
+  --paleblue: #F4F8FB;
+  --palegrey: #F2F4F6;
+  --paleamber: #FBF3E6;
+  --palegreen: #EAF4F2;
+  --maroon: #9C2D41;
+  --muted: #6A7884;
+  --page: #ffffff;
+  --canvas: #EEF2F5;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--slate);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.sheet {
+  max-width: 820px;
+  margin: 32px auto;
+  background: var(--page);
+  padding: 64px 72px 56px;
+  box-shadow: 0 1px 3px rgba(26,35,50,.08), 0 12px 40px rgba(26,35,50,.10);
+  border-radius: 3px;
+}
+
+/* ---------- Cover ---------- */
+.eyebrow {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--blue);
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.cover-rule { height: 3px; background: var(--blue); border: none; margin: 0 0 26px; }
+.cover-title {
+  font-size: 42px;
+  line-height: 1.08;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -.015em;
+  margin: 0 0 12px;
+}
+.cover-sub {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--slate);
+  margin: 0 0 18px;
+  line-height: 1.4;
+}
+.cover-meta {
+  font-size: 15.5px;
+  font-style: italic;
+  color: var(--muted);
+  margin: 0 0 40px;
+}
+
+/* ---------- Headings ---------- */
+h1.sec {
+  font-size: 25px;
+  font-weight: 800;
+  color: var(--blue);
+  letter-spacing: -.01em;
+  margin: 52px 0 18px;
+  padding-bottom: 9px;
+  border-bottom: 2px solid var(--rule);
+  scroll-margin-top: 20px;
+}
+h2.sub {
+  font-size: 19.5px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 30px 0 12px;
+}
+h3.subsub {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: var(--teal);
+  margin: 22px 0 8px;
+}
+p { margin: 0 0 14px; }
+strong { color: var(--ink); font-weight: 700; }
+
+code, .mono {
+  font-family: "SF Mono", "JetBrains Mono", "Fira Code", Consolas, "Liberation Mono", monospace;
+  font-size: .88em;
+  color: var(--maroon);
+  background: rgba(156,45,65,.06);
+  padding: .08em .34em;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+ul, ol { margin: 0 0 16px; padding-left: 24px; }
+li { margin: 0 0 7px; padding-left: 4px; }
+ul li::marker { color: var(--blue); }
+ol li::marker { color: var(--blue); font-weight: 700; }
+
+/* ---------- Callouts ---------- */
+.callout {
+  border-radius: 6px;
+  padding: 16px 20px 4px;
+  margin: 20px 0 24px;
+  border-left: 5px solid;
+  break-inside: avoid;
+}
+.callout .label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.callout p:last-child { margin-bottom: 12px; }
+.callout.info { background: var(--paleblue); border-color: var(--blue); }
+.callout.info .label { color: var(--blue); }
+.callout.tip  { background: var(--palegreen); border-color: var(--teal); }
+.callout.tip .label { color: var(--teal); }
+.callout.warn { background: var(--paleamber); border-color: var(--amber); }
+.callout.warn .label { color: var(--amber); }
+.callout.grey { background: var(--palegrey); border-color: var(--slate); }
+.callout.grey .label { color: var(--slate); }
+
+.flow { font-size: 15.5px; line-height: 1.9; }
+
+/* ---------- Tables ---------- */
+.tbl-wrap { margin: 18px 0 24px; overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.5;
+}
+th {
+  background: var(--lightblue);
+  color: var(--ink);
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 14px;
+  border: 1px solid var(--rule);
+  font-size: 14.5px;
+  vertical-align: top;
+}
+td {
+  padding: 9px 14px;
+  border: 1px solid var(--rule);
+  vertical-align: top;
+}
+tbody tr:nth-child(even) { background: var(--paleblue); }
+td strong { color: var(--ink); }
+.decoder td:first-child { white-space: nowrap; }
+
+/* ---------- Tree block ---------- */
+.tree {
+  font-family: "SF Mono", "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.75;
+  background: var(--palegrey);
+  border-left: 5px solid var(--slate);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin: 8px 0 14px;
+  white-space: pre;
+  overflow-x: auto;
+}
+.tree .c { color: var(--maroon); }
+.tree .note { color: var(--muted); font-family: inherit; }
+
+/* ---------- TOC ---------- */
+.toc { margin: 8px 0 0; }
+.toc a {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--slate);
+  padding: 9px 0;
+  border-bottom: 1px solid #EAEEF1;
+  font-size: 16px;
+}
+.toc a:hover { color: var(--blue); }
+.toc a .n { color: var(--blue); font-weight: 700; min-width: 26px; }
+.toc a .t { flex: 1; }
+.toc a .t::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+}
+
+/* ---------- Footer ---------- */
+.foot {
+  margin-top: 48px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  font-size: 12.5px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+}
+
+.arrow { color: var(--blue); font-weight: 700; padding: 0 2px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  .sheet { padding: 36px 22px 40px; margin: 0; border-radius: 0; }
+  body { font-size: 16px; }
+  .cover-title { font-size: 32px; }
+  .cover-sub { font-size: 18px; }
+  table { font-size: 13.5px; }
+  th, td { padding: 8px 9px; }
+  .decoder td:first-child { white-space: normal; }
+  code { white-space: normal; }
+}
+
+/* ---------- Print ---------- */
+@media print {
+  body { background: #fff; font-size: 11pt; }
+  .sheet { box-shadow: none; margin: 0; max-width: none; padding: 0; border-radius: 0; }
+  h1.sec { break-after: avoid; }
+  h2.sub, h3.subsub { break-after: avoid; }
+  table, .callout, .tree { break-inside: avoid; }
+  tr { break-inside: avoid; }
+  a { color: var(--slate); text-decoration: none; }
+  .pagebreak { break-before: page; }
+}
+
+/* ===== Extensions for AI-Engineering primer ===== */
+
+/* Step blocks — numbered setup sequences */
+.steps { counter-reset: step; margin: 18px 0 24px; padding: 0; list-style: none; }
+.steps > li {
+  position: relative;
+  counter-increment: step;
+  margin: 0 0 14px;
+  padding: 14px 18px 14px 58px;
+  background: var(--paleblue);
+  border-radius: 8px;
+  border-left: 4px solid var(--blue);
+}
+.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 14px; top: 14px;
+  width: 30px; height: 30px;
+  background: var(--blue); color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+.steps > li .st { font-weight: 700; color: var(--ink); display: block; margin-bottom: 2px; }
+.steps > li p { margin: 6px 0 0; }
+.steps > li p:first-of-type { margin-top: 4px; }
+
+/* Code block — multi-line, for terminal/snippets */
+pre.block {
+  font-family: "SF Mono","JetBrains Mono",Consolas,monospace;
+  font-size: 13.5px;
+  line-height: 1.7;
+  background: #14202E;
+  color: #D6E2EC;
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin: 14px 0 18px;
+  overflow-x: auto;
+  white-space: pre;
+}
+pre.block .cm { color: #7C93A6; }       /* comment */
+pre.block .pr { color: #6FB3B8; }       /* prompt symbol */
+pre.block .kw { color: #E0A458; }       /* keyword / command */
+pre.block .st { color: #9ED9A0; }       /* string */
+pre.block.tag-label { position: relative; }
+
+/* "Starter kit" feature grid */
+.kit { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0 24px; }
+.kit .card {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: #fff;
+}
+.kit .card h4 {
+  margin: 0 0 4px; font-size: 15.5px; color: var(--ink);
+  display: flex; align-items: baseline; gap: 8px;
+}
+.kit .card h4 .role {
+  font-size: 11px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--teal);
+}
+.kit .card p { margin: 0; font-size: 14px; line-height: 1.55; }
+.kit .card .url { font-family: "SF Mono",Consolas,monospace; font-size: 12.5px; color: var(--blue); }
+
+/* distrust callout — a sharper amber for "verify this" */
+.callout.verify { background: #FCEEE9; border-color: #C0552F; }
+.callout.verify .label { color: #C0552F; }
+
+@media (max-width: 720px) {
+  .kit { grid-template-columns: 1fr; }
+  .steps > li { padding-left: 52px; }
+}
+
+@media print {
+  .steps > li, pre.block, .kit .card { break-inside: avoid; }
+  pre.block { background: #f4f6f8; color: #1a2332; border: 1px solid var(--rule); }
+  pre.block .cm { color: #6A7884; }
+}
+
+/* ===== Extensions for "Working in a Real Codebase" ===== */
+
+/* Annotated artifact — a code/trace/log panel with numbered annotation pins */
+.artifact {
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 16px 0 10px;
+  border: 1px solid #243140;
+}
+.artifact .cap {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  color: #9FB3C4; background: #1B2836; padding: 8px 16px;
+  border-bottom: 1px solid #243140;
+}
+.artifact pre {
+  margin: 0; padding: 16px 18px;
+  font-family: "SF Mono","JetBrains Mono",Consolas,monospace;
+  font-size: 13px; line-height: 1.75;
+  background: #14202E; color: #D6E2EC;
+  overflow-x: auto; white-space: pre;
+}
+.artifact pre .dim { color: #6F8597; }
+.artifact pre .err { color: #E8806A; }
+.artifact pre .ok  { color: #8FCF92; }
+.artifact pre .warn { color: #E0A458; }
+.artifact pre .kw  { color: #6FB3B8; }
+.artifact pre .path { color: #B5C7D6; }
+.artifact pre .pin {
+  display: inline-block; min-width: 19px; height: 19px; line-height: 19px;
+  text-align: center; background: #C0552F; color: #fff;
+  border-radius: 50%; font-size: 11.5px; font-weight: 700;
+  font-family: -apple-system, sans-serif; margin-left: 8px;
+  vertical-align: middle;
+}
+/* annotation list that pairs with pins */
+.annot { margin: 0 0 22px; padding: 0; list-style: none; counter-reset: pin; }
+.annot li {
+  position: relative; padding: 4px 0 8px 36px; margin: 0;
+  font-size: 15px; line-height: 1.55;
+}
+.annot li::before {
+  counter-increment: pin; content: counter(pin);
+  position: absolute; left: 0; top: 4px;
+  width: 22px; height: 22px; line-height: 22px; text-align: center;
+  background: #C0552F; color: #fff; border-radius: 50%;
+  font-size: 12.5px; font-weight: 700;
+}
+.annot li code { white-space: normal; }
+
+/* Decision procedure — "when X, do Y" flow */
+.decision {
+  border: 1px solid var(--rule); border-radius: 8px;
+  margin: 18px 0 24px; overflow: hidden;
+}
+.decision .dhead {
+  background: var(--ink); color: #fff; padding: 10px 16px;
+  font-size: 14.5px; font-weight: 700; letter-spacing: .02em;
+}
+.decision .drow {
+  display: grid; grid-template-columns: 200px 1fr;
+  border-top: 1px solid var(--rule);
+}
+.decision .drow:nth-child(even) { background: var(--paleblue); }
+.decision .dwhen {
+  padding: 11px 16px; font-weight: 700; color: var(--ink);
+  font-size: 14.5px; border-right: 2px solid var(--rule);
+}
+.decision .dthen { padding: 11px 16px; font-size: 14.5px; }
+.decision .dthen code { white-space: normal; }
+
+@media (max-width: 720px) {
+  .decision .drow { grid-template-columns: 1fr; }
+  .decision .dwhen { border-right: none; border-bottom: 1px solid var(--rule); }
+}
+@media print {
+  .artifact, .decision, .annot li { break-inside: avoid; }
+  .artifact pre { background: #f4f6f8; color: #1a2332; }
+  .artifact .cap { background: #e8edf1; color: #33414f; }
+}
+
+</style>
+</head>
+<body>
+<main class="sheet">
+<p class="eyebrow">FundsIndia &middot; Product Engineering Enablement</p>
+<hr class="cover-rule">
+<h1 class="cover-title">Working in a Real Codebase</h1>
+<p class="cover-sub">The Three Skills That Turn Understanding Into Doing &mdash; Reading Code You Didn&rsquo;t Write, Proving It With Tests, and Watching It Run</p>
+<p class="cover-meta">Primer 4 &middot; The depth document &mdash; read it at the wall, not before</p>
+<div class="callout info"><p class="label">What this primer is, and how to use it</p><p>The first three primers gave you the map (how software moves), the parts (what it&rsquo;s made of), and the engine (building with AI). This one is about the <strong>moves</strong> &mdash; the specific, repeatable things you do when you&rsquo;re actually in a codebase trying to get something done. It&rsquo;s deliberately more hands-on and less conceptual than the others.</p><p>Three skills live here, and they&rsquo;re a single chain, not three separate topics. Something&rsquo;s wrong, or you need to change something &mdash; so you <strong>read code you didn&rsquo;t write</strong> to understand it. You make a change, and you <strong>prove it&rsquo;s right with a test</strong> rather than hoping. Then it&rsquo;s running for real users, and you <strong>watch it through observability</strong> to know it&rsquo;s actually healthy. Debug &rarr; prove &rarr; watch. That&rsquo;s the loop of real engineering work, and it&rsquo;s what the task ladder will have you doing over and over.</p><p><strong>Don&rsquo;t read this cover-to-cover up front.</strong> Skim it once so you know what&rsquo;s here, then come back to the exact section when you hit its wall &mdash; staring at unfamiliar code, trying to test something, or wondering why your deployed app is misbehaving. That just-in-time habit is how engineers actually learn this.</p></div>
+
+<div class="pagebreak"></div>
+<h1 class="sec">Contents</h1>
+<div class="toc"><a href="#s1"><span class="n">1</span><span class="t">Reading Code You Didn&rsquo;t Write</span></a><a href="#s2"><span class="n">2</span><span class="t">Proving It Works: Testing as a Discipline</span></a><a href="#s3"><span class="n">3</span><span class="t">Watching It Run: Observability</span></a><a href="#s4"><span class="n">4</span><span class="t">The Loop, and How It Connects</span></a></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s1">1 &middot; Reading Code You Didn&rsquo;t Write</h1>
+<p>This is the actual day-one skill of a Product Engineer, and almost nobody teaches it explicitly. You will spend far more time reading code than writing it &mdash; understanding what&rsquo;s already there before you can safely change it, or figuring out why something behaves the way it does. Code you didn&rsquo;t write (including code <em>you</em> wrote three weeks ago, or that AI wrote for you) is the normal condition, not the exception.</p>
+<p>The beginner instinct is to read code like prose &mdash; top to bottom, every line, trying to hold it all in your head. That doesn&rsquo;t work and isn&rsquo;t how experienced engineers do it. They read with a <strong>question</strong> in mind and navigate toward the answer, ignoring everything irrelevant to it. The skill is targeted, not exhaustive.</p>
+<div class="callout tip"><p class="label">The single most important reframe</p><p>You almost never need to understand a <em>whole</em> codebase. You need to understand the <strong>one path</strong> relevant to your task. &ldquo;Where does the goal-progress percentage get calculated?&rdquo; is answerable without reading 95% of the code. Hold a specific question, follow the thread to it, and let the rest stay a black box until a question makes it relevant. Trying to understand everything is the fastest way to understand nothing.</p></div>
+<h2 class="sub">The techniques, concretely</h2>
+<p>Here&rsquo;s how experienced engineers actually navigate an unfamiliar codebase. None of this is advanced &mdash; it&rsquo;s just rarely said out loud.</p>
+<ol class="steps"><li><span class="st">Start from something you can see, and work backwards</span><p>You can see a number on a screen, a button, an error message. Those are your entry points. &ldquo;This dashboard shows &lsquo;68% to your goal&rsquo; &mdash; where does that come from?&rdquo; Search the codebase for the visible text (&ldquo;to your goal&rdquo;), find where it&rsquo;s rendered, and trace backwards from there toward the calculation. Visible thing &rarr; the code behind it is the most reliable way in.</p></li><li><span class="st">Follow the data, not the file structure</span><p>Don&rsquo;t try to map the folders. Pick a piece of data &mdash; the goal&rsquo;s target amount &mdash; and follow its journey: where it&rsquo;s entered, where it&rsquo;s stored, where it&rsquo;s read back, where it&rsquo;s displayed. Following one piece of data through the system teaches you the architecture as a side effect, in the order that actually matters.</p></li><li><span class="st">Use search as your primary tool</span><p>Your editor&rsquo;s search-across-files (and &ldquo;go to definition&rdquo; / &ldquo;find all references&rdquo;) is how you navigate, not scrolling. Search for a function name to find everywhere it&rsquo;s used. Search for a piece of text to find where it lives. Professional code reading is mostly search.</p></li><li><span class="st">Read the names, trust them provisionally</span><p>Good code names things honestly: a function called <code>calculateGoalProgress</code> almost certainly does that. You can understand the <em>shape</em> of code by reading function and variable names alone, treating each as a labelled box you only open if you need what&rsquo;s inside. This lets you skim at altitude and descend only where needed.</p></li><li><span class="st">Make the AI your tour guide</span><p>This is the unfair advantage you have that engineers ten years ago didn&rsquo;t. Paste a chunk of unfamiliar code into Claude and ask &ldquo;explain what this does, step by step&rdquo; or &ldquo;where would I look to change how goal progress is calculated?&rdquo; Point Claude Code at the whole repo and ask it to trace a path for you. <strong>But</strong> &mdash; and this is the Primer 3 distrust discipline applied to reading &mdash; verify its explanation against the actual code. It can misread too.</p></li></ol>
+<h2 class="sub">A worked example: tracing a bug</h2>
+<p>Let&rsquo;s make this real. Suppose a user reports: &ldquo;My savings goal says I&rsquo;m 68% there, but I&rsquo;ve saved &#8377;6.8 lakh of a &#8377;10 lakh goal &mdash; that should be 68%&hellip; wait, that&rsquo;s right. But my <em>other</em> goal says 0% and I&rsquo;ve definitely put money in.&rdquo; You didn&rsquo;t write this code. Here&rsquo;s the trace.</p>
+<div class="artifact"><div class="cap">The function you find by searching for &ldquo;goal progress&rdquo;</div><pre><span class="dim">// goals.js — found by searching the codebase for "progress"</span>
+function <span class="kw">calculateGoalProgress</span>(goal) {
+  <span class="kw">const</span> saved = goal.<span class="path">currentAmount</span>;
+  <span class="kw">const</span> target = goal.<span class="path">targetAmount</span>;
+  <span class="kw">return</span> Math.round((saved / target) * <span class="ok">100</span>);<span class="pin">1</span>
+}
+
+<span class="dim">// ...elsewhere, where a new goal is created:</span>
+function <span class="kw">createGoal</span>(name, target) {
+  <span class="kw">return</span> {
+    name: name,
+    targetAmount: target,
+    currentAmount: <span class="dim">undefined</span><span class="pin">2</span>
+  };
+}</pre></div>
+<ul class="annot"><li>The math itself is correct: saved divided by target, times 100, rounded. So the calculation isn&rsquo;t the bug &mdash; which means the inputs must be. This is the key move: when the logic looks right, suspect the data going into it.</li><li>There it is. A newly created goal sets <code>currentAmount</code> to <code>undefined</code> instead of <code>0</code>. When you compute <code>undefined / target</code>, the result is <code>NaN</code> (&ldquo;not a number&rdquo;), and rounding that gives <code>NaN</code>, which the screen probably renders as <code>0%</code> or a blank. The first goal worked because the user had added money (setting a real number); the second showed 0% because no money had been added since creation, so it was still <code>undefined</code>.</li></ul>
+<div class="callout info"><p class="label">What just happened, and why it generalises</p><p>Notice the <strong>shape</strong> of that trace, because it&rsquo;s the universal one. You started from a visible symptom (&ldquo;says 0%&rdquo;), searched for the relevant code, read the calculation and judged it correct, then reasoned backwards to the data feeding it and found the real cause upstream. You never read the whole app &mdash; you followed one thread from symptom to root. That&rsquo;s debugging, and it&rsquo;s 80% reading and reasoning, 20% changing. The fix here is one line (default to <code>0</code>); finding it was the actual work.</p></div>
+<h2 class="sub">Reading a stack trace: the error&rsquo;s treasure map</h2>
+<p>When code crashes, it produces a <strong>stack trace</strong> &mdash; a wall of text that looks intimidating and is actually a precise map to the problem. It&rsquo;s the chain of function calls that led to the crash, most-recent first. Learning to read one turns panic into a two-minute fix. Here&rsquo;s the crash from the bug above, as it would appear:</p>
+<div class="artifact"><div class="cap">A stack trace &mdash; read it top-down</div><pre><span class="err">TypeError: Cannot read properties of undefined (reading 'toFixed')</span><span class="pin">1</span>
+    <span class="kw">at</span> <span class="path">formatProgress</span> (goals.js:<span class="warn">42</span>:<span class="warn">28</span>)<span class="pin">2</span>
+    <span class="kw">at</span> <span class="path">GoalCard</span> (GoalCard.jsx:<span class="warn">17</span>:<span class="warn">12</span>)<span class="pin">3</span>
+    <span class="kw">at</span> <span class="path">renderDashboard</span> (Dashboard.jsx:88:4)
+    <span class="dim">at renderApp (index.js:23:1)</span><span class="pin">4</span>
+    <span class="dim">... 14 more framework lines ...</span></pre></div>
+<ul class="annot"><li>The top line is <em>what</em> went wrong, in plain-ish terms: something tried to call <code>.toFixed</code> (a number-formatting function) on a value that was <code>undefined</code>. This is the same root cause as before, surfacing a different way &mdash; a missing number. The error <em>type</em> and <em>message</em> are the headline; read them first.</li><li>The first &ldquo;at&rdquo; line is <em>where</em> it went wrong, and it&rsquo;s the one that matters most: file <code>goals.js</code>, line <code>42</code>, column <code>28</code>. This is your destination &mdash; open that file, go to that line. Nine times out of ten the fix is right there.</li><li>Each line below is the caller of the one above &mdash; the breadcrumb trail of how the code got there. <code>GoalCard</code> called <code>formatProgress</code>, the dashboard rendered the <code>GoalCard</code>. Useful for context, but you rarely need to go deep down the list.</li><li>The greyed lines are framework/library internals &mdash; code you didn&rsquo;t write and won&rsquo;t fix. Mentally skip them. A huge part of reading traces is knowing which lines are <em>yours</em> (your filenames) and ignoring the rest.</li></ul>
+<div class="callout tip"><p class="label">The move when you see a stack trace</p><p>Read the top line (what), jump to the first line that names <strong>your</strong> file (where), open it, and look. If it&rsquo;s not obvious, paste the whole trace into Claude and ask &ldquo;what is this telling me and where should I look?&rdquo; &mdash; traces are exactly the kind of structured text AI reads well. The one thing you must <em>not</em> do is panic at the wall of text and close it. It&rsquo;s a map, and X is usually on the second line.</p></div>
+<div class="decision"><div class="dhead">When you&rsquo;re staring at unfamiliar code &mdash; the move to make</div><div class="drow"><div class="dwhen">You need to change something</div><div class="dthen">Find the visible thing it affects (a label, a number, a button), search for that, and trace backwards to the code behind it.</div></div><div class="drow"><div class="dwhen">Something is broken, no error shown</div><div class="dthen">Start from the wrong output. Find where it&rsquo;s calculated, confirm the logic, then suspect the data feeding it (as in the worked example).</div></div><div class="drow"><div class="dwhen">Something crashed with an error</div><div class="dthen">Read the stack trace top-down: what (top line), where (first line naming your file). Go there.</div></div><div class="drow"><div class="dwhen">You&rsquo;re lost in the structure</div><div class="dthen">Stop mapping folders. Pick one piece of data and follow its journey through the system instead.</div></div><div class="drow"><div class="dwhen">A chunk is genuinely opaque</div><div class="dthen">Paste it into Claude: &ldquo;explain step by step.&rdquo; Then verify the explanation against the code &mdash; don&rsquo;t take it on faith.</div></div><div class="drow"><div class="dwhen">You&rsquo;ve found the fix</div><div class="dthen">Before changing anything, make sure you can explain the root cause out loud. If you can&rsquo;t, you haven&rsquo;t found it yet &mdash; you&rsquo;ve found a symptom.</div></div></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s2">2 &middot; Proving It Works: Testing as a Discipline</h1>
+<p>Primer 1 named the types of tests (unit, integration, E2E). This section is about actually <em>thinking in tests</em> &mdash; which is a different and more valuable thing. For a wealth platform where a calculation error is real money and a regulatory event, testing isn&rsquo;t optional polish. It&rsquo;s close to the centre of the job, and it&rsquo;s the thing that lets you change code confidently instead of fearfully.</p>
+<div class="callout info"><p class="label">What a test actually is</p><p>Strip away the mystique: a test is just a small piece of code that runs your real code with a known input and checks the output is what you expected. That&rsquo;s it. &ldquo;When I call <code>calculateGoalProgress</code> with a goal that&rsquo;s &#8377;5 lakh saved of &#8377;10 lakh, I expect 50.&rdquo; If the code returns 50, the test passes (green). If it returns anything else, the test fails (red) and tells you. A test suite is hundreds of these tiny checks, run automatically in seconds.</p></div>
+<p>Here&rsquo;s what a real test looks like &mdash; the one that would have caught our bug from Section 1 before it ever reached a user:</p>
+<div class="artifact"><div class="cap">A test for the goal-progress calculation</div><pre><span class="dim">// goals.test.js — runs automatically in CI on every change</span>
+<span class="kw">test</span>(<span class="ok">"progress is 50% when half the goal is saved"</span>, () => {
+  <span class="kw">const</span> goal = { currentAmount: <span class="warn">500000</span>, targetAmount: <span class="warn">1000000</span> };
+  <span class="kw">expect</span>(calculateGoalProgress(goal)).<span class="kw">toBe</span>(<span class="warn">50</span>);<span class="pin">1</span>
+});
+
+<span class="kw">test</span>(<span class="ok">"progress is 0% for a brand-new goal with nothing saved"</span>, () => {<span class="pin">2</span>
+  <span class="kw">const</span> goal = createGoal(<span class="ok">"New car"</span>, <span class="warn">1000000</span>);
+  <span class="kw">expect</span>(calculateGoalProgress(goal)).<span class="kw">toBe</span>(<span class="warn">0</span>);<span class="pin">3</span>
+});</pre></div>
+<ul class="annot"><li>The happy-path test: set up a known input (&#8377;5 lakh of &#8377;10 lakh), call the real function, and assert (<code>expect</code>) the answer is exactly 50. Readable almost as English. This is the entire mechanic of testing.</li><li>The <em>second</em> test is the one that matters &mdash; it tests the edge case that actually broke. A brand-new goal, nothing saved yet. This is where your PM instinct for edge cases becomes a testing superpower: you naturally think &ldquo;but what about when&hellip;&rdquo;, and each &ldquo;what about&rdquo; is a test worth writing.</li><li>This test would have <em>failed</em> on the buggy code &mdash; <code>createGoal</code> set <code>currentAmount</code> to <code>undefined</code>, so the function returned <code>NaN</code>, not <code>0</code>. Red test, caught in CI, never ships. That&rsquo;s the whole value proposition: the bug is found by a robot in seconds, not by a customer in production.</li></ul>
+<h2 class="sub">Why &ldquo;write the test first&rdquo; changes how you think</h2>
+<p>You&rsquo;ll hear engineers talk about writing the test <em>before</em> the code. It sounds backwards, but there&rsquo;s a deep reason: writing the test first forces you to define exactly what &ldquo;correct&rdquo; means before you build anything. You can&rsquo;t write <code>expect(...).toBe(50)</code> until you&rsquo;ve decided, precisely, what the right answer is. That act of specifying the expected behaviour up front is identical to writing a crisp acceptance criterion &mdash; which is something you already do as a PM. Testing isn&rsquo;t a new muscle so much as your existing spec-writing muscle, pointed at code.</p>
+<h2 class="sub">What makes a test good (and what makes one useless)</h2>
+<div class="tbl-wrap"><table><thead><tr><th>A good test&hellip;</th><th>A weak or harmful test&hellip;</th></tr></thead><tbody><tr><td>Tests behaviour a user cares about (&ldquo;progress shows correctly&rdquo;).</td><td>Tests trivial implementation details that don&rsquo;t matter and break on any change.</td></tr><tr><td>Covers the edge cases &mdash; zero, empty, negative, huge, concurrent.</td><td>Only tests the happy path, giving false confidence.</td></tr><tr><td>Is readable &mdash; you can see what&rsquo;s expected and why.</td><td>Is so convoluted that a failure tells you nothing.</td></tr><tr><td>Fails reliably when the thing it checks is broken.</td><td>Is &ldquo;flaky&rdquo; &mdash; passes and fails randomly, so everyone learns to ignore it.</td></tr></tbody></table></div>
+<div class="callout warn"><p class="label">Flaky tests are worse than no tests</p><p>A test that passes and fails at random &mdash; usually because it depends on timing, network, or order &mdash; is genuinely harmful. Teams learn to ignore red from a flaky test, and then ignore a <em>real</em> failure hiding among the noise. If you write or inherit a flaky test, fixing or deleting it is real work, not housekeeping. &ldquo;Green&rdquo; only means something if red is always meaningful.</p></div>
+<h2 class="sub">Reading a failing test</h2>
+<p>Most of your test interaction won&rsquo;t be writing them &mdash; it&rsquo;ll be reading one that just went red and figuring out why. A good test failure is a precise bug report. Here&rsquo;s what one looks like:</p>
+<div class="artifact"><div class="cap">A failing test &mdash; the output tells you everything</div><pre><span class="err">&#10007; FAIL</span>  goals.test.js
+  <span class="dim">progress is 0% for a brand-new goal with nothing saved</span>
+
+    <span class="kw">expect</span>(received).<span class="kw">toBe</span>(expected)
+
+    Expected: <span class="ok">0</span><span class="pin">1</span>
+    Received: <span class="err">NaN</span><span class="pin">2</span>
+
+      <span class="kw">at</span> <span class="path">goals.test.js:9:42</span><span class="pin">3</span>
+
+<span class="dim">Tests: 1 failed, 14 passed, 15 total</span><span class="pin">4</span></pre></div>
+<ul class="annot"><li>What you said should happen: the answer should be <code>0</code>.</li><li>What actually happened: the code produced <code>NaN</code>. The gap between Expected and Received <em>is</em> the bug, stated precisely. You don&rsquo;t have to guess &mdash; the test hands you both numbers.</li><li>Exactly which test, and which line, so you can go straight to it. Same &ldquo;where&rdquo; skill as reading a stack trace.</li><li>The summary: 1 failed, 14 passed. The other 14 still work &mdash; so whatever you changed broke this one specific thing, narrowing the search enormously. This is why a good test suite makes changing code <em>safe</em>: it tells you instantly and specifically when you&rsquo;ve broken something.</li></ul>
+<div class="decision"><div class="dhead">Testing &mdash; the move to make</div><div class="drow"><div class="dwhen">You&rsquo;re about to change code</div><div class="dthen">Run the existing tests first, so you know the baseline is green before you touch anything.</div></div><div class="drow"><div class="dwhen">You&rsquo;re building something new</div><div class="dthen">Ask: what would prove this is right? Write that as a test &mdash; ideally before or alongside the code, not after.</div></div><div class="drow"><div class="dwhen">A test just went red</div><div class="dthen">Read Expected vs. Received. The gap is the bug. Then decide: is the <em>code</em> wrong, or is the <em>test</em> wrong? Both happen.</div></div><div class="drow"><div class="dwhen">You found a bug in production</div><div class="dthen">Write a test that reproduces it (goes red), <em>then</em> fix the code (test goes green). Now it can never silently return.</div></div><div class="drow"><div class="dwhen">You&rsquo;re directing AI to build</div><div class="dthen">Ask it for the tests too &mdash; &ldquo;write tests including edge cases&rdquo; &mdash; then read them critically. AI writing its own happy-path-only tests is a classic blind spot.</div></div><div class="drow"><div class="dwhen">A test is flaky</div><div class="dthen">Don&rsquo;t ignore it. Fix the cause or delete it. A test no one trusts is worse than no test.</div></div></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s3">3 &middot; Watching It Run: Observability</h1>
+<p>Tests prove your code is right <em>before</em> it ships. Observability is how you know it&rsquo;s healthy <em>after</em> &mdash; once it&rsquo;s running for real users, with real data, at real scale, where things happen that no test anticipated. If testing is the dress rehearsal, observability is watching the live show with the house lights up. It&rsquo;s the difference between &ldquo;it worked when I tried it&rdquo; and &ldquo;it&rsquo;s working right now for everyone.&rdquo;</p>
+<div class="callout info"><p class="label">The three things you watch (the classic trio)</p><p><strong>Logs</strong> &mdash; timestamped messages the code writes as it runs (&ldquo;goal created for user 4821&rdquo;, &ldquo;payment failed: card declined&rdquo;). The detailed diary. Great for &ldquo;what exactly happened to <em>this</em> request?&rdquo;</p><p><strong>Metrics</strong> &mdash; numbers measured over time (requests per minute, average response time, error rate, signups today). The dashboard gauges. Great for &ldquo;is the system healthy <em>overall</em>, and is it trending wrong?&rdquo;</p><p><strong>Traces</strong> &mdash; the path of a single request as it moves through all the pieces of the system, with timing at each step. Great for &ldquo;this was slow &mdash; <em>which part</em> was slow?&rdquo;</p></div>
+<h2 class="sub">Telling &ldquo;slow&rdquo; from &ldquo;broken&rdquo; &mdash; the core literacy</h2>
+<p>The single most useful observability skill for a Product Engineer isn&rsquo;t running the tools &mdash; it&rsquo;s reading them well enough to tell the difference between <em>slow</em>, <em>broken</em>, and <em>fine</em>. Those three call for completely different responses, and confusing them is how incidents get mishandled. Here&rsquo;s a metrics view of an app and how to read it:</p>
+<div class="artifact"><div class="cap">A metrics dashboard &mdash; what&rsquo;s it telling you?</div><pre><span class="dim">Goal Service — last 60 minutes</span>
+
+  Requests/min      <span class="ok">1,240</span>   <span class="dim">(normal: ~1,200)</span>      <span class="ok">&#9679; healthy</span><span class="pin">1</span>
+  Error rate        <span class="err">8.4%</span>    <span class="dim">(normal: &lt;0.5%)</span>      <span class="err">&#9679; ALERT</span><span class="pin">2</span>
+  Avg response time <span class="warn">2,800ms</span>  <span class="dim">(normal: ~180ms)</span>    <span class="warn">&#9679; degraded</span><span class="pin">3</span>
+  Database          <span class="ok">connected</span>                          <span class="ok">&#9679; healthy</span>
+
+  <span class="dim">Recent errors (from logs):</span>
+  <span class="err">14:32:09</span>  TimeoutError: payment-gateway did not respond<span class="pin">4</span>
+  <span class="err">14:32:04</span>  TimeoutError: payment-gateway did not respond
+  <span class="err">14:31:58</span>  TimeoutError: payment-gateway did not respond</pre></div>
+<ul class="annot"><li>Traffic is normal &mdash; about the usual number of requests. So this isn&rsquo;t a traffic spike or an outage where users can&rsquo;t reach you. People are getting in fine.</li><li>But 8.4% of requests are <em>erroring</em>, against a normal of under half a percent. That&rsquo;s the alarm. Roughly one in twelve users is hitting a failure right now. This is &ldquo;broken,&rdquo; not &ldquo;slow.&rdquo;</li><li>And responses are taking 2.8 seconds against a normal 180ms &mdash; fifteen times slower. So it&rsquo;s <em>also</em> slow. Slow + erroring together is a strong signal that something the app <em>depends on</em> is failing and the app is waiting on it before giving up.</li><li>The logs confirm and pinpoint it: the payment gateway (a third party) is timing out. Your code isn&rsquo;t broken &mdash; something it calls is. That completely changes the response: you&rsquo;re not hunting a bug in your code, you&rsquo;re handling a dependency failure (page the gateway vendor, show users a graceful &ldquo;try again shortly&rdquo;, maybe disable the payment path temporarily). Reading the signals correctly pointed you at the <em>right</em> problem in under a minute.</li></ul>
+<div class="callout tip"><p class="label">Why this is a product skill, not just an ops skill</p><p>Reading that dashboard told a <em>product</em> story: payments are failing for some users right now because a vendor is down, checkout feels broken, and you should communicate rather than debug. Knowing whether you&rsquo;re looking at slow, broken, or fine &mdash; and whether it&rsquo;s <em>your</em> code or a <em>dependency</em> &mdash; is exactly the judgement that lets a Product Engineer respond well to an incident instead of flailing. You don&rsquo;t need to run Datadog or Grafana like an SRE; you need to <em>read</em> them like someone who understands what the numbers mean for users.</p></div>
+<h2 class="sub">What an incident actually looks like</h2>
+<p>An &ldquo;incident&rdquo; is just: something is wrong in production and users are affected. The healthy response, which you saw foreshadowed in Primer 1&rsquo;s rollback section, is a calm sequence, not heroics:</p>
+<ol class="steps"><li><span class="st">Notice &mdash; ideally the monitoring tells you before customers do</span><p>An alert fires (error rate crossed a threshold), or a metric goes red. Good observability means you find out from your dashboard, not from angry tweets. That&rsquo;s the whole point of watching.</p></li><li><span class="st">Assess &mdash; how bad, how many, what&rsquo;s the blast radius</span><p>Read the signals: is it everyone or a slice? Slow or fully broken? Your code or a dependency? The dashboard above answers all three in a minute.</p></li><li><span class="st">Stop the bleeding &mdash; mitigate before you diagnose</span><p>Roll back the recent deploy, flip off the feature flag, or disable the broken path. Get users to safety <em>first</em>; understand the root cause <em>after</em>. This is counterintuitive and correct.</p></li><li><span class="st">Diagnose and fix &mdash; calmly, now that no one&rsquo;s actively bleeding</span><p>With the pressure off, use the logs and traces to find root cause, write a test that reproduces it (Section 2), and ship the real fix.</p></li><li><span class="st">Learn &mdash; the blameless postmortem</span><p>Afterwards, the team asks &ldquo;what made this possible and how do we prevent the class of problem?&rdquo; &mdash; not &ldquo;whose fault.&rdquo; The output is usually a new test, a new alert, or a new guardrail. Good teams get more reliable precisely because they treat incidents as lessons.</p></li></ol>
+<div class="decision"><div class="dhead">Observability &mdash; the move to make</div><div class="drow"><div class="dwhen">Users report something&rsquo;s wrong</div><div class="dthen">Check the dashboard before diving into code. Is it slow, broken, or fine? Everyone or a few? That shapes everything.</div></div><div class="drow"><div class="dwhen">Error rate is up but traffic is normal</div><div class="dthen">Something&rsquo;s failing, not overloaded. Check recent errors in the logs &mdash; and suspect a recent deploy or a failing dependency.</div></div><div class="drow"><div class="dwhen">It&rsquo;s slow but not erroring</div><div class="dthen">Look at traces to find <em>which</em> step is slow. Often one dependency or one slow database query is the culprit.</div></div><div class="drow"><div class="dwhen">Everything red, traffic at zero</div><div class="dthen">Users can&rsquo;t even reach you &mdash; an outage. Check the deploy host and whether the last deploy is the cause; consider rolling back.</div></div><div class="drow"><div class="dwhen">You just shipped and metrics moved</div><div class="dthen">Correlate with your deploy. If your change lines up with the regression, rolling back is the fast, safe first move.</div></div><div class="drow"><div class="dwhen">It&rsquo;s a dependency, not your code</div><div class="dthen">Stop debugging your code. Handle it as a dependency failure: graceful degradation for users, and chase the vendor.</div></div></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s4">4 &middot; The Loop, and How It Connects</h1>
+<p>Step back and see the three skills as the single loop they really are. They&rsquo;re not three subjects to study &mdash; they&rsquo;re three phases of every real change you&rsquo;ll ever make to software.</p>
+<div class="callout info"><p class="label">Debug &rarr; prove &rarr; watch</p><p><strong>Read</strong> (Section 1): something needs changing or fixing, so you navigate the existing code to understand it and find the right spot. This is where most of the time and thinking goes.</p><p><strong>Prove</strong> (Section 2): you make the change and write a test that demonstrates it&rsquo;s correct &mdash; especially on the edge cases &mdash; so a robot guards it forever and you can change things without fear.</p><p><strong>Watch</strong> (Section 3): it ships, and you observe it running for real users, ready to read the signals and respond if reality surprises you, as reality does.</p></div>
+<p>The worked example carried the whole loop without us naming it: a user reported a wrong percentage (a <strong>watch</strong> signal), you <strong>read</strong> the code to trace it to an <code>undefined</code> default, and the fix should land with a <strong>test</strong> that <strong>proves</strong> a new goal reads 0% &mdash; which, had it existed, would have caught the bug before any user ever saw it. That&rsquo;s the loop closing on itself, each skill covering for the others.</p>
+<h2 class="sub">How this connects to the rest of the suite</h2>
+<div class="tbl-wrap"><table><thead><tr><th>When you&rsquo;re&hellip;</th><th>Reach for&hellip;</th></tr></thead><tbody><tr><td>Wondering where code lives in the journey from laptop to user</td><td>Primer 1 (the delivery lifecycle) &mdash; environments, repos, PRs, CI/CD, rollback.</td></tr><tr><td>Reasoning about a database, auth, state, or storage</td><td>Primer 2 (the building blocks) &mdash; the primitives the code is made of.</td></tr><tr><td>Directing AI to build, and deciding whether to trust the output</td><td>Primer 3 (building with AI) &mdash; specify, steer, and distrust. This primer&rsquo;s &ldquo;verify the AI&rsquo;s explanation&rdquo; is that discipline applied to reading.</td></tr><tr><td>Actually in the code &mdash; debugging, testing, or watching it run</td><td>This primer. The three moves above.</td></tr><tr><td>Wondering what to build next and in what order</td><td>The task ladder &mdash; which puts all of this into practice, rung by rung, on your own repo.</td></tr></tbody></table></div>
+<div class="callout tip"><p class="label">The honest truth about this primer</p><p>You can&rsquo;t absorb these three skills by reading about them &mdash; you absorb them by doing them, badly at first, on real code. This document&rsquo;s job was to give you the <em>moves</em> so that when you&rsquo;re staring at unfamiliar code, or a red test, or a dashboard full of alarms, you recognise the situation and know the first step. The fluency comes from the reps. The task ladder is where the reps live, and every one of them ends at the same gate: an engineer reads your work and decides whether it earns their respect. These three skills &mdash; reading, proving, watching &mdash; are most of what earns it.</p></div>
+<div class="foot"><span>Working in a Real Codebase  ·  FundsIndia Product Engineering Enablement  ·  Primer 4</span><span></span></div>
+</main>
+</body>
+</html>

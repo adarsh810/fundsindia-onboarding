@@ -1,0 +1,837 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Spec 1 — Domain Entity Model & Event Spine</title><style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 860px; margin: 40px auto; padding: 0 24px 80px; color: #1a1a1a; line-height: 1.7; }
+  h1 { font-size: 2rem; margin-bottom: 0.3em; } h2 { font-size: 1.4rem; margin-top: 2em; border-bottom: 1px solid #e5e5e5; padding-bottom: 0.3em; }
+  h3 { font-size: 1.1rem; margin-top: 1.5em; } pre { background: #f5f5f5; padding: 16px; border-radius: 8px; overflow-x: auto; }
+  code { background: #f0f0f0; padding: 2px 5px; border-radius: 4px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; } blockquote { border-left: 3px solid #d0d0d0; margin-left: 0; padding-left: 16px; color: #555; }
+  table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+  th { background: #f5f5f5; } a { color: #6B3FA0; }
+</style></head><body><h1>Spec 1 · Domain Entity Model &amp; Event Spine</h1>
+<p>Spec 1 · Domain Entity Model &amp; Event Spine</p>
+<p>The frozen shapes the platform is built on</p>
+<p>Architect and staff-eng owned · contracts and invariants, no user stories · drafted in the 3-week lock, frozen after the entity-constraining PRDs · reads on Document 0</p>
+<p>This is the foundational spec. It fixes the entities every other document refers to, the typed event spine that records what happened, and the line between an event and the things that only look like one. Get these shapes right and the PRDs and the other specs hang off them cleanly. Get them wrong and the cost is a retrofit through the whole platform, which is exactly what the lock-list exists to prevent.</p>
+<h1>1 Purpose, scope, and freeze status</h1>
+<p>This spec governs three things: the first-class domain entities and their invariants, the typed domain event spine, and the separation of that spine from the clickstream plane and from derived state. It also holds the definitions of the Commercial Relationship and the relationship graph, though the user-facing lifecycle of establishing them lives in the Onboarding PRD.</p>
+<p>It deliberately does not hold several things that live next to it. The canonical ledger&#39;s internal mechanics, its account structure and posting rules, are Spec 2; this spec fixes the Ledger entry&#39;s identity and its boundary against the rails, not its machinery. The anti-corruption layer, the translation layer, the saga and the BFF pattern are Spec 3. The per-vendor integration contracts are Spec 4. Auth, session, RBAC and ABAC, the consent ledger machinery, PII tokenisation, and the non-functional bar are Spec 5. Catalog ingestion, serving, refresh, and quality are the Catalog PRD. This spec holds the entity shapes; those documents hold the depth.</p>
+<blockquote>
+<p><strong>Freeze status.</strong> This document is drafted now, during the three-week lock, and frozen only after the entity-constraining PRDs (Catalog, Onboarding, Goals, Transactions) have pressure-tested it. What holds it open is our own behaviour surfacing through those PRDs, not vendor timing. The canonical schema is derived from our domain and regulatory needs and is independent of any FP, HyperVerge, or Setu ontology, which is tenet five at work. The only thing that waits on the real vendor APIs is the vendor-to-canonical mapping, and that lives at the ACL boundary in Spec 4, never here. This spec is drafted as if the vendors did not exist. Expect one revision pass; that is the in-parallel discipline made explicit.</p>
+</blockquote>
+<h1>2 Inherited design tenets</h1>
+<p>Eight non-negotiables, drawn from the blueprint and the constitution, stated as they bind this spec.</p>
+<p><strong>Goal is the organising lens.</strong> Goal is mandatory and first-class. Holdings hang under goals, never the reverse, and &quot;unassigned&quot; is a valid state rather than a null.</p>
+<p><strong>The ledger is canonical; holdings are derived.</strong> The double-entry, immutable, bitemporal ledger is the system of record. FP and every future rail are sources reconciled against it, never truths adopted. A Holding is a projection folded from the ledger.</p>
+<p><strong>Two event planes, never merged.</strong> The domain spine (typed, durable, replayable, bitemporal, business-significant) and the clickstream plane (lossy-tolerant analytics) are separated at ingestion, processing, serving, and disaster recovery.</p>
+<p><strong>Four identities, never conflated.</strong> Investor (the person and KYC subject), Identity (the login and auth principal), Commercial Relationship (the advisory contract and attribution), and the relationship graph (kinship and referral) are four distinct things. Conflating any two is the expensive retrofit.</p>
+<p><strong>Vendor concepts never cross the seam.</strong> No FP, Setu, or HyperVerge shape leaks into a domain entity. The entity model is expressed in our terms, and the ACL adapters translate.</p>
+<p><strong>Idempotency everywhere money moves.</strong> Every money-moving operation is idempotent on a client key, because rails get retried.</p>
+<p><strong>Consent, DPDP, and PII protection are first-class from day one.</strong> Consent is an entity, data use cites a live consent, and PII is tokenised, not bolted on later.</p>
+<p><strong>Event proliferation is architecture debt.</strong> A thing is a domain event only if it is business-significant, durable, and matters for reconciliation, regulation, or reconstructing what was known when. When unsure, it is not a domain event.</p>
+<h1>3 The entity model</h1>
+<p>Eleven first-class entities, plus a small set of referenced entities kept shallow in V1. For each: its identity, its boundary (what it is not), key attributes, invariants, lifecycle, and relationships. The four-identity separation in the tenets above is the spine of this section, so the four identities come first.</p>
+<h2>Schema conventions</h2>
+<p>Eight golden rules bind every schema below. They exist mostly to stop the cross-entity name collisions and ambiguity that quietly corrupt a data model over years.</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>What we do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Case, one scheme</td>
+<td>PascalCase for entities and types, camelCase for attributes, lower_snake for enum values. Storage-specific casing (for example Postgres snake_case) is a mapping concern at the persistence boundary, never the canonical model.</td>
+</tr>
+<tr>
+<td>Surrogate keys always</td>
+<td>Every entity&#39;s primary key is an opaque canonical *&lt;entity&gt;*Id. Natural keys such as PAN and ISIN are unique attributes, never the thing other entities point at, because natural keys mutate and have edge cases.</td>
+</tr>
+<tr>
+<td>No bare ambiguous names</td>
+<td>Never a bare id, date, amount, or status that travels. Temporal fields name their axis (recordedAt versus effectiveAt). Money carries currency and is integer minor units or decimal, never float.</td>
+</tr>
+<tr>
+<td>One name, one meaning</td>
+<td>A term means the same thing everywhere, and the same word never means two things across entities. Within an entity, short local names are fine because the entity is the namespace; the moment a field lands on an event or in the analytical substrate it is entity-qualified (orderStatus, not status).</td>
+</tr>
+<tr>
+<td>Typed, named references</td>
+<td>A foreign key is named for what it points at (*&lt;entity&gt;*Ref, or role-qualified like fromPersonRef and toPersonRef), and the Key column states the target.</td>
+</tr>
+<tr>
+<td>Domain language only</td>
+<td>No vendor or rail terms in field names. The single sanctioned escape hatch is railRef, the explicitly opaque external id mapped at the ACL. This is tenet five at the field level.</td>
+</tr>
+<tr>
+<td>Enums closed and stable</td>
+<td>Named, lower_snake, evolved only by adding values through the schema registry, never repurposed, because a silently reused enum value is a landmine for replay.</td>
+</tr>
+<tr>
+<td>Immutable entities look immutable</td>
+<td>Transaction and Ledger entry carry no updatedAt; corrections are new records, never edits.</td>
+</tr>
+</tbody></table>
+<p><strong>On status.</strong> Lifecycle is named <em>status</em> on every entity, an enum, for consistency. It stays entity-local here and is qualified as *&lt;entity&gt;*Status the moment it lands on an event or in the analytical substrate, where attributes from many entities coexist and a bare status would collide.</p>
+<h2>The four identities</h2>
+<h3>Investor</h3>
+<p>The natural person and KYC subject, one record per human, deduped on PAN. Holds KYC status, tax residency, persona type, FATCA and CRS status, and nominee declarations. It is not the login (that is Identity), not the advisory contract (that is the Commercial Relationship), and not a kinship node (that is the relationship graph, even though the same human appears there). Persona shapes it without breaking it. An NRI V1  is still one natural person with a PAN, carrying tax residency NRI, NRE or NRO banking context, and FATCA jurisdiction. A minor V1  is still the Investor and the owner, but cannot operate, so a guardian Identity acts on the minor&#39;s behalf. HUF and other non-individuals Horizon  are out of V1 because they break the natural-person assumption.</p>
+<p><strong>Invariant.</strong> One per human, deduped on PAN; an Investor cannot transact until KYC status is a permitted state. <strong>Lifecycle.</strong> Registered, KYC-pending, KYC-permitted, KYC-failed; for a minor, a freeze-and-re-KYC transition at majority that transfers operating authority from the guardian to the now-major individual. <strong>Relationships.</strong> An owning party on one or more Holdings, acted for by one or more Identities, attributed under a Commercial Relationship, and a person-node referenced by relationship-graph edges.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Key</th>
+<th>Type and role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>investorId</td>
+<td>PK</td>
+<td>Opaque canonical id. Never an external or vendor id.</td>
+</tr>
+<tr>
+<td>pan</td>
+<td>Unique (natural)</td>
+<td>String. The dedupe key, one per human. Not the PK.</td>
+</tr>
+<tr>
+<td>fullName, dateOfBirth</td>
+<td></td>
+<td>Identity basics; dateOfBirth drives the minor majority transition.</td>
+</tr>
+<tr>
+<td>kycStatus</td>
+<td></td>
+<td>Enum: pending, permitted, failed, frozen. Gates transacting.</td>
+</tr>
+<tr>
+<td>taxResidency</td>
+<td></td>
+<td>Enum: resident, nri.</td>
+</tr>
+<tr>
+<td>personaType</td>
+<td></td>
+<td>Enum: resident, nri, minor.</td>
+</tr>
+<tr>
+<td>fatcaStatus</td>
+<td></td>
+<td>FATCA and CRS declaration; NRI jurisdiction gating.</td>
+</tr>
+<tr>
+<td>bankAccounts</td>
+<td></td>
+<td>Value objects; resident savings, or NRE and NRO for an NRI.</td>
+</tr>
+<tr>
+<td>guardianIdentityRef</td>
+<td>FK → Identity</td>
+<td>Minor only; the designated operating Identity.</td>
+</tr>
+<tr>
+<td>majorityDate</td>
+<td></td>
+<td>Minor only; triggers the freeze-and-re-KYC transition.</td>
+</tr>
+</tbody></table>
+<h3>Identity / Account</h3>
+<p>The auth principal: login, session, device binding, and the authority a session carries. Distinct from the Investor. One Identity may act for several Investors (a guardian for a minor, a family member, an RM-assisted session in a later tier), and one Investor may be reached through different Identities over time. It is not the person and not the KYC subject.</p>
+<p><strong>Invariant.</strong> Every action in the system carries both an acting Identity and a subject Investor, even when they are the same human. <strong>Lifecycle.</strong> Created, active, locked, retired; device bindings added and revoked. <strong>Relationships.</strong> Acts for one or more Investors; carries the authorisation context stamped on every event. The auth, session, and RBAC/ABAC machinery is Spec 5; what is fixed here is the entity and the acting-Identity-plus-subject-Investor rule.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Key</th>
+<th>Type and role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>identityId</td>
+<td>PK</td>
+<td>Canonical id of the auth principal.</td>
+</tr>
+<tr>
+<td>credentialRef</td>
+<td></td>
+<td>Auth credential; detail in Spec 5.</td>
+</tr>
+<tr>
+<td>deviceBindings</td>
+<td></td>
+<td>Value objects; bound devices, added and revoked.</td>
+</tr>
+<tr>
+<td>authorityContext</td>
+<td></td>
+<td>RBAC and ABAC context; detail in Spec 5.</td>
+</tr>
+<tr>
+<td>actsForInvestorRefs</td>
+<td>FK → Investor (multi)</td>
+<td>One Identity may act for several Investors.</td>
+</tr>
+<tr>
+<td>status</td>
+<td></td>
+<td>Enum: active, locked, retired.</td>
+</tr>
+</tbody></table>
+<h3>Commercial Relationship</h3>
+<p>The time-aware, attributable contract: which Investor is advised or serviced by which RM or distributor, under what fee model, in what regulatory posture (RIA fee-only versus distribution), with ARN and EUIN attribution. It is the commission-cleanliness and SEBI-attribution backbone, distinct from the Investor and from the relationship graph. The RM-facing surface is V2 Horizon ; the entity is V1 V1 , because every transaction&#39;s attribution reconciles against it from the first day.</p>
+<p><strong>Invariant.</strong> Bitemporal: you can always answer who was the attributed advisor, on what model, on any past date. <strong>Lifecycle.</strong> Established, amended (a change of attribution or fee model is a new time-slice, not an overwrite), closed. <strong>Relationships.</strong> Binds an Investor to an RM or distributor; referenced by Transactions for attribution. Its establishment as a user-facing flow is the Onboarding PRD; the definition lives here.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Key</th>
+<th>Type and role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>commercialRelationshipId</td>
+<td>PK</td>
+<td>Canonical id.</td>
+</tr>
+<tr>
+<td>investorRef</td>
+<td>FK → Investor</td>
+<td>The advised Investor.</td>
+</tr>
+<tr>
+<td>advisorRef</td>
+<td>FK → RM / distributor</td>
+<td>The attributed RM or distributor (referenced entity).</td>
+</tr>
+<tr>
+<td>feeModel</td>
+<td></td>
+<td>Enum: ria_fee_only, distribution.</td>
+</tr>
+<tr>
+<td>regulatoryPosture</td>
+<td></td>
+<td>The posture under which advice or distribution is given.</td>
+</tr>
+<tr>
+<td>arn, euin</td>
+<td></td>
+<td>Attribution identifiers.</td>
+</tr>
+<tr>
+<td>validFrom, validTo</td>
+<td></td>
+<td>Bitemporal time-slice; amendment is a new slice, not an overwrite.</td>
+</tr>
+<tr>
+<td>status</td>
+<td></td>
+<td>Enum: established, amended, closed.</td>
+</tr>
+</tbody></table>
+<h3>Relationship graph edge</h3>
+<p>Typed, directional edges between people: nominee, spouse, parent, child, referral. Two flavours kept distinct: declared (the investor stated it, or it carries legal force) and inferred (the platform&#39;s probabilistic household signal, weighted, with provenance, never surfaced cross-customer). Distinct from the Commercial Relationship, which is advisory, and from the Holding party-list, which is ownership. A joint spouse holding has two Investor parties on the Holding and a spouse edge in the graph; a guardian-minor arrangement has the minor as the Holding owner, the guardian as the operating Identity, and a guardian edge in the graph carrying its legal metadata.</p>
+<p><strong>Invariant.</strong> Edges are typed and directional; a nominee edge carries its own legal metadata; referral is an edge plus an onboarding event, never a separate feature silo; inferred edges never cross the customer boundary. <strong>Lifecycle.</strong> Edge added, amended, revoked, each a recorded fact. <strong>Relationships.</strong> Connects person-nodes, which are Investors and, for referral, prospects.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Key</th>
+<th>Type and role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>edgeId</td>
+<td>PK</td>
+<td>Canonical id.</td>
+</tr>
+<tr>
+<td>fromPersonRef</td>
+<td>FK → Investor</td>
+<td>Directional source person-node.</td>
+</tr>
+<tr>
+<td>toPersonRef</td>
+<td>FK → Investor / prospect</td>
+<td>Directional target; an Investor, or a prospect for referral.</td>
+</tr>
+<tr>
+<td>edgeType</td>
+<td></td>
+<td>Enum: nominee, spouse, parent, child, referral.</td>
+</tr>
+<tr>
+<td>flavour</td>
+<td></td>
+<td>Enum: declared, inferred.</td>
+</tr>
+<tr>
+<td>confidence, provenance</td>
+<td></td>
+<td>Inferred edges only; never surfaced cross-customer.</td>
+</tr>
+<tr>
+<td>legalMetadata</td>
+<td></td>
+<td>Nominee edges only.</td>
+</tr>
+<tr>
+<td>status</td>
+<td></td>
+<td>Enum: added, amended, revoked.</td>
+</tr>
+</tbody></table>
+<h2>The organising lens</h2>
+<h3>Goal</h3>
+<p>Mandatory and first-class, the organising lens of the whole product. Carries type, target amount, horizon, risk profile, and linked holdings, where &quot;unassigned&quot; is a valid state rather than a null. Holdings hang under goals, never the reverse. A default goal (Wealth Creation, framed as FIRE) is assigned so the investor is never blocked on goal creation; engagement is therefore measured by personalisation and funding, not by mere existence. It is not a portfolio attribute and not a tag; it has its own lifecycle and linked facts.</p>
+<p><strong>Invariant.</strong> A holding&#39;s link to a goal is itself a time-stamped, auditable fact; &quot;unassigned&quot; is valid; every Investor has at least the default goal. <strong>Lifecycle.</strong> Created (default or user), active, fulfilled, closed or abandoned. <strong>Relationships.</strong> Owns linked Holdings; threads through Catalog suitability, Discovery, Portfolio, and Transactions.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Key</th>
+<th>Type and role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>goalId</td>
+<td>PK</td>
+<td>Canonical id.</td>
+</tr>
+<tr>
+<td>investorRef</td>
+<td>FK → Investor</td>
+<td>The owning Investor.</td>
+</tr>
+<tr>
+<td>goalType</td>
+<td></td>
+<td>Enum: retirement, wealth_creation, and the like.</td>
+</tr>
+<tr>
+<td>isDefault</td>
+<td></td>
+<td>Bool; the auto-assigned Wealth Creation goal.</td>
+</tr>
+<tr>
+<td>targetAmount, horizonDate</td>
+<td></td>
+<td>The quantified intent; nullable for the bare default.</td>
+</tr>
+<tr>
+<td>riskProfile</td>
+<td></td>
+<td>Suitability-weighted; the profiling detail is the Portfolio PRD.</td>
+</tr>
+<tr>
+<td>status</td>
+<td></td>
+<td>Enum: active, fulfilled, closed, abandoned.</td>
+</tr>
+</tbody></table>
+<h2>The product entity</h2>
+<h3>Instrument / Catalog entry</h3>
+<p>Strongly typed and multi-asset-ready even though V1 is mutual funds and fixed deposits. Carries asset class, issuer or AMC, sub-classification and regulatory category, risk-return characteristics, tier-eligibility, goal-suitability signals, jurisdiction-eligibility (the FATCA and NRI gating the persona decision now requires), and capability flags for the transaction types it supports. It is not a flat SKU and not a price row.</p>
+<p><strong>Invariant.</strong> The extension mechanism is locked now, capability flags plus per-asset-class extension blocks, so a new asset class is a new source behind a clean adapter rather than a reshape of the core; jurisdiction-eligibility is first-class so the transaction path can enforce it. <strong>Lifecycle.</strong> Listed, active, suspended, merged or matured under corporate actions, delisted. <strong>Relationships.</strong> Referenced by Transactions and Holdings; links to an AMC; suitability-mapped to Goal types. Ingestion, serving, refresh, and quality are the Catalog PRD; the entity shape and the extension-mechanism invariant live here.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Key</th>
+<th>Type and role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>instrumentId</td>
+<td>PK</td>
+<td>Canonical id.</td>
+</tr>
+<tr>
+<td>isin, amfiSchemeCode</td>
+<td>Unique (external)</td>
+<td>External references; unique, not the PK.</td>
+</tr>
+<tr>
+<td>assetClass</td>
+<td></td>
+<td>Enum: mutual_fund, fixed_deposit; extensible.</td>
+</tr>
+<tr>
+<td>amcRef</td>
+<td>FK → AMC</td>
+<td>The issuer.</td>
+</tr>
+<tr>
+<td>subClassification, regulatoryCategory</td>
+<td></td>
+<td>SEBI category and sub-category.</td>
+</tr>
+<tr>
+<td>riskReturnProfile</td>
+<td></td>
+<td>Volatility, drawdown, and the platform&#39;s own risk view.</td>
+</tr>
+<tr>
+<td>tierEligibility</td>
+<td></td>
+<td>Flags; which tier may access it.</td>
+</tr>
+<tr>
+<td>goalSuitability</td>
+<td></td>
+<td>Signals mapping the instrument to goal types.</td>
+</tr>
+<tr>
+<td>jurisdictionEligibility</td>
+<td></td>
+<td>FATCA and NRI gating flags; enforced on the transaction path.</td>
+</tr>
+<tr>
+<td>capabilityFlags</td>
+<td></td>
+<td>Supported transaction types.</td>
+</tr>
+<tr>
+<td>extensionBlock</td>
+<td></td>
+<td>Per-asset-class extension; the locked extension mechanism.</td>
+</tr>
+<tr>
+<td>status</td>
+<td></td>
+<td>Enum: listed, active, suspended, merged, matured, delisted.</td>
+</tr>
+</tbody></table>
+<h2>The money-movement entities</h2>
+<h3>Transaction / Order</h3>
+<p>Immutable; corrections are new events, never edits. It carries explicit lifecycle states, because &quot;committed&quot; has several distinct meanings along the path: accepted by us, routed to the rail, acknowledged by the RTA, settled, failed, reversed. It also carries the client idempotency key and the EUIN attribution of the advising individual. Order types in V1 are lumpsum, SIP instalment, redemption, switch, STP, and SWP.</p>
+<p><strong>Invariant.</strong> The current status is the fold of its events; no in-place mutation; every money-moving call is idempotent on the client key. <strong>Lifecycle.</strong> Accepted, routed, acknowledged, allotted, settled, failed, reversed, with settled, failed, and reversed terminal. <strong>Relationships.</strong> References an Instrument, a subject Investor (and through the Holding the owning parties), a Goal, and a Mandate where recurring; posts to the Ledger.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Key</th>
+<th>Type and role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>transactionId</td>
+<td>PK</td>
+<td>Canonical id. Never the FP order id.</td>
+</tr>
+<tr>
+<td>clientIdempotencyKey</td>
+<td>Unique</td>
+<td>Idempotency key for the money-moving call.</td>
+</tr>
+<tr>
+<td>type</td>
+<td></td>
+<td>Enum: lumpsum, sip_instalment, redemption, switch, stp, swp.</td>
+</tr>
+<tr>
+<td>investorRef</td>
+<td>FK → Investor</td>
+<td>The subject.</td>
+</tr>
+<tr>
+<td>instrumentRef</td>
+<td>FK → Instrument</td>
+<td>The instrument transacted.</td>
+</tr>
+<tr>
+<td>goalRef</td>
+<td>FK → Goal</td>
+<td>The goal served.</td>
+</tr>
+<tr>
+<td>holdingRef</td>
+<td>FK → Holding</td>
+<td>The holding affected.</td>
+</tr>
+<tr>
+<td>mandateRef</td>
+<td>FK → Mandate</td>
+<td>The mandate, where recurring.</td>
+</tr>
+<tr>
+<td>amount or units</td>
+<td></td>
+<td>The order quantity; amount carries currency.</td>
+</tr>
+<tr>
+<td>euin</td>
+<td></td>
+<td>Attribution of the advising individual.</td>
+</tr>
+<tr>
+<td>applicableNav, navDate</td>
+<td></td>
+<td>The effective axis under cutoff rules.</td>
+</tr>
+<tr>
+<td>status</td>
+<td></td>
+<td>Enum: accepted, routed, acknowledged, allotted, settled, failed, reversed.</td>
+</tr>
+<tr>
+<td>railRef</td>
+<td></td>
+<td>Opaque external reference, mapped at the ACL. Never our id.</td>
+</tr>
+</tbody></table>
+<h3>Mandate</h3>
+<p>First-class, not a field on an order. The full eNACH and UPI-autopay lifecycle. For an NRI it is registered against an NRE or NRO account, where autopay behaviour differs from a resident account, which the payment adapter absorbs.</p>
+<p><strong>Invariant.</strong> Whether a SIP is actually live is mandate-derived, never assumed from the fact that the user set one up. <strong>Lifecycle.</strong> Created, pending, active, paused, failed, cancelled. <strong>Relationships.</strong> Authorises recurring Transactions; bound to an Investor&#39;s bank account and its account type.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Key</th>
+<th>Type and role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mandateId</td>
+<td>PK</td>
+<td>Canonical id.</td>
+</tr>
+<tr>
+<td>investorRef</td>
+<td>FK → Investor</td>
+<td>The authorising Investor.</td>
+</tr>
+<tr>
+<td>bankAccountRef</td>
+<td></td>
+<td>The funding account (value object).</td>
+</tr>
+<tr>
+<td>accountType</td>
+<td></td>
+<td>Enum: savings, nre, nro.</td>
+</tr>
+<tr>
+<td>mandateType</td>
+<td></td>
+<td>Enum: enach, upi_autopay.</td>
+</tr>
+<tr>
+<td>maxAmount, validFrom, validTo</td>
+<td></td>
+<td>The authorisation envelope; maxAmount carries currency.</td>
+</tr>
+<tr>
+<td>status</td>
+<td></td>
+<td>Enum: created, pending, active, paused, failed, cancelled.</td>
+</tr>
+</tbody></table>
+<h3>Ledger entry</h3>
+<p>The canonical record. Double-entry, immutable, bitemporal. Every money or unit movement posts here, and FP, like every future rail, is a source reconciled against it, not a truth adopted. For an NRI redemption the TDS deducted at source posts here, so that net settlement and reporting are correct.</p>
+<p><strong>Invariant.</strong> Postings balance; record-time and effective or NAV-date are separate axes; Holdings are derived from it, never the reverse. <strong>Lifecycle.</strong> Posted, and corrected only by a compensating posting, never edited. <strong>Relationships.</strong> Driven by ledger-affecting Transaction events; the source from which Holdings are folded. The ledger&#39;s internal mechanics and posting rules are Spec 2; what is fixed here is its identity, its boundary against the rails, and the canonical-source rule.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Key</th>
+<th>Type and role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>entryId</td>
+<td>PK</td>
+<td>Canonical id.</td>
+</tr>
+<tr>
+<td>postingPair</td>
+<td></td>
+<td>Double-entry debit and credit; postings balance.</td>
+</tr>
+<tr>
+<td>accountRefs</td>
+<td>FK → LedgerAccount</td>
+<td>The accounts posted to; account structure is Spec 2.</td>
+</tr>
+<tr>
+<td>amount or units, currency</td>
+<td></td>
+<td>The movement; money as integer minor units, never float.</td>
+</tr>
+<tr>
+<td>recordedAt, effectiveDate</td>
+<td></td>
+<td>The two bitemporal axes.</td>
+</tr>
+<tr>
+<td>sourceRef</td>
+<td>FK (typed) → per sourceKind</td>
+<td>The fact that drove the posting. The target is resolved by sourceKind and is not always a Transaction.</td>
+</tr>
+<tr>
+<td>sourceKind</td>
+<td></td>
+<td>Enum: transaction, corporate_action, correction, migration, period_op. Discriminates the sourceRef target, since corporate actions, manual corrections, opening-balance loads and period operations all post without a Transaction behind them.</td>
+</tr>
+</tbody></table>
+<p><strong>Ledger attributes are indicative only.</strong> The account structure, posting rules, and full ledger schema are owned by Spec 2; what is fixed here is that it is double-entry and bitemporal, and the source from which Holdings are folded.</p>
+<h3>Holding / Folio position</h3>
+<p>A projection folded from Ledger entries, reconciled against FP&#39;s view, with discrepancies surfaced rather than silently overwritten. It carries one or more Investor parties and a mode of operation (single, anyone-or-survivor, or jointly), which is the multi-owner shape we are modelling in V1. A minor&#39;s holding is a single-owner holding operated by a guardian Identity; a joint holding is a multi-owner holding with a mode of operation. Both fall out of the same model, with the acting Identity kept separate from the owning parties. A Holding hangs under a Goal, where &quot;unassigned&quot; is valid.</p>
+<p><strong>Invariant.</strong> Never written directly by a rail, only derived from the Ledger; the owning parties and the acting Identity are distinct; the goal link is auditable. <strong>Lifecycle.</strong> Opened, active, dormant, closed; reconciled continuously. <strong>Relationships.</strong> Owned by one or more Investors, operated by an Identity, linked to a Goal, composed of positions in Instruments.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Key</th>
+<th>Type and role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>holdingId</td>
+<td>PK</td>
+<td>Canonical id.</td>
+</tr>
+<tr>
+<td>owningPartyRefs</td>
+<td>FK → Investor (multi)</td>
+<td>One or more Investor parties; the multi-owner shape.</td>
+</tr>
+<tr>
+<td>modeOfOperation</td>
+<td></td>
+<td>Enum: single, anyone_or_survivor, jointly.</td>
+</tr>
+<tr>
+<td>operatingIdentityRef</td>
+<td>FK → Identity</td>
+<td>The acting Identity; distinct from the owning parties.</td>
+</tr>
+<tr>
+<td>goalRef</td>
+<td>FK → Goal (nullable)</td>
+<td>Nullable; &quot;unassigned&quot; is valid.</td>
+</tr>
+<tr>
+<td>instrumentRef</td>
+<td>FK → Instrument</td>
+<td>The instrument held.</td>
+</tr>
+<tr>
+<td>units, value</td>
+<td></td>
+<td>Derived from the Ledger, never written by a rail.</td>
+</tr>
+<tr>
+<td>reconciliationStatus</td>
+<td></td>
+<td>Surfaces discrepancies against FP&#39;s view.</td>
+</tr>
+<tr>
+<td>status</td>
+<td></td>
+<td>Enum: opened, active, dormant, closed.</td>
+</tr>
+</tbody></table>
+<h3>Held-away view (read-model, referenced)</h3>
+<p>Held-away positions pulled via CAS and MF Central are an external, read-only view, not a Holding and not in the canonical ledger: the platform neither transacts them nor owns their record. They exist for portfolio review and advisory context, carry their own position descriptors rather than the transactable Instrument catalog, and span mutual fund and demat holdings including equities. That is how equities enter V1, read-only for review, with no direct equity transactions. The read-model’s full shape is owned by the Portfolio PRD; what is fixed here is that it is distinct from Holding, so the Holding invariant of derived-from-the-ledger-only stays intact.</p>
+<h2>The consent entity</h2>
+<h3>Consent</h3>
+<p>Purpose-bound, time-bound, revocable, and fully audited. Required for AA data pulls and for DPDP compliance generally. It is not a checkbox; it is a recorded grant with a purpose, a validity window, and downstream effect.</p>
+<p><strong>Invariant.</strong> Any data fetch or use cites a live consent; revocation is a recorded event that propagates to downstream use. <strong>Lifecycle.</strong> Requested, granted, active, expired, revoked. <strong>Relationships.</strong> Gates DataFetched events; bound to an Investor and a purpose. The consent ledger machinery and PII tokenisation are Spec 5; what is fixed here is the entity and the cite-a-live-consent rule.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Key</th>
+<th>Type and role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>consentId</td>
+<td>PK</td>
+<td>Canonical id.</td>
+</tr>
+<tr>
+<td>investorRef</td>
+<td>FK → Investor</td>
+<td>The Investor who granted it.</td>
+</tr>
+<tr>
+<td>purpose, scope</td>
+<td></td>
+<td>Purpose-bound; what the data may be used for.</td>
+</tr>
+<tr>
+<td>validFrom, validTo</td>
+<td></td>
+<td>Time-bound validity window.</td>
+</tr>
+<tr>
+<td>status</td>
+<td></td>
+<td>Enum: requested, granted, active, expired, revoked.</td>
+</tr>
+</tbody></table>
+<h2>Referenced entities, shallow in V1</h2>
+<p>AMC, RM, and IFA are first-class in the broader domain but carry only the depth V1 needs. AMC is referenced by Instrument as the issuer. RM and distributor are referenced by the Commercial Relationship for attribution. The RM workstation and the IFA console are later releases, so these entities exist as identity-carrying references without their full lifecycle in V1. Locking them as references now, rather than ignoring them, is what keeps the later tiers from being a reshape.</p>
+<h2>How the entities relate</h2>
+<p>In one pass: an <strong>Investor</strong> is the person; one or more <strong>Identities</strong> act for them; a <strong>Commercial Relationship</strong> attributes them to an advisor over time; <strong>relationship-graph</strong> edges record their kinship and referrals. Their money is organised under <strong>Goals</strong>. Under a goal hang <strong>Holdings</strong>, each owned by one or more Investor parties with a mode of operation and operated by an Identity. A Holding is a projection folded from the <strong>Ledger</strong>, which is posted to by ledger-affecting <strong>Transaction</strong> events, which reference <strong>Instruments</strong> and, when recurring, a <strong>Mandate</strong>. Any data the platform pulls cites a <strong>Consent</strong>. The thing that does the moving (an Identity) is always separate from the thing that owns (an Investor party) and the thing that records (the Ledger).</p>
+<p><img src="Spec%201%20Domain_Entity_Model_and_Event_Spine_media/diagram-1.svg" alt="Diagram 1"></p>
+<p>Figure 1. Entity-relationship map. The eleven first-class entities and how they relate; held-away is drawn distinct and dashed because it is an external, read-only view, not a Holding. Cardinalities and the full attribute set live in the text above.</p>
+<h1>4 Event architecture: the three planes</h1>
+<p>The platform records what happens in exactly one of three places, and the planes never merge. The rule for which is which is the event-versus-not test: a thing is a domain event only if it is business-significant, durable, and would matter for reconciliation, regulation, or reconstructing what was known when. When unsure, it is not a domain event.</p>
+<p><strong>The domain spine.</strong> Typed, durable, replayable, bitemporal, per-aggregate ordered, with idempotent consumers, a schema registry, and versioning. This is institutional memory: the canonical record of business-significant state changes that every operational, analytical, regulatory, and intelligence consumer reads from.</p>
+<p><strong>The clickstream plane.</strong> Taps, views, funnel steps, and search, sort and filter interactions. High volume, lossy-tolerant, with its own ingestion, processing, serving, and disaster recovery. It is never merged into the spine, and the taxonomy of what to track is product-owned in the Referral and Growth PRD while the plane itself is infrastructure.</p>
+<p><strong>Derived state.</strong> Neither an event nor a thing that is evented: a holding balance, a goal&#39;s progress, a cached NAV. These are projections folded from the spine and the ledger, never first-class events.</p>
+<blockquote>
+<p><strong>The separation is structural, not stylistic.</strong> The two planes are kept apart at ingestion, processing, serving, and disaster recovery. A clickstream tap must never land on the domain spine, and a domain event must never be reduced to a lossy analytics signal. Mixing them is how a platform loses the ability to reconstruct what it knew when, which is the one thing the regulator will ask for.</p>
+</blockquote>
+<h1>5 The domain event catalog</h1>
+<p>This is the canonical seed list, one row per real flow, expanded from the lock-list&#39;s worked examples to cover the goal, relationship, and persona flows now in scope. It is the structure to ratify against the real APIs in the lock window, not an exhaustive freeze. The discipline holds throughout: if a row&#39;s candidate is not business-significant and durable, it belongs in clickstream or derived state, not on the spine.</p>
+<table>
+<thead>
+<tr>
+<th>Flow</th>
+<th>Domain events (on the spine)</th>
+<th>Clickstream</th>
+<th>Derived state</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Onboarding &amp; identity</td>
+<td>InvestorRegistered, IdentityCreated, KycSubmitted, KycCompleted, KycFailed; for a minor, ReKycRequired at majority</td>
+<td>Viewing the KYC screen, tapping upload, document retries</td>
+<td>The half-filled form state</td>
+</tr>
+<tr>
+<td>Consent &amp; AA</td>
+<td>ConsentRequested, ConsentGranted, ConsentRevoked, DataFetched (regulatory)</td>
+<td>Consent-screen taps</td>
+<td>Current consent validity window</td>
+</tr>
+<tr>
+<td>Goal</td>
+<td>GoalCreated, GoalUpdated, HoldingLinkedToGoal, HoldingUnassigned, GoalFulfilled</td>
+<td>Goal-slider and target interactions</td>
+<td>Goal progress against target</td>
+</tr>
+<tr>
+<td>Order lifecycle</td>
+<td>OrderPlaced, OrderRoutedToRail, OrderAcknowledged, OrderAllotted, OrderSettled, OrderFailed, OrderReversed, each a distinct fact in the order lifecycle. OrderAllotted is the fact that the applicable NAV has been applied and the resulting units or amount are confirmed by the RTA, spanning both buy allotment and redemption processing. The ledger-affecting subset, and which states post, is fixed in Spec 2</td>
+<td>Seeing the confirmation screen</td>
+<td>Order status as currently displayed</td>
+</tr>
+<tr>
+<td>SIP &amp; mandate</td>
+<td>MandateCreated, MandateActivated, MandatePaused, MandateFailed, MandateCancelled, SipScheduled, SipDebitFailed</td>
+<td>SIP calculator and slider interactions</td>
+<td>The next-debit date</td>
+</tr>
+<tr>
+<td>Commercial Relationship</td>
+<td>CommercialRelationshipEstablished, CommercialRelationshipAmended, CommercialRelationshipClosed</td>
+<td>Viewing advisor details</td>
+<td>The current attributed advisor</td>
+</tr>
+<tr>
+<td>Relationship graph</td>
+<td>RelationshipEdgeAdded, RelationshipEdgeRevoked; ReferralAttributed at onboarding</td>
+<td>The link-share action itself</td>
+<td>Referral count on a dashboard</td>
+</tr>
+</tbody></table>
+<p><strong>On ledger postings as events.</strong> A subset of the facts above drives ledger postings: the funds-secured, allotment, settlement and reversal transitions, plus the mandate debit. OrderRoutedToRail and OrderAcknowledged move no money and post nothing. Spec 2 fixes which states post and resolves that the ledger is itself a first-class event source, emitting its own posting events (PostingApplied and the rest) onto the spine downstream of these order facts, rather than the order events being re-purposed as posting events. The rule to hold is that nothing a rail returns becomes a domain event, or truth, without first being expressed as one of our typed events and posted through the ledger.</p>
+<p><img src="Spec%201%20Domain_Entity_Model_and_Event_Spine_media/diagram-2.svg" alt="Diagram 2"></p>
+<p>Figure 2. Event sequence, onboarding to first SIP. The major domain events in order down the spine, each tagged with the entity it creates or transitions; clickstream and derived state sit off the spine, never on it. The dashed card marks the V1.5 second rail, a direct BSE StAR MF integration on the same rail-agnostic ACL port, not yet wired.</p>
+<h1>6 Event spine conventions</h1>
+<p>The conventions to lock alongside the catalog, so that consumers can be built independently and the spine survives schema change and replay.</p>
+<table>
+<thead>
+<tr>
+<th>Convention</th>
+<th>What to lock</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Naming</td>
+<td>Past-tense, business-language event names (OrderSettled, not SettleOrder). The name describes a fact that happened, not a command.</td>
+</tr>
+<tr>
+<td>Ordering &amp; partitioning</td>
+<td>A partition key that guarantees per-aggregate ordering (typically by the aggregate&#39;s identity, for example the order or the investor), so events for one aggregate are never reordered.</td>
+</tr>
+<tr>
+<td>Idempotency</td>
+<td>Idempotency keys on every money-moving event, and idempotent consumers, so at-least-once delivery is safe.</td>
+</tr>
+<tr>
+<td>Delivery</td>
+<td>At-least-once delivery with idempotent consumers, rather than a fragile exactly-once assumption.</td>
+</tr>
+<tr>
+<td>Schema registry &amp; versioning</td>
+<td>A registry for every event schema and a backward-compatible evolution policy: add optional fields, never break or repurpose existing ones; version explicitly.</td>
+</tr>
+<tr>
+<td>Dead-letter handling</td>
+<td>A defined dead-letter path for events that fail processing, with replay and inspection, not silent drops.</td>
+</tr>
+<tr>
+<td>Replay window</td>
+<td>A stated replay window and the guarantee that a downstream consumer can be rebuilt from scratch off the spine.</td>
+</tr>
+<tr>
+<td>Provenance &amp; timestamps</td>
+<td>Every event carries provenance and both bitemporal timestamps: when it was recorded and when it took effect.</td>
+</tr>
+</tbody></table>
+<h1>7 Cross-cutting invariants</h1>
+<p>The platform-wide rules that bind entities and events together. The first two are the rules to write on the wall.</p>
+<blockquote>
+<p><strong>Wall rule one.</strong> Investor (the person) is not Identity (the login) is not Commercial Relationship (the advisory contract) is not the relationship graph (kinship and referral). Conflating any two of those four is the expensive retrofit, and most of this spec exists to keep them apart.
+<strong>Wall rule two.</strong> The ledger is canonical and holdings are derived, so nothing a vendor returns becomes truth without posting through the ledger. FP is a source, never the system of record.
+The rest, stated once and inherited everywhere: every money-moving operation is idempotent on a client key. Bitemporality holds across the platform, with record-time and effective or NAV-date as separate axes, so any past state reconstructs. Entities that record facts are immutable, and corrections are new events, never edits. Any data use cites a live consent, and revocation propagates downstream. A holding&#39;s goal link is an auditable, time-stamped fact, and &quot;unassigned&quot; is valid. A holding carries one or more owning Investor parties and a mode of operation, distinct from the acting Identity. Every action carries an acting Identity and a subject Investor.</p>
+</blockquote>
+<h1>8 Open calls and ADRs</h1>
+<p>What is settled, what is parked, and the discipline for recording both. Every material decision here carries a one-paragraph ADR: the decision, why, the alternatives considered, and what would reverse it.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Status</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Persona scope</td>
+<td>Resolved</td>
+<td>Resident, NRI, and minor in V1; HUF and other non-individuals deferred. Investor invariant stays natural-person-deduped-on-PAN; NRI and minor fit inside it.</td>
+</tr>
+<tr>
+<td>Joint &amp; minor modelling</td>
+<td>Resolved</td>
+<td>Modelled as a Holding with one or more owning Investor parties plus a mode of operation, with the acting Identity separate. Minor and joint both fall out of this. Whether joint-holding creation is a shipped V1 flow is a product call for the Onboarding and Transactions PRDs.</td>
+</tr>
+<tr>
+<td>AMC / RM / IFA depth</td>
+<td>Resolved</td>
+<td>Modelled as referenced first-class entities, shallow in V1, since no V1 surface needs their lifecycle.</td>
+</tr>
+<tr>
+<td>Held-away holdings rail</td>
+<td>Resolved</td>
+<td>V1 serves held-away holdings through the CAS and MF Central path: a customer-OTP pull of mutual fund and demat holdings, needing no FIU and no Sahamati certification. AA, the FIU-bound rail for the broader and fresher financial picture, is deferred to a later phase and becomes a pure upgrade then, so FIU and Sahamati stay off the V1 critical path. The Consent entity and consent events remain V1 regardless and are rail-agnostic, since KYC, ordinary data use, and the CAS pull all cite consent.</td>
+</tr>
+<tr>
+<td>Ledger posting events on the spine</td>
+<td>Resolved (Spec 2)</td>
+<td>The ledger is a first-class event source and emits PostingApplied, PostingReversed, CorrectionApplied and PeriodClosed onto the spine, downstream of the order facts. Holdings fold from PostingApplied, not from OrderSettled. Does not change the entity model here.</td>
+</tr>
+<tr>
+<td>FP data residency, SLAs, egress</td>
+<td>Open</td>
+<td>Settled when Spec 5 is written; affects no entity shape but constrains the NFR bar there.</td>
+</tr>
+</tbody></table>
+<p><strong>Reminder on the freeze.</strong> This entity model is drafted now and frozen after Catalog, Onboarding, Goals, and Transactions have exercised it. If one of those PRDs surfaces a behaviour an entity cannot honestly carry, the entity changes here first, and the change carries its own ADR. The point of the lock is that the model stops drifting, not that it was perfect on the first pass.</p>
+</body></html>

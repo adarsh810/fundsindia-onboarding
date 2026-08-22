@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Building Blocks of Software — A Primer</title>
+<style>
+:root {
+  --ink: #1A2332;
+  --slate: #33414F;
+  --blue: #1F5C8B;
+  --teal: #0F7C73;
+  --amber: #B5731A;
+  --rule: #C9D4DE;
+  --lightblue: #E8F0F6;
+  --paleblue: #F4F8FB;
+  --palegrey: #F2F4F6;
+  --paleamber: #FBF3E6;
+  --palegreen: #EAF4F2;
+  --maroon: #9C2D41;
+  --muted: #6A7884;
+  --page: #ffffff;
+  --canvas: #EEF2F5;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--slate);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.sheet {
+  max-width: 820px;
+  margin: 32px auto;
+  background: var(--page);
+  padding: 64px 72px 56px;
+  box-shadow: 0 1px 3px rgba(26,35,50,.08), 0 12px 40px rgba(26,35,50,.10);
+  border-radius: 3px;
+}
+
+/* ---------- Cover ---------- */
+.eyebrow {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--blue);
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.cover-rule { height: 3px; background: var(--blue); border: none; margin: 0 0 26px; }
+.cover-title {
+  font-size: 42px;
+  line-height: 1.08;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -.015em;
+  margin: 0 0 12px;
+}
+.cover-sub {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--slate);
+  margin: 0 0 18px;
+  line-height: 1.4;
+}
+.cover-meta {
+  font-size: 15.5px;
+  font-style: italic;
+  color: var(--muted);
+  margin: 0 0 40px;
+}
+
+/* ---------- Headings ---------- */
+h1.sec {
+  font-size: 25px;
+  font-weight: 800;
+  color: var(--blue);
+  letter-spacing: -.01em;
+  margin: 52px 0 18px;
+  padding-bottom: 9px;
+  border-bottom: 2px solid var(--rule);
+  scroll-margin-top: 20px;
+}
+h2.sub {
+  font-size: 19.5px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 30px 0 12px;
+}
+h3.subsub {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: var(--teal);
+  margin: 22px 0 8px;
+}
+p { margin: 0 0 14px; }
+strong { color: var(--ink); font-weight: 700; }
+
+code, .mono {
+  font-family: "SF Mono", "JetBrains Mono", "Fira Code", Consolas, "Liberation Mono", monospace;
+  font-size: .88em;
+  color: var(--maroon);
+  background: rgba(156,45,65,.06);
+  padding: .08em .34em;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+ul, ol { margin: 0 0 16px; padding-left: 24px; }
+li { margin: 0 0 7px; padding-left: 4px; }
+ul li::marker { color: var(--blue); }
+ol li::marker { color: var(--blue); font-weight: 700; }
+
+/* ---------- Callouts ---------- */
+.callout {
+  border-radius: 6px;
+  padding: 16px 20px 4px;
+  margin: 20px 0 24px;
+  border-left: 5px solid;
+  break-inside: avoid;
+}
+.callout .label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.callout p:last-child { margin-bottom: 12px; }
+.callout.info { background: var(--paleblue); border-color: var(--blue); }
+.callout.info .label { color: var(--blue); }
+.callout.tip  { background: var(--palegreen); border-color: var(--teal); }
+.callout.tip .label { color: var(--teal); }
+.callout.warn { background: var(--paleamber); border-color: var(--amber); }
+.callout.warn .label { color: var(--amber); }
+.callout.grey { background: var(--palegrey); border-color: var(--slate); }
+.callout.grey .label { color: var(--slate); }
+
+.flow { font-size: 15.5px; line-height: 1.9; }
+
+/* ---------- Tables ---------- */
+.tbl-wrap { margin: 18px 0 24px; overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.5;
+}
+th {
+  background: var(--lightblue);
+  color: var(--ink);
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 14px;
+  border: 1px solid var(--rule);
+  font-size: 14.5px;
+  vertical-align: top;
+}
+td {
+  padding: 9px 14px;
+  border: 1px solid var(--rule);
+  vertical-align: top;
+}
+tbody tr:nth-child(even) { background: var(--paleblue); }
+td strong { color: var(--ink); }
+.decoder td:first-child { white-space: nowrap; }
+
+/* ---------- Tree block ---------- */
+.tree {
+  font-family: "SF Mono", "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.75;
+  background: var(--palegrey);
+  border-left: 5px solid var(--slate);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin: 8px 0 14px;
+  white-space: pre;
+  overflow-x: auto;
+}
+.tree .c { color: var(--maroon); }
+.tree .note { color: var(--muted); font-family: inherit; }
+
+/* ---------- TOC ---------- */
+.toc { margin: 8px 0 0; }
+.toc a {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--slate);
+  padding: 9px 0;
+  border-bottom: 1px solid #EAEEF1;
+  font-size: 16px;
+}
+.toc a:hover { color: var(--blue); }
+.toc a .n { color: var(--blue); font-weight: 700; min-width: 26px; }
+.toc a .t { flex: 1; }
+.toc a .t::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+}
+
+/* ---------- Footer ---------- */
+.foot {
+  margin-top: 48px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  font-size: 12.5px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+}
+
+.arrow { color: var(--blue); font-weight: 700; padding: 0 2px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  .sheet { padding: 36px 22px 40px; margin: 0; border-radius: 0; }
+  body { font-size: 16px; }
+  .cover-title { font-size: 32px; }
+  .cover-sub { font-size: 18px; }
+  table { font-size: 13.5px; }
+  th, td { padding: 8px 9px; }
+  .decoder td:first-child { white-space: normal; }
+  code { white-space: normal; }
+}
+
+/* ---------- Print ---------- */
+@media print {
+  body { background: #fff; font-size: 11pt; }
+  .sheet { box-shadow: none; margin: 0; max-width: none; padding: 0; border-radius: 0; }
+  h1.sec { break-after: avoid; }
+  h2.sub, h3.subsub { break-after: avoid; }
+  table, .callout, .tree { break-inside: avoid; }
+  tr { break-inside: avoid; }
+  a { color: var(--slate); text-decoration: none; }
+  .pagebreak { break-before: page; }
+}
+
+</style>
+</head>
+<body>
+<main class="sheet">
+<p class="eyebrow">FundsIndia &middot; Product Engineering Enablement</p>
+<hr class="cover-rule">
+<h1 class="cover-title">The Building Blocks of Software</h1>
+<p class="cover-sub">A Primer on the Primitives &mdash; Databases, Auth, State, Storage, and the Stuff Code Is Made Of</p>
+<p class="cover-meta">Primer 2 of 2 &middot; For Product Managers becoming Product Engineers</p>
+<div class="callout info"><p><strong>Primer 1</strong> walked the <strong>journey</strong> of a change &mdash; how code travels from a laptop to a customer. <strong>This primer</strong> opens up the <strong>thing being moved</strong>. What <strong>is</strong> software actually made of? Where does data live? How does the system know who you are and what you&rsquo;re allowed to do? What&rsquo;s the difference between memory and storage, and why does anyone care?</p><p>These are the primitives &mdash; the irreducible building blocks. Once you can name them and reason about them, technical conversations stop being a fog of jargon and become a set of concrete, comprehensible parts. You&rsquo;ll think more clearly about what&rsquo;s feasible, what&rsquo;s expensive, and what&rsquo;s risky.</p></div>
+
+<div class="pagebreak"></div>
+<h1 class="sec">Contents</h1>
+<div class="toc"><a href="#s1"><span class="n">1</span><span class="t">The Anatomy of an Application</span></a><a href="#s2"><span class="n">2</span><span class="t">Databases: The System&rsquo;s Memory</span></a><a href="#s3"><span class="n">3</span><span class="t">Files, Directories &amp; How Code Is Organised</span></a><a href="#s4"><span class="n">4</span><span class="t">Authentication &amp; Authorization</span></a><a href="#s5"><span class="n">5</span><span class="t">State &amp; State Machines</span></a><a href="#s6"><span class="n">6</span><span class="t">Resources: Memory, Compute &amp; Storage</span></a><a href="#s7"><span class="n">7</span><span class="t">Data at Scale: Warehouses, Lakes &amp; Pipelines</span></a><a href="#s8"><span class="n">8</span><span class="t">The Primitives, On One Page</span></a></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s1">1 &middot; The Anatomy of an Application</h1>
+<p>Almost every product you&rsquo;ll work on is built from the same three layers. Hold this skeleton in mind; the rest of the primer fills in each bone.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Layer</th><th>What it is</th><th>FundsIndia example</th></tr></thead><tbody><tr><td><strong>Frontend</strong></td><td>What the user sees and touches &mdash; the screens, buttons, charts. Runs on the user&rsquo;s device (browser or phone).</td><td>The portfolio dashboard you tap through in the app.</td></tr><tr><td><strong>Backend</strong></td><td>The brain behind the screens &mdash; the logic, rules, and calculations. Runs on servers you control.</td><td>The engine that computes your returns, applies fees, and checks rules.</td></tr><tr><td><strong>Database</strong></td><td>The long-term memory &mdash; where all the data is stored permanently and safely.</td><td>The record of every user, holding, transaction, and goal.</td></tr></tbody></table></div>
+<div class="callout info"><p class="label">How they talk: the API</p><p>The frontend and backend talk to each other through an <strong>API (Application Programming Interface)</strong> &mdash; a strict, agreed-upon menu of requests one piece of software can make to another. The frontend says &ldquo;give me this user&rsquo;s holdings&rdquo;; the backend, via the API, replies with the data. An API is a <strong>contract</strong>: &ldquo;if you ask me in exactly this format, I promise to answer in exactly that format.&rdquo; Most integration work &mdash; between your own systems, or with partners like mutual-fund registrars or payment gateways &mdash; is API work.</p></div>
+<div class="callout tip"><p class="label">PM lens</p><p>When you scope a feature, it helps to ask: <strong>which layers does this touch?</strong> A copy change is frontend-only (cheap, fast). A new calculation is backend. A new <strong>kind</strong> of data to remember is a database change (often the most consequential, because data structure is hard to change later). &ldquo;Which layers?&rdquo; is one of the highest-leverage questions a PM can ask early.</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s2">2 &middot; Databases: The System&rsquo;s Memory</h1>
+<p>A database is an organised, durable store of information designed so the software can write, find, and update data quickly and reliably &mdash; even with millions of records and thousands of simultaneous users. It is the single most important primitive in most products, because the data usually outlives every other part of the system.</p>
+<h2 class="sub">The two great families</h2>
+<div class="tbl-wrap"><table><thead><tr><th></th><th>SQL (Relational)</th><th>NoSQL (Non-relational)</th></tr></thead><tbody><tr><td><strong>Shape</strong></td><td>Tables with rows and columns &mdash; like a set of strict, interlinked spreadsheets.</td><td>Flexible &mdash; documents, key-value pairs, graphs. Less rigid structure.</td></tr><tr><td><strong>Best when</strong></td><td>Data is structured and relationships matter (users, accounts, transactions).</td><td>Data is huge, fast-changing, or loosely structured (logs, sessions, catalogs).</td></tr><tr><td><strong>Examples</strong></td><td>PostgreSQL, MySQL, Oracle, SQL Server.</td><td>MongoDB, DynamoDB, Cassandra, Redis.</td></tr><tr><td><strong>Trade-off</strong></td><td>Extremely reliable and consistent; structure is rigid to change.</td><td>Flexible and massively scalable; you give up some guarantees.</td></tr></tbody></table></div>
+<div class="callout info"><p class="label">Why finance loves SQL</p><p>For a wealth platform, <strong>SQL</strong> is usually the backbone, because money demands <strong>consistency</strong>: a transaction must either fully happen or not at all &mdash; never half-recorded. SQL databases are built around exactly this guarantee (the &ldquo;ACID&rdquo; properties, below). NoSQL often shows up alongside it for the high-volume, less-critical stuff like activity logs or caching.</p></div>
+<h2 class="sub">Key concepts you&rsquo;ll hear</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Term</th><th>Plain meaning</th></tr></thead><tbody><tr><td><strong>Table</strong></td><td>A spreadsheet-like collection of one kind of thing (e.g. a &ldquo;Users&rdquo; table).</td></tr><tr><td><strong>Row / Record</strong></td><td>One entry in a table (one user, one transaction).</td></tr><tr><td><strong>Column / Field</strong></td><td>One attribute every row has (email, balance, created-date).</td></tr><tr><td><strong>Primary key</strong></td><td>The unique ID that identifies each row unmistakably (like a customer ID).</td></tr><tr><td><strong>Foreign key</strong></td><td>A link from a row in one table to a row in another (this transaction belongs to that user).</td></tr><tr><td><strong>Index</strong></td><td>A lookup shortcut that makes searches fast &mdash; like a book&rsquo;s index. Speeds reads; costs a little on writes.</td></tr><tr><td><strong>Query</strong></td><td>A request to the database (&ldquo;find all users in Bengaluru with balance &gt; 1 Cr&rdquo;), written in SQL.</td></tr><tr><td><strong>Schema</strong></td><td>The blueprint: what tables exist, their columns, and how they relate.</td></tr><tr><td><strong>Migration</strong></td><td>A controlled, version-tracked change to the schema (adding a column, a new table).</td></tr><tr><td><strong>ACID</strong></td><td>The four reliability guarantees (Atomicity, Consistency, Isolation, Durability) that keep data trustworthy.</td></tr></tbody></table></div>
+<div class="callout warn"><p class="label">The word &ldquo;migration&rdquo; &mdash; why engineers get careful</p><p>Changing the <strong>structure</strong> of a live database (a migration) is delicate surgery, because the data is already there and the system is running. Adding an optional column is usually safe; renaming or removing one, or changing a type, can break things or require careful staged rollout. When an engineer says a feature &ldquo;needs a migration,&rdquo; treat it as a signal of <strong>higher care and coordination</strong> &mdash; not necessarily more effort, but more risk to plan around.</p></div>
+<div class="callout tip"><p class="label">PM lens</p><p>Data structure is the most expensive thing to get wrong, because it&rsquo;s the hardest to change once real data has accumulated. When you spec a feature, think early about <strong>what new data we need to remember and how it relates to what we already store</strong>. A fifteen-minute data-model conversation at spec time routinely saves weeks later. This is also where your strong IC instincts genuinely shine.</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s3">3 &middot; Files, Directories &amp; How Code Is Organised</h1>
+<p>Underneath the polish, a software project is a tree of folders and files &mdash; the same folders-and-files idea as your laptop, just more disciplined. A directory is a folder; the file system is the overall tree. Understanding this demystifies a lot of what you see when you peek into a repo.</p>
+<h2 class="sub">The vocabulary</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Term</th><th>Plain meaning</th></tr></thead><tbody><tr><td><strong>Directory / folder</strong></td><td>A container that holds files and other folders.</td></tr><tr><td><strong>Path</strong></td><td>The &ldquo;address&rdquo; of a file, e.g. <code>/src/components/Dashboard.js</code> &mdash; read left to right as folders nested inside folders.</td></tr><tr><td><strong>Root</strong></td><td>The top of the tree &mdash; the project&rsquo;s home folder, where everything branches from.</td></tr><tr><td><strong>File extension</strong></td><td>The bit after the dot (.js, .py, .json) signalling the file&rsquo;s type.</td></tr><tr><td><strong>Config file</strong></td><td>A settings file (often .json, .yaml, or .env) that controls how the app behaves without changing core code.</td></tr></tbody></table></div>
+<h2 class="sub">A typical project, annotated</h2>
+<p>You don&rsquo;t need to memorise this, but recognising the shape removes the intimidation factor. A backend project often looks roughly like:</p>
+<div class="tree"><span class="c">project-root/</span>
+  <span class="c">src/</span>            <span class="note">&mdash; the actual source code</span>
+  <span class="c">tests/</span>          <span class="note">&mdash; the automated tests</span>
+  <span class="c">docs/</span>           <span class="note">&mdash; documentation</span>
+  <span class="c">package.json</span>    <span class="note">&mdash; the project&rsquo;s ID card: name, version, dependencies</span>
+  <span class="c">README.md</span>       <span class="note">&mdash; the &ldquo;start here&rdquo; explainer for humans</span>
+  <span class="c">.env</span>            <span class="note">&mdash; secret settings (passwords, keys) &mdash; never shared publicly</span></div>
+<div class="callout info"><p class="label">Dependencies &amp; packages</p><p>Almost no code is written from scratch. Engineers stand on <strong>dependencies</strong> &mdash; pre-built packages of code (also called libraries) that solve common problems, pulled in from public registries (npm for JavaScript, PyPI for Python). The <code>package.json</code> file lists exactly which ones, and which versions. This is powerful (don&rsquo;t reinvent the wheel) but also a <strong>supply-chain risk</strong>: a bug or vulnerability in a popular package affects everyone who uses it, which is why those security scans in CI matter.</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s4">4 &middot; Authentication &amp; Authorization: Who You Are vs. What You Can Do</h1>
+<p>These two words sound alike and are constantly confused, so we&rsquo;ll nail them precisely &mdash; they&rsquo;re among the most important primitives in any product that touches money or personal data.</p>
+<div class="tbl-wrap"><table><thead><tr><th></th><th>Authentication (AuthN)</th><th>Authorization (AuthZ)</th></tr></thead><tbody><tr><td><strong>Question it answers</strong></td><td>&ldquo;Who are you? Prove it.&rdquo;</td><td>&ldquo;Now that I know who you are &mdash; what are you allowed to do?&rdquo;</td></tr><tr><td><strong>Real-world analogy</strong></td><td>Showing your passport at the airport.</td><td>Your boarding pass deciding which lounge and seat you can access.</td></tr><tr><td><strong>Mechanisms</strong></td><td>Passwords, OTPs, biometrics, &ldquo;log in with Google.&rdquo;</td><td>Roles &amp; permissions (admin vs. customer vs. support agent).</td></tr><tr><td><strong>Fails like&hellip;</strong></td><td>&ldquo;Wrong password&rdquo; &mdash; we can&rsquo;t confirm it&rsquo;s you.</td><td>&ldquo;Access denied&rdquo; &mdash; we know it&rsquo;s you, but you&rsquo;re not permitted.</td></tr></tbody></table></div>
+<div class="callout info"><p class="label">The order matters</p><p>Authentication always comes <strong>first</strong>: the system establishes who you are, then authorization decides what that identity may do. A support agent and a customer might both be perfectly authenticated, but they&rsquo;re authorized very differently &mdash; the agent can see many accounts, the customer only their own.</p></div>
+<h2 class="sub">Concepts you&rsquo;ll meet</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Term</th><th>Plain meaning</th></tr></thead><tbody><tr><td><strong>Session</strong></td><td>The period you stay logged in after authenticating, so you don&rsquo;t re-enter your password on every click.</td></tr><tr><td><strong>Token / JWT</strong></td><td>A tamper-proof digital wristband the server gives you after login, which your app shows on each request to prove it&rsquo;s still you.</td></tr><tr><td><strong>OAuth</strong></td><td>The standard behind &ldquo;log in with Google/Apple&rdquo; &mdash; lets you authenticate via a trusted third party without sharing your password.</td></tr><tr><td><strong>MFA / 2FA</strong></td><td>Multi-factor auth: requiring a second proof (an OTP, an authenticator app) on top of the password.</td></tr><tr><td><strong>Role-based access (RBAC)</strong></td><td>Granting permissions by role (admin, agent, customer) rather than person-by-person.</td></tr><tr><td><strong>Encryption</strong></td><td>Scrambling data so only authorised parties can read it &mdash; in transit (HTTPS) and at rest (in the database).</td></tr></tbody></table></div>
+<div class="callout tip"><p class="label">PM lens</p><p>In a regulated wealth business, <strong>authorization is a product and compliance surface, not just plumbing</strong>. &ldquo;Who can see this? Who can approve that? What can a support agent do on a customer&rsquo;s behalf, and is it logged?&rdquo; are product decisions with real regulatory weight (think RIA vs. MFD boundaries, maker-checker approvals, audit trails). Getting the permission model right is squarely PM territory &mdash; and a place where sloppiness becomes a compliance finding.</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s5">5 &middot; State &amp; State Machines</h1>
+<p>State is simply &ldquo;the current situation&rdquo; &mdash; the snapshot of all the relevant facts at this moment. Your shopping cart has state (what&rsquo;s in it). A KYC application has state (submitted? approved? rejected?). Much of software is the careful management of state as it changes over time.</p>
+<h2 class="sub">State machines: taming the chaos of &ldquo;what can happen next&rdquo;</h2>
+<p>A state machine is a precise map of (a) all the states a thing can be in, and (b) the allowed transitions between them. It&rsquo;s a powerful tool because it forces you to think through every situation explicitly &mdash; and to forbid the nonsensical ones.</p>
+<div class="callout info"><p class="label">A worked example: an investment order</p><p><span class="mono">Placed</span> <span class="arrow">&rarr;</span> <span class="mono">Confirmed</span> <span class="arrow">&rarr;</span> <span class="mono">Processing</span> <span class="arrow">&rarr;</span> <span class="mono">Completed</span></p><p>&hellip;with branch transitions like <code>Placed &rarr; Cancelled</code> or <code>Processing &rarr; Failed</code>. The state machine encodes the rules: an order can go from <code>Placed</code> to <code>Cancelled</code>, but <strong>not</strong> from <code>Completed</code> back to <code>Placed</code>. By drawing this explicitly, the team prevents impossible, money-losing situations &mdash; like cancelling an order that&rsquo;s already settled.</p></div>
+<p>You can think of a state machine as a board game: each square is a state, and the rules say which squares you can move to from where. Illegal moves are simply not on the board.</p>
+<div class="callout tip"><p class="label">PM lens</p><p>State machines are one of the most <strong>PM-friendly engineering tools</strong> that exist &mdash; you can sketch one on a whiteboard with no code at all. For any feature involving status &mdash; KYC, onboarding, order processing, support tickets, withdrawals &mdash; drawing the states and the allowed transitions <strong>yourself</strong>, and crucially asking &ldquo;what happens if it&rsquo;s in state X and Y occurs?&rdquo;, surfaces the edge cases that otherwise become production incidents. This is product-engineering thinking at its most accessible: a great state diagram is often a better spec than three pages of prose.</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s6">6 &middot; Resources: Memory, Compute &amp; Storage</h1>
+<p>Software runs on physical computers (usually rented from cloud providers like AWS, Google Cloud, or Azure). Those computers offer three fundamental resources. Conflating them is one of the most common sources of confusion, so here&rsquo;s the clean mental model &mdash; a kitchen.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Resource</th><th>What it is</th><th>Kitchen analogy</th><th>If you run low&hellip;</th></tr></thead><tbody><tr><td><strong>Compute (CPU)</strong></td><td>The processing power that does the actual work &mdash; calculations, logic.</td><td>The chef&rsquo;s hands and speed.</td><td>Things get slow; work queues up.</td></tr><tr><td><strong>Memory (RAM)</strong></td><td>Fast, temporary workspace for whatever the program is actively using right now. Wiped when the program stops.</td><td>The countertop &mdash; ingredients out for the dish being cooked now.</td><td>The app crashes or grinds to a halt.</td></tr><tr><td><strong>Storage (Disk)</strong></td><td>Slow, permanent space where data is kept long-term, even when powered off.</td><td>The fridge and pantry &mdash; everything kept for later.</td><td>You literally can&rsquo;t save new data.</td></tr></tbody></table></div>
+<div class="callout warn"><p class="label">The memory-vs-storage trap</p><p>This is the distinction worth burning in. <strong>Memory (RAM)</strong> is fast but temporary and small &mdash; the active workspace, gone when the program stops. <strong>Storage (disk)</strong> is slower but permanent and large &mdash; the filing cabinet. &ldquo;We ran out of memory&rdquo; (a crash from too much active work) is a completely different problem from &ldquo;we ran out of storage&rdquo; (nowhere to save data). Engineers mean very different things by them; now so do you.</p></div>
+<h2 class="sub">The cloud, in one paragraph</h2>
+<p>Instead of buying physical computers, companies rent these three resources on demand from cloud providers, paying for what they use. The huge advantage is elasticity &mdash; you can summon more compute during a market-open rush and release it afterwards. This is also why engineers talk about &ldquo;scaling&rdquo; and why cost and performance are linked: more resources cost more money, so efficiency has a direct line to the P&amp;L.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Term</th><th>Plain meaning</th></tr></thead><tbody><tr><td><strong>Server</strong></td><td>A computer (usually rented, in a data centre) that runs your backend and serves users.</td></tr><tr><td><strong>Scaling up (vertical)</strong></td><td>Giving one server more power &mdash; a bigger machine.</td></tr><tr><td><strong>Scaling out (horizontal)</strong></td><td>Adding more servers and splitting the load across them &mdash; usually the more robust approach.</td></tr><tr><td><strong>Load balancer</strong></td><td>A traffic cop that spreads incoming requests evenly across multiple servers.</td></tr><tr><td><strong>Cache</strong></td><td>A small, ultra-fast store of frequently-needed answers, so you don&rsquo;t recompute or re-fetch them every time.</td></tr><tr><td><strong>Latency</strong></td><td>The delay before a response &mdash; how long the user waits. Lower is better.</td></tr><tr><td><strong>Throughput</strong></td><td>How much work the system handles per unit time &mdash; requests per second. Higher is better.</td></tr></tbody></table></div>
+<div class="callout tip"><p class="label">PM lens</p><p>Resources are where <strong>product decisions meet the cloud bill</strong>. A feature that recomputes a heavy portfolio analysis on every screen load is a <strong>compute</strong> cost; one that keeps huge histories instantly queryable is a <strong>storage</strong> cost. You don&rsquo;t need to size servers &mdash; but knowing that &ldquo;this feature is compute-heavy&rdquo; or &ldquo;this will balloon our storage&rdquo; lets you weigh value against running cost, and ask the right question: <code>&ldquo;what does this cost us to run at scale?&rdquo;</code></p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s7">7 &middot; Data at Scale: Warehouses, Lakes &amp; Pipelines</h1>
+<p>The database from Section 2 is built to run the live product &mdash; fast reads and writes for the app (this is called &ldquo;operational&rdquo; or &ldquo;transactional&rdquo; data). But when you want to <strong>analyse</strong> data &mdash; trends, dashboards, ML models, regulatory reporting &mdash; you need different tools, because crunching years of history is a very different job from serving one user&rsquo;s next click.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Concept</th><th>What it is</th><th>The analogy</th></tr></thead><tbody><tr><td><strong>Database (operational)</strong></td><td>Stores live data to run the app. Optimised for speed on individual records.</td><td>The busy front-of-house till.</td></tr><tr><td><strong>Data Warehouse</strong></td><td>A separate store optimised for analysis across huge volumes. Structured, cleaned, query-ready.</td><td>A well-organised library with everything catalogued.</td></tr><tr><td><strong>Data Lake</strong></td><td>A vast pool holding raw data of every kind &mdash; structured and unstructured &mdash; cheaply, before it&rsquo;s necessarily organised.</td><td>A giant reservoir: everything flows in, organise it when you need it.</td></tr><tr><td><strong>Pipeline / ETL</strong></td><td>The automated plumbing that Extracts data, Transforms (cleans) it, and Loads it where it&rsquo;s needed.</td><td>The conveyor and sorting system moving water between pools.</td></tr></tbody></table></div>
+<div class="callout info"><p class="label">Lake vs. warehouse, simply</p><p>A <strong>warehouse</strong> is structured and cleaned up front &mdash; you decide the questions, then shape the data to answer them fast (great for finance dashboards and reporting). A <strong>lake</strong> stores <strong>everything</strong> raw and cheap, and you figure out structure later &mdash; great for data science and ML, where you don&rsquo;t yet know all the questions. Many companies run both, and a modern blend is sometimes called a &ldquo;lakehouse.&rdquo;</p></div>
+<div class="callout tip"><p class="label">PM lens</p><p>A crucial instinct: <strong>don&rsquo;t run heavy analytics directly on the live product database</strong>. A giant report query can slow down the app for real customers. &ldquo;Can we pull this from the warehouse instead of prod?&rdquo; is exactly the kind of question that marks you as a product engineer rather than a passenger. For an IPO-track, regulated business, this separation also underpins clean, auditable reporting.</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s8">8 &middot; The Primitives, On One Page</h1>
+<p>A consolidated cheat-sheet. Keep it nearby; it ties the whole primer together.</p>
+<div class="tbl-wrap"><table><thead><tr><th>Primitive</th><th>One-line definition</th></tr></thead><tbody><tr><td><strong>Frontend / Backend / Database</strong></td><td>What you see / the logic behind it / the long-term memory.</td></tr><tr><td><strong>API</strong></td><td>The contract by which two pieces of software talk.</td></tr><tr><td><strong>SQL vs. NoSQL</strong></td><td>Rigid, reliable tables vs. flexible, scalable structures.</td></tr><tr><td><strong>Schema / Migration</strong></td><td>The data blueprint / a careful, tracked change to it.</td></tr><tr><td><strong>Directory / Path / Dependency</strong></td><td>Folder / a file&rsquo;s address / pre-built code you rely on.</td></tr><tr><td><strong>AuthN vs. AuthZ</strong></td><td>Who you are vs. what you&rsquo;re allowed to do.</td></tr><tr><td><strong>State / State Machine</strong></td><td>The current situation / the map of allowed situations and moves.</td></tr><tr><td><strong>Compute / Memory / Storage</strong></td><td>Processing power / fast temporary workspace / slow permanent space.</td></tr><tr><td><strong>Cache / Latency / Throughput</strong></td><td>Fast-answer shortcut / wait time / work handled per second.</td></tr><tr><td><strong>Warehouse / Lake / Pipeline</strong></td><td>Structured analytics store / raw data reservoir / the plumbing between.</td></tr></tbody></table></div>
+<div class="callout tip"><p class="label">The takeaway</p><p>You now have names for the parts. The goal was never to turn you into an engineer overnight &mdash; it was to make the machine <strong>legible</strong>, so that when the team debates SQL versus NoSQL, or worries about a migration, or weighs a compute-heavy feature, you can follow the logic, ask the sharp question, and make a better product call.</p><p><strong>Combine the two primers</strong> and you have the full picture: Primer 1 showed how software <strong>moves</strong> (the lifecycle); Primer 2 showed what it&rsquo;s <strong>made of</strong> (the primitives). That combination &mdash; understanding both the journey and the building blocks &mdash; is precisely what separates a product manager from a product engineer.</p><p>Welcome to the other side of the wall. Now go open a repo and poke around &mdash; it&rsquo;ll feel a lot less foreign than it did an hour ago.</p></div>
+<div class="foot"><span>Software Primitives Primer  ·  FundsIndia Product Engineering Enablement  ·  Primer 2 of 2</span><span></span></div>
+</main>
+</body>
+</html>

@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Task Ladder — Product Engineering Enablement</title>
+<style>
+:root {
+  --ink: #1A2332;
+  --slate: #33414F;
+  --blue: #1F5C8B;
+  --teal: #0F7C73;
+  --amber: #B5731A;
+  --rule: #C9D4DE;
+  --lightblue: #E8F0F6;
+  --paleblue: #F4F8FB;
+  --palegrey: #F2F4F6;
+  --paleamber: #FBF3E6;
+  --palegreen: #EAF4F2;
+  --maroon: #9C2D41;
+  --muted: #6A7884;
+  --page: #ffffff;
+  --canvas: #EEF2F5;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--slate);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.sheet {
+  max-width: 820px;
+  margin: 32px auto;
+  background: var(--page);
+  padding: 64px 72px 56px;
+  box-shadow: 0 1px 3px rgba(26,35,50,.08), 0 12px 40px rgba(26,35,50,.10);
+  border-radius: 3px;
+}
+
+/* ---------- Cover ---------- */
+.eyebrow {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--blue);
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.cover-rule { height: 3px; background: var(--blue); border: none; margin: 0 0 26px; }
+.cover-title {
+  font-size: 42px;
+  line-height: 1.08;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -.015em;
+  margin: 0 0 12px;
+}
+.cover-sub {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--slate);
+  margin: 0 0 18px;
+  line-height: 1.4;
+}
+.cover-meta {
+  font-size: 15.5px;
+  font-style: italic;
+  color: var(--muted);
+  margin: 0 0 40px;
+}
+
+/* ---------- Headings ---------- */
+h1.sec {
+  font-size: 25px;
+  font-weight: 800;
+  color: var(--blue);
+  letter-spacing: -.01em;
+  margin: 52px 0 18px;
+  padding-bottom: 9px;
+  border-bottom: 2px solid var(--rule);
+  scroll-margin-top: 20px;
+}
+h2.sub {
+  font-size: 19.5px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 30px 0 12px;
+}
+h3.subsub {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: var(--teal);
+  margin: 22px 0 8px;
+}
+p { margin: 0 0 14px; }
+strong { color: var(--ink); font-weight: 700; }
+
+code, .mono {
+  font-family: "SF Mono", "JetBrains Mono", "Fira Code", Consolas, "Liberation Mono", monospace;
+  font-size: .88em;
+  color: var(--maroon);
+  background: rgba(156,45,65,.06);
+  padding: .08em .34em;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+ul, ol { margin: 0 0 16px; padding-left: 24px; }
+li { margin: 0 0 7px; padding-left: 4px; }
+ul li::marker { color: var(--blue); }
+ol li::marker { color: var(--blue); font-weight: 700; }
+
+/* ---------- Callouts ---------- */
+.callout {
+  border-radius: 6px;
+  padding: 16px 20px 4px;
+  margin: 20px 0 24px;
+  border-left: 5px solid;
+  break-inside: avoid;
+}
+.callout .label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.callout p:last-child { margin-bottom: 12px; }
+.callout.info { background: var(--paleblue); border-color: var(--blue); }
+.callout.info .label { color: var(--blue); }
+.callout.tip  { background: var(--palegreen); border-color: var(--teal); }
+.callout.tip .label { color: var(--teal); }
+.callout.warn { background: var(--paleamber); border-color: var(--amber); }
+.callout.warn .label { color: var(--amber); }
+.callout.grey { background: var(--palegrey); border-color: var(--slate); }
+.callout.grey .label { color: var(--slate); }
+
+.flow { font-size: 15.5px; line-height: 1.9; }
+
+/* ---------- Tables ---------- */
+.tbl-wrap { margin: 18px 0 24px; overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.5;
+}
+th {
+  background: var(--lightblue);
+  color: var(--ink);
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 14px;
+  border: 1px solid var(--rule);
+  font-size: 14.5px;
+  vertical-align: top;
+}
+td {
+  padding: 9px 14px;
+  border: 1px solid var(--rule);
+  vertical-align: top;
+}
+tbody tr:nth-child(even) { background: var(--paleblue); }
+td strong { color: var(--ink); }
+.decoder td:first-child { white-space: nowrap; }
+
+/* ---------- Tree block ---------- */
+.tree {
+  font-family: "SF Mono", "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.75;
+  background: var(--palegrey);
+  border-left: 5px solid var(--slate);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin: 8px 0 14px;
+  white-space: pre;
+  overflow-x: auto;
+}
+.tree .c { color: var(--maroon); }
+.tree .note { color: var(--muted); font-family: inherit; }
+
+/* ---------- TOC ---------- */
+.toc { margin: 8px 0 0; }
+.toc a {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--slate);
+  padding: 9px 0;
+  border-bottom: 1px solid #EAEEF1;
+  font-size: 16px;
+}
+.toc a:hover { color: var(--blue); }
+.toc a .n { color: var(--blue); font-weight: 700; min-width: 26px; }
+.toc a .t { flex: 1; }
+.toc a .t::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+}
+
+/* ---------- Footer ---------- */
+.foot {
+  margin-top: 48px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  font-size: 12.5px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+}
+
+.arrow { color: var(--blue); font-weight: 700; padding: 0 2px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  .sheet { padding: 36px 22px 40px; margin: 0; border-radius: 0; }
+  body { font-size: 16px; }
+  .cover-title { font-size: 32px; }
+  .cover-sub { font-size: 18px; }
+  table { font-size: 13.5px; }
+  th, td { padding: 8px 9px; }
+  .decoder td:first-child { white-space: normal; }
+  code { white-space: normal; }
+}
+
+/* ---------- Print ---------- */
+@media print {
+  body { background: #fff; font-size: 11pt; }
+  .sheet { box-shadow: none; margin: 0; max-width: none; padding: 0; border-radius: 0; }
+  h1.sec { break-after: avoid; }
+  h2.sub, h3.subsub { break-after: avoid; }
+  table, .callout, .tree { break-inside: avoid; }
+  tr { break-inside: avoid; }
+  a { color: var(--slate); text-decoration: none; }
+  .pagebreak { break-before: page; }
+}
+
+/* ===== Extensions for AI-Engineering primer ===== */
+
+/* Step blocks — numbered setup sequences */
+.steps { counter-reset: step; margin: 18px 0 24px; padding: 0; list-style: none; }
+.steps > li {
+  position: relative;
+  counter-increment: step;
+  margin: 0 0 14px;
+  padding: 14px 18px 14px 58px;
+  background: var(--paleblue);
+  border-radius: 8px;
+  border-left: 4px solid var(--blue);
+}
+.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 14px; top: 14px;
+  width: 30px; height: 30px;
+  background: var(--blue); color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+.steps > li .st { font-weight: 700; color: var(--ink); display: block; margin-bottom: 2px; }
+.steps > li p { margin: 6px 0 0; }
+.steps > li p:first-of-type { margin-top: 4px; }
+
+/* Code block — multi-line, for terminal/snippets */
+pre.block {
+  font-family: "SF Mono","JetBrains Mono",Consolas,monospace;
+  font-size: 13.5px;
+  line-height: 1.7;
+  background: #14202E;
+  color: #D6E2EC;
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin: 14px 0 18px;
+  overflow-x: auto;
+  white-space: pre;
+}
+pre.block .cm { color: #7C93A6; }       /* comment */
+pre.block .pr { color: #6FB3B8; }       /* prompt symbol */
+pre.block .kw { color: #E0A458; }       /* keyword / command */
+pre.block .st { color: #9ED9A0; }       /* string */
+pre.block.tag-label { position: relative; }
+
+/* "Starter kit" feature grid */
+.kit { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0 24px; }
+.kit .card {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: #fff;
+}
+.kit .card h4 {
+  margin: 0 0 4px; font-size: 15.5px; color: var(--ink);
+  display: flex; align-items: baseline; gap: 8px;
+}
+.kit .card h4 .role {
+  font-size: 11px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--teal);
+}
+.kit .card p { margin: 0; font-size: 14px; line-height: 1.55; }
+.kit .card .url { font-family: "SF Mono",Consolas,monospace; font-size: 12.5px; color: var(--blue); }
+
+/* distrust callout — a sharper amber for "verify this" */
+.callout.verify { background: #FCEEE9; border-color: #C0552F; }
+.callout.verify .label { color: #C0552F; }
+
+@media (max-width: 720px) {
+  .kit { grid-template-columns: 1fr; }
+  .steps > li { padding-left: 52px; }
+}
+
+@media print {
+  .steps > li, pre.block, .kit .card { break-inside: avoid; }
+  pre.block { background: #f4f6f8; color: #1a2332; border: 1px solid var(--rule); }
+  pre.block .cm { color: #6A7884; }
+}
+
+/* ===== Extensions for "Working in a Real Codebase" ===== */
+
+/* Annotated artifact — a code/trace/log panel with numbered annotation pins */
+.artifact {
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 16px 0 10px;
+  border: 1px solid #243140;
+}
+.artifact .cap {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  color: #9FB3C4; background: #1B2836; padding: 8px 16px;
+  border-bottom: 1px solid #243140;
+}
+.artifact pre {
+  margin: 0; padding: 16px 18px;
+  font-family: "SF Mono","JetBrains Mono",Consolas,monospace;
+  font-size: 13px; line-height: 1.75;
+  background: #14202E; color: #D6E2EC;
+  overflow-x: auto; white-space: pre;
+}
+.artifact pre .dim { color: #6F8597; }
+.artifact pre .err { color: #E8806A; }
+.artifact pre .ok  { color: #8FCF92; }
+.artifact pre .warn { color: #E0A458; }
+.artifact pre .kw  { color: #6FB3B8; }
+.artifact pre .path { color: #B5C7D6; }
+.artifact pre .pin {
+  display: inline-block; min-width: 19px; height: 19px; line-height: 19px;
+  text-align: center; background: #C0552F; color: #fff;
+  border-radius: 50%; font-size: 11.5px; font-weight: 700;
+  font-family: -apple-system, sans-serif; margin-left: 8px;
+  vertical-align: middle;
+}
+/* annotation list that pairs with pins */
+.annot { margin: 0 0 22px; padding: 0; list-style: none; counter-reset: pin; }
+.annot li {
+  position: relative; padding: 4px 0 8px 36px; margin: 0;
+  font-size: 15px; line-height: 1.55;
+}
+.annot li::before {
+  counter-increment: pin; content: counter(pin);
+  position: absolute; left: 0; top: 4px;
+  width: 22px; height: 22px; line-height: 22px; text-align: center;
+  background: #C0552F; color: #fff; border-radius: 50%;
+  font-size: 12.5px; font-weight: 700;
+}
+.annot li code { white-space: normal; }
+
+/* Decision procedure — "when X, do Y" flow */
+.decision {
+  border: 1px solid var(--rule); border-radius: 8px;
+  margin: 18px 0 24px; overflow: hidden;
+}
+.decision .dhead {
+  background: var(--ink); color: #fff; padding: 10px 16px;
+  font-size: 14.5px; font-weight: 700; letter-spacing: .02em;
+}
+.decision .drow {
+  display: grid; grid-template-columns: 200px 1fr;
+  border-top: 1px solid var(--rule);
+}
+.decision .drow:nth-child(even) { background: var(--paleblue); }
+.decision .dwhen {
+  padding: 11px 16px; font-weight: 700; color: var(--ink);
+  font-size: 14.5px; border-right: 2px solid var(--rule);
+}
+.decision .dthen { padding: 11px 16px; font-size: 14.5px; }
+.decision .dthen code { white-space: normal; }
+
+@media (max-width: 720px) {
+  .decision .drow { grid-template-columns: 1fr; }
+  .decision .dwhen { border-right: none; border-bottom: 1px solid var(--rule); }
+}
+@media print {
+  .artifact, .decision, .annot li { break-inside: avoid; }
+  .artifact pre { background: #f4f6f8; color: #1a2332; }
+  .artifact .cap { background: #e8edf1; color: #33414f; }
+}
+
+/* ===== Extensions for the Task Ladder ===== */
+
+/* Rung card — the core repeating unit */
+.rung {
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  margin: 22px 0;
+  overflow: hidden;
+  background: #fff;
+  break-inside: avoid;
+}
+.rung .rhead {
+  display: flex; align-items: center; gap: 16px;
+  padding: 16px 22px;
+  background: linear-gradient(100deg, var(--ink), #24405a);
+  color: #fff;
+}
+.rung .rnum {
+  flex: none;
+  width: 44px; height: 44px;
+  border: 2px solid rgba(255,255,255,.55);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 19px; font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.rung .rtitlewrap { flex: 1; }
+.rung .reyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: #9FC0DC; margin: 0 0 1px;
+}
+.rung .rtitle { font-size: 19px; font-weight: 700; margin: 0; line-height: 1.25; }
+.rung .rbody { padding: 18px 22px 6px; }
+.rung .rbody p { margin: 0 0 12px; }
+.rung .cap-label {
+  font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--teal); margin: 4px 0 6px;
+}
+.rung .gate {
+  margin: 6px 22px 18px;
+  background: #FCEEE9;
+  border: 1px solid #E6C4B5;
+  border-left: 4px solid #C0552F;
+  border-radius: 8px;
+  padding: 12px 16px 13px;
+}
+.rung .gate .glabel {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  color: #C0552F; margin: 0 0 5px;
+  display: flex; align-items: center; gap: 7px;
+}
+.rung .gate p { margin: 0 0 7px; font-size: 14.5px; }
+.rung .gate p:last-child { margin-bottom: 0; }
+.rung .gate code { white-space: normal; }
+
+/* "paths" — multiple ways to clear a rung */
+.paths { margin: 4px 0 14px; padding: 0; list-style: none; }
+.paths li {
+  position: relative; padding: 3px 0 8px 26px; font-size: 15px; line-height: 1.55;
+}
+.paths li::before {
+  content: "\2197"; position: absolute; left: 2px; top: 3px;
+  color: var(--blue); font-weight: 700; font-size: 15px;
+}
+.paths li code { white-space: normal; }
+
+/* Phase divider — groups rungs into stages */
+.phase {
+  margin: 40px 0 6px;
+  display: flex; align-items: center; gap: 14px;
+}
+.phase .pbar { flex: none; width: 34px; height: 4px; border-radius: 2px; background: var(--blue); }
+.phase .pname { font-size: 14px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--blue); }
+.phase .pline { flex: 1; height: 1px; background: var(--rule); }
+.phase-note { font-size: 14.5px; color: var(--muted); font-style: italic; margin: 0 0 6px; }
+
+/* Ladder overview map */
+.map { border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; margin: 18px 0 24px; }
+.map .mrow { display: grid; grid-template-columns: 54px 1fr; border-top: 1px solid var(--rule); }
+.map .mrow:first-child { border-top: none; }
+.map .mrow:nth-child(even) { background: var(--paleblue); }
+.map .mn {
+  background: var(--ink); color: #fff; font-weight: 800; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-variant-numeric: tabular-nums;
+}
+.map .mt { padding: 10px 16px; font-size: 14.5px; align-self: center; }
+.map .mt strong { color: var(--ink); }
+
+/* Cowork first-contact marker */
+.cowork {
+  background: var(--palegreen);
+  border: 1px solid #BCDDD7;
+  border-left: 4px solid var(--teal);
+  border-radius: 8px; padding: 14px 18px 4px; margin: 16px 0 20px;
+}
+.cowork .cwlabel {
+  font-size: 11.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--teal); margin: 0 0 7px;
+}
+.cowork p { margin: 0 0 11px; font-size: 15px; }
+
+@media (max-width: 720px) {
+  .rung .rhead { gap: 12px; padding: 14px 16px; }
+  .rung .rbody, .rung .gate { padding-left: 16px; padding-right: 16px; }
+  .rung .gate { margin-left: 16px; margin-right: 16px; }
+  .map .mrow { grid-template-columns: 44px 1fr; }
+}
+@media print {
+  .rung, .map, .cowork, .phase { break-inside: avoid; }
+  .rung .rhead { background: var(--ink) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+</style>
+</head>
+<body>
+<main class="sheet">
+<p class="eyebrow">FundsIndia &middot; Product Engineering Enablement</p>
+<hr class="cover-rule">
+<h1 class="cover-title">The Task Ladder</h1>
+<p class="cover-sub">A Self-Paced Climb From &ldquo;I&rsquo;ve Read About It&rdquo; to &ldquo;An Engineer Treats Me as a Peer&rdquo;</p>
+<p class="cover-meta">The capstone &middot; Where the four primers become muscle</p>
+<div class="callout info"><p class="label">What this is</p><p>The four primers gave you the map, the parts, the engine, and the moves. This is the climb &mdash; the thing that turns all of it from understanding into ability. It&rsquo;s a ladder of <strong>capabilities</strong>, each one a real thing you can do, proven by building on your own repo and defended at a real review.</p><p>Read the &ldquo;how this works&rdquo; section once, carefully &mdash; it explains the rules of the climb, which aren&rsquo;t the usual ones. Then start at the bottom and go at your own pace. There&rsquo;s no schedule and no class. There&rsquo;s just you, a repo, and a series of walls to get over, with the primers as reference and an engineer as the gate.</p></div>
+
+<div class="pagebreak"></div>
+<h1 class="sec" id="rules">How This Climb Works</h1>
+<p>This isn&rsquo;t a course and it isn&rsquo;t a checklist. A few principles define it, and they matter more than any individual rung &mdash; read them before you start.</p>
+<h2 class="sub">The rungs are capabilities, not assignments</h2>
+<p>Each rung names something you should be able to <em>do</em> &mdash; &ldquo;ship a one-line change safely,&rdquo; &ldquo;find and fix a bug you didn&rsquo;t plant,&rdquo; &ldquo;build a feature end-to-end behind a flag.&rdquo; How you get there is open. Each rung offers a few suggested paths, but they&rsquo;re examples, not instructions. If you&rsquo;ve got a better idea for how to prove the capability, take it. The rung is the destination; the route is yours.</p>
+<h2 class="sub">You build in a shared domain, on your own repo</h2>
+<p>Everyone climbs in the same broad space &mdash; <strong>personal wealth and investing</strong> &mdash; so the concepts rhyme with the work you&rsquo;re about to do and you have something real to compare notes on. Two anchor projects work well for the whole climb, and you pick one (or invent a cousin):</p>
+<div class="tbl-wrap"><table><thead><tr><th>Anchor project</th><th>What it is</th><th>Why it&rsquo;s a good teacher</th></tr></thead><tbody><tr><td><strong>The Goal Planner</strong></td><td>Users set savings goals (a house deposit, a car, a trip), track progress, and see how they&rsquo;re tracking against a target date.</td><td>Rich enough for real features (progress maths, dates, projections), simple enough to hold in your head. The running example in Primer 4.</td></tr><tr><td><strong>The Portfolio Visualiser</strong></td><td>Users enter holdings and see their portfolio &mdash; allocation, value over time, simple performance.</td><td>Great for data display, charts, and calculations; naturally grows toward the kind of thing FundsIndia actually does.</td></tr></tbody></table></div>
+<p>It&rsquo;s <em>your</em> repo. Your choices, your stack (the Primer 3 default stack is a fine starting point, or pick your own), your design. The shared domain means a colleague can review your work and recognise the problem; the separate repos mean nobody&rsquo;s copying anybody. Shared problem, divergent solutions &mdash; which is how a real product team works anyway.</p>
+<div class="callout tip"><p class="label">Individuality is the design</p><p>If you&rsquo;re fast, build something ambitious and skip ahead &mdash; the rungs are a floor, not a ceiling. If you&rsquo;re methodical, go deep and understand every piece before climbing. If you want a different stack, framework, or even a different wealth-domain project, take it; the capabilities transfer. The only wrong move is not building. <strong>One of you has already cleared this whole ladder elsewhere</strong> &mdash; if that&rsquo;s you, treat it as a warm-up, help others, and spend your energy on the hardest rungs and on questions nobody&rsquo;s answered yet.</p></div>
+<h2 class="sub">Every rung ends at a real review &mdash; that&rsquo;s the gate</h2>
+<p>This is the heart of the whole climb. You don&rsquo;t clear a rung when <em>you</em> think you&rsquo;re done; you clear it when an <strong>engineer reviews your work and is satisfied</strong>. The gate isn&rsquo;t time-based and it isn&rsquo;t self-certified. It&rsquo;s earned, in another person&rsquo;s judgement. That&rsquo;s deliberately the same standard you&rsquo;ll live by at FundsIndia, where every line &mdash; yours, mine, anyone&rsquo;s &mdash; goes through real-engineer review before it ships.</p>
+<div class="callout info"><p class="label">Why a human gate, and not a quiz</p><p>Because the thing being built &mdash; judgement &mdash; can&rsquo;t be measured by a checklist. An engineer reviewing your code can tell, in a way no automated check can, whether you actually understand what you shipped or just got it working. Their respect is the real credential. It&rsquo;s harder to earn than a passing grade and worth infinitely more. When an engineer starts treating your PRs as a peer&rsquo;s &mdash; reviewing them seriously, trusting your judgement, occasionally deferring to it &mdash; you&rsquo;ve arrived, and you&rsquo;ll know.</p></div>
+<h2 class="sub">So: how to be reviewed well</h2>
+<p>Since the gate <em>is</em> the review, getting good at <strong>being reviewed</strong> is the single highest-leverage skill on this ladder &mdash; arguably more than any technical one. It&rsquo;s also deeply learnable, and most people are never taught it. Here&rsquo;s what separates a review an engineer enjoys from one they dread:</p>
+<ol class="steps"><li><span class="st">Make it small and make it readable</span><p>A focused change with a clear purpose gets a real review; a sprawling 800-line one gets a rubber stamp or a sigh. Small PRs are a courtesy and a skill (Primer 1, &sect;3). If your change is big, it&rsquo;s usually several changes wearing a trenchcoat &mdash; split it.</p></li><li><span class="st">Write the description the reviewer needs</span><p>What does this change, why, how did you test it, and what should the reviewer look at hardest? A good PR description is a gift &mdash; it tells the reviewer where to spend their attention. &ldquo;Done&rdquo; is not a description.</p></li><li><span class="st">Pre-empt the obvious objections</span><p>Read your own change as the reviewer will. Where would they say &ldquo;but what about&hellip;&rdquo;? Handle it, or call it out yourself: &ldquo;I didn&rsquo;t handle the empty state yet &mdash; out of scope for this PR, tracked separately.&rdquo; Showing you see the gaps builds trust faster than pretending there are none.</p></li><li><span class="st">Be able to explain every line</span><p>The cardinal rule from Primer 3, now load-bearing: if the reviewer asks &ldquo;why is this here?&rdquo; and your honest answer is &ldquo;the AI wrote it and it worked,&rdquo; you fail the gate &mdash; correctly. Understanding is the whole point. Never submit code you can&rsquo;t defend.</p></li><li><span class="st">Receive &ldquo;this is wrong&rdquo; without flinching</span><p>A critique of your code is not a critique of you. The engineers worth learning from are blunt because they respect your time, not because they&rsquo;re attacking you. &ldquo;Good catch, fixing&rdquo; is a stronger response than a defence. The people who grow fastest are the ones who treat every piece of hard feedback as a free lesson.</p></li><li><span class="st">Tell a nit from a real concern</span><p>Some feedback is &ldquo;rename this variable&rdquo; (a nit &mdash; just do it). Some is &ldquo;this will double-charge users under load&rdquo; (a real concern &mdash; stop and engage). Learning to tell them apart, and to push back thoughtfully on the rare occasion you think the reviewer is wrong, is exactly the judgement that earns peer status.</p></li></ol>
+<div class="callout tip"><p class="label">The reframe that changes everything</p><p>Don&rsquo;t think of review as a test you pass. Think of it as the <em>fastest learning loop you will ever have access to</em> &mdash; a senior engineer, looking at your actual work, telling you exactly where your understanding is thin, for free. People who climb fastest treat reviews as the best part. The respect you&rsquo;re trying to earn is a by-product of taking the lessons well, over and over.</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="map">The Ladder at a Glance</h1>
+<p>Twelve rungs in three phases. Don&rsquo;t be daunted by the count &mdash; the early ones are quick, and the later ones are where you&rsquo;ll linger. The phases mark shifts in <em>what kind</em> of capability you&rsquo;re proving: first you make things <strong>live</strong>, then you build with <strong>fluency</strong>, then you exercise <strong>judgement</strong>.</p>
+<div class="map"><div class="mrow"><div class="mn">1</div><div class="mt"><strong>Stand it up.</strong> Get a live, deployed app you built &mdash; even if it does almost nothing yet.</div></div><div class="mrow"><div class="mn">2</div><div class="mt"><strong>Ship a one-line change safely.</strong> Make a tiny change and shepherd it all the way to live.</div></div><div class="mrow"><div class="mn">3</div><div class="mt"><strong>Read your own machine.</strong> Trace how your app actually works, end to end, and explain it.</div></div><div class="mrow"><div class="mn">4</div><div class="mt"><strong>Add data and auth.</strong> Real database, real login. Users and their data.</div></div><div class="mrow"><div class="mn">5</div><div class="mt"><strong>Research, then spec, then build.</strong> Your first real feature &mdash; thought through before built.</div></div><div class="mrow"><div class="mn">6</div><div class="mt"><strong>Find and fix a bug you didn&rsquo;t plant.</strong> Debug something genuinely broken.</div></div><div class="mrow"><div class="mn">7</div><div class="mt"><strong>Prove it with tests.</strong> Make a change safe with tests that would catch its regression.</div></div><div class="mrow"><div class="mn">8</div><div class="mt"><strong>Ship behind a flag.</strong> Build a feature dark, release it deliberately, be able to kill it.</div></div><div class="mrow"><div class="mn">9</div><div class="mt"><strong>Watch it run.</strong> Add logging/metrics; read your app&rsquo;s health like a dashboard.</div></div><div class="mrow"><div class="mn">10</div><div class="mt"><strong>Handle an incident.</strong> Deliberately break it, then diagnose and recover calmly.</div></div><div class="mrow"><div class="mn">11</div><div class="mt"><strong>Put AI inside the product.</strong> A feature that calls Claude at runtime, with guardrails.</div></div><div class="mrow"><div class="mn">12</div><div class="mt"><strong>Take an ambiguous ask to done.</strong> A vague request, owned end-to-end like the real job.</div></div></div>
+<div class="callout info"><p class="label">The shape of the climb</p><p>Rungs 1&ndash;4 are <strong>Foundation</strong> &mdash; getting a real thing live and understanding it. Rungs 5&ndash;10 are <strong>Fluency</strong> &mdash; the core loop of building, debugging, testing, and operating, done for real. Rungs 11&ndash;12 are <strong>Judgement</strong> &mdash; AI features and genuine ambiguity, the stuff that&rsquo;s actually your job. Each rung maps to primers you&rsquo;ve read; they&rsquo;re cited inline so you can summon the right one exactly when its wall appears.</p></div>
+<div class="pagebreak"></div>
+<div class="phase"><span class="pbar"></span><span class="pname">Phase 1 &mdash; Foundation</span><span class="pline"></span></div><p class="phase-note">Rungs 1&ndash;4. Get a real, live thing into the world and understand how it works. Move quickly here; the point is momentum and a working app to build on, not polish.</p>
+<div class="rung">
+<div class="rhead"><div class="rnum">1</div><div class="rtitlewrap"><p class="reyebrow">Foundation</p><p class="rtitle">Stand it up</p></div></div>
+<div class="rbody"><p>Before anything else, get something you built running at a real URL. It can be almost empty &mdash; a single page that says &ldquo;My Goal Planner&rdquo; is a complete success. The entire point is to go all the way through the pipeline once, so it stops being abstract.</p>
+<p class="cap-label">The capability you&rsquo;re proving</p><p>You can take an idea from nothing to a deployed, public URL &mdash; touching version control, a repo, and a deploy host &mdash; and you understand what each step did.</p>
+<p class="cap-label">Some ways up (pick one, or invent your own)</p><ul class="paths"><li>Follow the setup path in Primer 3 (&sect;3), directing Claude through each step and asking it to explain as you go.</li><li>Pick the anchor project that appeals to you &mdash; Goal Planner or Portfolio Visualiser &mdash; and stand up its skeleton.</li><li>Go off-script: a different stack, a different host, a wealth-domain idea of your own. The capability is the same.</li></ul></div>
+<div class="gate"><p class="glabel">&#9650; Review gate</p><p>Show your reviewer the live URL and your repo. Be ready to answer: <em>what is a commit? what did pushing to GitHub do? what does the deploy host actually do when you push?</em> The gate here isn&rsquo;t code quality &mdash; it&rsquo;s that you understand the journey you just made, not just that it worked.</p></div>
+</div>
+<div class="rung">
+<div class="rhead"><div class="rnum">2</div><div class="rtitlewrap"><p class="reyebrow">Foundation</p><p class="rtitle">Ship a one-line change safely</p></div></div>
+<div class="rbody"><p>Now make the smallest possible change &mdash; reword a heading, change a colour &mdash; and take it cleanly through the whole flow: branch, commit, push, open a PR, get it reviewed, merge, watch it redeploy. Tiny change, full ceremony. You&rsquo;re practising the <em>motion</em>, which you&rsquo;ll repeat thousands of times.</p>
+<p class="cap-label">The capability you&rsquo;re proving</p><p>You can execute the full change-to-live loop deliberately &mdash; branch, PR, review, merge, deploy &mdash; and you can read your own PR&rsquo;s diff and CI status.</p>
+<p class="cap-label">Some ways up (pick one, or invent your own)</p><ul class="paths"><li>Make the change on a branch and open your first real PR (Primer 1, &sect;3), writing a proper description even though the change is trivial.</li><li>Watch the CI checks run on your PR; if your project has none yet, that&rsquo;s fine &mdash; note what you&rsquo;d want them to check.</li><li>Practise the motion a couple of times until branch / commit / PR / merge feels unremarkable.</li></ul></div>
+<div class="gate"><p class="glabel">&#9650; Review gate</p><p>This is your first real pass through the <strong>review gate</strong> &mdash; so it&rsquo;s as much about <em>how you show up</em> as the change itself. Did you write a clear description? Is the PR small and focused? Can you read your own diff and say what changed? Re-read &ldquo;how to be reviewed well&rdquo; before this one. Getting comfortable being reviewed on a trivial change makes the scary ones later much easier.</p></div>
+</div>
+<div class="rung">
+<div class="rhead"><div class="rnum">3</div><div class="rtitlewrap"><p class="reyebrow">Foundation</p><p class="rtitle">Read your own machine</p></div></div>
+<div class="rbody"><p>You built it (with AI&rsquo;s help), but can you <em>explain</em> it? Trace one real path through your app end to end &mdash; say, what happens from the moment someone clicks &ldquo;add goal&rdquo; to the moment it appears on screen. Narrate every hop. This is the Primer 4 reading skill, turned on your own code, which is the friendliest place to practise it.</p>
+<p class="cap-label">The capability you&rsquo;re proving</p><p>You can follow a single piece of data or one user action through your whole app &mdash; frontend to backend to database and back &mdash; and explain each step in plain language.</p>
+<p class="cap-label">Some ways up (pick one, or invent your own)</p><ul class="paths"><li>Pick one action and trace it (Primer 4, &sect;1): follow the data, read the names, use search to navigate.</li><li>Where a chunk is opaque &mdash; including AI-written code &mdash; ask Claude to explain it, then <em>verify</em> the explanation against the code (Primer 3&rsquo;s distrust discipline).</li><li>Draw the path on paper. If you can sketch the journey, you understand it.</li></ul></div>
+<div class="gate"><p class="glabel">&#9650; Review gate</p><p>Walk your reviewer through the path out loud. The gate: can you explain your own app without hand-waving? If parts are still magic to you &mdash; especially AI-generated parts &mdash; that&rsquo;s the signal you&rsquo;ve been a conduit, not a director. Better to find that here, on friendly code, than at a harder gate later.</p></div>
+</div>
+<div class="rung">
+<div class="rhead"><div class="rnum">4</div><div class="rtitlewrap"><p class="reyebrow">Foundation</p><p class="rtitle">Add data and auth</p></div></div>
+<div class="rbody"><p>Make it real: a proper database so data persists, and login so it belongs to <em>users</em>. This is the leap from &ldquo;a page&rdquo; to &ldquo;an app.&rdquo; It touches the most consequential primitives &mdash; data structure, authentication, authorization &mdash; so go slower here and understand what you&rsquo;re setting up.</p>
+<p class="cap-label">The capability you&rsquo;re proving</p><p>You have real users who log in and see their own data, stored in a real database &mdash; and you understand the difference between authentication and authorization, and where your app enforces each.</p>
+<p class="cap-label">Some ways up (pick one, or invent your own)</p><ul class="paths"><li>Wire up the database and auth (Primer 3, &sect;3; concepts in Primer 2, &sect;2 and &sect;4), directing Claude and checking each piece.</li><li>Design your data model deliberately before building &mdash; what does a &ldquo;goal&rdquo; or a &ldquo;holding&rdquo; actually contain, and how does it relate to a user? (Primer 2&rsquo;s PM-lens on data structure.)</li><li>Make sure one user cannot see another&rsquo;s data &mdash; and be able to point to exactly where that&rsquo;s enforced.</li></ul></div>
+<div class="gate"><p class="glabel">&#9650; Review gate</p><p>Two questions your reviewer will press on, because they&rsquo;re where real incidents live: <em>can you show me your data model and why it&rsquo;s shaped that way?</em> and <em>can user A see user B&rsquo;s data &mdash; prove they can&rsquo;t.</em> Hard-coded secrets, missing authorization checks, or a confused data model don&rsquo;t clear this gate. For a wealth app, this rung is where &ldquo;it works&rdquo; and &ldquo;it&rsquo;s safe&rdquo; first diverge.</p></div>
+</div>
+<div class="pagebreak"></div>
+<div class="phase"><span class="pbar"></span><span class="pname">Phase 2 &mdash; Fluency</span><span class="pline"></span></div><p class="phase-note">Rungs 5&ndash;10. The core loop of real engineering work &mdash; building, debugging, testing, shipping safely, operating. This is where you&rsquo;ll spend most of the climb, and where the four primers stop being reading and start being reflexes.</p>
+<div class="rung">
+<div class="rhead"><div class="rnum">5</div><div class="rtitlewrap"><p class="reyebrow">Fluency</p><p class="rtitle">Research, then spec, then build</p></div></div>
+<div class="rbody"><p>Your first <em>real</em> feature &mdash; but the point of this rung isn&rsquo;t the building, it&rsquo;s everything <em>before</em> the building. Real product engineering doesn&rsquo;t start with code; it starts with understanding the problem and deciding precisely what &ldquo;done&rdquo; means. You&rsquo;ll research the feature, write a crisp spec, and only then direct it into existence.</p><p>Pick something with real meat: a goal-projection feature (&ldquo;at your current pace, you&rsquo;ll hit this goal by March 2028&rdquo;), or portfolio allocation with a chart. Something where the <em>logic</em> needs thought, not just a form.</p>
+<p class="cap-label">The capability you&rsquo;re proving</p><p>You can take a feature from a fuzzy idea to a clear spec to working, reviewed code &mdash; and the spec came first. You can articulate what you&rsquo;re building and why before you build it.</p>
+<p class="cap-label">Some ways up (pick one, or invent your own)</p><ul class="paths"><li>Research the problem properly &mdash; how do real tools present this? what&rsquo;s the maths? what are the edge cases? &mdash; then write a short spec (goal, behaviour, edge cases, what &ldquo;done&rdquo; looks like).</li><li>Direct the build in small, reviewable pieces (Primer 3, &sect;4): data model first, then logic, then UI &mdash; checking each before moving on.</li><li>Make the AI show you its plan before its code, and read every line it produces critically (Primer 3, &sect;5).</li></ul><div class="cowork"><p class="cwlabel">Cowork &mdash; first contact (use it here, learn it by using it)</p><p>This is the rung where a second AI surface earns its place, so here&rsquo;s what it is and how to drive it. <strong>Claude Cowork</strong> is an agentic workspace for <em>knowledge work</em> &mdash; as distinct from chat (a conversation) or Claude Code (hands on your repo). Where chat answers and Claude Code edits code, Cowork takes a substantial piece of <em>thinking</em> work and runs with it: researching across many sources, synthesising messy inputs into structured outputs, producing documents. It works more autonomously than chat &mdash; you give it a goal and it does a chunk of the legwork.</p><p><strong>Use it for this rung&rsquo;s research-and-spec.</strong> Point Cowork at the problem: &ldquo;Research how leading goal-based investing tools present &lsquo;are you on track&rsquo; projections &mdash; the common approaches, the maths behind them, and the edge cases they handle &mdash; and draft a one-page feature spec I can build from.&rdquo; Then do what you now do reflexively with any AI output: read it critically, verify the claims, and make the spec <em>yours</em>. Cowork drafts the thinking; you own it.</p><p>That&rsquo;s the whole introduction you need to get started. Cowork is broad &mdash; it can multiply a lot of your day-to-day PM work, not just feature research &mdash; but discovering that breadth is yours to do when you join. For the ladder, this is the pairing that matters: <strong>knowledge-work AI to think the feature through, build-AI to bring it to life.</strong> That&rsquo;s the product-engineer workflow in miniature.</p></div></div>
+<div class="gate"><p class="glabel">&#9650; Review gate</p><p>Your reviewer will want to see the <strong>spec</strong>, not just the code &mdash; and will ask whether the code actually does what the spec said, and what happens at the edges the spec named. A feature that works on the happy path but ignores its own stated edge cases doesn&rsquo;t clear this gate. The discipline being tested is &ldquo;think, then build,&rdquo; which is the whole difference between a coder and a product engineer.</p></div>
+</div>
+<div class="rung">
+<div class="rhead"><div class="rnum">6</div><div class="rtitlewrap"><p class="reyebrow">Fluency</p><p class="rtitle">Find and fix a bug you didn&rsquo;t plant</p></div></div>
+<div class="rbody"><p>Debugging is the day-one skill (Primer 4, &sect;1), and the only way to build it is to debug. Get a genuine bug into your codebase that you didn&rsquo;t deliberately create &mdash; then hunt it down. The not-knowing-where-it-is is the entire point; planted bugs you remember placing don&rsquo;t teach the skill.</p>
+<p class="cap-label">The capability you&rsquo;re proving</p><p>You can start from a symptom, navigate unfamiliar (or forgotten) code to the root cause, explain why it happened, and fix it &mdash; without flailing.</p>
+<p class="cap-label">Some ways up (pick one, or invent your own)</p><ul class="paths"><li>Have a teammate plant a bug in a copy of your repo (and you do the same for them) &mdash; now neither of you knows where your own bug is.</li><li>Ask Claude to introduce a subtle, realistic bug somewhere in your app, then go find it as if you&rsquo;d never seen it.</li><li>Or simply fix a real one you hit naturally as you build &mdash; reproduce it, trace it (Primer 4, &sect;1), read the stack trace if there is one, fix the root cause not the symptom.</li></ul></div>
+<div class="gate"><p class="glabel">&#9650; Review gate</p><p>Your reviewer will ask you to <em>narrate the hunt</em>, not just show the fix: how did you find it? what was the actual root cause, as opposed to where it showed up? did you fix the cause or paper over the symptom? &ldquo;I changed this line and it worked but I&rsquo;m not sure why&rdquo; is a failed gate &mdash; that&rsquo;s a symptom-patch, and it&rsquo;ll come back. The capability is calm, reasoned debugging.</p></div>
+</div>
+<div class="rung">
+<div class="rhead"><div class="rnum">7</div><div class="rtitlewrap"><p class="reyebrow">Fluency</p><p class="rtitle">Prove it with tests</p></div></div>
+<div class="rbody"><p>Make a change <em>safe</em>. Take a piece of real logic in your app &mdash; the goal projection, the allocation maths &mdash; and write tests that would catch it if it broke, especially at the edges. Then refactor or change that code and watch the tests guard you. This is Primer 4, &sect;2 made real: the moment testing stops being theory and becomes the thing that lets you change code without fear.</p>
+<p class="cap-label">The capability you&rsquo;re proving</p><p>You can write tests that meaningfully prove your code is correct &mdash; including the edge cases &mdash; and you understand the difference between a test that gives real confidence and one that gives false confidence.</p>
+<p class="cap-label">Some ways up (pick one, or invent your own)</p><ul class="paths"><li>Write tests for your trickiest bit of logic (Primer 4, &sect;2), deliberately including edge cases: zero, empty, negative, huge, a brand-new record.</li><li>Best of all: take the bug from Rung 6 and write the test that <em>would have caught it</em> &mdash; red on the old code, green on the fix. Now it can never silently return.</li><li>Direct AI to help write tests, then read them critically &mdash; AI loves writing happy-path-only tests, which is exactly the blind spot (Primer 4, &sect;2 decision table).</li></ul></div>
+<div class="gate"><p class="glabel">&#9650; Review gate</p><p>The gate isn&rsquo;t &ldquo;are there tests&rdquo; &mdash; it&rsquo;s &ldquo;are they <em>good</em>.&rdquo; Your reviewer will look at whether your tests cover the edges or just the happy path, whether a failure would actually tell you something, and whether you can explain what each test protects. Bonus respect for the test that reproduces a real bug before fixing it &mdash; that&rsquo;s exactly how good engineers work.</p></div>
+</div>
+<div class="rung">
+<div class="rhead"><div class="rnum">8</div><div class="rtitlewrap"><p class="reyebrow">Fluency</p><p class="rtitle">Ship behind a flag</p></div></div>
+<div class="rbody"><p>Build a feature <em>dark</em> &mdash; deployed to production but switched off &mdash; then turn it on deliberately, and be able to turn it off instantly. This decouples shipping code from releasing features (Primer 1, &sect;5), and it&rsquo;s one of the most useful tricks in the whole craft. It&rsquo;s also a genuine product superpower you&rsquo;ll use constantly in the real job.</p>
+<p class="cap-label">The capability you&rsquo;re proving</p><p>You can deploy a feature that&rsquo;s hidden behind a switch, release it on your own terms, and kill it in seconds if it misbehaves &mdash; without redeploying.</p>
+<p class="cap-label">Some ways up (pick one, or invent your own)</p><ul class="paths"><li>Add a simple feature flag (it can start as basic as a config value) and build a new feature behind it (Primer 1, &sect;5).</li><li>Ship the code to production with the flag off &mdash; confirm users can&rsquo;t see it &mdash; then flip it on for yourself only, then for everyone.</li><li>Practise the kill switch: turn it off and confirm the feature vanishes instantly, no deploy needed. That&rsquo;s the safety the flag buys you.</li></ul></div>
+<div class="gate"><p class="glabel">&#9650; Review gate</p><p>Your reviewer will check that the flag actually works as a switch &mdash; off means genuinely invisible, on means live, and flipping it needs no redeploy &mdash; and will ask <em>when would you canary this vs. release to everyone, and how would you roll back if the flag itself isn&rsquo;t enough?</em> The capability is controlled, reversible releasing &mdash; thinking like someone who ships to real customers.</p></div>
+</div>
+<div class="rung">
+<div class="rhead"><div class="rnum">9</div><div class="rtitlewrap"><p class="reyebrow">Fluency</p><p class="rtitle">Watch it run</p></div></div>
+<div class="rbody"><p>Make your app <em>observable</em>. Add enough logging and basic metrics that you can answer &ldquo;is it healthy right now?&rdquo; without guessing (Primer 4, &sect;3). Then generate some traffic &mdash; or some errors &mdash; and read your own app&rsquo;s health the way you&rsquo;d read a dashboard. You&rsquo;re building the literacy that turns &ldquo;it worked when I tried it&rdquo; into &ldquo;it&rsquo;s working for everyone.&rdquo;</p>
+<p class="cap-label">The capability you&rsquo;re proving</p><p>You can tell, from your app&rsquo;s own signals, whether it&rsquo;s healthy, slow, or broken &mdash; and whether a problem is in your code or a dependency.</p>
+<p class="cap-label">Some ways up (pick one, or invent your own)</p><ul class="paths"><li>Add logging at the points that matter (a goal created, a payment attempted, an error caught) and a few basic metrics if your host offers them (Primer 4, &sect;3).</li><li>Use your deploy host&rsquo;s built-in logs/metrics views &mdash; you already have more observability than you think; learn to read it.</li><li>Deliberately cause some errors and watch them show up in the logs, so you know what trouble looks like <em>before</em> it&rsquo;s real.</li></ul></div>
+<div class="gate"><p class="glabel">&#9650; Review gate</p><p>Your reviewer will pose a scenario &mdash; &ldquo;error rate just jumped but traffic is normal: what do you look at, and what does it tell you?&rdquo; &mdash; and want you to reason from your own signals (Primer 4, &sect;3 decision table). The gate is the slow-vs-broken-vs-fine literacy, and knowing your code from a failing dependency. Reading health, not just hoping for it.</p></div>
+</div>
+<div class="rung">
+<div class="rhead"><div class="rnum">10</div><div class="rtitlewrap"><p class="reyebrow">Fluency</p><p class="rtitle">Handle an incident</p></div></div>
+<div class="rbody"><p>Put rungs 6&ndash;9 together under pressure. Deliberately break your app in production (you have a flag and a rollback now, so it&rsquo;s safe to), then run the real incident sequence: notice, assess, stop the bleeding, diagnose, fix, learn (Primer 4, &sect;3). The goal is to rehearse the <em>calm</em> &mdash; so that when it&rsquo;s real and unplanned, you have a sequence instead of a panic.</p>
+<p class="cap-label">The capability you&rsquo;re proving</p><p>You can respond to a production problem the way a good engineer does &mdash; mitigate first, diagnose second, fix properly, and learn &mdash; without heroics or flailing.</p>
+<p class="cap-label">Some ways up (pick one, or invent your own)</p><ul class="paths"><li>Ship a deliberate breakage (behind your control), then practise the full sequence: spot it in your monitoring, assess the blast radius, roll back or flip the flag to stop the bleeding, <em>then</em> diagnose calmly.</li><li>Write the bug a test (Rung 7) so the fix is real and the regression is guarded.</li><li>Do a one-paragraph blameless postmortem: what made it possible, what prevents the whole class of it next time.</li></ul></div>
+<div class="gate"><p class="glabel">&#9650; Review gate</p><p>Your reviewer will care most about <em>order of operations</em>: did you stop the bleeding before debugging, or did you try to be a hero in production? &ldquo;Roll back first, investigate after&rdquo; is the instinct being tested. Plus: did the fix come with a test, and did you learn something structural? This rung is where the Fluency phase comes together as judgement under pressure.</p></div>
+</div>
+<div class="pagebreak"></div>
+<div class="phase"><span class="pbar"></span><span class="pname">Phase 3 &mdash; Judgement</span><span class="pline"></span></div><p class="phase-note">Rungs 11&ndash;12. The stuff that&rsquo;s actually the job: building AI into the product, and owning genuine ambiguity. There are no step-by-step paths here on purpose &mdash; that&rsquo;s the point.</p>
+<div class="rung">
+<div class="rhead"><div class="rnum">11</div><div class="rtitlewrap"><p class="reyebrow">Judgement</p><p class="rtitle">Put AI inside the product</p></div></div>
+<div class="rbody"><p>Everything so far used AI to <em>build</em>. Now build a feature that <em>contains</em> AI &mdash; one that calls Claude at runtime (Primer 3, &sect;6). A natural-language &ldquo;explain my portfolio&rdquo; feature, a goal-suggestion helper, a spending summariser. This is a different discipline, with its own concerns: quality you can&rsquo;t unit-test the usual way, cost per call, latency, and failures that are soft rather than loud.</p>
+<p class="cap-label">The capability you&rsquo;re proving</p><p>You can build a product feature powered by an AI call, reason about its evals, cost, and latency, and design for its failure modes &mdash; including the guardrails a regulated financial context demands.</p>
+<p class="cap-label">Some ways up (pick one, or invent your own)</p><ul class="paths"><li>Build something genuinely useful that calls Claude via the API (Primer 3, &sect;6) &mdash; start small, one well-scoped AI feature.</li><li>Define what &ldquo;good output&rdquo; means and rough out an eval &mdash; a handful of representative inputs and how you&rsquo;d score the answers (Primer 3, &sect;6). This is your PM judgement applied directly.</li><li>Design for failure and guardrails: what shows if the model is slow or down? what stops it stating a wrong number as fact, or straying into anything resembling financial advice?</li></ul></div>
+<div class="gate"><p class="glabel">&#9650; Review gate</p><p>Your reviewer will go past &ldquo;does it work&rdquo; to <em>how do you know it&rsquo;s good, what does it cost, what&rsquo;s the latency, and what happens when it fails or says something it shouldn&rsquo;t.</em> For anything wealth-adjacent, the guardrails aren&rsquo;t a finishing touch &mdash; they&rsquo;re the gate. &ldquo;The AI said it&rdquo; is never a defence (Primer 3, &sect;6). This rung is where building-with-AI and building-AI-features become one skill.</p></div>
+</div>
+<div class="rung">
+<div class="rhead"><div class="rnum">12</div><div class="rtitlewrap"><p class="reyebrow">Judgement</p><p class="rtitle">Take an ambiguous ask to done</p></div></div>
+<div class="rbody"><p>The capstone, and the truest simulation of the actual job. Someone hands you a <em>vague</em> request &mdash; &ldquo;users should understand their progress better,&rdquo; &ldquo;make the portfolio view more useful&rdquo; &mdash; and you own it end to end: interrogate it, research it, scope it, spec it, build it, test it, ship it safely, watch it. No one tells you the steps, because in the real job no one does. This rung has no suggested paths on purpose. Figuring out the path <em>is</em> the capability.</p>
+<p class="cap-label">The capability you&rsquo;re proving</p><p>You can take genuine ambiguity and drive it to a shipped, safe, well-understood outcome &mdash; exercising every skill on this ladder, and deciding for yourself which ones the situation needs.</p>
+<p class="cap-label">Some ways up (pick one, or invent your own)</p><ul class="paths"><li>There is no path list here. That&rsquo;s the rung. Take a vague ask and own the whole arc &mdash; the deciding-what-to-do is the test.</li></ul></div>
+<div class="gate"><p class="glabel">&#9650; Review gate</p><p>This is the gate that, when you clear it, means an engineer treats you as a peer &mdash; because you&rsquo;ve just done the actual job. Your reviewer is judging the <em>whole</em> of it: did you turn vague into precise? was the spec sound? is the code understood, tested, and safely shipped? can you defend every decision? This isn&rsquo;t a rung you pass once and forget &mdash; it&rsquo;s the standard you now work at. The respect you&rsquo;ve earned getting here is the credential. There&rsquo;s no certificate, and there doesn&rsquo;t need to be.</p></div>
+</div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="after">After the Climb</h1>
+<p>Clearing the twelfth rung doesn&rsquo;t mean you&rsquo;re a senior engineer &mdash; that was never the goal, and pretending otherwise would do you a disservice. It means something more useful: you can make a meaningful change to a real product, prove it&rsquo;s right, ship it safely, watch it run, and defend every decision to someone whose job is to find the holes. You know the edges of your own competence well enough to know when to pull in a real engineer &mdash; which is itself a senior instinct. That&rsquo;s a Product Engineer, and it&rsquo;s exactly what FundsIndia needs you to be.</p>
+<div class="callout info"><p class="label">What you carry forward</p><p>The respect of the engineers you&rsquo;ll work with &mdash; earned rung by rung, not granted &mdash; is the thing that makes everything else possible. It&rsquo;s what lets you review their PRs and have it mean something, propose technical approaches and be taken seriously, and own product-engineering decisions end to end. You didn&rsquo;t get it by reading; you got it by building things and defending them. Keep doing exactly that.</p></div>
+<div class="callout tip"><p class="label">And the part that&rsquo;s genuinely yours now</p><p>Two things worth saying plainly. First: Cowork &mdash; you met it as a research-and-spec tool, but it can multiply a great deal of your day-to-day product work. Exploring that breadth is worth your time once you&rsquo;ve joined; it&rsquo;s yours to discover, not something to be walked through. Second: the best questions on this whole climb are the ones nobody had a clean answer to &mdash; the ones that taught the person who asked, and sometimes the person they asked. Bring those. The climb doesn&rsquo;t really end; it just stops having rungs and starts having real work. Go build.</p></div>
+<div class="foot"><span>The Task Ladder  ·  FundsIndia Product Engineering Enablement  ·  The Capstone</span><span></span></div>
+</main>
+</body>
+</html>

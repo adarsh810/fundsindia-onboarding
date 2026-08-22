@@ -1,0 +1,606 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Spec 2 — The Canonical Ledger</title><style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 860px; margin: 40px auto; padding: 0 24px 80px; color: #1a1a1a; line-height: 1.7; }
+  h1 { font-size: 2rem; margin-bottom: 0.3em; } h2 { font-size: 1.4rem; margin-top: 2em; border-bottom: 1px solid #e5e5e5; padding-bottom: 0.3em; }
+  h3 { font-size: 1.1rem; margin-top: 1.5em; } pre { background: #f5f5f5; padding: 16px; border-radius: 8px; overflow-x: auto; }
+  code { background: #f0f0f0; padding: 2px 5px; border-radius: 4px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; } blockquote { border-left: 3px solid #d0d0d0; margin-left: 0; padding-left: 16px; color: #555; }
+  table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+  th { background: #f5f5f5; } a { color: #6B3FA0; }
+</style></head><body><h1>Spec 2 · The Canonical Ledger</h1>
+<p>Spec 2 · The Canonical Ledger</p>
+<p>Accounts, postings, bitemporality, and the wall that keeps the rail out of the books</p>
+<p>Architect and staff-eng owned · chart of accounts, posting rules, and ledger schema, no user stories · drafted in the 3-week lock, frozen after the transaction-constraining PRDs · reads on Spec 1 and the Architecture Companion</p>
+<p>This is the spec that turns Spec 1&#39;s one-line Ledger entry into a working set of books. Spec 1 fixed that the ledger is canonical, double-entry, immutable, and bitemporal, and that Holdings fold from it. This document fixes what that means in practice: the accounts money moves between, the exact debits and credits each flow fires and at which event, how two time axes are stored and queried, and what the ledger does when a rail disagrees with it. The load-bearing idea is unchanged and stated here as a wall. Nothing a rail returns becomes truth until it has posted through these books.</p>
+<h1>1  Purpose, scope, and freeze status</h1>
+<p>Spec 2 owns the chart of accounts, the posting rules per money-movement flow, the ledger schema for accounts, entries, and postings, the period operations that close the books, the reconciliation contract against the rails, and the rule by which Holdings fold from the ledger. Spec 1 keeps the entity shapes this document posts from and folds to: Transaction, Ledger entry, Holding, Mandate, Instrument. Where this spec needed one of those shapes to change, it changed Spec 1 directly rather than holding a private divergence; the changes are listed in section 13.</p>
+<p>Scope is the V1 envelope and nothing wider. V1 is a distribution-only proposition: regular-plan mutual funds and fixed deposits, INR, the resident, NRI, and minor personas Spec 1 already carries. There are no direct plans, no advisory fee charged to a customer, and no posted equities; held-away positions stay an external read-model and never touch these books, exactly as Spec 1 ruled. The ledger is single-currency in V1, and every money attribute still carries an explicit currency that is always INR, so the mechanism is built for a future it does not yet exercise. V1 also generates no capital-gains statement and tracks no cost-basis lot; section 10 records that call and the reasoning behind it.</p>
+<blockquote>
+<p><strong>Freeze status.</strong> This document is drafted during the three-week lock and frozen only after the transaction-constraining PRDs, Catalog, Onboarding, Goals, and Transactions, have pressure-tested its posting rules. What holds it open is the same in-parallel discipline as Spec 1: a flow a PRD describes may force a posting rule or an account this draft did not anticipate, and the rule changes here when it does, with an ADR. The posting model is derived from our domain and regulatory needs and is independent of any FP or RTA ontology. The only thing that waits on the real vendor and RTA contracts is the reconciliation mapping, which lives at the ACL in Spec 4, never here. One area is flagged for the fintech architect throughout rather than frozen: the precise pool-custody and tax-at-source treatments, where domain nuance outweighs our certainty.</p>
+</blockquote>
+<h1>2  Inherited tenets, as constraints</h1>
+<p>Eight constraints carry in from Spec 1 and the constitution and bind every rule below. They are stated once and not relitigated.</p>
+<p>The ledger is canonical and Holdings are derived, so nothing a vendor returns becomes truth without posting through it, and FP is a source reconciled against the ledger, never the system of record. Corrections are compensating postings and never edits; immutable entries carry no updatedAt, and a correction is a new record. Two temporal axes stay separate: recorded-time, when we learned a fact, and effective or NAV-date, when it applies. Money is integer minor units plus an explicit currency, never a float. Held-away is never a posting; it is an external read-model. Idempotency is present on every money-moving posting, because rails get retried. Vendor concepts never cross the seam: no FP or RTA shape leaks into an account or a posting, and railRef is the only sanctioned opaque external reference, mapped at the ACL. And one V1 constraint this spec adds from the monetisation call: the customer-money ledger records investment money movement only, charges no advisory fee, and treats trail commission as a deferred sibling book, addressed in section 12.</p>
+<h1>3  Chart of accounts and the account model</h1>
+<p>The account is the vocabulary the double-entry system posts against, and it is the largest net-new piece in this spec. An account in these books is one of a small, closed set of types, owned by either an investor or the platform, denominated in a single unit-type, and never deleted once live. The model is deliberately narrow for V1; it carries no equity, NPS, or bond accounts, because those are out of scope, and no fee or commission accounts, because no customer fee is charged and trail is a separate book.</p>
+<h2>The LedgerAccount entity</h2>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Key</th>
+<th>Type and role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>accountId</td>
+<td>PK</td>
+<td>Opaque canonical id. Never an external or vendor id.</td>
+</tr>
+<tr>
+<td>accountType</td>
+<td></td>
+<td>Enum, closed: pool_cash, investor_cash, investor_holdings, investor_fd_holding, amc_payable, amc_receivable, fd_provider_payable, fd_provider_receivable, unit_source, tds_withheld, tds_remitted, interest_income, suspense.</td>
+</tr>
+<tr>
+<td>ownerKind</td>
+<td></td>
+<td>Enum: investor, platform, external. Discriminates ownerRef.</td>
+</tr>
+<tr>
+<td>ownerRef</td>
+<td>FK (typed) → per ownerKind</td>
+<td>The owning party. An investor account points at an Investor; a platform account (pool, suspense, payables) has no investor owner.</td>
+</tr>
+<tr>
+<td>unitType</td>
+<td></td>
+<td>Enum: inr, scheme_units, fd_principal. The unit the account balances in. The double-entry validator balances per unit-type, never across them.</td>
+</tr>
+<tr>
+<td>instrumentRef</td>
+<td>FK → Instrument (nullable)</td>
+<td>Scheme or FD context where the account is instrument-scoped, as holdings accounts are.</td>
+</tr>
+<tr>
+<td>parentAccountRef</td>
+<td>FK → LedgerAccount (nullable)</td>
+<td>Account hierarchy for roll-up at platform altitude. Never spans investors; see the household rule below.</td>
+</tr>
+<tr>
+<td>status</td>
+<td></td>
+<td>Enum: active, dormant, closed. No live deletion; closure is a status, audit-trailed.</td>
+</tr>
+</tbody></table>
+<h2>The chart of accounts</h2>
+<p>Two families of account, investor-owned and platform-owned, with one external-facing tax pair. Money flows between them and always lands balanced within a unit-type. Each account declares its class and normal balance, the side on which it increases; this is a static property of the accountType rather than a stored per-row field, and it makes the Dr and Cr directions in the posting rules below unambiguous rather than inferred.</p>
+<table>
+<thead>
+<tr>
+<th>Account</th>
+<th>Owner</th>
+<th>Unit-type</th>
+<th>Class · normal</th>
+<th>What it holds</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pool_cash</td>
+<td>Platform</td>
+<td>inr</td>
+<td>Asset · Dr</td>
+<td>The regulatory pool bank account. Real customer money in transit, in then out. SEBI pool discipline applies; section 9 reconciles it to zero drift.</td>
+</tr>
+<tr>
+<td>investor_cash</td>
+<td>Investor</td>
+<td>inr</td>
+<td>Liability · Cr</td>
+<td>Cash the platform owes the investor: collected and not yet invested, or redeemed and not yet paid out. Transient by design.</td>
+</tr>
+<tr>
+<td>investor_holdings</td>
+<td>Investor</td>
+<td>scheme_units</td>
+<td>Asset · Dr</td>
+<td>Units held for the investor, per scheme and folio. The lasting position. Holdings fold from this account&#39;s postings.</td>
+</tr>
+<tr>
+<td>investor_fd_holding</td>
+<td>Investor</td>
+<td>fd_principal</td>
+<td>Asset · Dr</td>
+<td>FD principal booked for the investor. No NAV, no units; principal at face.</td>
+</tr>
+<tr>
+<td>unit_source</td>
+<td>External</td>
+<td>scheme_units</td>
+<td>Contra · Cr</td>
+<td>The units leg counterparty. Units originate from or return to the AMC; this account is the contra that keeps the units sub-entry balanced.</td>
+</tr>
+<tr>
+<td>amc_payable</td>
+<td>Platform</td>
+<td>inr</td>
+<td>Liability · Cr</td>
+<td>Cash owed to an AMC for a buy struck and not yet settled.</td>
+</tr>
+<tr>
+<td>amc_receivable</td>
+<td>Platform</td>
+<td>inr</td>
+<td>Asset · Dr</td>
+<td>Cash due from an AMC for a redemption struck and not yet received.</td>
+</tr>
+<tr>
+<td>fd_provider_payable</td>
+<td>Platform</td>
+<td>inr</td>
+<td>Liability · Cr</td>
+<td>Cash owed to an FD provider for a placement not yet settled.</td>
+</tr>
+<tr>
+<td>fd_provider_receivable</td>
+<td>Platform</td>
+<td>inr</td>
+<td>Asset · Dr</td>
+<td>Cash due from an FD provider at maturity.</td>
+</tr>
+<tr>
+<td>interest_income</td>
+<td>Investor</td>
+<td>inr</td>
+<td>Income · Cr</td>
+<td>FD interest realised to the investor at maturity.</td>
+</tr>
+<tr>
+<td>tds_withheld</td>
+<td>External</td>
+<td>inr</td>
+<td>Contra · Dr</td>
+<td>Tax deducted at source on an NRI redemption, recorded for the investor&#39;s reporting and the tax-authority reconciliation.</td>
+</tr>
+<tr>
+<td>tds_remitted</td>
+<td>External</td>
+<td>inr</td>
+<td>Contra · Cr</td>
+<td>The contra discharging tds_withheld: the RTA has already remitted it to the authority, so it carries no platform cash and the pair nets within the entry.</td>
+</tr>
+<tr>
+<td>suspense</td>
+<td>Platform</td>
+<td>inr</td>
+<td>Clearing · nets to 0</td>
+<td>The clearing account for unmatched or unidentified amounts, pending reconciliation. Never a resting place; every suspense balance is a break.</td>
+</tr>
+</tbody></table>
+<h2>Hierarchy, and why a household is never an account</h2>
+<p>Accounts roll up only at platform altitude, for trial-balance and operational reporting: per-scheme payables under an AMC payable, per-account-type under a control account. Investor accounts roll up to the investor and stop there. They never roll up to a household.</p>
+<blockquote>
+<p><strong>Household is a reporting projection, never a posting altitude.</strong> A household aggregates the positions of distinct Investors with distinct PANs, which is cross-person financial data. The ledger records money movement per owning party, so a household is a layer above the ledger by its nature, not a timing deferral. The canonical books stay per-Investor and per-owning-party. Any family view is a separately consented, purpose-bound projection built above the ledger when a surface needs it, which keeps the DPDP purpose-limitation and zero-cross-customer commitments honest at the one layer where money is recorded. Joint holdings are untouched and stay as Spec 1 has them: one Holding with co-owning parties that this ledger posts to, which is co-ownership of a single account and categorically different from aggregating across separate persons&#39; accounts.</p>
+</blockquote>
+<h2>Posting dimensions</h2>
+<p>Every posting is tagged so the books can be sliced without re-aggregation, and every tag is a typed reference to a canonical entity, never a bare id, per the golden rules. The dimensions are investorRef, instrumentRef, amcRef, goalRef, the commercialRelationshipRef that carries ARN and EUIN attribution, and the sourceEventRef that ties the posting back to the fact that drove it. These dimensions are what the deferred trail-commission book will later read from; section 12 states the forward-compatibility this places on us now.</p>
+<h1>4  The ledger schema</h1>
+<p>A money-movement fact becomes a JournalEntry. An entry is a set of two or more Postings, the legs, that balance within each unit-type. The entry is the atomic unit: all of its legs commit together or none do, and an imbalanced entry is rejected before write.</p>
+<h2>JournalEntry</h2>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Key</th>
+<th>Type and role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>entryId</td>
+<td>PK</td>
+<td>Opaque canonical id. Sequence number assigned on commit for the tamper-evident chain.</td>
+</tr>
+<tr>
+<td>sourceRef</td>
+<td>FK (typed) → per sourceKind</td>
+<td>The fact that drove the entry. Mirrors Spec 1&#39;s Ledger entry; resolved by sourceKind.</td>
+</tr>
+<tr>
+<td>sourceKind</td>
+<td></td>
+<td>Enum: transaction, corporate_action, correction, migration, period_op.</td>
+</tr>
+<tr>
+<td>recordedAt</td>
+<td></td>
+<td>System time, when we recorded the fact. Always now; never altered.</td>
+</tr>
+<tr>
+<td>effectiveDate</td>
+<td></td>
+<td>Business or NAV-date, when the fact applies. May be back-dated; the second bitemporal axis.</td>
+</tr>
+<tr>
+<td>postingRuleVersion</td>
+<td></td>
+<td>The versioned rule that produced the legs. Part of the idempotency key; makes replay deterministic.</td>
+</tr>
+<tr>
+<td>idempotencyKey</td>
+<td>Unique</td>
+<td>Derived from the source event id and the rule version. A replayed event re-derives the same key and is a no-op.</td>
+</tr>
+<tr>
+<td>correctionLinkRef</td>
+<td>FK → JournalEntry (nullable)</td>
+<td>For compensating and corrected entries, the link to what they reverse or correct. Preserves the chain.</td>
+</tr>
+<tr>
+<td>status</td>
+<td></td>
+<td>Enum: posted, pending_rule, posting_rejected. A rejected entry never wrote any leg.</td>
+</tr>
+</tbody></table>
+<h2>Posting (the leg)</h2>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Key</th>
+<th>Type and role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>postingId</td>
+<td>PK</td>
+<td>Opaque canonical id.</td>
+</tr>
+<tr>
+<td>entryRef</td>
+<td>FK → JournalEntry</td>
+<td>The entry this leg belongs to.</td>
+</tr>
+<tr>
+<td>accountRef</td>
+<td>FK → LedgerAccount</td>
+<td>The account posted to.</td>
+</tr>
+<tr>
+<td>direction</td>
+<td></td>
+<td>Enum: debit, credit.</td>
+</tr>
+<tr>
+<td>amount, unitType</td>
+<td></td>
+<td>The movement. Integer minor units for inr; scheme units or FD principal otherwise. Never a float, never a mixed unit-type within a sub-entry.</td>
+</tr>
+<tr>
+<td>dimensions</td>
+<td></td>
+<td>The typed tags of section 3: investorRef, instrumentRef, amcRef, goalRef, commercialRelationshipRef, sourceEventRef.</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Four invariants on every entry.</strong> Balanced: debits equal credits within each unit-type, validated before write, the entry rejected on imbalance. Atomic: all legs commit together, no partial or torn entries. Idempotent: keyed on source event and rule version, so at-least-once delivery and retries are safe. Immutable: once posted, never edited; the only change is a new compensating entry that links back.</p>
+</blockquote>
+<h1>5  Posting rules per flow</h1>
+<p>Each rule names, for a flow, what debits and credits which account and at which lifecycle event the posting fires. The grammar is read as Dr account / Cr account, tagged by unit-type. A buy is worked in full first because every other flow is a variation on its three waves.</p>
+<h2>The worked case: MF lumpsum buy</h2>
+<p>A buy moves through three ledger-affecting waves, and only three. When funds are secured, the money lands in the pool and the platform owes the investor units or a refund: Dr pool_cash / Cr investor_cash, in INR. The posting keys on PaymentCaptured from the Payments context, not on OrderPlaced, because the money-in fact is what the ledger records, and in the pay-first V1 flow the two coincide. The routing and acknowledgement that follow move no money and post nothing; they are rail-state transitions on the order aggregate.</p>
+<p>At allotment, the RTA strikes the NAV and the units are known, and this is where the Holding is born, not at settlement. Two balanced sub-entries fire in one journal entry. The cash sub-entry converts the investor&#39;s cash into an obligation to the AMC: Dr investor_cash / Cr amc_payable, in INR. The units sub-entry brings the units into the investor&#39;s holding against the AMC as their source: Dr investor_holdings / Cr unit_source, in scheme units. The INR legs balance each other and the units legs balance each other; the validator never crosses the two.</p>
+<p>At settlement, the cash physically leaves the pool for the AMC and the payable is discharged: Dr amc_payable / Cr pool_cash, in INR. The trade is now closed. Across the three waves the pool nets to zero for this trade, the investor&#39;s cash nets to zero, the AMC payable is raised and paid, and what remains is the units in investor_holdings against unit_source. The investor&#39;s net position is the holding, which is exactly what folds out in section 10.</p>
+<h2>Every flow</h2>
+<table>
+<thead>
+<tr>
+<th>Flow</th>
+<th>Fires at</th>
+<th>Legs (Dr / Cr, unit-type)</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MF lumpsum buy</td>
+<td>PaymentCaptured</td>
+<td>Dr pool_cash / Cr investor_cash [inr]</td>
+<td>Funds secured. Pending leg.</td>
+</tr>
+<tr>
+<td></td>
+<td>OrderAllotted</td>
+<td>Dr investor_cash / Cr amc_payable [inr]; Dr investor_holdings / Cr unit_source [units]</td>
+<td>Holding born here.</td>
+</tr>
+<tr>
+<td></td>
+<td>OrderSettled</td>
+<td>Dr amc_payable / Cr pool_cash [inr]</td>
+<td>Cash leg finalised.</td>
+</tr>
+<tr>
+<td>SIP instalment</td>
+<td>PaymentCaptured (mandate debit)</td>
+<td>Identical to lumpsum buy across the three waves</td>
+<td>SipDebitFailed posts nothing; no money moved.</td>
+</tr>
+<tr>
+<td>Redemption, resident</td>
+<td>OrderAllotted</td>
+<td>Dr unit_source / Cr investor_holdings [units]; Dr amc_receivable / Cr investor_cash [inr]</td>
+<td>Units out; AMC owes us; we owe investor.</td>
+</tr>
+<tr>
+<td></td>
+<td>OrderSettled</td>
+<td>Dr pool_cash / Cr amc_receivable [inr]</td>
+<td>Proceeds received into pool.</td>
+</tr>
+<tr>
+<td></td>
+<td>PayoutCompleted</td>
+<td>Dr investor_cash / Cr pool_cash [inr]</td>
+<td>Investor paid out.</td>
+</tr>
+<tr>
+<td>Redemption, NRI</td>
+<td>OrderAllotted</td>
+<td>Dr unit_source / Cr investor_holdings [units]; Dr amc_receivable (net) / Cr investor_cash (net) [inr]; Dr tds_withheld / Cr tds_remitted (tds) [inr]</td>
+<td>Gross splits into net cash plus TDS at source. See the note below; flagged for the architect.</td>
+</tr>
+<tr>
+<td>Switch</td>
+<td>OrderAllotted</td>
+<td>Dr unit_source / Cr investor_holdings (source) [units]; Dr investor_holdings / Cr unit_source (target) [units]; Dr amc_payable (target) / Cr amc_receivable (source) [inr]</td>
+<td>Same investor, same NAV date, cash routed AMC to AMC, no payout. Goal linkage preserved on the target holding.</td>
+</tr>
+<tr>
+<td>STP instalment</td>
+<td>OrderAllotted</td>
+<td>A switch per instalment</td>
+<td>Recurring source-to-target transfer.</td>
+</tr>
+<tr>
+<td>SWP instalment</td>
+<td>OrderAllotted</td>
+<td>A resident or NRI redemption per instalment</td>
+<td>Recurring withdrawal with payout.</td>
+</tr>
+<tr>
+<td>FD placement</td>
+<td>PaymentCaptured</td>
+<td>Dr pool_cash / Cr investor_cash [inr]</td>
+<td>Funds secured.</td>
+</tr>
+<tr>
+<td></td>
+<td>FdConfirmed (allotment-equivalent)</td>
+<td>Dr investor_cash / Cr fd_provider_payable [inr]; Dr investor_fd_holding / Cr unit_source-equivalent [fd_principal]</td>
+<td>FD has no NAV; principal at face.</td>
+</tr>
+<tr>
+<td></td>
+<td>OrderSettled</td>
+<td>Dr fd_provider_payable / Cr pool_cash [inr]</td>
+<td>Lifecycle: placed, confirmed, settled, matures.</td>
+</tr>
+<tr>
+<td>FD maturity</td>
+<td>FdMatured</td>
+<td>Dr fd_provider_receivable (principal + interest) / Cr investor_fd_holding (principal) and Cr interest_income (interest) [inr]</td>
+<td>Interest realised. FD-interest TDS treatment deferred; flagged.</td>
+</tr>
+<tr>
+<td></td>
+<td>OrderSettled, PayoutCompleted</td>
+<td>Dr pool_cash / Cr fd_provider_receivable; then Dr investor_cash / Cr pool_cash [inr]</td>
+<td>Proceeds received, paid out.</td>
+</tr>
+<tr>
+<td>Order failure</td>
+<td>OrderFailed</td>
+<td>Reverse the funds-secured leg as a compensating posting; route a refund through Payments</td>
+<td>Only if funds were secured. No holding is ever created.</td>
+</tr>
+<tr>
+<td>Order reversal</td>
+<td>OrderReversed</td>
+<td>Compensating postings reversing every wave already posted, each linked to its original</td>
+<td>Post-settlement. Never an edit.</td>
+</tr>
+<tr>
+<td>Correction</td>
+<td>CorrectionApproved</td>
+<td>A compensating entry reverses the wrong entry; a corrected entry records the right fact; both link to the original</td>
+<td>Maker-checker, amount bands; section 7 covers closed periods.</td>
+</tr>
+<tr>
+<td>Corporate action</td>
+<td>Dividend / Bonus / Merger</td>
+<td>IDCW payout: Dr amc_receivable / Cr investor_cash [inr]. Reinvestment and bonus: Dr investor_holdings / Cr unit_source [units]. Merger: source units out, target units in at ratio [units]</td>
+<td>sourceKind corporate_action; no Transaction behind it. Mostly units-only.</td>
+</tr>
+</tbody></table>
+<p><strong>On NRI TDS, and the honest gap.</strong> On an NRI redemption the RTA deducts tax at source and remits net to the pool, so the entry records the net cash leg the investor actually receives and a separate balanced TDS pair, tds_withheld against tds_remitted, that carries no platform cash but lands the withholding in the books for the investor&#39;s tax reporting and the tax-authority reconciliation. Resident MF redemptions carry no TDS at source under current rules and post a single net leg. The exact multi-leg treatment, and whether tds_remitted is the right contra or a direct authority-payable, is the one place this spec defers to the fintech architect: TDS applicability and rates move with each Finance Act, and this is drafted at a January 2026 baseline, not against a current circular.</p>
+<p><strong>On switch and STP settlement, a place to confirm.</strong> The flows above net an inter-AMC switch, and each STP instalment, into a single allotment wave with cash routed AMC to AMC on one struck NAV. That single-wave netting may understate the real settlement timing of an inter-AMC move, where the source redemption and the target purchase can clear on different rails and dates rather than together. The posting shapes hold; what may not is the wave count. This is marked for the fintech architect to confirm rather than frozen here, consistent with the spec&#39;s deferral posture on the other rail-timing questions.</p>
+<h2>Posting flow, visualised</h2>
+<p><img src="Spec%202%20The_Canonical_Ledger_media/diagram-1.svg" alt="Diagram 1"></p>
+<p>Figure 1. The buy posting flow. Five lifecycle states run left to right; only three move money, and the Holding is born at allotment when the NAV is struck, not at settlement, which is what keeps the canonical-ledger wall intact.</p>
+<h1>6  Which events are ledger-affecting</h1>
+<p>This resolves the granularity question Spec 1 left open. Of the seven order-lifecycle facts, five are ledger-affecting and two are not. The funds-secured fact, the allotment fact, and the settlement fact each fire postings, and the failure and reversal facts fire compensating postings. OrderRoutedToRail and OrderAcknowledged move no money; they are rail-state transitions recorded on the order aggregate and post nothing. The mandate debit is ledger-affecting through the funds-secured posting it triggers on a SIP.</p>
+<table>
+<thead>
+<tr>
+<th>Lifecycle fact</th>
+<th>Ledger-affecting</th>
+<th>What posts</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OrderPlaced (funds secured)</td>
+<td>Yes</td>
+<td>The pending cash leg into the pool. The posting keys on the coincident PaymentCaptured, not on OrderPlaced itself; the two fire together in the pay-first flow.</td>
+</tr>
+<tr>
+<td>OrderRoutedToRail</td>
+<td>No</td>
+<td>Rail-state only.</td>
+</tr>
+<tr>
+<td>OrderAcknowledged</td>
+<td>No</td>
+<td>Rail-state only.</td>
+</tr>
+<tr>
+<td>OrderAllotted</td>
+<td>Yes</td>
+<td>Units into the holding, cash into the AMC obligation. Holding born.</td>
+</tr>
+<tr>
+<td>OrderSettled</td>
+<td>Yes</td>
+<td>The cash leg finalised against the pool.</td>
+</tr>
+<tr>
+<td>OrderFailed</td>
+<td>Yes</td>
+<td>Compensating reversal of the pending leg, if any.</td>
+</tr>
+<tr>
+<td>OrderReversed</td>
+<td>Yes</td>
+<td>Compensating reversal of all posted waves.</td>
+</tr>
+</tbody></table>
+<p>And this resolves the second open call: the ledger is itself a first-class event source. A posting does not re-purpose the order event; it emits the ledger&#39;s own facts onto the spine, downstream of the order facts. PostingApplied, PostingReversed, CorrectionApplied, and PeriodClosed are the lifecycle events, and BalanceUpdated and StatementGenerated are the projection events. The load-bearing reason is the canonical-ledger wall: Holdings fold from PostingApplied, not from OrderSettled, so the projection reacts to recorded financial truth rather than to a rail-adjacent order fact. These events stay few and reconciliation-or-reconstruction-significant, which is precisely the test Spec 1 sets, so they do not breach the event-proliferation tenet.</p>
+<h1>7  Bitemporality, in mechanics</h1>
+<p>Every entry carries two dates and they answer two different questions. RecordedAt is system time, when we learned the fact, and it is always now and never altered. EffectiveDate is the business or NAV-date, when the fact applies, and it may be back-dated. The pair is what lets the ledger answer the question a regulator actually asks, which is not only what is true now but what we knew, and when.</p>
+<p>A point-in-time query reconstructs a past state by fixing both axes. To answer what we knew on a date, the query bounds recordedAt at or before that date. To answer what was true for a business date, it fixes effectiveDate. The store is indexed by account, by effectiveDate, and by recordedAt, so both reconstructions are first-class rather than a replay every time. A NAV-day correction that arrives late posts with the original effectiveDate and recordedAt of now, so the corrected past and the record of when we corrected it both survive. The Holdings projection always reads as-of recordedAt now, ordered by effectiveDate, which is why a back-dated correction flows into holdings without rewriting history.</p>
+<h1>8  Period operations</h1>
+<p>The books have a heartbeat, and the day-close is where the ledger proves it is still in balance before anyone trusts the day&#39;s numbers. After the NAV-day cut-off freezes same-day postings, so that anything later carries the next day&#39;s effectiveDate, the end-of-day close computes closing balances, generates a trial balance, and runs an auto-balance check that the period-level debits and credits match. An imbalance halts the close; sign-off cannot proceed until it is restored. A supervisor signs the trial balance, the period is locked so further postings to it require the correction flow, and PeriodClosed is emitted carrying a signed hash of the trial balance, so a future inspection can verify the day&#39;s integrity without trusting present state. Month-end and fiscal-year close add period locks and opening-balance roll-forward over the same machinery; prior-period adjustments run through the same compensating-correction path, which means a correction into a closed period regenerates that period&#39;s trial balance while preserving the original for reference.</p>
+<h1>9  Reconciliation against FP and the RTA</h1>
+<p>The rail is never allowed to overwrite the ledger, and this is the operational face of the canonical-ledger wall. The ledger holds its posted position; when a rail&#39;s view disagrees, the disagreement surfaces as a break rather than a silent correction. FP is the middleware source and is reconciled against the ledger on a trust-but-verify basis, and the RTA direct feed, CAMS and KFin, is the authoritative external truth that FP is itself cross-checked against. The pool bank statement is reconciled to the ledger&#39;s expected pool balance daily, at zero tolerance, because the pool carries SEBI discipline.</p>
+<p>A discrepancy raises a Break, which Spec 1&#39;s Holding already anticipates through its reconciliationStatus. The break is a first-class aggregate with an owner, an age, and an SLA, and it never closes silently. Its resolution is explicit and takes one of a few shapes: a compensating posting back into the ledger when the ledger was wrong, a vendor escalation when the rail was wrong, or an accept-and-document when the difference is a known timing artefact. The discipline that matters for this spec is the shape of the resolution: when the ledger must change, it changes by a compensating posting that links to what it corrects, never by an edit, so the audit trail of the disagreement and its resolution is preserved in full.</p>
+<h2>Reconciliation, visualised</h2>
+<p><img src="Spec%202%20The_Canonical_Ledger_media/diagram-2.svg" alt="Diagram 2"></p>
+<p>Figure 2. Reconciliation. The ledger holds its position; FP and the RTA are sources compared against it, FP itself verified against the RTA. A disagreement becomes an owned break, and when the ledger must change it changes by a linked compensating posting, never an overwrite.</p>
+<h1>10  How Holdings fold from the ledger</h1>
+<p>A Holding is a projection and never a written record, which is what makes Spec 1&#39;s rule that units and value are derived from the ledger and never written by a rail concrete. The units of a Holding are the running sum of the units-leg postings to that investor&#39;s investor_holdings account for the instrument and folio, ordered by effectiveDate and read as-of recordedAt now, so a back-dated correction is reflected without rewriting anything. The value is not in the ledger; it is the units multiplied by the latest NAV, and the NAV is joined in from Catalog at read time, because the ledger holds units, not a daily valuation. The reconciliationStatus the Holding carries is set by the reconciliation engine of section 9 and surfaces a ledger-versus-RTA unit drift rather than hiding it. The projection rebuilds from PostingApplied, which is the event the ledger emits, which closes the loop: the rail&#39;s confirmation became a typed order event, the order event drove a posting, the posting emitted PostingApplied, and only then did the Holding move.</p>
+<h2>Cost basis, and the call this spec takes</h2>
+<p>The ledger holds units, not acquisition cost as a tracked lot. Every buy journal entry already ties the units acquired to the INR paid through one shared entry id, so an investor&#39;s acquisition cost is reconstructable from the entries whenever it is needed. What V1 does not do is promote that reconstructable cost into a first-class lot with a frozen accounting convention, and it does not generate its own capital-gains statement.</p>
+<blockquote>
+<p><strong>The call, stated plainly: capital-gains-statement generation and cost-basis lot accounting are out of V1 scope, recorded as an open call tied to NRI TDS.</strong> Three reasons hold it. No V1 posting needs cost basis: on an NRI redemption the RTA computes the gain, withholds at source, and reports, and the platform records the net and the withholding it is handed, which is why section 5&#39;s TDS legs stand without a cost model behind them. Capital-gains statements for regular-plan mutual funds already come from CAMS, KFin, and the AMCs, so the platform minting its own in V1 is redundant rather than load-bearing. And the convention itself, FIFO against average-cost and how it meets the equity-versus-debt holding-period and grandfathering rules of Indian mutual-fund taxation, moves with each Finance Act and is the fintech architect&#39;s call, not one to freeze in the lock window. Cost stays reconstructable per shared entry id until that architect-owned model is specified, the same deferral posture this spec already takes on TDS.</p>
+</blockquote>
+<h1>11  Non-functional requirements</h1>
+<p>The ledger&#39;s non-functional bar is set by its job as the system of record, and the numbers behind it come from the blueprint&#39;s scale parameters rather than this spec. Immutability and durability are first: append-only storage, a signed hash chain for tamper-evidence, and an independent verification path for regulatory inspection. Posting is validate-before-write and synchronous on the balance check, because an imbalanced entry must never reach storage. Throughput has to absorb the SIP-debit-day burst, when a large share of mandates settle in a narrow window, without breaching posting latency. Point-in-time and as-of queries are a first-class workload, not a batch afterthought, given the bitemporal indexing of section 7. Retention follows the regulatory horizon, which is multi-year and longer than any product need. One dependency is explicitly Spec 5&#39;s and only flagged here: FP data residency, the rail SLAs, and egress constraints set the bar for the rail-facing reconciliation NFRs, and this spec assumes that bar without fixing it.</p>
+<h1>12  Open calls and ADRs</h1>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Status</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Posting events on the spine</td>
+<td>Resolved</td>
+<td>The ledger is a first-class event source: PostingApplied, PostingReversed, CorrectionApplied, PeriodClosed, plus BalanceUpdated and StatementGenerated. Holdings fold from PostingApplied. Resolves Spec 1&#39;s open call.</td>
+</tr>
+<tr>
+<td>Posting granularity</td>
+<td>Resolved</td>
+<td>Five of seven order facts post; OrderRoutedToRail and OrderAcknowledged do not. Three waves on a buy: funds-secured, allotment, settlement.</td>
+</tr>
+<tr>
+<td>Holding born at allotment</td>
+<td>Resolved</td>
+<td>Units enter investor_holdings at OrderAllotted when the NAV is struck, not at settlement.</td>
+</tr>
+<tr>
+<td>Single currency</td>
+<td>Resolved</td>
+<td>INR-only postings in V1. Currency present on every money attribute and always INR; the validator balances per unit-type so the mechanism is future-proof. NRE versus NRO is a repatriability attribute on the account, not a currency.</td>
+</tr>
+<tr>
+<td>Household roll-up</td>
+<td>Resolved, permanent</td>
+<td>A reporting projection above the ledger, never a posting altitude. The canonical books stay per-Investor and per-owning-party. Joint holdings are unaffected.</td>
+</tr>
+<tr>
+<td>Commission and monetisation</td>
+<td>Resolved</td>
+<td>V1 is distribution-only, regular plans only. The customer-money ledger carries no advisory-fee posting. Trail commission is a deferred sibling book on the same machinery; the posting dimensions and Spec 1&#39;s EUIN and AMC attribution are the forward-compat we carry now so that book can read regular-plan transactions later.</td>
+</tr>
+<tr>
+<td>NRI TDS leg treatment</td>
+<td>Open, architect</td>
+<td>The gross-to-net split and the tds_withheld and tds_remitted pair are drafted; the precise legs and contra are for the fintech architect, since TDS moves with each Finance Act and this is a January 2026 baseline.</td>
+</tr>
+<tr>
+<td>Cost basis and capital-gains statements</td>
+<td>Scoped out (V1), open</td>
+<td>Capital-gains-statement generation is out of V1 scope and cost basis is not modeled as a first-class lot; it stays reconstructable per shared entry id. The lot convention, FIFO versus average-cost, is an architect call tied to the NRI TDS item, since both move with the Finance Act. Section 10 carries the decision.</td>
+</tr>
+<tr>
+<td>Pool-custody treatment</td>
+<td>Open, architect</td>
+<td>The pool_cash, amc_payable, and amc_receivable mechanics are coherent and balanced as drafted; the exact regulatory custody treatment is for architect confirmation.</td>
+</tr>
+<tr>
+<td>FD interest and TDS</td>
+<td>Deferred</td>
+<td>FD-interest realisation posts to interest_income; FD-interest TDS detail is deferred to the FD-specific PRD.</td>
+</tr>
+<tr>
+<td>Switch and STP settlement timing</td>
+<td>Open, architect</td>
+<td>The single-wave allotment netting may understate the real settlement timing of an inter-AMC switch or STP, where the source redemption and target purchase can clear on different rails and dates. Posting shapes hold; the wave count may split. For architect confirmation, not frozen. Separately, an NRI switch source leg may attract TDS as a redemption event, which would break the single-wave AMC-to-AMC netting; architect to confirm whether an NRI switch carries a TDS leg or is out of V1.</td>
+</tr>
+<tr>
+<td>Regular-plan flag on Instrument</td>
+<td>Flag</td>
+<td>V1 is regular-only, so plan is a catalog-wide constant. If direct ever enters, Instrument needs a planType flag and the Transaction inherits plan context. A Catalog-PRD note, not a Spec 1 change now.</td>
+</tr>
+<tr>
+<td>FP data residency, SLAs, egress</td>
+<td>Open (Spec 5)</td>
+<td>Sets the rail-facing reconciliation NFR bar; no posting shape depends on it.</td>
+</tr>
+</tbody></table>
+<h1>13  Changes this spec forced on Spec 1</h1>
+<p>Two changes were approved as structural edits and three follow as consequences of decisions taken here. All five are applied to Spec 1 directly, so the two documents do not disagree.</p>
+<table>
+<thead>
+<tr>
+<th>Change</th>
+<th>Kind</th>
+<th>What changed in Spec 1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OrderAllotted added</td>
+<td>Structural</td>
+<td>Added to the order-lifecycle catalog and as an allotted value on Transaction.status, between acknowledged and settled, defined generically as NAV applied and units or amount confirmed, spanning buy allotment and redemption processing.</td>
+</tr>
+<tr>
+<td>sourceRef generalised</td>
+<td>Structural</td>
+<td>Ledger entry&#39;s sourceTransactionRef became a typed sourceRef with a sourceKind discriminator: transaction, corporate_action, correction, migration, period_op.</td>
+</tr>
+<tr>
+<td>Ledger-affecting claim softened</td>
+<td>Consequence</td>
+<td>The catalog no longer calls every order fact ledger-affecting; the ledger-affecting subset is now fixed here.</td>
+</tr>
+<tr>
+<td>On-postings note rewritten</td>
+<td>Consequence</td>
+<td>Spec 1&#39;s note now states the subset that posts and that the ledger emits its own posting events, downstream of the order facts.</td>
+</tr>
+<tr>
+<td>Open call resolved</td>
+<td>Consequence</td>
+<td>The posting-events-on-the-spine open call in Spec 1 is marked resolved by this spec.</td>
+</tr>
+</tbody></table>
+</body></html>

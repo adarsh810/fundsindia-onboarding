@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Building With AI — A Primer</title>
+<style>
+:root {
+  --ink: #1A2332;
+  --slate: #33414F;
+  --blue: #1F5C8B;
+  --teal: #0F7C73;
+  --amber: #B5731A;
+  --rule: #C9D4DE;
+  --lightblue: #E8F0F6;
+  --paleblue: #F4F8FB;
+  --palegrey: #F2F4F6;
+  --paleamber: #FBF3E6;
+  --palegreen: #EAF4F2;
+  --maroon: #9C2D41;
+  --muted: #6A7884;
+  --page: #ffffff;
+  --canvas: #EEF2F5;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--slate);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.sheet {
+  max-width: 820px;
+  margin: 32px auto;
+  background: var(--page);
+  padding: 64px 72px 56px;
+  box-shadow: 0 1px 3px rgba(26,35,50,.08), 0 12px 40px rgba(26,35,50,.10);
+  border-radius: 3px;
+}
+
+/* ---------- Cover ---------- */
+.eyebrow {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--blue);
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.cover-rule { height: 3px; background: var(--blue); border: none; margin: 0 0 26px; }
+.cover-title {
+  font-size: 42px;
+  line-height: 1.08;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -.015em;
+  margin: 0 0 12px;
+}
+.cover-sub {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--slate);
+  margin: 0 0 18px;
+  line-height: 1.4;
+}
+.cover-meta {
+  font-size: 15.5px;
+  font-style: italic;
+  color: var(--muted);
+  margin: 0 0 40px;
+}
+
+/* ---------- Headings ---------- */
+h1.sec {
+  font-size: 25px;
+  font-weight: 800;
+  color: var(--blue);
+  letter-spacing: -.01em;
+  margin: 52px 0 18px;
+  padding-bottom: 9px;
+  border-bottom: 2px solid var(--rule);
+  scroll-margin-top: 20px;
+}
+h2.sub {
+  font-size: 19.5px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 30px 0 12px;
+}
+h3.subsub {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: var(--teal);
+  margin: 22px 0 8px;
+}
+p { margin: 0 0 14px; }
+strong { color: var(--ink); font-weight: 700; }
+
+code, .mono {
+  font-family: "SF Mono", "JetBrains Mono", "Fira Code", Consolas, "Liberation Mono", monospace;
+  font-size: .88em;
+  color: var(--maroon);
+  background: rgba(156,45,65,.06);
+  padding: .08em .34em;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+ul, ol { margin: 0 0 16px; padding-left: 24px; }
+li { margin: 0 0 7px; padding-left: 4px; }
+ul li::marker { color: var(--blue); }
+ol li::marker { color: var(--blue); font-weight: 700; }
+
+/* ---------- Callouts ---------- */
+.callout {
+  border-radius: 6px;
+  padding: 16px 20px 4px;
+  margin: 20px 0 24px;
+  border-left: 5px solid;
+  break-inside: avoid;
+}
+.callout .label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.callout p:last-child { margin-bottom: 12px; }
+.callout.info { background: var(--paleblue); border-color: var(--blue); }
+.callout.info .label { color: var(--blue); }
+.callout.tip  { background: var(--palegreen); border-color: var(--teal); }
+.callout.tip .label { color: var(--teal); }
+.callout.warn { background: var(--paleamber); border-color: var(--amber); }
+.callout.warn .label { color: var(--amber); }
+.callout.grey { background: var(--palegrey); border-color: var(--slate); }
+.callout.grey .label { color: var(--slate); }
+
+.flow { font-size: 15.5px; line-height: 1.9; }
+
+/* ---------- Tables ---------- */
+.tbl-wrap { margin: 18px 0 24px; overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.5;
+}
+th {
+  background: var(--lightblue);
+  color: var(--ink);
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 14px;
+  border: 1px solid var(--rule);
+  font-size: 14.5px;
+  vertical-align: top;
+}
+td {
+  padding: 9px 14px;
+  border: 1px solid var(--rule);
+  vertical-align: top;
+}
+tbody tr:nth-child(even) { background: var(--paleblue); }
+td strong { color: var(--ink); }
+.decoder td:first-child { white-space: nowrap; }
+
+/* ---------- Tree block ---------- */
+.tree {
+  font-family: "SF Mono", "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.75;
+  background: var(--palegrey);
+  border-left: 5px solid var(--slate);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin: 8px 0 14px;
+  white-space: pre;
+  overflow-x: auto;
+}
+.tree .c { color: var(--maroon); }
+.tree .note { color: var(--muted); font-family: inherit; }
+
+/* ---------- TOC ---------- */
+.toc { margin: 8px 0 0; }
+.toc a {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--slate);
+  padding: 9px 0;
+  border-bottom: 1px solid #EAEEF1;
+  font-size: 16px;
+}
+.toc a:hover { color: var(--blue); }
+.toc a .n { color: var(--blue); font-weight: 700; min-width: 26px; }
+.toc a .t { flex: 1; }
+.toc a .t::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+}
+
+/* ---------- Footer ---------- */
+.foot {
+  margin-top: 48px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  font-size: 12.5px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+}
+
+.arrow { color: var(--blue); font-weight: 700; padding: 0 2px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  .sheet { padding: 36px 22px 40px; margin: 0; border-radius: 0; }
+  body { font-size: 16px; }
+  .cover-title { font-size: 32px; }
+  .cover-sub { font-size: 18px; }
+  table { font-size: 13.5px; }
+  th, td { padding: 8px 9px; }
+  .decoder td:first-child { white-space: normal; }
+  code { white-space: normal; }
+}
+
+/* ---------- Print ---------- */
+@media print {
+  body { background: #fff; font-size: 11pt; }
+  .sheet { box-shadow: none; margin: 0; max-width: none; padding: 0; border-radius: 0; }
+  h1.sec { break-after: avoid; }
+  h2.sub, h3.subsub { break-after: avoid; }
+  table, .callout, .tree { break-inside: avoid; }
+  tr { break-inside: avoid; }
+  a { color: var(--slate); text-decoration: none; }
+  .pagebreak { break-before: page; }
+}
+
+/* ===== Extensions for AI-Engineering primer ===== */
+
+/* Step blocks — numbered setup sequences */
+.steps { counter-reset: step; margin: 18px 0 24px; padding: 0; list-style: none; }
+.steps > li {
+  position: relative;
+  counter-increment: step;
+  margin: 0 0 14px;
+  padding: 14px 18px 14px 58px;
+  background: var(--paleblue);
+  border-radius: 8px;
+  border-left: 4px solid var(--blue);
+}
+.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 14px; top: 14px;
+  width: 30px; height: 30px;
+  background: var(--blue); color: #fff;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+.steps > li .st { font-weight: 700; color: var(--ink); display: block; margin-bottom: 2px; }
+.steps > li p { margin: 6px 0 0; }
+.steps > li p:first-of-type { margin-top: 4px; }
+
+/* Code block — multi-line, for terminal/snippets */
+pre.block {
+  font-family: "SF Mono","JetBrains Mono",Consolas,monospace;
+  font-size: 13.5px;
+  line-height: 1.7;
+  background: #14202E;
+  color: #D6E2EC;
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin: 14px 0 18px;
+  overflow-x: auto;
+  white-space: pre;
+}
+pre.block .cm { color: #7C93A6; }       /* comment */
+pre.block .pr { color: #6FB3B8; }       /* prompt symbol */
+pre.block .kw { color: #E0A458; }       /* keyword / command */
+pre.block .st { color: #9ED9A0; }       /* string */
+pre.block.tag-label { position: relative; }
+
+/* "Starter kit" feature grid */
+.kit { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0 24px; }
+.kit .card {
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: #fff;
+}
+.kit .card h4 {
+  margin: 0 0 4px; font-size: 15.5px; color: var(--ink);
+  display: flex; align-items: baseline; gap: 8px;
+}
+.kit .card h4 .role {
+  font-size: 11px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--teal);
+}
+.kit .card p { margin: 0; font-size: 14px; line-height: 1.55; }
+.kit .card .url { font-family: "SF Mono",Consolas,monospace; font-size: 12.5px; color: var(--blue); }
+
+/* distrust callout — a sharper amber for "verify this" */
+.callout.verify { background: #FCEEE9; border-color: #C0552F; }
+.callout.verify .label { color: #C0552F; }
+
+@media (max-width: 720px) {
+  .kit { grid-template-columns: 1fr; }
+  .steps > li { padding-left: 52px; }
+}
+
+@media print {
+  .steps > li, pre.block, .kit .card { break-inside: avoid; }
+  pre.block { background: #f4f6f8; color: #1a2332; border: 1px solid var(--rule); }
+  pre.block .cm { color: #6A7884; }
+}
+
+</style>
+</head>
+<body>
+<main class="sheet">
+<p class="eyebrow">FundsIndia &middot; Product Engineering Enablement</p>
+<hr class="cover-rule">
+<h1 class="cover-title">Building With AI</h1>
+<p class="cover-sub">How to Orchestrate AI to Build Real Software &mdash; and Know Exactly Where to Distrust It</p>
+<p class="cover-meta">Primer 3 &middot; The one that&rsquo;s actually your edge</p>
+<div class="callout info"><p class="label">Why this primer is different</p><p>The first two primers taught you how software <strong>moves</strong> and what it&rsquo;s <strong>made of</strong>. This one is about <strong>making it</strong> &mdash; and specifically, making it the way the highest-leverage builders work in 2026: by directing AI, not by hand-typing every line.</p><p>Here&rsquo;s the honest thesis. A product-minded person who can orchestrate AI to build, and who knows precisely where AI gets things wrong, is a more valuable profile than a junior engineer who writes everything by hand. That&rsquo;s not hype &mdash; it&rsquo;s the actual shape of the advantage available to you. This document hands you the terrain, the starter kit, and the judgement. The fluency you&rsquo;ll build yourself, by hitting walls and climbing over them.</p><p><strong>This is not a syllabus.</strong> It&rsquo;s a map and a kit. Everyone reading it will take a different route, on their own repo, building their own thing in the same broad domain. That divergence is the point, not a bug. Go fast if you&rsquo;re fast; go deep if you&rsquo;re grounded; go sideways if you&rsquo;ve got a better idea. Compare notes later.</p></div>
+
+<div class="pagebreak"></div>
+<h1 class="sec">Contents</h1>
+<div class="toc"><a href="#s1"><span class="n">1</span><span class="t">The Mental Shift: From Writing Code to Directing It</span></a><a href="#s2"><span class="n">2</span><span class="t">The Stack: Your Starter Kit, Part by Part</span></a><a href="#s3"><span class="n">3</span><span class="t">Setup: From Blank Machine to Live App</span></a><a href="#s4"><span class="n">4</span><span class="t">How to Actually Build With AI</span></a><a href="#s5"><span class="n">5</span><span class="t">Reading &amp; Distrusting AI-Generated Code</span></a><a href="#s6"><span class="n">6</span><span class="t">AI Features: Evals, Cost, Latency, Failure</span></a><a href="#s7"><span class="n">7</span><span class="t">Forge Your Own Path</span></a></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s1">1 &middot; The Mental Shift: From Writing Code to Directing It</h1>
+<p>Start here, because everything downstream depends on getting this reframe right. For decades, building software meant a human typing every line. AI changes the unit of work: you now describe intent in precise language, the AI drafts the code, and your job shifts from <strong>author</strong> to <strong>director and editor</strong>. You decide what to build, you steer how it&rsquo;s built, and &mdash; this is the part that matters most &mdash; you judge whether what came back is actually correct.</p>
+<p>This plays directly to your strengths. As a PM you already think in requirements, edge cases, and trade-offs. That&rsquo;s exactly the skill set that makes someone good at directing AI: the bottleneck is no longer &ldquo;can you write the syntax,&rdquo; it&rsquo;s &ldquo;can you specify clearly and verify rigorously.&rdquo; Both are things you&rsquo;re already wired for.</p>
+<div class="callout info"><p class="label">The director&rsquo;s three jobs</p><p><strong>Specify</strong> &mdash; describe what you want precisely enough that a capable but literal-minded collaborator could build it. Vague in, vague out.</p><p><strong>Steer</strong> &mdash; review the draft, push back, ask for changes, break the work into reviewable pieces. You&rsquo;re in a loop, not placing a single order.</p><p><strong>Verify</strong> &mdash; the one job you can never delegate. The AI is confident whether it&rsquo;s right or wrong. You are the check on that confidence. The rest of this primer is mostly about doing this job well.</p></div>
+<p>There&rsquo;s a failure mode to name immediately, because it&rsquo;s the one that catches everyone. AI makes it intoxicatingly easy to produce code that <em>looks</em> finished &mdash; it runs, it&rsquo;s formatted, it&rsquo;s plausible. The gap between &ldquo;looks done&rdquo; and &ldquo;is correct&rdquo; is where every AI-assisted disaster lives. A junior hand-writing code at least struggles visibly when they don&rsquo;t understand something. AI hides that struggle behind fluent output. Your entire value-add as a Product Engineer using AI is refusing to be lulled by fluency.</p>
+<div class="callout tip"><p class="label">The standard you&rsquo;re held to</p><p>At FundsIndia, every line you ship &mdash; whether you typed it or prompted it &mdash; goes through real-engineer review. That gate doesn&rsquo;t care whether a human or an AI wrote it; it cares whether <strong>you</strong> understand it and can defend it. &ldquo;The AI wrote it&rdquo; is never an answer in a review. If you can&rsquo;t explain why a line is there, it&rsquo;s not ready. This is the right pressure, and it&rsquo;s exactly what turns AI-assisted speed into AI-assisted competence.</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s2">2 &middot; The Stack: Your Starter Kit, Part by Part</h1>
+<p>To build a real, full-stack app &mdash; something with a frontend, a backend, a database, user accounts, and a public URL &mdash; you need a handful of pieces working together. This section names each one, says what job it does, and points you at the specific tool we recommend starting with. Recall the three-layer anatomy from Primer 2 (frontend / backend / database); this is that skeleton, made concrete.</p>
+<div class="callout info"><p class="label">A recommended stack, not the only stack</p><p>What follows is <strong>a</strong> proven starting point &mdash; the fast path, chosen because it&rsquo;s beginner-friendly, well-documented, has generous free tiers, and is the stack we can most readily unblock you on. It is explicitly <strong>not</strong> the one true way. If you have reason to pick a different database, host, or framework &mdash; or you just want to learn by swimming in unfamiliar water &mdash; do it. The concepts transfer. Part of the exercise is developing the judgement to make these choices yourself.</p></div>
+<h2 class="sub">The pieces and what each one does</h2>
+<div class="kit"><div class="card"><h4>Git <span class="role">version control</span></h4><p>Tracks every change to your code, locally, with full history. The thing that makes editing safe (see Primer 1, &sect;2). You&rsquo;ll use it constantly, mostly through a few simple commands.</p></div><div class="card"><h4>GitHub <span class="role">code home</span></h4><p>The hosted home for your Git repo &mdash; the online copy, where your code lives, where you open PRs, and what your deploy host reads from. Your project&rsquo;s public-facing source of truth.</p><p class="url">github.com</p></div><div class="card"><h4>Supabase <span class="role">backend + database + auth</span></h4><p>The fast path&rsquo;s secret weapon. One service that gives you a real Postgres (SQL) database, user authentication, file storage, and auto-generated APIs &mdash; the things that would otherwise take weeks to wire up. Generous free tier.</p><p class="url">supabase.com</p></div><div class="card"><h4>A deploy host <span class="role">puts it online</span></h4><p>Takes your code from GitHub and runs it at a real URL the world can reach. Vercel is ideal for frontend-heavy apps; Railway is great for backends and services (you&rsquo;ve used it). Both have free tiers and deploy automatically when you push.</p><p class="url">vercel.com / railway.app</p></div><div class="card"><h4>Claude <span class="role">your build partner</span></h4><p>The AI you direct to write, explain, debug, and refactor code &mdash; via the chat interface, via Claude Code in your terminal, or via the API when you want Claude <em>inside</em> your app. This is the engine of the whole approach.</p><p class="url">claude.ai / docs.claude.com</p></div><div class="card"><h4>Your editor <span class="role">where you work</span></h4><p>Where you read and edit code. VS Code is the default choice and integrates with Claude Code. This is your cockpit.</p><p class="url">code.visualstudio.com</p></div></div>
+<div class="callout info"><p class="label">How the pieces fit together</p><p>A request&rsquo;s journey, end to end: a user opens your app&rsquo;s <strong>URL</strong> (served by your <strong>deploy host</strong>), which loads your <strong>frontend</strong>. They log in &mdash; <strong>Supabase</strong> handles the authentication. They do something that needs data &mdash; your <strong>backend</strong> asks <strong>Supabase&rsquo;s database</strong>, which answers. You built all of it by directing <strong>Claude</strong>, you saved your work with <strong>Git</strong>, pushed it to <strong>GitHub</strong>, and the deploy host noticed the push and put the new version live. That&rsquo;s the whole loop. Every app you admire is an elaboration of it.</p></div>
+<h2 class="sub">Two primitives that trip everyone up</h2>
+<h3 class="subsub">Environment variables and the .env file</h3>
+<p>Your app needs secrets &mdash; the password to your database, your API keys &mdash; but those must <strong>never</strong> be written directly into your code (because your code goes to GitHub, where secrets would be exposed). The solution is <strong>environment variables</strong>: secrets live in a special file called <code>.env</code> that stays on your machine and is deliberately kept out of Git. Your code reads from it by name, like <code>SUPABASE_KEY</code>, without the actual value ever appearing in the code.</p>
+<pre class="block"><span class="cm"># .env  — this file stays local, never committed to Git</span>
+SUPABASE_URL=<span class="st">https://your-project.supabase.co</span>
+SUPABASE_KEY=<span class="st">eyJhbGc...your-secret-key...</span>
+ANTHROPIC_API_KEY=<span class="st">sk-ant-...your-claude-key...</span></pre>
+<div class="callout verify"><p class="label">The number-one beginner mistake</p><p>Accidentally committing secrets to GitHub. It happens constantly, and for a financial app it&rsquo;s a serious incident &mdash; a leaked database key can mean leaked customer data. The safeguard is a file called <code>.gitignore</code> that tells Git to ignore <code>.env</code> entirely. <strong>Verify this is set up before your first push</strong>, and if you ever do leak a key, treat it as compromised and rotate (regenerate) it immediately &mdash; deleting the commit is not enough, because the history remembers. When you direct Claude to set up a project, explicitly ask it to add <code>.env</code> to <code>.gitignore</code>.</p></div>
+<h3 class="subsub">API keys: how your app proves it&rsquo;s allowed</h3>
+<p>An API key is a long secret string that identifies your app to a service (Supabase, Claude, a payment gateway) and proves it&rsquo;s authorised to make requests &mdash; the app-level equivalent of the authentication you read about in Primer 2, &sect;4. You generate keys in each service&rsquo;s dashboard, store them in <code>.env</code>, and your code presents them on every request. Treat them like passwords: one per service, never shared, never in screenshots, rotate if exposed.</p>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s3">3 &middot; Setup: From Blank Machine to Live App</h1>
+<p>This is the path from nothing to a deployed app you built by directing AI. Don&rsquo;t treat it as gospel steps to copy &mdash; treat it as the shape of the journey, so you recognise where you are when you&rsquo;re in it. Crucially: <strong>you don&rsquo;t do most of this by hand. You direct Claude to do it and you verify each result.</strong> The whole point is to learn by building, with AI as the one doing the typing and you doing the thinking.</p>
+<div class="callout tip"><p class="label">The healthiest way to use this section</p><p>Open Claude in one window and your terminal/editor in another. Go through this rung by rung, and at each step <strong>ask Claude to do it and explain what it&rsquo;s doing and why</strong>. &ldquo;Walk me through initialising a Git repo for a new project and explain each command&rdquo; teaches you ten times more than copying commands. When something breaks &mdash; and it will &mdash; paste the exact error to Claude and ask it to explain the cause before fixing. The errors are the curriculum.</p></div>
+<ol class="steps"><li><span class="st">Set up your machine</span><p>Install your editor (VS Code), Git, and a runtime (Node.js is the common one). Ask Claude: &ldquo;I&rsquo;m on [your OS] starting from scratch &mdash; walk me through installing VS Code, Git, and Node, checking each worked.&rdquo; Starting from near-zero on a terminal is normal; that&rsquo;s exactly the position to learn from.</p></li><li><span class="st">Create accounts</span><p>Sign up for GitHub, Supabase, and a deploy host (Vercel or Railway), and get API access to Claude. All have free tiers. Keep the dashboards open &mdash; you&rsquo;ll generate keys from them.</p></li><li><span class="st">Start a project and put it under Git</span><p>Create a project folder, initialise Git, and make your first commit. Direct Claude through it and have it explain <code>git init</code>, <code>git add</code>, <code>git commit</code> as you go &mdash; these are the Primer 1 concepts made real under your own hands.</p></li><li><span class="st">Connect it to GitHub</span><p>Create a repo on GitHub and push your local project to it. Now your code has an online home. Confirm you can see your files on github.com &mdash; that&rsquo;s your source of truth, live.</p></li><li><span class="st">Wire up Supabase</span><p>Create a Supabase project, grab its URL and key into your <code>.env</code> file, and connect your app. Ask Claude to scaffold a simple data table (say, a list of savings goals) and the code to read and write it. You now have a real database behind your app.</p></li><li><span class="st">Add authentication</span><p>Turn on Supabase Auth so users can sign up and log in. Direct Claude to add a login screen and protect a page behind it. This is AuthN/AuthZ (Primer 2, &sect;4) made tangible &mdash; and a core flow for anything FundsIndia-adjacent.</p></li><li><span class="st">Deploy it</span><p>Connect your GitHub repo to Vercel or Railway. It builds and serves your app at a real URL. Every future <code>git push</code> redeploys automatically &mdash; that&rsquo;s the CI/CD loop from Primer 1, &sect;4, running for free on your own project.</p></li><li><span class="st">Now iterate</span><p>You have a live, full-stack, authenticated app. Everything from here is adding features, fixing bugs, and refining &mdash; the actual work of product engineering, which the rest of this primer and the task ladder are about.</p></li></ol>
+<div class="callout info"><p class="label">What you&rsquo;ll have learned by surviving this</p><p>Notice what just happened: by building one real app, you touched version control, repos, databases, schemas, auth, environment variables, API keys, deployment, and CI/CD &mdash; every primitive from the first two primers, in context, with your own hands. This is why building beats reading. The concepts that felt abstract on the page become things you&rsquo;ve <em>done</em>. That&rsquo;s the transition, in miniature.</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s4">4 &middot; How to Actually Build With AI</h1>
+<p>There&rsquo;s a craft to directing AI well, and the gap between someone who&rsquo;s good at it and someone who isn&rsquo;t is enormous &mdash; same tool, wildly different results. The difference is almost entirely in how you specify, scope, and steer. Here&rsquo;s what actually works.</p>
+<h2 class="sub">Specify like you&rsquo;re writing a spec, because you are</h2>
+<p>The quality of what you get back is capped by the quality of what you ask for. &ldquo;Make a login page&rdquo; gets you something generic and probably wrong for your needs. A good prompt carries the same things a good PRD does: the goal, the constraints, the edge cases, the context of what already exists, and what &ldquo;done&rdquo; looks like.</p>
+<div class="callout info"><p class="label">Weak prompt vs. strong prompt</p><p><strong>Weak:</strong> &ldquo;Add a goal tracker.&rdquo;</p><p><strong>Strong:</strong> &ldquo;Add a savings-goal feature to this app. A goal has a name, a target amount in rupees, a target date, and a current saved amount. Users should see their goals as cards showing percent complete. They can add, edit, and delete goals. Use the existing Supabase setup and match the styling of the dashboard page. Handle the empty state (no goals yet) and validate that target amount is positive. Show me the data model first so I can check it before you build the UI.&rdquo;</p><p>The second one isn&rsquo;t longer for its own sake &mdash; every clause removes a wrong guess the AI would otherwise make. The last sentence is the highest-leverage habit in this whole document: <strong>make AI show you the plan before the code.</strong></p></div>
+<h2 class="sub">Scope into reviewable pieces</h2>
+<p>The instinct to ask for the whole feature at once is the instinct to fight. Large AI-generated chunks are hard to review, hard to debug, and hard to understand &mdash; and remember, you have to defend every line at the review gate. Work the way good engineers work (Primer 1, &sect;3): small, focused changes you can actually read. &ldquo;Show me the data model.&rdquo; Check it. &ldquo;Now the function to save a goal.&rdquo; Check it. &ldquo;Now the UI.&rdquo; Each piece is small enough to genuinely understand. This is slower in the moment and far faster overall, because you&rsquo;re not debugging a 500-line mystery.</p>
+<h2 class="sub">Steer, don&rsquo;t restart</h2>
+<p>When the AI gets something wrong, the beginner move is to scrap it and re-prompt from scratch. The better move is to steer: &ldquo;This is close, but the date validation allows past dates &mdash; fix just that.&rdquo; You&rsquo;re in a conversation with a capable collaborator who can take correction. Treat it like a code review you&rsquo;re giving: specific, targeted feedback, one thing at a time.</p>
+<h2 class="sub">Choose the right surface for the job</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Surface</th><th>Best for</th><th>The feel</th></tr></thead><tbody><tr><td><strong>Claude in chat</strong></td><td>Explaining concepts, planning, debugging a pasted error, generating a snippet you&rsquo;ll place yourself.</td><td>A knowledgeable colleague at a whiteboard.</td></tr><tr><td><strong>Claude Code</strong> (terminal/editor)</td><td>Working directly in your codebase &mdash; reading many files, making changes across them, running commands.</td><td>A pair-programmer with their hands on your repo.</td></tr><tr><td><strong>Claude via API</strong></td><td>Putting AI <em>inside</em> your app &mdash; a feature that calls Claude at runtime (a chatbot, a summariser, a classifier).</td><td>AI as a component of the product itself.</td></tr></tbody></table></div>
+<div class="callout tip"><p class="label">PM lens</p><p>Most of your learning will happen in the first two surfaces &mdash; chat and Claude Code. The third &mdash; AI <em>inside</em> the product &mdash; is where a lot of FundsIndia&rsquo;s actual AI roadmap will live, so it&rsquo;s worth building intuition for early. Knowing which surface fits a task is itself a product-engineering judgement: don&rsquo;t reach for an API call when a one-off chat would do, and don&rsquo;t hand-build something Claude Code could do across your whole repo in one pass.</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s5">5 &middot; Reading &amp; Distrusting AI-Generated Code</h1>
+<p>This is the heart of the document &mdash; the skill that separates a Product Engineer using AI from someone generating liabilities at speed. AI writes plausible code. Plausible is not the same as correct, and the failure modes are specific and learnable. Your job is to develop a trained suspicion: not paranoia that rejects everything, but calibrated doubt aimed at the places AI reliably gets things wrong.</p>
+<div class="callout verify"><p class="label">The cardinal rule</p><p><strong>Never ship code you can&rsquo;t explain.</strong> If the AI produced something and you don&rsquo;t understand why a line is there, you have two honest options: ask it to explain until you do, or don&rsquo;t use it. &ldquo;It works and I&rsquo;m not sure why&rdquo; is a time bomb &mdash; and it will not survive the review gate. Understanding is non-negotiable; it&rsquo;s the entire difference between directing AI and being a conduit for it.</p></div>
+<h2 class="sub">Where AI reliably gets things wrong</h2>
+<p>These are the high-suspicion zones &mdash; the places to slow down and verify every time, because AI&rsquo;s confidence is flattest exactly where the risk is highest:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Failure mode</th><th>What it looks like</th><th>Why it&rsquo;s dangerous for FundsIndia</th></tr></thead><tbody><tr><td><strong>Plausible-but-wrong logic</strong></td><td>Code that runs and looks right but computes the wrong thing &mdash; an interest formula off by a compounding period, a rounding that loses paise.</td><td>On a wealth platform this is real money and a regulatory exposure. The output looks fine; only domain knowledge or a test catches it.</td></tr><tr><td><strong>Made-up APIs &amp; libraries</strong></td><td>Calling a function or package that doesn&rsquo;t exist, or using an outdated way of doing something. AI sometimes confidently invents plausible-sounding names.</td><td>Wastes time, and the &ldquo;fix&rdquo; the AI suggests can send you down a rabbit hole. Verify libraries are real and current.</td></tr><tr><td><strong>Missing edge cases</strong></td><td>Happy path works; empty states, zero values, negative numbers, huge numbers, concurrent actions, and errors are unhandled.</td><td>Edge cases in finance are where the incidents and the angry customers are. This is exactly where your PM instinct for edge cases is the asset.</td></tr><tr><td><strong>Security gaps</strong></td><td>Secrets in code, missing authorization checks, unvalidated user input, data exposed that shouldn&rsquo;t be.</td><td>PII and money. A missing &ldquo;can this user see this account?&rdquo; check is a breach, not a bug.</td></tr><tr><td><strong>Silent assumptions</strong></td><td>The AI assumed something about your data, your setup, or your intent that isn&rsquo;t true, and built on it without flagging.</td><td>The error compounds &mdash; everything built on a wrong assumption inherits it.</td></tr></tbody></table></div>
+<h2 class="sub">A practical review pass for AI code</h2>
+<p>Before you accept a chunk of AI-generated code &mdash; and well before it reaches a human reviewer &mdash; run it through this. It becomes second nature fast.</p>
+<ol class="steps"><li><span class="st">Read every line and narrate it</span><p>Can you say out loud what each line does? Where you can&rsquo;t, ask the AI to explain that specific line. Gaps in your narration are gaps in your understanding.</p></li><li><span class="st">Hunt the edge cases</span><p>What happens with no data? Zero? A negative? A huge number? Two users at once? A network failure mid-action? Ask explicitly: &ldquo;what edge cases does this miss?&rdquo; &mdash; then verify the answer rather than trusting it.</p></li><li><span class="st">Check the money math by hand</span><p>For anything financial, compute one example yourself and confirm the code agrees. This single habit catches the most dangerous class of error.</p></li><li><span class="st">Look for secrets and missing auth</span><p>Any keys hard-coded? Any action that should check &ldquo;is this user allowed?&rdquo; but doesn&rsquo;t? These are the security basics that matter most.</p></li><li><span class="st">Verify the unfamiliar bits are real</span><p>Any library or function you don&rsquo;t recognise &mdash; confirm it actually exists and is the current way to do it. A quick check saves a long detour.</p></li><li><span class="st">Make it prove itself with a test</span><p>Ask the AI to write a test (Primer 1, &sect;4 &mdash; and the dedicated testing primer) that demonstrates the code does the right thing, especially on the edge cases. A passing test you understand is real evidence; &ldquo;it ran once&rdquo; is not.</p></li></ol>
+<div class="callout tip"><p class="label">Use AI to check AI</p><p>A powerful move: paste the AI&rsquo;s own code into a fresh conversation and ask &ldquo;review this critically &mdash; what&rsquo;s wrong, what edge cases are missing, what would a senior engineer flag?&rdquo; A clean context is often sharper than the one that wrote the code. This doesn&rsquo;t replace your judgement or the human review gate &mdash; but it&rsquo;s a strong first pass, and it doubles as a way to learn what good reviewers look for.</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s6">6 &middot; AI Features: Evals, Cost, Latency, Failure</h1>
+<p>Everything so far is about using AI to <em>build</em> software. This section is about building software that <em>contains</em> AI &mdash; a feature that calls Claude at runtime, like a portfolio-explainer chatbot or a document summariser. This is a different discipline with its own concerns, and it&rsquo;s where a lot of FundsIndia&rsquo;s AI roadmap will actually live. Orientation depth here; you&rsquo;ll go deeper when you build one for real.</p>
+<h2 class="sub">The four things that are different about AI features</h2>
+<h3 class="subsub">Evals: how you know it&rsquo;s good</h3>
+<p>Normal code is deterministic &mdash; same input, same output, and a test passes or fails cleanly. AI output varies and is judged on quality, not just correctness, so &ldquo;does it work?&rdquo; becomes &ldquo;how good is it, across many cases?&rdquo; An <strong>eval</strong> is a structured way to measure that: a set of representative inputs, and a way of scoring the outputs (exact-match where possible, or a rubric, or even another AI grading against criteria). Without evals you&rsquo;re flying blind &mdash; you change a prompt, something feels better, but you can&rsquo;t tell if you quietly broke ten other cases. If you&rsquo;ve ever tuned a filter or a ranking by eyeballing a few examples and hoping the rest improved too, evals are what make that rigorous instead of vibes.</p>
+<div class="callout info"><p class="label">The PM-native skill hiding here</p><p>Evals are essentially &ldquo;define success metrics and test against representative cases&rdquo; &mdash; which is product thinking. Deciding <em>what good looks like</em> for an AI feature, and how to measure it, is squarely your job and plays to your strengths. The engineering is in the harness; the judgement is in the rubric.</p></div>
+<h3 class="subsub">Cost: every call is metered</h3>
+<p>Each API call to an AI model costs money, priced by the amount of text in and out (measured in &ldquo;tokens&rdquo; &mdash; roughly, fragments of words). It&rsquo;s small per call and very real at scale. A feature that calls the model on every keystroke, or stuffs huge documents into every request, can run up a serious bill. Connect this to the resources thinking from Primer 2, &sect;6: AI features have a unit economics that you, as the product person, should be able to reason about &mdash; cost per user, per action, per month.</p>
+<h3 class="subsub">Latency: AI is slow compared to normal code</h3>
+<p>A database query returns in milliseconds; an AI model might take several seconds to respond, especially for longer outputs. That&rsquo;s an eternity in user-experience terms. It shapes design: you show streaming responses (text appearing as it&rsquo;s generated) so it feels alive, you set expectations with loading states, and you don&rsquo;t put a slow AI call in the middle of a flow that needs to be instant. Latency is a product decision as much as a technical one.</p>
+<h3 class="subsub">Failure: AI features fail differently</h3>
+<p>Normal code fails loudly and predictably &mdash; it errors, you catch it. AI can fail <em>softly</em>: it returns something confident and wrong, or off-tone, or subtly unhelpful, with no error at all. So building AI features means designing for graceful degradation (what shows if the model is down or slow?), guardrails (what stops it saying something it shouldn&rsquo;t, especially in a regulated financial context?), and a way for users to recover when the AI gets it wrong. The question is never just &ldquo;does it work when it works&rdquo; &mdash; it&rsquo;s &ldquo;what happens when it doesn&rsquo;t.&rdquo;</p>
+<div class="callout verify"><p class="label">The regulated-context caveat</p><p>In wealth management, an AI feature that gives something resembling financial advice, or states a number as fact, carries real regulatory and trust weight. &ldquo;The AI said it&rdquo; is not a defence. Any user-facing AI at FundsIndia needs human-defined guardrails on what it will and won&rsquo;t say, clear framing of what it is, and careful handling anywhere it touches advice, returns, or specific numbers. Treat this as a first-class design constraint, not a finishing touch &mdash; and a place to pull in compliance early.</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s7">7 &middot; Forge Your Own Path</h1>
+<p>Here&rsquo;s where this document deliberately stops holding your hand. You have the mental shift, the stack, the setup path, the craft of directing AI, the discipline of distrusting it, and an orientation to building AI features. That&rsquo;s genuinely enough to start. Everything else &mdash; the fluency, the taste, the speed &mdash; comes from building things and hitting walls, not from reading further.</p>
+<h2 class="sub">The invitation</h2>
+<p>Build something real in the wealth/investing/goal-planning space &mdash; the domain you&rsquo;re about to work in &mdash; on your own repo, your own way. A goal planner. A portfolio visualiser. A SIP calculator with a twist. A fund explorer. The domain is shared so the concepts rhyme with FundsIndia and you can compare notes; the implementation is entirely yours. There is no hymn sheet here, on purpose.</p>
+<div class="callout tip"><p class="label">Go your own way, genuinely</p><p>If you&rsquo;re fast, race ahead and build something ambitious. If you&rsquo;re grounded, go slow and deeply understand every piece before moving on. If a different stack calls to you, take it &mdash; the concepts transfer. If you&rsquo;ve got a question that the docs don&rsquo;t answer, chase it down; the best questions here are the ones that teach the person who asked them, and sometimes the person they ask. Divergence is the design, not a deviation from it.</p></div>
+<h2 class="sub">How to know you&rsquo;re getting somewhere</h2>
+<p>You don&rsquo;t need a certificate. You&rsquo;ll know you&rsquo;re building real fluency when: you can take a feature idea and direct it into existence without getting stuck on setup; you catch the AI&rsquo;s mistakes before they cost you; you can read code you didn&rsquo;t write and explain it; you reach for a test to prove something rather than hoping; and &mdash; the real bar &mdash; an engineer reviews your work and treats you as a credible peer. That respect, earned and not granted, is the gate. It isn&rsquo;t timed. Some of you will reach it quickly; one of you arrived already having earned it elsewhere. Both are fine. The only wrong pace is not building.</p>
+<div class="callout info"><p class="label">Where this sits in the suite</p><p>This primer is the engine; the others are the manual. When you hit version control, lean on Primer 1. When you&rsquo;re reasoning about a database or auth, Primer 2. When you&rsquo;re staring at code you didn&rsquo;t write, or trying to test something, or wondering why your deployed app is misbehaving &mdash; the depth primers on <strong>reading unfamiliar code</strong>, <strong>testing</strong>, and <strong>observability</strong> are written for exactly those walls. And the <strong>task ladder</strong> sequences the whole climb. Read none of them cover-to-cover up front; summon each when the wall appears. That just-in-time habit is itself how engineers actually learn.</p></div>
+<div class="callout tip"><p class="label">A standing offer</p><p>The deepest value in this whole exercise isn&rsquo;t in any document &mdash; it&rsquo;s in the questions you&rsquo;ll generate by building. Bring the ones that stump you. The genuinely hard questions are where the learning compounds, for you and for whoever you ask. Now close this and go build something.</p></div>
+<div class="foot"><span>Building With AI  ·  FundsIndia Product Engineering Enablement  ·  Primer 3</span><span></span></div>
+</main>
+</body>
+</html>

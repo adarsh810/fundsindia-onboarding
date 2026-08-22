@@ -1,0 +1,198 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>V1 App Release & Migration Options</title><style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 860px; margin: 40px auto; padding: 0 24px 80px; color: #1a1a1a; line-height: 1.7; }
+  h1 { font-size: 2rem; margin-bottom: 0.3em; } h2 { font-size: 1.4rem; margin-top: 2em; border-bottom: 1px solid #e5e5e5; padding-bottom: 0.3em; }
+  h3 { font-size: 1.1rem; margin-top: 1.5em; } pre { background: #f5f5f5; padding: 16px; border-radius: 8px; overflow-x: auto; }
+  code { background: #f0f0f0; padding: 2px 5px; border-radius: 4px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; } blockquote { border-left: 3px solid #d0d0d0; margin-left: 0; padding-left: 16px; color: #555; }
+  table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+  th { background: #f5f5f5; } a { color: #6B3FA0; }
+</style></head><body><h1>FundsIndia V1 · App and Web Release and Migration · Options Paper v0.1</h1>
+<p>FundsIndia New Platform ·  V1 Release Strategy</p>
+<h1>App and Web Release and Migration</h1>
+<p>Decision record ·  app-track plan of record frozen ·  v0.4</p>
+<p>Status   Decided: Option B, Flutter add-to-app inside the existing app, is the plan of record for the app track</p>
+<p>Date   12 August 2026 (originally captured 07 July 2026)</p>
+<p>Owner   Avijit Shukla, Head of New Platform</p>
+<p>Decision   V1 ships as an update to the existing app: a Flutter module integrated into the current binaries, with a router sending new users to the V1 experience while existing users continue on the native experience untouched. Registered as D60.</p>
+<p>Supersedes   Option D (two listings, end-state convergence), the plan of record in v0.1 and v0.2 of this paper; and, before that, the two-listing mid-migration convergence (Option C)</p>
+<p>Relates to   Build Roadmap v0.4, Build Strategy v2.5, Blueprint Detailed v1.2 §11, Open Decisions Register v0.25 (D60)</p>
+<h2>1. Context and constraints</h2>
+<p>The existing footprint: a website plus native Android and iOS apps serving 150k+ active users. The Android app carries a 4.5-star rating on 11k+ ratings; the iOS app is also highly rated. B2C traffic splits roughly 90 percent Android, 10 percent iOS; Private Wealth splits 50-50. The legacy app architecture is <strong>largely native</strong>, a fact confirmed in this discussion that materially reshapes the option space.</p>
+<p>The new platform ships a fresh web and app experience. The release timeline as planned:</p>
+<ul>
+<li><strong>March 2027</strong> ·  V1 launch, net-new investors only, on the new experience.</li>
+<li><strong>March to June 2027</strong> ·  the V1.5 band, and a three-month window where existing investors remain entirely on legacy web and apps.</li>
+<li><strong>Once the V1.5 migration tooling is built and proven, approx. July 2027 onward</strong> ·  book migration at 2,000 investors per day, planned across six months with buffer and contingency, against the ~200k book.</li>
+</ul>
+<p>The objectives, in priority order as discussed: zero or minimal disruption to existing users; preservation of the store equity built over years (ratings, ASO) and of web SEO; and a mechanism that is operationally realistic for the team to execute alongside the V1 build itself.</p>
+<h2>2. The web track: solved pattern, noted for completeness</h2>
+<p>Web orchestration is the easy half and follows the well-understood industry pattern: a per-account routing decision at the edge or at login. Existing (un-migrated) investors resolve to the legacy experience; new and migrated investors resolve to the new experience. Because both experiences serve under the same domain, <strong>SEO equity is preserved by construction</strong>, provided the domain and core URL structure are retained and redirects are mapped where paths change. No listing, no binary, no install base to manage. The remainder of this paper concerns the app track, where none of those conveniences exist.</p>
+<h2>3. The store equity reality</h2>
+<blockquote>
+<p><strong>Ratings and ASO do not transfer between listings, under any mechanism.</strong> They are bound to the package name on Google Play and the bundle ID on the App Store. &quot;Keep the ratings&quot; therefore has exactly one meaning: the new app must, at some point, ship as an update to the existing listing. Any option involving a fresh listing forfeits the accumulated ratings on that listing permanently.
+Three qualifiers soften the picture without changing it:</p>
+</blockquote>
+<ul>
+<li><strong>Google Play weights ratings toward recency</strong> (policy in force since 2019). The displayed 4.5 is substantially a function of recent reviews rather than the accumulated decade. A well-received new app rebuilds a strong displayed rating faster than the raw count of 11k suggests; equally, a poorly received update can drag the legacy 4.5 down quickly. The rating is more perishable, in both directions, than it appears.</li>
+<li><strong>iOS permits a ratings reset per version</strong>, at the developer&#39;s option. The iOS rating is therefore the least durable piece of equity in play, and at 10 percent of B2C traffic, the least consequential.</li>
+<li><strong>ASO equity is stickier than ratings.</strong> Install base, keyword ranking history, and category rank accrue to the listing and are the stronger argument for eventual convergence onto the legacy listing, independent of the ratings question.</li>
+</ul>
+<blockquote>
+<p><strong>Hard dependency: the Android signing key.</strong> Updating the legacy listing, ever, requires the ability to sign updates. If the legacy app is enrolled in Play App Signing, Google holds the release key and the position is safe. If it is self-signed under the legacy scheme, the original keystore must be located and secured now, in 2026. Without it, every convergence path in this paper collapses and the legacy listing can only ever be sunset, never inherited. The iOS equivalent, distribution certificates and App Store Connect account lineage, needs the same confirmation.</p>
+</blockquote>
+<h2>4. The options, in increasing likelihood of implementation</h2>
+<p>A</p>
+<p>Single listing, single binary from day one</p>
+<p>Ruled out</p>
+<p><strong>Mechanics.</strong> In March 2027 the new app ships as an update to the existing listing, containing both experiences. A server-side per-account flag routes existing users to the legacy experience and new users to the new one. This is the web blacklist pattern transplanted directly onto mobile.</p>
+<p><strong>What it preserves.</strong> Ratings ASO  Full store equity, one listing throughout, no consolidation event ever needed.</p>
+<p><strong>Why it fails on the native fact.</strong> Serving existing users their current experience inside the new binary requires one of two things. Either the legacy native codebases (two of them, Android and iOS) are embedded into a Flutter host, a large and thankless integration with no long-term payoff since the embedded code is scheduled for deletion. Or the legacy website is served in a webview, which downgrades 150k users from native to webview on day one of the new platform&#39;s life, before any trust has been earned. It also forces the entire existing base through a mandatory binary update at the single riskiest moment of the programme, and puts the legacy 4.5 rating directly in the blast radius of launch-week defects.</p>
+<p>Verdict Ruled out. The option only made sense while the legacy app might have been a webview shell. It is native; the shell-swap does not exist.</p>
+<p>B</p>
+<p>Reverse embedding: Flutter add-to-app inside the legacy binaries</p>
+<p>Decided plan of record</p>
+<p><strong>Mechanics.</strong> Flutter&#39;s add-to-app integration is designed for precisely this direction: embedding a Flutter module into an existing native Android and iOS app. The new V1 experience ships as a module inside the legacy binaries. New users install the existing listing and are routed into the Flutter experience at first launch; existing users continue on their native code paths untouched. As migration proceeds, migrated accounts flip to the Flutter module inside the same binary. At V3, the native code is deleted and the binary becomes pure Flutter, still on the original listing.</p>
+<p><strong>What it preserves.</strong> Ratings ASO  Complete continuity of store equity from day one, and there is only ever one app: no dual-listing period, no consolidation event, no user ever changes apps.</p>
+<p><strong>What it costs.</strong></p>
+<ul>
+<li><strong>Release coupling.</strong> The V1 team&#39;s cadence becomes bound to the legacy app&#39;s build, CI, signing, and release process, across two native codebases. Every V1 iteration ships through the legacy pipeline.</li>
+<li><strong>Organisational dependency.</strong> The legacy engineering team must actively co-own the integration. Their appetite and bandwidth are an unverified assumption.</li>
+<li><strong>Binary weight and startup cost.</strong> Carrying a full Flutter engine plus the native app inflates size and complicates startup routing.</li>
+<li><strong>Brand collision.</strong> New-user acquisition happens under the old listing, old name, old screenshots. The carefully designed V1 onboarding lives inside a store page describing the old product. If the brand decision lands on a new name, this option fights it.</li>
+<li><strong>Launch risk transference.</strong> A defect in the shared binary, even one confined to the Flutter module, ships to all 150k existing users and their review keyboards.</li>
+</ul>
+<p>Verdict Decided as the plan of record in August 2026. The only option that preserves store equity continuously, and the decision accepts its costs knowingly: release coupling, the legacy-team dependency, and shared-binary blast radius, each of which now carries a named mitigation in section 7. Technically proven pattern; organisationally the heaviest, which is why the working agreement with the legacy team is the first gate.</p>
+<p>C</p>
+<p>Two listings with mid-migration convergence</p>
+<p>Wounded by the native fact</p>
+<p><strong>Mechanics.</strong> A fresh listing launches in March 2027 for net-new users; the legacy listing is untouched at launch. Around migration start (once the V1.5 tooling is proven, approx. July 2027), the new Flutter binary ships as an update to the <em>legacy</em> listing, carrying a per-account server flag: migrated users get the new experience; un-migrated users are routed to the legacy web experience inside a webview module. Listings converge early; the second listing is sunset once its users are absorbed.</p>
+<p><strong>What it preserves.</strong> ASO Ratings at risk  The legacy listing survives as the long-term home, with its ASO intact. Ratings survive only if the interim experience does not provoke a review backlash.</p>
+<p><strong>Why the native fact wounds it.</strong> This was the previously recommended path, drawn up while the legacy stack was unconfirmed. Had the legacy app been a webview shell, the interim webview would have been experience-neutral. It is native: un-migrated users, the majority of the 200k book for months, would be pushed from a native app into a webview for the duration of their wait. On a 90 percent Android base, that is a visible regression served to exactly the population whose ratings the strategy is designed to protect, on exactly the listing it is designed to protect them on.</p>
+<p>Verdict Retained in the paper for completeness and because it was the prior recommendation. Demoted: it purchases early listing convergence with a months-long degraded interim for the existing base. Options B and D both dominate it.</p>
+<p>D</p>
+<p>Two listings, clean separation, convergence at the end</p>
+<p>Superseded · reserve position</p>
+<p><strong>Mechanics, phase by phase.</strong></p>
+<ul>
+<li><strong>March 2027, launch.</strong> A fresh listing goes live for net-new users. The legacy listing, binaries, and users are completely untouched. Zero disruption to the existing base is achieved by construction, not mitigation.</li>
+<li><strong>March to June 2027, coexistence, running alongside V1.5.</strong> Two listings run in parallel with disjoint user populations. The new listing builds its own early ratings via in-app review prompts placed at moments of delight (first settled order, first goal funded).</li>
+<li><strong>July to December 2027, migration.</strong> Per-cohort orchestrated handoff: in-app and out-of-app communication in the legacy app; a pre-authenticated deep link that installs the new app and lands the user signed in (or a one-tap OTP variant if Compliance declines pre-auth token handoff); a server-side flag flipping the migrated account in legacy to read-only, then to a redirect. Android App Links and staged rollouts carry the 90 percent; the iOS tail is handled with universal links and, for Private Wealth&#39;s 50 percent iOS share, white-glove RM-assisted moves.</li>
+<li><strong>At V3, convergence.</strong> With the book fully migrated, the new binary ships as an update to whichever listing the brand decision favours. If the FundsIndia name is kept, that is the legacy listing, and its ratings and ASO are inherited with no webview interim, since every remaining user on it is already migrated. The other listing is sunset with a redirect notice.</li>
+</ul>
+<p><strong>What it preserves.</strong> Existing-user experience ASO at V3 Ratings deferred  The existing base never sees a change it did not opt into. Store equity on the legacy listing is preserved and inheritable at consolidation.</p>
+<p><strong>The honest cost.</strong> From March to roughly December 2027, the new listing runs with zero ratings and zero ASO history. V1 new-user acquisition operates without the store equity for its first nine or so months. Mitigations are real but partial: launch marketing driving branded search, review prompts, and the recency-weighting dynamic that lets a good app build a strong displayed rating on modest volume. This cost is the price of not disturbing 150k existing users, and given that V1 is explicitly a net-new proposition while the legacy book is the asset that cannot be shaken, the trade reads as correct.</p>
+<p>Verdict Was the plan of record through v0.2. Superseded by the Option B decision in August 2026; held as the reserve position, and it reactivates only if the add-to-app feasibility spike or the legacy-team working agreement fails. Its nine-month zero-equity cost for new-user acquisition is the price the decision declined to pay.</p>
+<h2>5. Comparison at a glance</h2>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>A ·  One binary, day one</th>
+<th>B ·  Add-to-app</th>
+<th>C ·  Mid-migration converge</th>
+<th>D ·  End-state converge</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Existing-user disruption</strong></td>
+<td>High: forced update or webview downgrade at launch</td>
+<td>Low: native paths untouched, but shared-binary defect risk</td>
+<td>Medium-high: webview interim during migration wait</td>
+<td>None until the user&#39;s own migration moment</td>
+</tr>
+<tr>
+<td><strong>Ratings continuity</strong></td>
+<td>Continuous, but exposed to launch risk</td>
+<td>Continuous</td>
+<td>Preserved on legacy listing, at backlash risk</td>
+<td>Deferred; inherited at V3 if legacy listing survives</td>
+</tr>
+<tr>
+<td><strong>ASO continuity</strong></td>
+<td>Continuous</td>
+<td>Continuous</td>
+<td>Preserved on legacy listing</td>
+<td>Preserved on legacy listing; new listing builds its own in parallel</td>
+</tr>
+<tr>
+<td><strong>Engineering burden</strong></td>
+<td>Very high: embed native into Flutter, or webview 150k users</td>
+<td>High: add-to-app across two native codebases, coupled releases</td>
+<td>Medium: webview module plus routing in new binary</td>
+<td>Medium: handoff orchestration, deep links, cohort flags</td>
+</tr>
+<tr>
+<td><strong>Organisational coupling</strong></td>
+<td>High</td>
+<td>Very high: legacy team co-owns V1 shipping</td>
+<td>Medium</td>
+<td>Low: teams and pipelines stay independent until V3</td>
+</tr>
+<tr>
+<td><strong>Brand-decision sensitivity</strong></td>
+<td>Locked to old brand</td>
+<td>Locked to old brand</td>
+<td>Biased to old brand</td>
+<td>Neutral: either listing can survive at V3</td>
+</tr>
+<tr>
+<td><strong>Likelihood of clean execution</strong></td>
+<td>Ruled out</td>
+<td>Decided plan of record</td>
+<td>Demoted</td>
+<td>Superseded; reserve</td>
+</tr>
+</tbody></table>
+<h2>6. Dependencies to pin now, regardless of the choice</h2>
+<ul>
+<li><strong>Android signing key and Play App Signing status.</strong> Under the decided plan this is no longer a convergence-time concern: it gates the first V1 release itself, since V1 ships as an update to the existing listing and no update can ship unsigned. If the legacy app is self-signed and the keystore cannot be located, the plan fails on Android and the reserve position activates. Confirm now, with the iOS distribution certificate and App Store Connect account lineage alongside. This is the first gate on the app track.</li>
+<li><strong>The brand decision.</strong> Demoted by the decision: listing survival is settled by construction, since there is only ever one listing. What remains is naming and presentation inside the app and on the store page, which no longer blocks the app track. A rename, if it comes, is a store-listing update rather than a strategy fork.</li>
+<li><strong>Legacy engineering team working agreement.</strong> Upgraded from an unverified assumption to the load-bearing organisational dependency of the plan. The legacy team owns the host binaries, the build pipeline, the signing, and the release train, and every V1 app release now rides through them. This needs a written working agreement covering integration ownership, release cadence, and escalation, agreed before the HLD window closes.</li>
+<li><strong>Compliance position on pre-authenticated handoff: largely dissolved.</strong> There is no install boundary to carry a session across; migration becomes a per-account router flip inside one binary. The residual is an engineering question, session and credential sharing between the native experience and the Flutter module, which lands in the HLD rather than with Compliance.</li>
+<li><strong>The iOS tail: simplified.</strong> With no install handoff, the iOS migration path is the same router flip as Android. Private Wealth iOS retains the RM-assisted communication posture the Blueprint sets, but the mechanical move is now identical across platforms.</li>
+</ul>
+<h2>7. The decision, and what it creates</h2>
+<blockquote>
+<p><strong>Option B is the plan of record, decided August 2026.</strong> V1 ships as an update to the existing app: the V1 experience is built as a Flutter module and integrated into the current native Android and iOS binaries. A router directs new users into the V1 experience at first launch; all existing users continue on the native experience, untouched. Migration, from approximately July 2027, becomes a per-account router flip inside the same binary: no reinstall, no store handoff, no listing transition, ever. At V3 the native code is deleted and the binary becomes pure Flutter on the original listing, with its ratings and ASO intact throughout. Option D is superseded and held as the reserve position; Options A and C remain retired. Registered as D60 in the Open Decisions Register.
+<strong>The decision creates five pieces of work, owned and dated:</strong></p>
+</blockquote>
+<ul>
+<li><strong>Signing lineage confirmation, immediately.</strong> The Android keystore or Play App Signing status, and the iOS certificate and account lineage. Now a launch blocker rather than a convergence concern; see section 6.</li>
+<li><strong>The legacy-team working agreement, before the HLD window closes.</strong> Integration ownership, release cadence, CI and signing access, escalation. The plan is organisationally viable only with this in writing.</li>
+<li><strong>An add-to-app feasibility spike, inside the design window.</strong> One week, against the real legacy codebases: engine and binary size impact, plugin compatibility, navigation and back-stack handoff, startup routing cost. If the spike fails, the reserve position activates while the failure is still cheap.</li>
+<li><strong>The routing predicate, settled at PRD time.</strong> &quot;New user&quot; needs a precise, testable definition. The edge cases are real: an existing investor installing fresh on a new phone, a lapsed investor returning, a family member on a shared device. A wrong predicate routes an existing investor into an experience that cannot see their folios. This is the one open sub-decision the plan carries.</li>
+<li><strong>Blast-radius controls, in the release design.</strong> Every V1 release now ships inside the binary the existing base runs. Staged rollouts, a remote-config kill switch on the router so V1 can be disabled without a store release, and crash and analytics separation so a V1 incident is diagnosable as one. The release-train coupling to the legacy pipeline is stated in the Roadmap as a named risk, the same treatment as the migration slippage coupling.</li>
+</ul>
+<p>One honest note on what is given up: under two listings, a V1 defect could never touch the existing base. That guarantee is traded away for store-equity continuity and a dramatically simpler migration. The blast-radius controls above are the compensation, and they are controls, not a restored guarantee.</p>
+<h2>8. Changelog</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Change</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>v0.4</td>
+<td>12 August 2026</td>
+<td>Pointer sweep: register pointer updated to v0.25; no content change.</td>
+</tr>
+<tr>
+<td>v0.3</td>
+<td>12 August 2026</td>
+<td>Decision recorded: Option B (Flutter add-to-app inside the existing app, router-directed, update on the existing listing) adopted as plan of record, superseding Option D, which is held as the reserve position. Section 7 rewritten from recommendation to decision, with the five pieces of work the decision creates. Section 6 dependencies restated against the decided plan: signing lineage upgraded to launch blocker, legacy-team dependency upgraded to a required working agreement, pre-authenticated handoff largely dissolved, brand decision demoted, iOS tail simplified. Registered as D60 in the Open Decisions Register v0.24. Version fields normalised: the v0.2 filename bump had left the body reading v0.1 in the subtitle, changelog and footer, and no v0.2 body record exists; corrected here.</td>
+</tr>
+<tr>
+<td>v0.2</td>
+<td>August 2026</td>
+<td>Filename-level version bump during canon consolidation; no body changelog entry was recorded at the time.</td>
+</tr>
+<tr>
+<td>v0.1</td>
+<td>07 July 2026</td>
+<td>Initial capture of the release and migration options discussion. Incorporates the confirmed fact that legacy apps are largely native, which retires the shell-swap variant, demotes the prior two-listing mid-migration convergence recommendation (now Option C), and elevates end-state convergence (Option D) as plan of record with add-to-app (Option B) as the conditional alternative.</td>
+</tr>
+</tbody></table>
+<p>FundsIndia New Platform ·  App and Web Release and Migration Decision Record v0.4 ·  Plan of record frozen: Option B, add-to-app ·  Relates to Build Roadmap v0.4, Build Strategy v2.5, Blueprint Detailed v1.2 §11, Register v0.25 (D60) ·  Store-mechanics claims (ratings binding to listing identity, Play recency weighting, iOS ratings reset, Play App Signing) are stable platform facts as of drafting; re-verify against current store policy before the freeze if the decision is close.</p>
+</body></html>

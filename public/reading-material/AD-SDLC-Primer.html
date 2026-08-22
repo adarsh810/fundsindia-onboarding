@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Software Delivery Lifecycle — A Primer</title>
+<style>
+:root {
+  --ink: #1A2332;
+  --slate: #33414F;
+  --blue: #1F5C8B;
+  --teal: #0F7C73;
+  --amber: #B5731A;
+  --rule: #C9D4DE;
+  --lightblue: #E8F0F6;
+  --paleblue: #F4F8FB;
+  --palegrey: #F2F4F6;
+  --paleamber: #FBF3E6;
+  --palegreen: #EAF4F2;
+  --maroon: #9C2D41;
+  --muted: #6A7884;
+  --page: #ffffff;
+  --canvas: #EEF2F5;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--canvas);
+  color: var(--slate);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.sheet {
+  max-width: 820px;
+  margin: 32px auto;
+  background: var(--page);
+  padding: 64px 72px 56px;
+  box-shadow: 0 1px 3px rgba(26,35,50,.08), 0 12px 40px rgba(26,35,50,.10);
+  border-radius: 3px;
+}
+
+/* ---------- Cover ---------- */
+.eyebrow {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--blue);
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.cover-rule { height: 3px; background: var(--blue); border: none; margin: 0 0 26px; }
+.cover-title {
+  font-size: 42px;
+  line-height: 1.08;
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -.015em;
+  margin: 0 0 12px;
+}
+.cover-sub {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--slate);
+  margin: 0 0 18px;
+  line-height: 1.4;
+}
+.cover-meta {
+  font-size: 15.5px;
+  font-style: italic;
+  color: var(--muted);
+  margin: 0 0 40px;
+}
+
+/* ---------- Headings ---------- */
+h1.sec {
+  font-size: 25px;
+  font-weight: 800;
+  color: var(--blue);
+  letter-spacing: -.01em;
+  margin: 52px 0 18px;
+  padding-bottom: 9px;
+  border-bottom: 2px solid var(--rule);
+  scroll-margin-top: 20px;
+}
+h2.sub {
+  font-size: 19.5px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 30px 0 12px;
+}
+h3.subsub {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: var(--teal);
+  margin: 22px 0 8px;
+}
+p { margin: 0 0 14px; }
+strong { color: var(--ink); font-weight: 700; }
+
+code, .mono {
+  font-family: "SF Mono", "JetBrains Mono", "Fira Code", Consolas, "Liberation Mono", monospace;
+  font-size: .88em;
+  color: var(--maroon);
+  background: rgba(156,45,65,.06);
+  padding: .08em .34em;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+ul, ol { margin: 0 0 16px; padding-left: 24px; }
+li { margin: 0 0 7px; padding-left: 4px; }
+ul li::marker { color: var(--blue); }
+ol li::marker { color: var(--blue); font-weight: 700; }
+
+/* ---------- Callouts ---------- */
+.callout {
+  border-radius: 6px;
+  padding: 16px 20px 4px;
+  margin: 20px 0 24px;
+  border-left: 5px solid;
+  break-inside: avoid;
+}
+.callout .label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.callout p:last-child { margin-bottom: 12px; }
+.callout.info { background: var(--paleblue); border-color: var(--blue); }
+.callout.info .label { color: var(--blue); }
+.callout.tip  { background: var(--palegreen); border-color: var(--teal); }
+.callout.tip .label { color: var(--teal); }
+.callout.warn { background: var(--paleamber); border-color: var(--amber); }
+.callout.warn .label { color: var(--amber); }
+.callout.grey { background: var(--palegrey); border-color: var(--slate); }
+.callout.grey .label { color: var(--slate); }
+
+.flow { font-size: 15.5px; line-height: 1.9; }
+
+/* ---------- Tables ---------- */
+.tbl-wrap { margin: 18px 0 24px; overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.5;
+}
+th {
+  background: var(--lightblue);
+  color: var(--ink);
+  font-weight: 700;
+  text-align: left;
+  padding: 10px 14px;
+  border: 1px solid var(--rule);
+  font-size: 14.5px;
+  vertical-align: top;
+}
+td {
+  padding: 9px 14px;
+  border: 1px solid var(--rule);
+  vertical-align: top;
+}
+tbody tr:nth-child(even) { background: var(--paleblue); }
+td strong { color: var(--ink); }
+.decoder td:first-child { white-space: nowrap; }
+
+/* ---------- Tree block ---------- */
+.tree {
+  font-family: "SF Mono", "JetBrains Mono", Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.75;
+  background: var(--palegrey);
+  border-left: 5px solid var(--slate);
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin: 8px 0 14px;
+  white-space: pre;
+  overflow-x: auto;
+}
+.tree .c { color: var(--maroon); }
+.tree .note { color: var(--muted); font-family: inherit; }
+
+/* ---------- TOC ---------- */
+.toc { margin: 8px 0 0; }
+.toc a {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--slate);
+  padding: 9px 0;
+  border-bottom: 1px solid #EAEEF1;
+  font-size: 16px;
+}
+.toc a:hover { color: var(--blue); }
+.toc a .n { color: var(--blue); font-weight: 700; min-width: 26px; }
+.toc a .t { flex: 1; }
+.toc a .t::after {
+  content: "";
+  display: inline-block;
+  width: 0;
+}
+
+/* ---------- Footer ---------- */
+.foot {
+  margin-top: 48px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  font-size: 12.5px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+}
+
+.arrow { color: var(--blue); font-weight: 700; padding: 0 2px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  .sheet { padding: 36px 22px 40px; margin: 0; border-radius: 0; }
+  body { font-size: 16px; }
+  .cover-title { font-size: 32px; }
+  .cover-sub { font-size: 18px; }
+  table { font-size: 13.5px; }
+  th, td { padding: 8px 9px; }
+  .decoder td:first-child { white-space: normal; }
+  code { white-space: normal; }
+}
+
+/* ---------- Print ---------- */
+@media print {
+  body { background: #fff; font-size: 11pt; }
+  .sheet { box-shadow: none; margin: 0; max-width: none; padding: 0; border-radius: 0; }
+  h1.sec { break-after: avoid; }
+  h2.sub, h3.subsub { break-after: avoid; }
+  table, .callout, .tree { break-inside: avoid; }
+  tr { break-inside: avoid; }
+  a { color: var(--slate); text-decoration: none; }
+  .pagebreak { break-before: page; }
+}
+
+</style>
+</head>
+<body>
+<main class="sheet">
+<p class="eyebrow">FundsIndia &middot; Product Engineering Enablement</p>
+<hr class="cover-rule">
+<h1 class="cover-title">The Software Delivery Lifecycle</h1>
+<p class="cover-sub">A Field Guide to How Software Actually Gets Built, Tested, and Shipped</p>
+<p class="cover-meta">Primer 1 of 2 &middot; For Product Managers becoming Product Engineers</p>
+<div class="callout info"><p class="label">Who this is for</p><p>You are a strong product person who understands technology at the surface &mdash; you can read a roadmap, talk to engineers, and reason about trade-offs. What you may not yet have is the <strong>mental model of the machine</strong>: where code lives, how it travels from a laptop to a customer, and what all those words in standup (<code>PR</code>, <code>staging</code>, <code>rollback</code>, <code>CI</code>) actually point to.</p><p>This primer closes that gap. By the end you should be able to sit in any engineering conversation and follow the plot &mdash; not as a spectator, but as someone who knows where the levers are.</p></div>
+
+<div class="pagebreak"></div>
+<h1 class="sec">Contents</h1>
+<div class="toc"><a href="#s0"><span class="n">0</span><span class="t">The One-Page Mental Model</span></a><a href="#s1"><span class="n">1</span><span class="t">Environments: The Parallel Worlds</span></a><a href="#s2"><span class="n">2</span><span class="t">Repositories &amp; Version Control: The Source of Truth</span></a><a href="#s3"><span class="n">3</span><span class="t">Pull Requests &amp; Code Review: The Quality Gate</span></a><a href="#s4"><span class="n">4</span><span class="t">CI/CD: The Automated Assembly Line</span></a><a href="#s5"><span class="n">5</span><span class="t">Deployment, Release &amp; Rollback</span></a><a href="#s6"><span class="n">6</span><span class="t">How It All Sequences: The Lifecycle End-to-End</span></a><a href="#s7"><span class="n">7</span><span class="t">The Standup Decoder</span></a></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s0">0 &middot; The One-Page Mental Model</h1>
+<p>Before the detail, hold this picture in your head. Everything else in this primer hangs off it.</p>
+<p>Software is just text files (&ldquo;code&rdquo;) that a computer reads and acts on. A team of people edit those files. The hard part isn&rsquo;t writing the text &mdash; it&rsquo;s coordinating many people changing the same pile of text safely, and then moving a trustworthy copy of that text onto computers that customers actually touch, without breaking anything.</p>
+<p>The Software Delivery Lifecycle (SDLC) is the disciplined answer to that coordination problem. It has two intertwined halves:</p>
+<div class="callout tip"><p class="label">The two halves</p><p><strong>1. The build loop (inner loop).</strong> A single engineer changes code on their own machine, runs it, sees if it works, fixes it, repeats. Fast, private, messy. Measured in seconds and minutes.</p><p><strong>2. The delivery pipeline (outer loop).</strong> That change gets proposed to the team, reviewed, automatically tested, merged into the shared codebase, and then promoted step-by-step across environments until it reaches customers. Slower, public, governed. Measured in minutes to days.</p></div>
+<p>A Product Engineer is someone who is fluent in both loops &mdash; who can not only describe the feature but open the code, make a change, and shepherd it safely through the pipeline. The rest of this document walks the whole journey, in order, the way a real change travels.</p>
+<div class="callout grey"><p class="label">The journey of one change</p><p><strong>Idea</strong> <span class="arrow">&rarr;</span> <strong>write code locally</strong> <span class="arrow">&rarr;</span> <strong>commit</strong> <span class="arrow">&rarr;</span> <strong>push to a branch</strong> <span class="arrow">&rarr;</span> <strong>open a Pull Request</strong> <span class="arrow">&rarr;</span> <strong>automated checks (CI)</strong> <span class="arrow">&rarr;</span> <strong>human review</strong> <span class="arrow">&rarr;</span> <strong>merge</strong> <span class="arrow">&rarr;</span> <strong>deploy to staging</strong> <span class="arrow">&rarr;</span> <strong>deploy to production (CD)</strong> <span class="arrow">&rarr;</span> <strong>monitor</strong> <span class="arrow">&rarr;</span> <strong>(if broken) roll back.</strong></p><p>Memorise this line. Every section below is one station on this track.</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s1">1 &middot; Environments: The Parallel Worlds</h1>
+<p>An environment is a complete, self-contained copy of your software &mdash; the code plus the computers, database, and settings it runs on. The whole point of having several is to create safe places to make mistakes before customers can feel them.</p>
+<p>Think of a stage play. You rehearse in an empty hall (nobody watching), then do a dress rehearsal with a small invited audience, then open on Broadway. Same script, escalating stakes. Environments are exactly this for software.</p>
+<h2 class="sub">The standard ladder</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Environment</th><th>Who uses it</th><th>What it&rsquo;s for</th><th>If it breaks&hellip;</th></tr></thead><tbody><tr><td><strong>Local</strong></td><td>One engineer</td><td>The code running on a single laptop. Private sandbox to build and experiment.</td><td>Nobody notices.</td></tr><tr><td><strong>Dev / Integration</strong></td><td>The engineering team</td><td>First place everyone&rsquo;s changes meet and run together.</td><td>The team notices; customers don&rsquo;t.</td></tr><tr><td><strong>Staging / QA / Pre-prod</strong></td><td>QA, PMs, stakeholders</td><td>A near-perfect clone of production. Final dress rehearsal, demos, sign-off.</td><td>Caught before customers &mdash; the whole point.</td></tr><tr><td><strong>Production (&ldquo;prod&rdquo;)</strong></td><td>Real customers</td><td>The real thing. Live money, live data, live users.</td><td>Customers feel it. This is the one that matters.</td></tr></tbody></table></div>
+<div class="callout info"><p class="label">In plain English</p><p>When an engineer says <code>&ldquo;it works on staging&rdquo;</code>, they mean the change behaved correctly in the dress-rehearsal world. That is reassuring but not the same as <strong>&ldquo;it works in production,&rdquo;</strong> because production has real-world scale, real data, and real edge cases that staging only approximates. The gap between the two is where a lot of incidents live.</p></div>
+<h2 class="sub">Why environments differ in subtle ways</h2>
+<p>Environments are supposed to be identical, but they rarely are 100%. Staging might have a smaller, anonymised copy of the database. Production has ten years of messy real customer records. A change that flies through staging can still trip over a weird record that only exists in prod. This is why &ldquo;parity&rdquo; &mdash; keeping environments as similar as possible &mdash; is a constant engineering concern, and why &ldquo;it passed staging&rdquo; is a green light, not a guarantee.</p>
+<div class="callout tip"><p class="label">PM lens</p><p>Two practical habits. <strong>First</strong>, always ask <strong>&ldquo;which environment is this in?&rdquo;</strong> when someone shows you a working feature &mdash; a staging demo and a production release are very different commitments. <strong>Second</strong>, staging is <strong>your</strong> playground too: it&rsquo;s where you should click through a feature and sign off before it goes live. Owning staging sign-off is one of the fastest ways a PM earns engineering trust.</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s2">2 &middot; Repositories &amp; Version Control: The Source of Truth</h1>
+<p>A repository (&ldquo;repo&rdquo;) is the folder that holds all of a project&rsquo;s code, plus its entire history of every change ever made. It is the single source of truth for what the software is. Version control is the system &mdash; almost always a tool called Git &mdash; that records that history and lets many people edit safely.</p>
+<div class="callout info"><p class="label">The Google-Docs analogy (and where it breaks)</p><p>Version control is like the version history in Google Docs &mdash; it remembers every edit, who made it, and lets you roll back. <strong>But</strong> with two crucial upgrades: changes are batched into meaningful, labelled chunks (not saved keystroke-by-keystroke), and many people can work on separate copies in parallel and then merge their work together deliberately, rather than all typing into one live document.</p></div>
+<h2 class="sub">The vocabulary you&rsquo;ll actually hear</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Term</th><th>What it means</th><th>Everyday analogy</th></tr></thead><tbody><tr><td><strong>Commit</strong></td><td>A saved, labelled batch of changes with a message describing what changed and why.</td><td>A labelled save point: &ldquo;Fixed login button colour.&rdquo;</td></tr><tr><td><strong>Branch</strong></td><td>A personal parallel copy of the code where you can work without disturbing anyone else.</td><td>Making a duplicate of the doc to draft in, before merging back.</td></tr><tr><td><strong>Main / master</strong></td><td>The one official branch that represents the real, shippable product.</td><td>The master copy of the manuscript.</td></tr><tr><td><strong>Merge</strong></td><td>Combining the changes from one branch into another (usually back into main).</td><td>Folding your edited draft back into the master copy.</td></tr><tr><td><strong>Push / Pull</strong></td><td>Push = upload your commits to the shared server. Pull = download everyone else&rsquo;s.</td><td>Sync up / sync down.</td></tr><tr><td><strong>Conflict</strong></td><td>When two people changed the same line differently and Git needs a human to decide.</td><td>Two editors rewrote the same sentence; someone must choose.</td></tr><tr><td><strong>Clone</strong></td><td>Making your own full local copy of a repo to start working.</td><td>Downloading the whole project folder, history and all.</td></tr></tbody></table></div>
+<h2 class="sub">Why branches are the key idea</h2>
+<p>The branch is the single most important concept here. Imagine twenty engineers all editing the live product at once &mdash; chaos. Instead, each person creates a branch off main, does their work in isolation, and only merges back when it&rsquo;s reviewed and tested. Main stays clean and shippable at all times; the messy work-in-progress happens off to the side.</p>
+<p>This is also why you&rsquo;ll hear about a <strong>&ldquo;feature branch&rdquo;</strong> &mdash; a branch created specifically to build one feature or fix. Its name often maps directly to a ticket, e.g. <code>feature/FI-1423-goal-calculator</code>. When that work is done and merged, the branch is usually deleted; its history lives on inside main.</p>
+<div class="callout grey"><p class="label">GitHub / GitLab / Bitbucket</p><p>Git is the underlying technology. <strong>GitHub</strong>, <strong>GitLab</strong>, and <strong>Bitbucket</strong> are the popular hosted homes for Git repos &mdash; websites where the shared copy lives and where reviews, discussions, and automation happen. When someone says &ldquo;it&rsquo;s on GitHub,&rdquo; they mean the team&rsquo;s shared, online source of truth lives there. (FundsIndia&rsquo;s own repos live under accounts like <code>github.com/&hellip;</code>; ask your team which host you use.)</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s3">3 &middot; Pull Requests &amp; Code Review: The Quality Gate</h1>
+<p>A Pull Request (PR) &mdash; called a &ldquo;Merge Request&rdquo; on GitLab &mdash; is a formal proposal that says: &ldquo;I&rsquo;ve finished my work on this branch. Please review it and, if you approve, merge it into main.&rdquo; It is the moment a private piece of work becomes a public, team-level decision.</p>
+<p>A PR bundles together three things: the exact lines of code that changed (the &ldquo;diff&rdquo;), a description of what and why, and a conversation thread where reviewers comment, ask questions, and request changes. Nothing reaches main without passing through this gate.</p>
+<div class="callout info"><p class="label">What a &ldquo;diff&rdquo; looks like</p><p>A diff shows only what changed, line by line. Removed lines are marked in red with a <code>&minus;</code>, added lines in green with a <code>+</code>. A reviewer doesn&rsquo;t re-read the whole program &mdash; they read just the delta, which is why small PRs get reviewed fast and giant ones languish.</p></div>
+<h2 class="sub">Why code review exists</h2>
+<p>Code review is the engineering equivalent of a second pair of eyes on a contract before you sign it. It catches bugs, spreads knowledge across the team (so no single person is the only one who understands a piece of code), enforces consistency, and creates a written record of why a decision was made. A good review culture is one of the strongest signals of a healthy engineering org.</p>
+<h2 class="sub">The anatomy of a healthy PR</h2>
+<ol><li><strong>Small and focused.</strong> One logical change. A PR that does five unrelated things is hard to review and risky to merge.</li><li><strong>Clearly described.</strong> What changed, why, how it was tested, and a link to the ticket it closes.</li><li><strong>Green checks.</strong> All the automated tests (CI &mdash; next section) have passed.</li><li><strong>At least one approval.</strong> A teammate has read it and clicked &ldquo;Approve.&rdquo; Many teams require this before merge is even possible.</li><li><strong>Conversations resolved.</strong> Every comment has been addressed or discussed.</li></ol>
+<div class="callout tip"><p class="label">PM lens</p><p>You will increasingly be <strong>on</strong> PRs &mdash; sometimes opening small ones yourself, often reviewing or commenting on copy, behaviour, and edge cases. You don&rsquo;t need to judge code elegance; you <strong>can</strong> catch &ldquo;this doesn&rsquo;t match the spec,&rdquo; &ldquo;what happens if the user has no goals yet?&rdquo;, or &ldquo;the empty state text is wrong.&rdquo; That product-level review on a PR is enormously valuable and very welcome. Also: PR size is a leading indicator of delivery health &mdash; a team drowning in 2,000-line PRs is a team that will ship slowly and break things.</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s4">4 &middot; CI/CD: The Automated Assembly Line</h1>
+<p>CI/CD is the automation that turns the manual, error-prone job of testing and shipping code into a reliable assembly line. It&rsquo;s two linked ideas: Continuous Integration (CI) and Continuous Delivery/Deployment (CD). This is the beating heart of modern delivery, so we&rsquo;ll take it slowly.</p>
+<h2 class="sub">CI &mdash; Continuous Integration: &ldquo;does this change break anything?&rdquo;</h2>
+<p>Every time someone opens or updates a PR, a robot springs into action. It takes the proposed code, assembles it, and runs a battery of automated checks &mdash; all without a human lifting a finger. If anything fails, the PR is flagged with a red X and merge is blocked.</p>
+<p>What does CI actually run? Typically:</p>
+<ul><li><strong>Build / compile.</strong> Does the code even assemble into a runnable program? (For some languages this catches whole classes of errors instantly.)</li><li><strong>Automated tests.</strong> Hundreds or thousands of tiny scripted checks that each verify &ldquo;given this input, the code produces the right output.&rdquo; More on test types below.</li><li><strong>Linting &amp; formatting.</strong> Style and consistency checks &mdash; the automated grammar-and-spellcheck of code.</li><li><strong>Security &amp; dependency scans.</strong> Looks for known vulnerabilities in the code or the third-party libraries it relies on.</li></ul>
+<div class="callout info"><p class="label">Why &ldquo;continuous&rdquo;</p><p>The name comes from the old, painful alternative. Teams used to integrate everyone&rsquo;s work together rarely &mdash; once a month &mdash; and it was agony, because months of divergent changes all collided at once (&ldquo;merge hell&rdquo;). The fix was to integrate <strong>continuously</strong>: small changes, merged often, each automatically verified. Lots of tiny safe steps instead of rare terrifying leaps.</p></div>
+<h2 class="sub">CD &mdash; Continuous Delivery &amp; Deployment: &ldquo;get it to customers, safely and automatically&rdquo;</h2>
+<p>Once a change passes CI and is merged into main, CD takes over: it automatically packages the new version and promotes it through the environment ladder. There&rsquo;s a subtle but important distinction in the two D&rsquo;s:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Term</th><th>What&rsquo;s automated</th><th>The human&rsquo;s role</th></tr></thead><tbody><tr><td><strong>Continuous Delivery</strong></td><td>Everything up to production. The release is built, tested, and parked &mdash; ready to ship at the push of a button.</td><td>A human decides the moment to release to customers.</td></tr><tr><td><strong>Continuous Deployment</strong></td><td>Everything, including the release to production. If it passes all checks, it goes live with no human gate.</td><td>None &mdash; the pipeline ships automatically. Requires deep trust in the tests.</td></tr></tbody></table></div>
+<div class="callout tip"><p class="label">Plain English</p><p>Think of CI/CD as a <strong>car factory conveyor belt with automatic safety inspectors</strong>. CI is the inspectors checking each part as it&rsquo;s added (&ldquo;does this bolt fit? is it cracked?&rdquo;). CD is the belt that carries the finished, inspected car out to the showroom. The whole appeal is that quality is checked <strong>constantly and automatically</strong>, so problems are caught in minutes by a robot rather than days later by an angry customer.</p></div>
+<h2 class="sub">A quick word on test types (so the jargon lands)</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Test type</th><th>Checks&hellip;</th><th>Analogy</th></tr></thead><tbody><tr><td>Unit test</td><td>One tiny piece of logic in isolation (e.g. &ldquo;does the interest calculator return the right number?&rdquo;).</td><td>Testing a single Lego brick.</td></tr><tr><td>Integration test</td><td>Whether several pieces work correctly together.</td><td>Testing that two Lego sections click together.</td></tr><tr><td>End-to-end (E2E) test</td><td>A full user journey through the real app, like a robot clicking through screens.</td><td>Testing the finished Lego model by playing with it.</td></tr></tbody></table></div>
+<div class="callout tip"><p class="label">PM lens</p><p>&ldquo;Good test coverage&rdquo; isn&rsquo;t engineering vanity &mdash; it&rsquo;s <strong>delivery speed insurance</strong>. Teams with strong automated tests ship faster and more confidently, because the robots catch regressions before customers do. When you hear &ldquo;we need to add tests first,&rdquo; that&rsquo;s usually an investment in future velocity, not a delay tactic. A useful PM question: <code>&ldquo;is this covered by tests, or are we relying on manual checking?&rdquo;</code></p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s5">5 &middot; Deployment, Release &amp; Rollback</h1>
+<p>Deployment is the act of putting a new version of the code onto the computers that run an environment. Releasing is the act of making that new version visible to users. These often happen together but &mdash; importantly &mdash; they can be separated, which is the foundation of safe shipping.</p>
+<h2 class="sub">Strategies for shipping without holding your breath</h2>
+<div class="tbl-wrap"><table><thead><tr><th>Strategy</th><th>How it works</th><th>Why it&rsquo;s safer</th></tr></thead><tbody><tr><td><strong>Feature flag</strong></td><td>Code is deployed but hidden behind an on/off switch. You flip it on for users when ready &mdash; instantly, no redeploy.</td><td>Decouples shipping code from releasing the feature. Bad feature? Flip it off in seconds.</td></tr><tr><td><strong>Canary release</strong></td><td>Roll the new version out to a tiny slice of users (say 1%) first. Watch. If healthy, widen gradually.</td><td>A problem hurts 1% of users, not 100%, and you catch it early.</td></tr><tr><td><strong>Blue-green</strong></td><td>Run two identical production setups. Switch traffic from old (&ldquo;blue&rdquo;) to new (&ldquo;green&rdquo;) all at once; switch back instantly if needed.</td><td>Rollback is just flipping traffic back &mdash; near-instant recovery.</td></tr></tbody></table></div>
+<h2 class="sub">Rollback: the undo button</h2>
+<p>A rollback is reverting to the previous known-good version when a new release misbehaves. The single most important property of a healthy delivery system is that rollback is fast, boring, and rehearsed. When something breaks in production, the first instinct of a good team is usually not &ldquo;debug it live&rdquo; but &ldquo;roll back first, investigate after&rdquo; &mdash; stop the bleeding, then diagnose calmly.</p>
+<div class="callout tip"><p class="label">PM lens</p><p>Feature flags are a <strong>product superpower</strong>, not just an engineering trick. They let you ship code dark, turn features on for internal users or beta cohorts, run A/B tests, and do staged rollouts &mdash; all without engineering redeploying. If your team uses flags well, you gain enormous control over <strong>when and to whom</strong> a feature appears. Ask whether new features are flag-gated; the answer shapes how much release risk you&rsquo;re carrying.</p></div>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s6">6 &middot; How It All Sequences: The Lifecycle End-to-End</h1>
+<p>Now zoom out. The stations you&rsquo;ve learned &mdash; environments, repos, PRs, CI/CD, deploy &mdash; are the machinery. The SDLC is the repeating loop that runs that machinery, over and over, for every feature. Classically it&rsquo;s drawn as these phases:</p>
+<div class="tbl-wrap"><table><thead><tr><th>Phase</th><th>What happens</th><th>Who leads / your role</th></tr></thead><tbody><tr><td><strong>1. Plan</strong></td><td>Decide what to build and why. Requirements, scope, success metrics.</td><td><strong>You.</strong> PM-owned.</td></tr><tr><td><strong>2. Design</strong></td><td>Decide how to build it. Architecture, data models, UX, technical approach.</td><td>Eng + Design, with PM input</td></tr><tr><td><strong>3. Build</strong></td><td>Write the code. The inner loop: code <span class="arrow">&rarr;</span> commit <span class="arrow">&rarr;</span> branch.</td><td>Engineers</td></tr><tr><td><strong>4. Test</strong></td><td>Verify it works. Automated (CI) + manual QA on staging.</td><td>Eng + QA + PM sign-off</td></tr><tr><td><strong>5. Release</strong></td><td>Ship it to customers via the CD pipeline, often behind flags.</td><td>Eng, PM decides timing</td></tr><tr><td><strong>6. Operate &amp; Monitor</strong></td><td>Watch it in production. Logs, metrics, alerts, on-call.</td><td>Eng + SRE, PM watches product metrics</td></tr></tbody></table></div>
+<div class="callout info"><p class="label">Agile, in one breath</p><p>You&rsquo;ll hear <strong>Agile</strong>, <strong>Scrum</strong>, <strong>sprints</strong>, <strong>Kanban</strong>. These aren&rsquo;t a different lifecycle &mdash; they&rsquo;re a <strong>rhythm</strong> for running it. Instead of doing all six phases once over a year (the old &ldquo;waterfall&rdquo; way), you run the whole loop in tiny slices every week or two (a &ldquo;sprint&rdquo;), shipping a small working increment each time. The machinery (repos, CI/CD) is what makes this rapid cadence possible &mdash; you can&rsquo;t ship every two weeks by hand.</p></div>
+<h2 class="sub">DevOps: the philosophy tying it together</h2>
+<p>DevOps is the cultural idea that the people who build software (Dev) and the people who run it in production (Ops) should be one collaborative team with shared ownership and heavy automation &mdash; rather than developers &ldquo;throwing code over the wall&rdquo; to a separate operations team. CI/CD is the toolkit; DevOps is the mindset. You&rsquo;ll also hear SRE (Site Reliability Engineering) &mdash; a specific, Google-originated flavour of operations focused on keeping systems reliable using engineering discipline and clear reliability targets.</p>
+<div class="pagebreak"></div>
+<h1 class="sec" id="s7">7 &middot; The Standup Decoder</h1>
+<p>A quick-reference list of phrases you&rsquo;ll hear daily, translated. Skim it now; come back to it whenever a sentence in standup loses you.</p>
+<div class="tbl-wrap"><table class="decoder"><thead><tr><th>You hear&hellip;</th><th>It means&hellip;</th></tr></thead><tbody><tr><td><code>&ldquo;I&rsquo;ll push a fix&rdquo;</code></td><td>I&rsquo;ll upload my code change to the shared repo.</td></tr><tr><td><code>&ldquo;It&rsquo;s blocked on review&rdquo;</code></td><td>The code is done but waiting for a teammate to approve the PR.</td></tr><tr><td><code>&ldquo;CI is red / the build is broken&rdquo;</code></td><td>An automated check failed; nothing can merge until it&rsquo;s fixed.</td></tr><tr><td><code>&ldquo;Let&rsquo;s ship it behind a flag&rdquo;</code></td><td>Deploy the code but keep the feature switched off until we choose to turn it on.</td></tr><tr><td><code>&ldquo;It&rsquo;s on staging&rdquo;</code></td><td>It&rsquo;s in the dress-rehearsal environment, ready for you to test &mdash; not live yet.</td></tr><tr><td><code>&ldquo;We need to roll back&rdquo;</code></td><td>Revert production to the previous working version because something broke.</td></tr><tr><td><code>&ldquo;There&rsquo;s a merge conflict&rdquo;</code></td><td>Two changes touched the same lines; a human must reconcile them.</td></tr><tr><td><code>&ldquo;It&rsquo;s a one-line change&rdquo;</code></td><td>Small code edit &mdash; but &ldquo;small&rdquo; doesn&rsquo;t always mean &ldquo;low-risk.&rdquo; Ask about blast radius.</td></tr><tr><td><code>&ldquo;Can you cut a release?&rdquo;</code></td><td>Package the current main into a versioned release ready to deploy.</td></tr><tr><td><code>&ldquo;It works on my machine&rdquo;</code></td><td>It runs locally but might behave differently in a real environment (a classic warning sign).</td></tr><tr><td><code>&ldquo;We&rsquo;re paying down tech debt&rdquo;</code></td><td>Cleaning up earlier shortcuts so future work is faster and safer.</td></tr><tr><td><code>&ldquo;This needs a migration&rdquo;</code></td><td>A change to the database&rsquo;s structure that must be applied carefully (see Primer 2).</td></tr></tbody></table></div>
+<div class="callout tip"><p class="label">The takeaway</p><p><strong>You don&rsquo;t need to write production code to be a great Product Engineer</strong> &mdash; but you do need to know exactly where every conversation sits on the track from &ldquo;idea&rdquo; to &ldquo;live.&rdquo; When you can say &ldquo;that&rsquo;s merged but not released,&rdquo; or &ldquo;let&rsquo;s canary it to 5% first,&rdquo; or &ldquo;is this behind a flag?&rdquo;, you&rsquo;ve stopped being a passenger on the delivery pipeline and started steering it.</p><p>Primer 2 takes you under the hood of the software itself &mdash; databases, auth, state, storage, and the other building blocks the code is made of.</p></div>
+<div class="foot"><span>SDLC Primer  ·  FundsIndia Product Engineering Enablement  ·  Primer 1 of 2</span><span></span></div>
+</main>
+</body>
+</html>

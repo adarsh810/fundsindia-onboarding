@@ -344,6 +344,35 @@ export const TOPICS: L1Track[] = [
         ],
       },
       {
+        name: 'Additional Docs', topics: [
+          {
+            id: '3.10', title: 'Additional Documents', desc: 'Extended reference set: SDLC, tech primers, strategy decks, V1 specs, investor playbook, internal discussion docs', hours: 4, week: 'W7–9',
+            done: 'Read through the additional reference documents relevant to your current week',
+            resources: [
+              { label: 'SDLC Primer', url: '/reading-material/AD-SDLC-Primer.html' },
+              { label: 'Architecture Companion', url: '/reading-material/AD-Architecture-Companion.html' },
+              { label: 'Primitives Primer', url: '/reading-material/AD-Primitives-Primer.html' },
+              { label: 'Primitives Primer (MD version)', url: '/reading-material/AD-Primitives-Primer-md.html' },
+              { label: 'AI Engineering Primer', url: '/reading-material/AD-AI-Engineering-Primer.html' },
+              { label: 'Working in a Real Codebase', url: '/reading-material/AD-Working-In-Real-Codebase.html' },
+              { label: 'Capstone — PM Engineer', url: '/reading-material/AD-Capstone-PM-Engineer.html' },
+              { label: 'Team Operating Handbook', url: '/reading-material/AD-Team-Operating-Handbook.html' },
+              { label: 'Ways of Working, Governance & Traceability', url: '/reading-material/AD-Ways-of-Working.html' },
+              { label: 'E6 — Money Layer Brief', url: '/reading-material/E6-Money-Layer-Brief.html' },
+              { label: 'Bachatt Discussion Document (Nov 2025)', url: '/reading-material/AD-Bachatt-Discussion.html' },
+              { label: 'FI Strategy Deck — Biz Leadership', url: '/reading-material/AD-FI-Strategy-Deck-Biz.html' },
+              { label: 'FundsIndia Strategy Report', url: '/reading-material/AD-FI-Strategy-Report.html' },
+              { label: 'V1 App Release & Migration Options (v0.4)', url: '/reading-material/AD-V1-App-Release-Migration.html' },
+              { label: 'Indian FinTech Coming of Age', url: '/reading-material/AD-Indian-FinTech-Coming-of-Age.html' },
+              { label: 'Investor Playbook — FI Product View of Investor Lifecycle', url: '/reading-material/AD-Investor-Playbook-FI.html' },
+              { label: 'Spec 1 — Domain Entity Model & Event Spine', url: '/reading-material/AD-Spec1-Domain-Entity-Model.html' },
+              { label: 'Spec 2 — The Canonical Ledger', url: '/reading-material/AD-Spec2-Canonical-Ledger.html' },
+            ],
+            artifact: 'Reading notes: 3 key insights per document that change how you think about FundsIndia\'s product or tech',
+          },
+        ],
+      },
+      {
         name: 'Product Sense', topics: [
           {
             id: '3.7', title: 'Blueprint Deep Read', desc: '3 passes: strategy → architecture → 20 Day-1 questions for Avijit', hours: 6, week: 'W8',

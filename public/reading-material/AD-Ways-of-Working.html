@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Framework: Change, Consistency and Propagation (Draft v2)</title>
+<style>
+  :root{
+    --ink:#23221d;--ink-soft:#55534b;--ink-faint:#7c7a70;
+    --bg:#fcfbf8;--surface:#f4f2ec;--rule:#e4e1d7;
+    --teal:#0f6e56;--teal-soft:#e1f5ee;
+    --amber:#854f0b;--amber-soft:#faeeda;
+    --purple:#534ab7;--blue:#185fa5;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:800px;margin:0 auto;padding:64px 28px 120px}
+  .eyebrow{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);font-weight:600;margin:0 0 14px}
+  h1{font-size:33px;line-height:1.2;font-weight:650;margin:0 0 18px;letter-spacing:-.01em}
+  .lede p{color:var(--ink-soft);font-size:18px;margin:0 0 16px}
+  .meta{font-size:13.5px;color:var(--ink-faint);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:12px 0;margin:30px 0 8px;display:flex;gap:22px;flex-wrap:wrap}
+  .meta b{color:var(--ink-soft);font-weight:600}
+  nav.toc{margin:34px 0 8px;padding:20px 22px;background:var(--surface);border-radius:12px}
+  nav.toc h2{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 12px;border:0;padding:0}
+  nav.toc ol{margin:0;padding:0;list-style:none;counter-reset:toc}
+  nav.toc li{counter-increment:toc;margin:6px 0;font-size:15.5px}
+  nav.toc li::before{content:counter(toc);color:var(--teal);font-variant-numeric:tabular-nums;font-weight:600;margin-right:12px}
+  nav.toc a{color:var(--ink);text-decoration:none}
+  nav.toc a:hover{color:var(--teal);text-decoration:underline}
+  section{margin-top:52px}
+  h2{font-size:23px;font-weight:640;margin:0 0 18px;letter-spacing:-.01em;border-top:1px solid var(--rule);padding-top:30px}
+  h2 .num{color:var(--teal);font-variant-numeric:tabular-nums;margin-right:12px;font-weight:600}
+  h2.plain{border-top:0;padding-top:8px}
+  h3{font-size:17.5px;font-weight:640;margin:28px 0 6px}
+  h3 .tag{color:var(--teal);font-variant-numeric:tabular-nums;margin-right:8px;font-weight:600}
+  p{margin:0 0 16px}
+  strong{font-weight:640}
+  a{color:var(--teal)}
+  ul{margin:0 0 16px;padding-left:0;list-style:none}
+  ul li{position:relative;padding-left:20px;margin:8px 0}
+  ul li::before{content:"";position:absolute;left:2px;top:11px;width:6px;height:6px;border-radius:50%;background:var(--teal)}
+  code{font-family:var(--mono);font-size:.86em;background:var(--surface);padding:1px 5px;border-radius:5px}
+  pre{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:16px 18px;overflow:auto;margin:0 0 18px;font-size:13.5px;line-height:1.6}
+  pre code{background:none;padding:0;font-size:inherit}
+  table{width:100%;border-collapse:collapse;margin:0 0 18px;font-size:15px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+  th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);font-weight:600}
+  td strong{font-weight:640}
+  .callout{border-left:3px solid var(--teal);background:var(--teal-soft);border-radius:0 8px 8px 0;padding:14px 18px;margin:0 0 18px}
+  .callout.warn{border-left-color:var(--amber);background:var(--amber-soft)}
+  .callout p{margin:0;color:var(--ink)}
+  .callout .k{display:block;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--teal);margin-bottom:5px}
+  .callout.warn .k{color:var(--amber)}
+  figure{margin:26px 0;padding:0}
+  figure .frame{background:#fff;border:1px solid var(--rule);border-radius:12px;padding:18px 14px;overflow:auto}
+  figure svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  figcaption{font-size:13.5px;color:var(--ink-faint);text-align:center;margin-top:10px}
+  figcaption b{color:var(--ink-soft);font-weight:600}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:8px;font-size:12.5px;color:var(--ink-faint)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .sw{width:11px;height:11px;border-radius:3px;display:inline-block;border:1px solid rgba(0,0,0,.12)}
+  .loading{color:var(--ink-faint);font-size:14px;text-align:center;padding:30px}
+  a:focus-visible,nav.toc a:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:2px}
+  @media (max-width:600px){.wrap{padding:40px 18px 90px}body{font-size:16px}h1{font-size:27px}h2{font-size:21px}th,td{padding:8px 8px;font-size:13.5px}}
+  @media print{body{background:#fff}.wrap{max-width:none}figure .frame{break-inside:avoid}}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <p class="eyebrow">Framework reference</p>
+  <h1>Change, Consistency and Propagation</h1>
+  <div class="lede">
+    <p>This is how work moves and stays coherent across four mutually dependent layers, from product intent down to code and back up again. It is written to be read by both engineers and the product and design side, so the preamble below sets up the cast and the map before the detailed mechanics.</p>
+    <p>It deliberately stops at framework scope. Product architecture (DB engine, service topology, environment sizing) lives in the product project, not here.</p>
+  </div>
+
+  <div class="meta">
+    <span><b>Status</b> &nbsp;Draft v2</span>
+    <span><b>Audience</b> &nbsp;Engineering, product and design</span>
+    <span><b>Supersedes</b> &nbsp;v1 (linear model)</span>
+  </div>
+
+  <nav class="toc" aria-label="Contents">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#s1">The four layers and who owns them</a></li>
+      <li><a href="#s2">The dependency map</a></li>
+      <li><a href="#s3">How consistency holds across a circular graph</a></li>
+      <li><a href="#s4">The engineering change pipeline</a></li>
+      <li><a href="#s5">The Cowork consistency workflow</a></li>
+      <li><a href="#s6">The human gates</a></li>
+      <li><a href="#s7">Environments and data</a></li>
+      <li><a href="#s8">Ownership at a glance</a></li>
+      <li><a href="#s9">Decisions still pending</a></li>
+    </ol>
+  </nav>
+
+  <section style="margin-top:44px">
+    <h2 class="plain">Preamble: the cast and the map</h2>
+    <p>Four layers of artifacts make up the system, each with one native owner and one home. The relationship between them is not a stack where the top dictates the bottom. It is a cycle: a change in any layer can ripple in either direction, and a constraint discovered in code can push back up to product as readily as a product decision pushes down to code.</p>
+
+    <h3>Who does what, and where</h3>
+    <table>
+      <thead><tr><th>Persona</th><th>Natively owns</th><th>Works in</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Product manager</strong></td><td>Strategy, PRDs, entities (the nouns), journeys (the verbs)</td><td>Confluence</td></tr>
+        <tr><td><strong>Designer</strong></td><td>UI/UX journeys and design</td><td>Figma, Confluence</td></tr>
+        <tr><td><strong>Engineer / architect</strong></td><td>Technical design docs, then code</td><td>Repo (Git)</td></tr>
+        <tr><td><strong>Business, Compliance, Legal</strong></td><td>Answer the open decisions routed to them</td><td>Open Decisions Register</td></tr>
+        <tr><td><strong>Framework steward</strong></td><td>Integrity tooling, the Drift Register, triage</td><td>Repo, Confluence, Cowork</td></tr>
+      </tbody>
+    </table>
+
+    <h3>The tooling, mapped to layers</h3>
+    <ul>
+      <li><strong>Product and design layer</strong> lives in Confluence (text artifacts) and Figma (UI/UX).</li>
+      <li><strong>Technical design layer</strong> lives in the repo as markdown, mirrored read-only into Confluence.</li>
+      <li><strong>Code layer</strong> lives in the Git monorepo.</li>
+      <li><strong>Governance layer</strong> lives in Confluence: the Open Decisions Register (human-authored) and the Drift Register (machine-maintained).</li>
+      <li><strong>Automation</strong> is GitHub Actions for the deterministic work, Claude Cowork for the judgment work, and the Atlassian MCP as the bridge Claude uses to read and write Confluence.</li>
+    </ul>
+
+    <figure>
+      <div class="frame"><div id="diagram-overview"><p class="loading">Rendering diagram…</p></div></div>
+      <figcaption><b>Figure 1.</b> The four layers are mutually dependent, not stacked. Every cross-layer change surfaces in the governance layer, as an open decision or a drift entry, and is reconciled from there.</figcaption>
+      <div class="legend">
+        <span><i class="sw" style="background:#EEEDFE"></i> Product and design</span>
+        <span><i class="sw" style="background:#E1F5EE"></i> Technical design</span>
+        <span><i class="sw" style="background:#E6F1FB"></i> Code</span>
+        <span><i class="sw" style="background:#FAEEDA"></i> Governance</span>
+      </div>
+    </figure>
+  </section>
+
+  <section id="s1">
+    <h2><span class="num">1</span>The four layers and who owns them</h2>
+    <p>Every artifact has exactly one canonical home and one owner. Nothing is canonical in two places. What changes from a stack is that a link between two artifacts no longer implies one dictates the other; it only implies they must stay consistent.</p>
+
+    <p><strong>Product and design layer.</strong> Strategy, PRDs, entities (the nouns of the domain), journeys (the verbs), and UI/UX journeys and design. Owned by PMs and designers, in Confluence and Figma. This is where intent originates most often, but not exclusively.</p>
+    <p><strong>Technical design layer.</strong> Technical and UX-implementation design docs, owned by engineers and architects, authored in the repo and mirrored read-only into Confluence.</p>
+    <p><strong>Code layer.</strong> Code, tests, infra-as-code, schema and migrations. Owned by engineers, in the repo.</p>
+    <p><strong>Governance layer.</strong> Two registers, both in Confluence. The <strong>Open Decisions Register</strong> holds open questions routed to Business, Compliance, Legal, Product or Tech, each with an owner and a target date. The <strong>Drift Register</strong> holds the elements that are currently inconsistent across the locked docs; it is maintained by the integrity tooling and the Cowork loop, not hand-written.</p>
+
+    <p><strong>The mirror.</strong> Technical design docs propagate one way, repo to Confluence, as a read-only reflection so product folks read them where they already work. That reflection is generated output, never hand-edited, and the mirrored pages carry a "synced automatically, do not edit" banner.</p>
+    <p><strong>Design source.</strong> Figma is the dependable store for UI artifacts, with Claude Design earning its place over the two-month runway rather than being load-bearing on day one. In-repo design docs link to the design source; they never duplicate it.</p>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">2</span>The dependency map</h2>
+    <p>The map is the spine that makes consistency tractable across a circular graph. It is lightweight front-matter on each artifact. Two properties matter: links are <strong>typed</strong>, and links are <strong>navigable both ways</strong>.</p>
+    <p>Typed means a link records the nature of the relationship, not just that one exists: a design doc <em>realises</em> a PRD, code <em>constrains</em> a design doc, a change <em>raises</em> an open decision. Navigable both ways means the same link is read forward (what does this realise) and backward (what realises this), so a constraint found in code can be routed up to the PRD's owner, and a PRD change can be routed down to the design docs that realise it.</p>
+    <p>A technical design doc in the repo:</p>
+<pre><code>---
+id: DD-042
+title: Order Routing Service Design
+status: active
+realises:
+  - { ref: CONF-PRD-123, store: confluence, version: 7 }   # the PRD it implements
+  - { ref: CONF-JRN-018, store: confluence, version: 3 }   # the journey it serves
+depends_on:
+  - { ref: DD-031, store: repo }                            # an upstream design dep
+raises:
+  - { ref: ODR-009, store: confluence }                    # an open decision it triggered
+sync_to_confluence: true
+---</code></pre>
+    <p>A test file carries coverage links, either as front-matter or, where the framework has no front-matter, a tagged annotation:</p>
+<pre><code>// @covers CONF-PRD-123, DD-042</code></pre>
+    <p>The version stamp (<code>version: 7</code>) records the Confluence version each cross-store artifact was last reconciled against. A referenced PRD now at a higher version is the candidate signal that the link may have drifted. Because the link is typed, the tooling knows whose problem the drift is and which register to file it in.</p>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">3</span>How consistency holds across a circular graph</h2>
+    <p>You cannot topologically order a cycle, so the framework does not try to propagate changes in a fixed direction. Instead, any layer may originate a change, the tooling detects what is now inconsistent, and reconciliation is routed to the owning human in whichever direction the situation calls for. The two governance registers are the hub every cross-layer change passes through: questions go to the Open Decisions Register, inconsistencies to the Drift Register.</p>
+    <p>It runs in both directions in practice:</p>
+    <ul>
+      <li><strong>Downward.</strong> A PRD or UX journey changes. If it needs a call from Business, Compliance or Legal, that becomes an Open Decision. The design docs and code that realise it are marked in the Drift Register, and their owners reconcile them.</li>
+      <li><strong>Upward.</strong> Engineering hits a code constraint. That raises an Open Decision, a trade-off or feature-phasing request, routed up to the PM or designer. They update the PRD or journey, which in turn marks the affected design docs and code as drifted, and the cycle closes.</li>
+    </ul>
+    <p>So the doc you are reading is not a cascade. The engineering pipeline in section 4 is one path through the model, the path a code change takes, and it stays linear because the code path genuinely is. The circularity lives here, at the layer level, above the pipeline.</p>
+  </section>
+
+  <section id="s4">
+    <h2><span class="num">4</span>The engineering change pipeline</h2>
+    <p>This is the path a code change takes once it lands in the repo, whatever layer set it in motion.</p>
+
+    <figure>
+      <div class="frame"><div id="diagram-pipeline"><p class="loading">Rendering diagram…</p></div></div>
+      <figcaption><b>Figure 2.</b> The code path: authoring through gates, propagation, deploy, and the Cowork judgment loop.</figcaption>
+      <div class="legend">
+        <span><i class="sw" style="background:#F1EFE8"></i> Start</span>
+        <span><i class="sw" style="background:#E1F5EE"></i> Deterministic</span>
+        <span><i class="sw" style="background:#FAEEDA"></i> Human gate</span>
+        <span><i class="sw" style="background:#EEEDFE"></i> Claude loop</span>
+      </div>
+    </figure>
+
+    <h3><span class="tag">4a</span>Authoring</h3>
+    <p>Technical design docs, code, tests and infra go into the repo. During the ramp, eng holds the pen on in-repo design docs with PMs contributing through comments and PM-owned sections, graduating into repo authorship over the quarter.</p>
+
+    <h3><span class="tag">4b</span>PR-time gates (deterministic, GitHub Actions, no Claude)</h3>
+    <ul>
+      <li>Build, lint, and the unit and integration tests run.</li>
+      <li>The bespoke linter validates the map: front-matter is present and well-formed, typed links resolve, and changed artifacts carry the right <code>@covers</code> links.</li>
+      <li>A cross-store candidate check compares each referenced Confluence version to the stamped version. A newer source raises a warning, not a hard failure, because staleness is a judgment call, not a syntax error.</li>
+      <li>An ephemeral preview environment spins up so reviewers, PMs and design see a running thing, not just a diff.</li>
+    </ul>
+    <p>Hard failures (broken build, failing tests, unresolved links, missing coverage) block the merge. Soft warnings (candidate drift) surface in the PR and are logged to the Drift Register for a human to judge.</p>
+
+    <h3><span class="tag">4c</span>Merge to main (deterministic propagation, no Claude)</h3>
+    <p>On merge, the publisher action mirrors changed design docs to their read-only Confluence pages over the REST API, authenticating with an Atlassian API token in GitHub Secrets, and updates the version stamps. The deploy pipeline carries the build into non-prod automatically. Production stays behind the gate in section 6. No Claude runs in this path.</p>
+
+    <h3><span class="tag">4d</span>The Cowork judgment loop</h3>
+    <p>This is the only place Claude touches the documentation system. It runs as a scheduled Cowork flow (nightly) plus on-demand, reading the repo and reading and writing Confluence through the Atlassian MCP. It is detailed as its own workflow in section 5. It proposes; it never commits to a canonical doc on its own, and it runs on a dedicated always-on machine the steward owns, because Cowork scheduled tasks only run while that machine is awake and Claude Desktop is open.</p>
+
+    <h3><span class="tag">4e</span>Human review and disposition</h3>
+    <p>The steward and the relevant authors act on what the loop reports. Any fix, including ones Claude drafted, goes back through the normal PR flow and its gates. There is no side door that bypasses review.</p>
+  </section>
+
+  <section id="s5">
+    <h2><span class="num">5</span>The Cowork consistency workflow</h2>
+    <p>This is the engine that keeps the four layers coherent. It reads both stores, runs the consistency checks the deterministic layer cannot, writes its findings to the Drift Register and proposes reconciliations, then hands everything to a human.</p>
+
+    <figure>
+      <div class="frame"><div id="diagram-cowork"><p class="loading">Rendering diagram…</p></div></div>
+      <figcaption><b>Figure 3.</b> Read both stores, run the checks, log drift and route open decisions, then send every change through human disposition.</figcaption>
+      <div class="legend">
+        <span><i class="sw" style="background:#F1EFE8"></i> Inputs</span>
+        <span><i class="sw" style="background:#E1F5EE"></i> Automated checks</span>
+        <span><i class="sw" style="background:#FAEEDA"></i> Human disposition</span>
+      </div>
+    </figure>
+
+    <p>The four checks map onto the layers: version control confirms git is coherent and the Confluence mirror matches the last-propagated design docs; the dependency check walks the typed map and flags drifted links via version mismatch; open decisions are reconciled in both directions (new questions captured into the register, resolved answers pushed into the artifacts they inform); semantic checks compare tech and UX design, and strategy against the PRDs beneath it. Everything the loop finds becomes a Drift Register entry with a proposed fix, and nothing lands in a canonical doc until a human approves it through the normal flow.</p>
+  </section>
+
+  <section id="s6">
+    <h2><span class="num">6</span>The human gates</h2>
+    <p>This is the governance spine, and the single most important part to write down so nobody relitigates it under deadline pressure.</p>
+    <div class="callout warn">
+      <span class="k">The rule</span>
+      <p>Claude proposes, CD disposes. The following are human-gated and never automated or Claude-touched.</p>
+    </div>
+    <ul>
+      <li><strong>Production deploys.</strong> Require passing test gates and explicit review approval.</li>
+      <li><strong>Applying migrations to production.</strong> Through the pipeline and human approval, never a live agent.</li>
+      <li><strong>Any access to real customer data.</strong> No Claude tool, in any surface, reads or writes production data.</li>
+    </ul>
+    <p>Approval authority sits with senior engineers and you. Secrets live in a cloud-native secrets manager, and production secrets are never exposed to Claude, to CI, or to any non-prod environment.</p>
+    <div class="callout">
+      <span class="k">Residency, locked</span>
+      <p>The posture is the most conservative reading across the RBI, SEBI and AMFI axis, not the permissive DPDP baseline. Regulated customer data (KYC, transaction and financial PII) is stored and processed only in India, on an India-region cloud using MeitY-empanelled data centres, with backups, disaster recovery, logs and encryption keys also held in India. This treats the build as in-scope for the SEBI cloud framework and CSCRF regardless of the formal regulated-entity determination, which is the safe default while that determination is pending.</p>
+    </div>
+    <p>The compliance control that makes this work without constraining the toolchain is the data firewall in the flow: real regulated data never leaves the production estate, and Claude and CI operate only on synthetic or de-identified data. Tools that process outside India (GitHub-hosted runners, Atlassian Cloud, Anthropic's processing of Claude) stay out of scope for localisation because they never hold regulated data. The rule the whole team internalises: no real customer data anywhere outside the India production estate, including as sample data in PRDs, design docs, tickets or test fixtures.</p>
+  </section>
+
+  <section id="s7">
+    <h2><span class="num">7</span>Environments and data</h2>
+    <p>Topology is the usual local, per-PR preview, staging, prod. The framework-relevant rules:</p>
+    <p>Environment config, schema and migrations all live as code in the repo, so Claude can reason over them and a schema change flags the data-model section of the relevant design doc through the same map.</p>
+    <p>Synthetic or de-identified data fills every environment Claude or CI touches. Real data lives only in production, behind the gate above. Preview and staging run on synthetic seed data, which is what makes them safe for an agentic team to operate freely.</p>
+    <p>The production estate sits in an India region on a MeitY-empanelled CSP, with its backups, disaster recovery, logs and encryption keys held in India, per the locked residency posture in section 6. Non-prod environments carry no regulated data and so are not bound by region.</p>
+  </section>
+
+  <section id="s8">
+    <h2><span class="num">8</span>Ownership at a glance</h2>
+    <ul>
+      <li><strong>PMs and designers</strong> own the product and design layer and the open decisions routed to them.</li>
+      <li><strong>Engineers and architects</strong> own the technical design and code layers and the front-matter links on their artifacts.</li>
+      <li><strong>Business, Compliance and Legal</strong> own the answers to the open decisions in their domain.</li>
+      <li><strong>GitHub Actions</strong> orchestrates the deterministic pipeline; <strong>the publisher action</strong> owns the design-doc mirror; <strong>the bespoke linter</strong> owns map and coverage validation.</li>
+      <li><strong>The Cowork judgment flow</strong> owns drift, decision and consistency detection and proposes fixes.</li>
+      <li><strong>The framework steward</strong> owns the integrity pipeline, the Drift Register, the always-on Cowork machine, and triage disposition. This is the role that keeps the source of truth honest over time, which is the thing that quietly fails in every team that skips it.</li>
+    </ul>
+  </section>
+
+  <section id="s9">
+    <h2><span class="num">9</span>Decisions still pending</h2>
+    <p>These do not block the framework but should be closed before or as the team joins:</p>
+    <ul>
+      <li>Monorepo tooling: Turborepo, Nx, or Bazel (recommendation once cloud and language stack are set).</li>
+      <li>Publisher choice among the three shortlisted options.</li>
+      <li>Cloud provider (engineering team's call), constrained to one offering a MeitY-empanelled India region for the production estate.</li>
+      <li>Formal regulated-entity and Significant Data Fiduciary determination (your DPO). This does not relax the residency posture, which is locked conservative; it only confirms the precise obligations on top.</li>
+    </ul>
+  </section>
+
+</main>
+
+<script type="module">
+  import mermaid from 'https://esm.sh/mermaid@11/dist/mermaid.esm.min.mjs';
+
+  const overviewSrc = `flowchart TD
+    PD[Product and design<br/>PM and Designer] <--> TD[Technical design<br/>Eng and Architect]
+    TD <--> CO[Code<br/>Engineers]
+    CO <--> PD
+    PD <--> G[Governance<br/>Open Decisions and Drift]
+    TD <--> G
+    CO <--> G
+    classDef product fill:#EEEDFE,stroke:#7F77DD,color:#26215C;
+    classDef tech fill:#E1F5EE,stroke:#1D9E75,color:#04342C;
+    classDef code fill:#E6F1FB,stroke:#378ADD,color:#042C53;
+    classDef gov fill:#FAEEDA,stroke:#BA7517,color:#412402;
+    class PD product;
+    class TD tech;
+    class CO code;
+    class G gov;`;
+
+  const pipelineSrc = `flowchart TD
+    A([Change lands in repo]) --> B[Open PR]
+    B --> C{PR-time gates<br/>GitHub Actions, no Claude}
+    C -->|fail| B
+    C -->|pass| D[Preview env per PR]
+    D --> E[Human review and tests]
+    E -->|merge to main| F[Deterministic propagation<br/>mirror docs to Confluence]
+    F --> G[Auto-deploy to non-prod]
+    G --> H{Prod gate<br/>review, tests, approval}
+    H -->|approved| I[Deploy to prod]
+    F -.feeds.-> J[Cowork judgment loop<br/>nightly and on-demand]
+    J --> K[Triage report<br/>drift and decisions]
+    K --> L[Steward and authors dispose]
+    L -->|fixes| B
+    classDef start fill:#F1EFE8,stroke:#888780,color:#2C2C2A;
+    classDef auto fill:#E1F5EE,stroke:#1D9E75,color:#04342C;
+    classDef gate fill:#FAEEDA,stroke:#BA7517,color:#412402;
+    classDef cowork fill:#EEEDFE,stroke:#7F77DD,color:#26215C;
+    class A start;
+    class B,D,F,G,I auto;
+    class C,E,H gate;
+    class J,K,L cowork;`;
+
+  const coworkSrc = `flowchart TD
+    T([Run nightly or on-demand<br/>always-on steward machine]) --> R[Read both sources of truth<br/>repo + Confluence via MCP]
+    R --> V[Version control<br/>git and mirror in sync]
+    R --> D[Dependency map<br/>drifted links flagged]
+    R --> Q[Open decisions<br/>reconciled both ways]
+    R --> S[Semantic checks<br/>doc consistency]
+    V --> TR[Triage report<br/>drift logged, fixes drafted]
+    D --> TR
+    Q --> TR
+    S --> TR
+    TR --> H[Human disposition<br/>Claude proposes, humans decide]
+    H --> FX[Fixes via PR<br/>re-propagate on merge]
+    H --> RG[Registers and artifacts<br/>drift cleared, answers out]
+    classDef input fill:#F1EFE8,stroke:#888780,color:#2C2C2A;
+    classDef check fill:#E1F5EE,stroke:#1D9E75,color:#04342C;
+    classDef human fill:#FAEEDA,stroke:#BA7517,color:#412402;
+    class T,R input;
+    class V,D,Q,S,TR check;
+    class H,FX,RG human;`;
+
+  try {
+    await document.fonts.ready;
+    mermaid.initialize({
+      startOnLoad:false, theme:'base', securityLevel:'loose',
+      flowchart:{ htmlLabels:true, curve:'basis', nodeSpacing:42, rankSpacing:46, useMaxWidth:true },
+      themeVariables:{
+        fontFamily:'-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif',
+        fontSize:'14px', lineColor:'#9a988f',
+        primaryColor:'#E1F5EE', primaryTextColor:'#04342C', primaryBorderColor:'#1D9E75'
+      }
+    });
+    const o = await mermaid.render('m_overview', overviewSrc);
+    document.getElementById('diagram-overview').innerHTML = o.svg;
+    const p = await mermaid.render('m_pipeline', pipelineSrc);
+    document.getElementById('diagram-pipeline').innerHTML = p.svg;
+    const c = await mermaid.render('m_cowork', coworkSrc);
+    document.getElementById('diagram-cowork').innerHTML = c.svg;
+  } catch (e) {
+    for (const id of ['diagram-overview','diagram-pipeline','diagram-cowork']) {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = '<p class="loading">Diagram could not render here. Open this file in a browser to view it.</p>';
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Primitives Primer</title><style>
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 860px; margin: 40px auto; padding: 0 24px 80px; color: #1a1a1a; line-height: 1.7; }
+  h1 { font-size: 2rem; margin-bottom: 0.3em; } h2 { font-size: 1.4rem; margin-top: 2em; border-bottom: 1px solid #e5e5e5; padding-bottom: 0.3em; }
+  h3 { font-size: 1.1rem; margin-top: 1.5em; } pre { background: #f5f5f5; padding: 16px; border-radius: 8px; overflow-x: auto; }
+  code { background: #f0f0f0; padding: 2px 5px; border-radius: 4px; font-size: 0.9em; }
+  pre code { background: none; padding: 0; } blockquote { border-left: 3px solid #d0d0d0; margin-left: 0; padding-left: 16px; color: #555; }
+  table { border-collapse: collapse; width: 100%; } th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+  th { background: #f5f5f5; } a { color: #6B3FA0; }
+</style></head><body><h1>The Building Blocks of Software — A Primer</h1>
+<p>FundsIndia · Product Engineering Enablement</p>
+<hr>
+<h1>The Building Blocks of Software</h1>
+<p>A Primer on the Primitives — Databases, Auth, State, Storage, and the Stuff Code Is Made Of</p>
+<p>Primer 2 of 2 · For Product Managers becoming Product Engineers</p>
+<blockquote>
+<p><strong>Primer 1</strong> walked the <strong>journey</strong> of a change — how code travels from a laptop to a customer. <strong>This primer</strong> opens up the <strong>thing being moved</strong>. What <strong>is</strong> software actually made of? Where does data live? How does the system know who you are and what you’re allowed to do? What’s the difference between memory and storage, and why does anyone care?
+These are the primitives — the irreducible building blocks. Once you can name them and reason about them, technical conversations stop being a fog of jargon and become a set of concrete, comprehensible parts. You’ll think more clearly about what’s feasible, what’s expensive, and what’s risky.</p>
+</blockquote>
+<h1>Contents</h1>
+<p><a href="#s1">1 The Anatomy of an Application </a><a href="#s2">2 Databases: The System’s Memory </a><a href="#s3">3 Files, Directories &amp; How Code Is Organised </a><a href="#s4">4 Authentication &amp; Authorization </a><a href="#s5">5 State &amp; State Machines </a><a href="#s6">6 Resources: Memory, Compute &amp; Storage </a><a href="#s7">7 Data at Scale: Warehouses, Lakes &amp; Pipelines </a><a href="#s8">8 The Primitives, On One Page </a></p>
+<h1>1 · The Anatomy of an Application</h1>
+<p>Almost every product you’ll work on is built from the same three layers. Hold this skeleton in mind; the rest of the primer fills in each bone.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>What it is</th>
+<th>FundsIndia example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Frontend</strong></td>
+<td>What the user sees and touches — the screens, buttons, charts. Runs on the user’s device (browser or phone).</td>
+<td>The portfolio dashboard you tap through in the app.</td>
+</tr>
+<tr>
+<td><strong>Backend</strong></td>
+<td>The brain behind the screens — the logic, rules, and calculations. Runs on servers you control.</td>
+<td>The engine that computes your returns, applies fees, and checks rules.</td>
+</tr>
+<tr>
+<td><strong>Database</strong></td>
+<td>The long-term memory — where all the data is stored permanently and safely.</td>
+<td>The record of every user, holding, transaction, and goal.</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>How they talk: the API
+The frontend and backend talk to each other through an <strong>API (Application Programming Interface)</strong> — a strict, agreed-upon menu of requests one piece of software can make to another. The frontend says “give me this user’s holdings”; the backend, via the API, replies with the data. An API is a <strong>contract</strong>: “if you ask me in exactly this format, I promise to answer in exactly that format.” Most integration work — between your own systems, or with partners like mutual-fund registrars or payment gateways — is API work.
+PM lens
+When you scope a feature, it helps to ask: <strong>which layers does this touch?</strong> A copy change is frontend-only (cheap, fast). A new calculation is backend. A new <strong>kind</strong> of data to remember is a database change (often the most consequential, because data structure is hard to change later). “Which layers?” is one of the highest-leverage questions a PM can ask early.</p>
+</blockquote>
+<h1>2 · Databases: The System’s Memory</h1>
+<p>A database is an organised, durable store of information designed so the software can write, find, and update data quickly and reliably — even with millions of records and thousands of simultaneous users. It is the single most important primitive in most products, because the data usually outlives every other part of the system.</p>
+<h2>The two great families</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SQL (Relational)</th>
+<th>NoSQL (Non-relational)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Shape</strong></td>
+<td>Tables with rows and columns — like a set of strict, interlinked spreadsheets.</td>
+<td>Flexible — documents, key-value pairs, graphs. Less rigid structure.</td>
+</tr>
+<tr>
+<td><strong>Best when</strong></td>
+<td>Data is structured and relationships matter (users, accounts, transactions).</td>
+<td>Data is huge, fast-changing, or loosely structured (logs, sessions, catalogs).</td>
+</tr>
+<tr>
+<td><strong>Examples</strong></td>
+<td>PostgreSQL, MySQL, Oracle, SQL Server.</td>
+<td>MongoDB, DynamoDB, Cassandra, Redis.</td>
+</tr>
+<tr>
+<td><strong>Trade-off</strong></td>
+<td>Extremely reliable and consistent; structure is rigid to change.</td>
+<td>Flexible and massively scalable; you give up some guarantees.</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Why finance loves SQL
+For a wealth platform, <strong>SQL</strong> is usually the backbone, because money demands <strong>consistency</strong>: a transaction must either fully happen or not at all — never half-recorded. SQL databases are built around exactly this guarantee (the “ACID” properties, below). NoSQL often shows up alongside it for the high-volume, less-critical stuff like activity logs or caching.</p>
+</blockquote>
+<h2>Key concepts you’ll hear</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Plain meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Table</strong></td>
+<td>A spreadsheet-like collection of one kind of thing (e.g. a “Users” table).</td>
+</tr>
+<tr>
+<td><strong>Row / Record</strong></td>
+<td>One entry in a table (one user, one transaction).</td>
+</tr>
+<tr>
+<td><strong>Column / Field</strong></td>
+<td>One attribute every row has (email, balance, created-date).</td>
+</tr>
+<tr>
+<td><strong>Primary key</strong></td>
+<td>The unique ID that identifies each row unmistakably (like a customer ID).</td>
+</tr>
+<tr>
+<td><strong>Foreign key</strong></td>
+<td>A link from a row in one table to a row in another (this transaction belongs to that user).</td>
+</tr>
+<tr>
+<td><strong>Index</strong></td>
+<td>A lookup shortcut that makes searches fast — like a book’s index. Speeds reads; costs a little on writes.</td>
+</tr>
+<tr>
+<td><strong>Query</strong></td>
+<td>A request to the database (“find all users in Bengaluru with balance &gt; 1 Cr”), written in SQL.</td>
+</tr>
+<tr>
+<td><strong>Schema</strong></td>
+<td>The blueprint: what tables exist, their columns, and how they relate.</td>
+</tr>
+<tr>
+<td><strong>Migration</strong></td>
+<td>A controlled, version-tracked change to the schema (adding a column, a new table).</td>
+</tr>
+<tr>
+<td><strong>ACID</strong></td>
+<td>The four reliability guarantees (Atomicity, Consistency, Isolation, Durability) that keep data trustworthy.</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>The word “migration” — why engineers get careful
+Changing the <strong>structure</strong> of a live database (a migration) is delicate surgery, because the data is already there and the system is running. Adding an optional column is usually safe; renaming or removing one, or changing a type, can break things or require careful staged rollout. When an engineer says a feature “needs a migration,” treat it as a signal of <strong>higher care and coordination</strong> — not necessarily more effort, but more risk to plan around.
+PM lens
+Data structure is the most expensive thing to get wrong, because it’s the hardest to change once real data has accumulated. When you spec a feature, think early about <strong>what new data we need to remember and how it relates to what we already store</strong>. A fifteen-minute data-model conversation at spec time routinely saves weeks later. This is also where your strong IC instincts genuinely shine.</p>
+</blockquote>
+<h1>3 · Files, Directories &amp; How Code Is Organised</h1>
+<p>Underneath the polish, a software project is a tree of folders and files — the same folders-and-files idea as your laptop, just more disciplined. A directory is a folder; the file system is the overall tree. Understanding this demystifies a lot of what you see when you peek into a repo.</p>
+<h2>The vocabulary</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Plain meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Directory / folder</strong></td>
+<td>A container that holds files and other folders.</td>
+</tr>
+<tr>
+<td><strong>Path</strong></td>
+<td>The “address” of a file, e.g. <code>/src/components/Dashboard.js</code> — read left to right as folders nested inside folders.</td>
+</tr>
+<tr>
+<td><strong>Root</strong></td>
+<td>The top of the tree — the project’s home folder, where everything branches from.</td>
+</tr>
+<tr>
+<td><strong>File extension</strong></td>
+<td>The bit after the dot (.js, .py, .json) signalling the file’s type.</td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td>A settings file (often .json, .yaml, or .env) that controls how the app behaves without changing core code.</td>
+</tr>
+</tbody></table>
+<h2>A typical project, annotated</h2>
+<p>You don’t need to memorise this, but recognising the shape removes the intimidation factor. A backend project often looks roughly like:</p>
+<p>project-root/  src/  — the actual source code  tests/  — the automated tests  docs/  — documentation  package.json  — the project’s ID card: name, version, dependencies  README.md  — the “start here” explainer for humans  .env  — secret settings (passwords, keys) — never shared publicly</p>
+<blockquote>
+<p>Dependencies &amp; packages
+Almost no code is written from scratch. Engineers stand on <strong>dependencies</strong> — pre-built packages of code (also called libraries) that solve common problems, pulled in from public registries (npm for JavaScript, PyPI for Python). The <code>package.json</code> file lists exactly which ones, and which versions. This is powerful (don’t reinvent the wheel) but also a <strong>supply-chain risk</strong>: a bug or vulnerability in a popular package affects everyone who uses it, which is why those security scans in CI matter.</p>
+</blockquote>
+<h1>4 · Authentication &amp; Authorization: Who You Are vs. What You Can Do</h1>
+<p>These two words sound alike and are constantly confused, so we’ll nail them precisely — they’re among the most important primitives in any product that touches money or personal data.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Authentication (AuthN)</th>
+<th>Authorization (AuthZ)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Question it answers</strong></td>
+<td>“Who are you? Prove it.”</td>
+<td>“Now that I know who you are — what are you allowed to do?”</td>
+</tr>
+<tr>
+<td><strong>Real-world analogy</strong></td>
+<td>Showing your passport at the airport.</td>
+<td>Your boarding pass deciding which lounge and seat you can access.</td>
+</tr>
+<tr>
+<td><strong>Mechanisms</strong></td>
+<td>Passwords, OTPs, biometrics, “log in with Google.”</td>
+<td>Roles &amp; permissions (admin vs. customer vs. support agent).</td>
+</tr>
+<tr>
+<td><strong>Fails like…</strong></td>
+<td>“Wrong password” — we can’t confirm it’s you.</td>
+<td>“Access denied” — we know it’s you, but you’re not permitted.</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>The order matters
+Authentication always comes <strong>first</strong>: the system establishes who you are, then authorization decides what that identity may do. A support agent and a customer might both be perfectly authenticated, but they’re authorized very differently — the agent can see many accounts, the customer only their own.</p>
+</blockquote>
+<h2>Concepts you’ll meet</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Plain meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Session</strong></td>
+<td>The period you stay logged in after authenticating, so you don’t re-enter your password on every click.</td>
+</tr>
+<tr>
+<td><strong>Token / JWT</strong></td>
+<td>A tamper-proof digital wristband the server gives you after login, which your app shows on each request to prove it’s still you.</td>
+</tr>
+<tr>
+<td><strong>OAuth</strong></td>
+<td>The standard behind “log in with Google/Apple” — lets you authenticate via a trusted third party without sharing your password.</td>
+</tr>
+<tr>
+<td><strong>MFA / 2FA</strong></td>
+<td>Multi-factor auth: requiring a second proof (an OTP, an authenticator app) on top of the password.</td>
+</tr>
+<tr>
+<td><strong>Role-based access (RBAC)</strong></td>
+<td>Granting permissions by role (admin, agent, customer) rather than person-by-person.</td>
+</tr>
+<tr>
+<td><strong>Encryption</strong></td>
+<td>Scrambling data so only authorised parties can read it — in transit (HTTPS) and at rest (in the database).</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>PM lens
+In a regulated wealth business, <strong>authorization is a product and compliance surface, not just plumbing</strong>. “Who can see this? Who can approve that? What can a support agent do on a customer’s behalf, and is it logged?” are product decisions with real regulatory weight (think RIA vs. MFD boundaries, maker-checker approvals, audit trails). Getting the permission model right is squarely PM territory — and a place where sloppiness becomes a compliance finding.</p>
+</blockquote>
+<h1>5 · State &amp; State Machines</h1>
+<p>State is simply “the current situation” — the snapshot of all the relevant facts at this moment. Your shopping cart has state (what’s in it). A KYC application has state (submitted? approved? rejected?). Much of software is the careful management of state as it changes over time.</p>
+<h2>State machines: taming the chaos of “what can happen next”</h2>
+<p>A state machine is a precise map of (a) all the states a thing can be in, and (b) the allowed transitions between them. It’s a powerful tool because it forces you to think through every situation explicitly — and to forbid the nonsensical ones.</p>
+<blockquote>
+<p>A worked example: an investment order
+Placed  →  Confirmed  →  Processing  →  Completed
+…with branch transitions like <code>Placed → Cancelled</code> or <code>Processing → Failed</code>. The state machine encodes the rules: an order can go from <code>Placed</code> to <code>Cancelled</code>, but <strong>not</strong> from <code>Completed</code> back to <code>Placed</code>. By drawing this explicitly, the team prevents impossible, money-losing situations — like cancelling an order that’s already settled.
+You can think of a state machine as a board game: each square is a state, and the rules say which squares you can move to from where. Illegal moves are simply not on the board.</p>
+</blockquote>
+<blockquote>
+<p>PM lens
+State machines are one of the most <strong>PM-friendly engineering tools</strong> that exist — you can sketch one on a whiteboard with no code at all. For any feature involving status — KYC, onboarding, order processing, support tickets, withdrawals — drawing the states and the allowed transitions <strong>yourself</strong>, and crucially asking “what happens if it’s in state X and Y occurs?”, surfaces the edge cases that otherwise become production incidents. This is product-engineering thinking at its most accessible: a great state diagram is often a better spec than three pages of prose.</p>
+</blockquote>
+<h1>6 · Resources: Memory, Compute &amp; Storage</h1>
+<p>Software runs on physical computers (usually rented from cloud providers like AWS, Google Cloud, or Azure). Those computers offer three fundamental resources. Conflating them is one of the most common sources of confusion, so here’s the clean mental model — a kitchen.</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>What it is</th>
+<th>Kitchen analogy</th>
+<th>If you run low…</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Compute (CPU)</strong></td>
+<td>The processing power that does the actual work — calculations, logic.</td>
+<td>The chef’s hands and speed.</td>
+<td>Things get slow; work queues up.</td>
+</tr>
+<tr>
+<td><strong>Memory (RAM)</strong></td>
+<td>Fast, temporary workspace for whatever the program is actively using right now. Wiped when the program stops.</td>
+<td>The countertop — ingredients out for the dish being cooked now.</td>
+<td>The app crashes or grinds to a halt.</td>
+</tr>
+<tr>
+<td><strong>Storage (Disk)</strong></td>
+<td>Slow, permanent space where data is kept long-term, even when powered off.</td>
+<td>The fridge and pantry — everything kept for later.</td>
+<td>You literally can’t save new data.</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>The memory-vs-storage trap
+This is the distinction worth burning in. <strong>Memory (RAM)</strong> is fast but temporary and small — the active workspace, gone when the program stops. <strong>Storage (disk)</strong> is slower but permanent and large — the filing cabinet. “We ran out of memory” (a crash from too much active work) is a completely different problem from “we ran out of storage” (nowhere to save data). Engineers mean very different things by them; now so do you.</p>
+</blockquote>
+<h2>The cloud, in one paragraph</h2>
+<p>Instead of buying physical computers, companies rent these three resources on demand from cloud providers, paying for what they use. The huge advantage is elasticity — you can summon more compute during a market-open rush and release it afterwards. This is also why engineers talk about “scaling” and why cost and performance are linked: more resources cost more money, so efficiency has a direct line to the P&amp;L.</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Plain meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Server</strong></td>
+<td>A computer (usually rented, in a data centre) that runs your backend and serves users.</td>
+</tr>
+<tr>
+<td><strong>Scaling up (vertical)</strong></td>
+<td>Giving one server more power — a bigger machine.</td>
+</tr>
+<tr>
+<td><strong>Scaling out (horizontal)</strong></td>
+<td>Adding more servers and splitting the load across them — usually the more robust approach.</td>
+</tr>
+<tr>
+<td><strong>Load balancer</strong></td>
+<td>A traffic cop that spreads incoming requests evenly across multiple servers.</td>
+</tr>
+<tr>
+<td><strong>Cache</strong></td>
+<td>A small, ultra-fast store of frequently-needed answers, so you don’t recompute or re-fetch them every time.</td>
+</tr>
+<tr>
+<td><strong>Latency</strong></td>
+<td>The delay before a response — how long the user waits. Lower is better.</td>
+</tr>
+<tr>
+<td><strong>Throughput</strong></td>
+<td>How much work the system handles per unit time — requests per second. Higher is better.</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>PM lens
+Resources are where <strong>product decisions meet the cloud bill</strong>. A feature that recomputes a heavy portfolio analysis on every screen load is a <strong>compute</strong> cost; one that keeps huge histories instantly queryable is a <strong>storage</strong> cost. You don’t need to size servers — but knowing that “this feature is compute-heavy” or “this will balloon our storage” lets you weigh value against running cost, and ask the right question: <code>“what does this cost us to run at scale?”</code></p>
+</blockquote>
+<h1>7 · Data at Scale: Warehouses, Lakes &amp; Pipelines</h1>
+<p>The database from Section 2 is built to run the live product — fast reads and writes for the app (this is called “operational” or “transactional” data). But when you want to <strong>analyse</strong> data — trends, dashboards, ML models, regulatory reporting — you need different tools, because crunching years of history is a very different job from serving one user’s next click.</p>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>What it is</th>
+<th>The analogy</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Database (operational)</strong></td>
+<td>Stores live data to run the app. Optimised for speed on individual records.</td>
+<td>The busy front-of-house till.</td>
+</tr>
+<tr>
+<td><strong>Data Warehouse</strong></td>
+<td>A separate store optimised for analysis across huge volumes. Structured, cleaned, query-ready.</td>
+<td>A well-organised library with everything catalogued.</td>
+</tr>
+<tr>
+<td><strong>Data Lake</strong></td>
+<td>A vast pool holding raw data of every kind — structured and unstructured — cheaply, before it’s necessarily organised.</td>
+<td>A giant reservoir: everything flows in, organise it when you need it.</td>
+</tr>
+<tr>
+<td><strong>Pipeline / ETL</strong></td>
+<td>The automated plumbing that Extracts data, Transforms (cleans) it, and Loads it where it’s needed.</td>
+<td>The conveyor and sorting system moving water between pools.</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Lake vs. warehouse, simply
+A <strong>warehouse</strong> is structured and cleaned up front — you decide the questions, then shape the data to answer them fast (great for finance dashboards and reporting). A <strong>lake</strong> stores <strong>everything</strong> raw and cheap, and you figure out structure later — great for data science and ML, where you don’t yet know all the questions. Many companies run both, and a modern blend is sometimes called a “lakehouse.”
+PM lens
+A crucial instinct: <strong>don’t run heavy analytics directly on the live product database</strong>. A giant report query can slow down the app for real customers. “Can we pull this from the warehouse instead of prod?” is exactly the kind of question that marks you as a product engineer rather than a passenger. For an IPO-track, regulated business, this separation also underpins clean, auditable reporting.</p>
+</blockquote>
+<h1>8 · The Primitives, On One Page</h1>
+<p>A consolidated cheat-sheet. Keep it nearby; it ties the whole primer together.</p>
+<table>
+<thead>
+<tr>
+<th>Primitive</th>
+<th>One-line definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Frontend / Backend / Database</strong></td>
+<td>What you see / the logic behind it / the long-term memory.</td>
+</tr>
+<tr>
+<td><strong>API</strong></td>
+<td>The contract by which two pieces of software talk.</td>
+</tr>
+<tr>
+<td><strong>SQL vs. NoSQL</strong></td>
+<td>Rigid, reliable tables vs. flexible, scalable structures.</td>
+</tr>
+<tr>
+<td><strong>Schema / Migration</strong></td>
+<td>The data blueprint / a careful, tracked change to it.</td>
+</tr>
+<tr>
+<td><strong>Directory / Path / Dependency</strong></td>
+<td>Folder / a file’s address / pre-built code you rely on.</td>
+</tr>
+<tr>
+<td><strong>AuthN vs. AuthZ</strong></td>
+<td>Who you are vs. what you’re allowed to do.</td>
+</tr>
+<tr>
+<td><strong>State / State Machine</strong></td>
+<td>The current situation / the map of allowed situations and moves.</td>
+</tr>
+<tr>
+<td><strong>Compute / Memory / Storage</strong></td>
+<td>Processing power / fast temporary workspace / slow permanent space.</td>
+</tr>
+<tr>
+<td><strong>Cache / Latency / Throughput</strong></td>
+<td>Fast-answer shortcut / wait time / work handled per second.</td>
+</tr>
+<tr>
+<td><strong>Warehouse / Lake / Pipeline</strong></td>
+<td>Structured analytics store / raw data reservoir / the plumbing between.</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>The takeaway
+You now have names for the parts. The goal was never to turn you into an engineer overnight — it was to make the machine <strong>legible</strong>, so that when the team debates SQL versus NoSQL, or worries about a migration, or weighs a compute-heavy feature, you can follow the logic, ask the sharp question, and make a better product call.
+<strong>Combine the two primers</strong> and you have the full picture: Primer 1 showed how software <strong>moves</strong> (the lifecycle); Primer 2 showed what it’s <strong>made of</strong> (the primitives). That combination — understanding both the journey and the building blocks — is precisely what separates a product manager from a product engineer.
+Welcome to the other side of the wall. Now go open a repo and poke around — it’ll feel a lot less foreign than it did an hour ago.
+Software Primitives Primer · FundsIndia Product Engineering Enablement · Primer 2 of 2</p>
+</blockquote>
+</body></html>
